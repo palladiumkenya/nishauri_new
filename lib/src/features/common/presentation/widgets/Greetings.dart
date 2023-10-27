@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nishauri/src/features/common/presentation/helpers/constants.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class Greetings extends StatelessWidget {
@@ -11,11 +12,11 @@ class Greetings extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final theme = Theme.of(context);
-    final headerHeight = screenSize.height * 0.1;
+    final headerHeight = screenSize.height * 0.25;
     final radius = screenSize.width * 0.12;
 
     return Container(
-      margin: EdgeInsets.only(bottom: headerHeight * 0.5),
+      margin: EdgeInsets.only(bottom: headerHeight * 0.3),
       child: Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.center,
@@ -30,51 +31,68 @@ class Greetings extends StatelessWidget {
                 bottomRight: Radius.circular(radius),
               ),
             ),
-
           ),
           Positioned(
-            bottom: -(headerHeight * 0.5),
-            height: headerHeight,
-            width: screenSize.width * 0.75,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.onPrimary,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(radius),
+            bottom: -(headerHeight * 0.25),
+            height: headerHeight * 1.25,
+            width: screenSize.width * 0.85,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                 Text(
+                  "Hello 👋,",
+                  style: TextStyle(color: theme.colorScheme.onPrimary),
                 ),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: headerHeight * 0.3,
-                    child: image != null && image!.isNotEmpty
-                        ? Image.network(image!)
-                        : Text(name.substring(0, 1).toUpperCase()),
-                  ),
-                  const SizedBox(
-                    width: Constants.SPACING,
-                  ),
-                  Flexible(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Hello 👋,",
-                        ),
-                        Text(
-                          name,
-                          style: const TextStyle(fontSize: 20),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
+                Text(
+                  name,
+                  style:  TextStyle(fontSize: 20, color: theme.colorScheme.onPrimary),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(Constants.SPACING),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.onPrimary,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(Constants.SPACING * 2),
+                      ),
+                    ),
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3),
+                      itemCount: 6,
+                      itemBuilder: (BuildContext context, int currentIndex) {
+                        // Todo build reusable component to reuse with the Home-screen 2 menu Item
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.primary,
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(Constants.ROUNDNESS * 10),
+                                ),
+                              ),
+                              child: IconButton(
+                                onPressed: () {},
+                                color: theme.colorScheme.onPrimary,
+                                icon: Icon(menuOptions[currentIndex].icon),
+                              ),
+                            ),
+                            Text(
+                              menuOptions[currentIndex].title ?? "",
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
