@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/auth/presentation/widgets/ResponsiveWidget.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/input/FormInputTextField.dart';
@@ -47,11 +48,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               icon: const Icon(Icons.chevron_left),
             ),
           ),
-          body: SafeArea(
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                Form(
+          body: ResponsiveWidget(
+            buildPageContent: (context, color) => SafeArea(
+              child: Container(
+                padding: const EdgeInsets.all(Constants.SPACING * 2),
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
+                ),
+                child: Form(
                   key: _formKey,
                   child: SingleChildScrollView(
                     child: Padding(
@@ -109,15 +114,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           LinkedRichText(
                             linked: "",
                             unlinked: "Back to login",
-                            onPress: () =>
-                                context.go(RouteNames.LOGIN_SCREEN),
+                            onPress: () => context.go(RouteNames.LOGIN_SCREEN),
                           )
                         ],
                       ),
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
           ),
         );

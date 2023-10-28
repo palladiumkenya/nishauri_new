@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
+import 'package:nishauri/src/features/auth/presentation/widgets/ResponsiveWidget.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/input/FormInputTextField.dart';
@@ -63,11 +64,15 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
           icon: const Icon(Icons.chevron_left),
         ),
       ),
-      body: SafeArea(
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            Form(
+      body: ResponsiveWidget(
+        buildPageContent: (context, color) => SafeArea(
+          child: Container(
+            padding: const EdgeInsets.all(Constants.SPACING * 2),
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
+            ),
+            child: Form(
               key: _formKey,
               child: SingleChildScrollView(
                 child: Padding(
@@ -88,8 +93,8 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                       const SizedBox(height: Constants.SPACING),
                       const Text(
                         "Sign Up",
-                        style: TextStyle(
-                            fontSize: 40, fontWeight: FontWeight.bold),
+                        style:
+                            TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: Constants.SPACING),
                       FormInputTextField(
@@ -174,7 +179,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                 ),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

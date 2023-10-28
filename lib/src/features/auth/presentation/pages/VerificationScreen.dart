@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/auth/presentation/widgets/ResponsiveWidget.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/RadioGroup.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
@@ -26,7 +27,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   @override
   void initState() {
-    
     super.initState();
   }
 
@@ -57,11 +57,15 @@ class _VerificationScreenState extends State<VerificationScreen> {
         }
 
         return Scaffold(
-          body: SafeArea(
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                Form(
+          body: ResponsiveWidget(
+            buildPageContent: (context, color) => SafeArea(
+              child: Container(
+                padding: const EdgeInsets.all(Constants.SPACING * 2),
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
+                ),
+                child: Form(
                   key: _formKey,
                   child: SingleChildScrollView(
                     child: Padding(
@@ -118,7 +122,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             controler: otpCode,
                             placeholder: "Enter OTP Verification code",
                             prefixIcon: Icons.account_circle,
-
                             surfixIcon: Text(
                               _sent ? "Resend Code" : "Get code",
                               style: TextStyle(
@@ -138,7 +141,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                               }
                               return null;
                             },
-                            onChangeText: (value){
+                            onChangeText: (value) {
                               setState(() {
                                 _canSubmit = value.isNotEmpty;
                               });
@@ -164,7 +167,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
           ),
         );
