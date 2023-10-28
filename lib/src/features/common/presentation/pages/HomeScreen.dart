@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/Banners.dart';
@@ -93,12 +94,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   showDialog(
                     context: context,
                     builder: (context) {
-                      return Text("data;");
+                      return AlertDialog(
+                        title: const Text("Confirmation"),
+                        content: SvgPicture.asset(
+                          "assets/images/warning.svg",
+                          height: 200,
+                          width: 200,
+                        ),
+                        actions: [
+                          ElevatedButton(
+                              onPressed: () {
+                                ref.watch(authProvider.notifier).logout();
+                                // Close drawer
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Log out"))
+                        ],
+                      );
                     },
                   );
-                  // ref.watch(authProvider.notifier).logout();
-                  // Close drawer
-                  Navigator.pop(context);
                 },
               ),
               // ...drawerItems.map(
