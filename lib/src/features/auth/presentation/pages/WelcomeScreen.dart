@@ -11,116 +11,147 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
-            children: [
-              Expanded(
-                child: Container(), //occupies all the unused space above
-              ),
-              const Center(
-                child: CircleAvatar(
-                  radius: 60,
-                  child: Logo(),
-                ),
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                "Nishauri",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 50,
-                ),
-              ),
-              const Text(
-                "Where Business Thrives: Biz-Boost,\n Your Growth Partner.",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black26,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                "Let's you in",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Button(
-                title: "Login",
-                onPress: () => context.go("/login"),
-              ),
-              const SizedBox(height: 20),
-              Button(
-                title: "Register",
-                onPress: () => context.go("/register"),
-              ),
-              const SizedBox(height: 20),
-              const SizedBox(height: 20),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      height: 2,
-                      color: Colors.black12,
+        child: LayoutBuilder(
+          builder: (context, constraint) {
+            if (constraint.maxWidth > Constants.MEDIUM_SCREEN_WIDTH) {
+              // Larg screen
+              return Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: Constants.MEDIUM_SCREEN_WIDTH,
+                    maxHeight: screenSize.height,
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildPageContent(context, theme.colorScheme.onPrimary),
+                      ],
                     ),
                   ),
-                  const Text(
-                    "Or continue with",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      height: 2,
-                      color: Colors.black12,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 40),
-              Row(
+                ),
+              );
+            }
+            return SingleChildScrollView(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1),
-                      borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
-                    ),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.facebook),
-                    ),
-                  ),
-                  const SizedBox(width: Constants.SPACING),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1),
-                      borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
-                    ),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.apple),
-                    ),
-                  ),
+                  _buildPageContent(context, null),
                 ],
               ),
-              const SizedBox(height: 20),
-              Expanded(child: Container()),
-              const SizedBox(height: 30),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
   }
 }
+
+Widget _buildPageContent(BuildContext context, Color? bgCollor) => Container(
+      padding: const EdgeInsets.all(Constants.SPACING * 4),
+      decoration: BoxDecoration(
+        color: bgCollor,
+        borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
+      ),
+      child: Column(
+        children: [
+          const Center(
+            child: CircleAvatar(
+              radius: 60,
+              child: Logo(),
+            ),
+          ),
+          const SizedBox(height: Constants.SPACING),
+          const Text(
+            "Nishauri",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 50,
+            ),
+          ),
+          const Text(
+            "Where Business Thrives: Biz-Boost,\n Your Growth Partner.",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black26,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: Constants.SPACING),
+          const Text(
+            "Let's you in",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+          const SizedBox(height: Constants.SPACING),
+          Button(
+            title: "Login",
+            onPress: () => context.go("/login"),
+          ),
+          const SizedBox(height: 20),
+          Button(
+            title: "Register",
+            onPress: () => context.go("/register"),
+          ),
+          const SizedBox(height: Constants.SPACING),
+          const SizedBox(height: Constants.SPACING),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  height: 2,
+                  color: Colors.black12,
+                ),
+              ),
+              const Text(
+                "Or continue with",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  height: 2,
+                  color: Colors.black12,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: Constants.SPACING),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1),
+                  borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
+                ),
+                child: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.facebook),
+                ),
+              ),
+              const SizedBox(width: Constants.SPACING),
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1),
+                  borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
+                ),
+                child: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.apple),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );

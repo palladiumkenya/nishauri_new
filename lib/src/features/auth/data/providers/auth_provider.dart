@@ -6,7 +6,7 @@ import 'package:nishauri/src/features/auth/presentation/controllers/auth_control
 import 'package:nishauri/src/local_storage/LocalStorage.dart';
 
 final tokenProvider = FutureProvider((ref) async {
-  await Future.delayed(const Duration(seconds: 10));
+  // await Future.delayed(const Duration(seconds: 10));
   final token = await LocalStorage.getToken();
   return token;
 });
