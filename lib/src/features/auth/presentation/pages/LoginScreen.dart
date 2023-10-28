@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
           body: ResponsiveWidget(
             buildPageContent: (BuildContext context, Color? color) => SafeArea(
               child: Container(
-                padding: const EdgeInsets.all(Constants.SPACING * 3),
+                padding: const EdgeInsets.all(Constants.SPACING * 2),
                 decoration: BoxDecoration(
                   color: color,
                   borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
