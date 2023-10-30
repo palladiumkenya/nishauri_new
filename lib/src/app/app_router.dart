@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
+import 'package:nishauri/src/features/auth/presentation/pages/ChangePassword.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/LoginScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/RegistrationScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/ResetPasswordScreen.dart';
@@ -87,19 +88,16 @@ final routesProvider = Provider((ref) {
 });
 final List<RouteBase> secureRoutes = [
   GoRoute(
-    path: 'verify',
+    path: RouteNames.VERIFY_ACCOUNT.substring(1),
     builder: (BuildContext context, GoRouterState state) {
       return const VerificationScreen();
     },
+  ), GoRoute(
+    path: RouteNames.CHANGE_PASSWORD.substring(1),
+    builder: (BuildContext context, GoRouterState state) {
+      return const ChangePassword();
+    },
   ),
-  // GoRoute(
-  //   path: 'account',
-  //   builder: (context, state) => const AccountScreen(),
-  // ),
-  // GoRoute(
-  //   path: 'orders',
-  //   builder: (context, state) => const OrdersScreen(),
-  // ),
 ];
 final List<RouteBase> openRoutes = [
   GoRoute(

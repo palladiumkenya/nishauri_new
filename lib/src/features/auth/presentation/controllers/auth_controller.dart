@@ -25,6 +25,7 @@ class AuthController extends StateNotifier<AsyncValue<String>> {
   Future<void> register(String username, String phoneNumber,String email, String password,
       String confirmPassword) async {
     state = const AsyncValue.loading();
+    await Future.delayed(const Duration(seconds: 5));
     try {
       final token =
           await _register(username, phoneNumber,email, password, confirmPassword);
@@ -64,6 +65,6 @@ class AuthController extends StateNotifier<AsyncValue<String>> {
   Future<String> _register(String username, String phoneNumber,String email, String password,
       String confirmPassword) async {
     // TODO: Implement registration logic here.
-    return "token";
+    return "";
   }
 }
