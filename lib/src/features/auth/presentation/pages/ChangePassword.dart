@@ -49,7 +49,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       appBar: AppBar(
         title: const Text("Change Password"),
         leading: IconButton(
-          onPressed: () => context.go("/"),
+          onPressed: () => context.pop(),
           icon: const Icon(Icons.chevron_left),
         ),
       ),

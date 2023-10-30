@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nishauri/src/features/common/presentation/helpers/constants.dart';
+import 'package:nishauri/src/features/common/presentation/widgets/MenuOption.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class Greetings extends StatelessWidget {
@@ -39,13 +40,14 @@ class Greetings extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 Text(
+                Text(
                   "Hello 👋,",
                   style: TextStyle(color: theme.colorScheme.onPrimary),
                 ),
                 Text(
                   name,
-                  style:  TextStyle(fontSize: 20, color: theme.colorScheme.onPrimary),
+                  style: TextStyle(
+                      fontSize: 20, color: theme.colorScheme.onPrimary),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -64,29 +66,9 @@ class Greetings extends StatelessWidget {
                               crossAxisCount: 3),
                       itemCount: 6,
                       itemBuilder: (BuildContext context, int currentIndex) {
-                        // Todo build reusable component to reuse with the Home-screen 2 menu Item
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.primary,
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(Constants.ROUNDNESS * 10),
-                                ),
-                              ),
-                              child: IconButton(
-                                onPressed: () {},
-                                color: theme.colorScheme.onPrimary,
-                                icon: Icon(menuOptions[currentIndex].icon),
-                              ),
-                            ),
-                            Text(
-                              menuOptions[currentIndex].title ?? "",
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
+                        return MenuOption(
+                          title: menuOptions[currentIndex].title ?? "",
+                          icon: menuOptions[currentIndex].icon,
                         );
                       },
                     ),
