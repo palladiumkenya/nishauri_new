@@ -13,6 +13,7 @@ class FormInputTextField extends StatefulWidget {
   final String? placeholder;
   final String label;
   final TextEditingController? controler;
+  final TextInputType? keyboardType;
   final double? borderRadius;
 
   const FormInputTextField({
@@ -27,7 +28,7 @@ class FormInputTextField extends StatefulWidget {
     this.onsurfixIconPressed,
     this.surfixIcon,
     this.onChangeText,
-    this.borderRadius,
+    this.borderRadius, this.keyboardType,
   });
 
   @override
@@ -40,6 +41,7 @@ class _FormInputTextFieldState extends State<FormInputTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      keyboardType: widget.keyboardType,
       controller: widget.controler,
       validator: widget.validator,
       obscureText: widget.password && showPassword == false,

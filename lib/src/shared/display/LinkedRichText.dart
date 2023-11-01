@@ -6,6 +6,8 @@ class LinkedRichText extends StatelessWidget {
   final double spacing;
   final MainAxisAlignment mainAxisAlignment;
   final void Function()? onPress;
+  final TextStyle? unlinkedStyle;
+  final TextStyle? linkedStyle;
 
   const LinkedRichText({
     super.key,
@@ -14,6 +16,8 @@ class LinkedRichText extends StatelessWidget {
     required this.unlinked,
     this.spacing = 2,
     this.mainAxisAlignment = MainAxisAlignment.center,
+    this.unlinkedStyle,
+    this.linkedStyle,
   });
 
   @override
@@ -22,7 +26,10 @@ class LinkedRichText extends StatelessWidget {
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       children: [
-        Text(linked),
+        Text(
+          linked,
+          style: linkedStyle,
+        ),
         SizedBox(
           height: spacing,
         ),
@@ -30,7 +37,11 @@ class LinkedRichText extends StatelessWidget {
           onTap: onPress,
           child: Text(
             unlinked,
-            style: TextStyle(color: theme.primaryColor),
+            style: unlinkedStyle != null
+                ? unlinkedStyle?.copyWith(color: theme.primaryColor)
+                : TextStyle(
+                    color: theme.primaryColor,
+                  ),
           ),
         )
       ],

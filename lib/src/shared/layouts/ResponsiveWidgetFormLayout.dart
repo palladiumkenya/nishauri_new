@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
-class ResponsiveWidget extends StatelessWidget {
+class ResponsiveWidgetFormLayout extends StatelessWidget {
   final Widget Function(BuildContext, Color?) buildPageContent;
 
-  const ResponsiveWidget({super.key, required this.buildPageContent});
+  const ResponsiveWidgetFormLayout({super.key, required this.buildPageContent});
 
   @override
   Widget build(BuildContext context) {

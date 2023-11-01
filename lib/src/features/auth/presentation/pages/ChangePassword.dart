@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nishauri/src/features/auth/presentation/widgets/ResponsiveWidget.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/input/FormInputTextField.dart';
+import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
@@ -53,7 +53,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           icon: const Icon(Icons.chevron_left),
         ),
       ),
-      body: ResponsiveWidget(
+      body: ResponsiveWidgetFormLayout(
         buildPageContent: (context, color) => SafeArea(
           child: Container(
             padding: const EdgeInsets.all(Constants.SPACING * 2),

@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
-import 'package:nishauri/src/features/auth/presentation/widgets/ResponsiveWidget.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/input/FormInputTextField.dart';
+import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
               icon: const Icon(Icons.chevron_left),
             ),
           ),
-          body: ResponsiveWidget(
+          body: ResponsiveWidgetFormLayout(
             buildPageContent: (BuildContext context, Color? color) => SafeArea(
               child: Container(
                 padding: const EdgeInsets.all(Constants.SPACING * 2),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nishauri/src/features/auth/presentation/widgets/ResponsiveWidget.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
+import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -14,7 +14,7 @@ class WelcomeScreen extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: ResponsiveWidget(
+      body: ResponsiveWidgetFormLayout(
         buildPageContent: (BuildContext context, Color? bgCollor) => Container(
           padding: const EdgeInsets.all(Constants.SPACING * 4),
           decoration: BoxDecoration(
