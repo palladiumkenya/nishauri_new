@@ -63,7 +63,8 @@ class Greetings extends StatelessWidget {
                     child: GridView.builder(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3),
+                        crossAxisCount: 3,
+                      ),
                       itemCount: 6,
                       itemBuilder: (BuildContext context, int currentIndex) {
                         return MenuOption(

@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (_formKey.currentState!.validate()) {
             // If the form is valid, display a snack-bar. In the real world,
             // you'd often call a server or save the information in a database.
-            ref.read(authProvider.notifier).login(username.text, password.text);
+            ref.read(authStateProvider.notifier).login(username.text, password.text);
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Login successfully!,')),
             );
@@ -69,7 +69,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   key: _formKey,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 20),
+                      horizontal: 10,
+                    ),
                     child: Column(
                       children: [
                         const SizedBox(height: Constants.SPACING),

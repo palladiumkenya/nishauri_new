@@ -14,8 +14,10 @@ import 'package:nishauri/src/features/common/presentation/pages/HomeScreen.dart'
 import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
-final appRouterProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authProvider);
+final appRouterProvider = Provider<GoRouter>((ref)
+
+{
+  final authState = ref.watch(authStateProvider);
 
   return GoRouter(
     initialLocation: RouteNames.ROOT,
@@ -64,7 +66,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
 
 final routesProvider = Provider((ref) {
-  final authState = ref.watch(authProvider);
+  final authState = ref.watch(authStateProvider);
   return GoRouter(
     initialLocation: RouteNames.ROOT,
     routes: [

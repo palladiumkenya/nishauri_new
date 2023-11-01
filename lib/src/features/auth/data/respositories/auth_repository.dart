@@ -1,47 +1,36 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
+import 'package:nishauri/src/local_storage/LocalStorage.dart';
 
 class AuthRepository {
-  final http.Client _httpClient;
+  final AuthApiService _authService;
 
-  AuthRepository(this._httpClient);
+  AuthRepository(this._authService);
 
   Future<String> authenticate(String username, String password) async {
-    final response = await _httpClient.post(
-      Uri.parse('${Constants.BASE_URL}auth/login'),
-      body: {
-        'username': username,
-        'password': password,
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final token = response.headers['token'];
-      return token!;
-    } else {
-      throw Exception('Failed to authenticate user');
-    }
+    final response = await _authService.authenticate(username, password);
+    return response;
   }
 
   Future<String> register(String username, String phoneNumber, String password,
       String confirmPassword) async {
-    final response = await _httpClient.post(
-      Uri.parse('${Constants.BASE_URL}auth/register'),
-      body: {
-        'username': username,
-        'phoneNumber': phoneNumber,
-        'password': password,
-        'confirmPassword': confirmPassword,
-      },
-    );
+    final response = await _authService.register(
+        username, phoneNumber, password, confirmPassword);
+    return response;
+  }
 
-    if (response.statusCode == 200) {
-      // final token = jsonDecode(response.body)['token'];
-      final token = response.headers['token'];
-      return token!;
-    } else {
-      throw Exception('Failed to register user');
-    }
+  Future<String> getAuthToken() async {
+    await Future.delayed(const Duration(seconds: 5));
+    final token = await LocalStorage.getToken();
+    return token;
+  }
+
+  Future<String> saveToken(String token) async {
+    await Future.delayed(const Duration(seconds: 5));
+    await LocalStorage.saveToken(token);
+    return token;
+  }
+
+  Future<void> deleteToken() async {
+    await LocalStorage.deleteToken();
   }
 }

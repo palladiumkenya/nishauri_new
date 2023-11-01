@@ -36,7 +36,7 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
               const Text(
-                "Where Business Thrives: Biz-Boost,\n Your Growth Partner.",
+                "Your Health, Your Priority: Start Today, \nThrive Tomorrow.",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black26,

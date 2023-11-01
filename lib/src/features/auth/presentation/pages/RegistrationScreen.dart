@@ -40,7 +40,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
     if (_formKey.currentState!.validate()) {
       // If the form is valid, display a snack-bar. In the real world,
       // you'd often call a server or save the information in a database.
-      ref.read(authProvider.notifier).register(username.text, phoneNumber.text,
+      ref.read(authStateProvider.notifier).register(username.text, phoneNumber.text,
           email.text, password.text, confirmPassword.text);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Login successfully!,')),
