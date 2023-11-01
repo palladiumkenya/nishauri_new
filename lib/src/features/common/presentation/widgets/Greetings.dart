@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nishauri/src/features/common/presentation/helpers/constants.dart';
-import 'package:nishauri/src/features/common/presentation/widgets/MenuOption.dart';
+import 'package:nishauri/src/app/navigation/menu/MenuItemsBuilder.dart';
+import 'package:nishauri/src/app/navigation/menu/MenuOption.dart';
+import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class Greetings extends StatelessWidget {
@@ -60,18 +61,13 @@ class Greetings extends StatelessWidget {
                         Radius.circular(Constants.SPACING * 2),
                       ),
                     ),
-                    child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
+                    child: MenuItemsBuilder(
+                      itemBuilder: (item) => MenuOption(
+                        title: item.title ?? "",
+                        icon: item.icon,
+                        onPress: item.onPressed,
                       ),
-                      itemCount: 6,
-                      itemBuilder: (BuildContext context, int currentIndex) {
-                        return MenuOption(
-                          title: menuOptions[currentIndex].title ?? "",
-                          icon: menuOptions[currentIndex].icon,
-                        );
-                      },
+                      items: menuOptions(context).sublist(0, 6),
                     ),
                   ),
                 ),

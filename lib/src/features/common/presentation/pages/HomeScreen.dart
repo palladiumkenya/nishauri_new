@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/app/navigation/drawer/UserDrawerHeader.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/Banners.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/Greetings.dart';
-import 'package:nishauri/src/features/common/presentation/widgets/UserDrawerHeader.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {

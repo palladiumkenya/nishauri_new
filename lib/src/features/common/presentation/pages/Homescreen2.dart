@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:nishauri/src/app/navigation/menu/MenuItemsBuilder.dart';
+import 'package:nishauri/src/app/navigation/menu/MenuOption.dart';
+import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
 import 'package:nishauri/src/features/common/presentation/helpers/constants.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/Greeting2.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -10,10 +13,10 @@ class Homescreen2 extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar:  AppBar(
+      appBar: AppBar(
         backgroundColor: theme.primaryColor,
         leading: IconButton(
-          onPressed: (){},
+          onPressed: () {},
           icon: const Icon(Icons.menu),
         ),
         actions: [
@@ -32,8 +35,16 @@ class Homescreen2 extends StatelessWidget {
           children: [
             const Greetings2(name: "Omosh"),
             Expanded(
-              // Wrap the GridView.builder with Expanded
-              child: GridView.builder(
+              child: MenuItemsBuilder(
+                itemBuilder: (item) => MenuOption(
+                  title: item.title ?? "",
+                  icon: item.icon,
+                  iconSize: 50,
+                  onPress: item.onPressed,
+                ),
+                items: menuOptions(context),
+              ),
+              /*child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                 ),
@@ -68,7 +79,7 @@ class Homescreen2 extends StatelessWidget {
                     ),
                   );
                 },
-              ),
+              ),*/
             ),
           ],
         ),

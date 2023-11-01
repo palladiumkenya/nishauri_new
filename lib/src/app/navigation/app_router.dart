@@ -10,13 +10,12 @@ import 'package:nishauri/src/features/auth/presentation/pages/ResetPasswordScree
 import 'package:nishauri/src/features/auth/presentation/pages/SplashScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/VerificationScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart';
+import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/HomeScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
-final appRouterProvider = Provider<GoRouter>((ref)
-
-{
+final appRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider);
 
   return GoRouter(
@@ -42,7 +41,6 @@ final appRouterProvider = Provider<GoRouter>((ref)
                   ),
                 ),
             loading: () => const SplashScreen()),
-
       ),
       GoRoute(
         path: RouteNames.LOGIN_SCREEN,
@@ -63,7 +61,6 @@ final appRouterProvider = Provider<GoRouter>((ref)
     ],
   );
 });
-
 
 final routesProvider = Provider((ref) {
   final authState = ref.watch(authStateProvider);
@@ -94,10 +91,17 @@ final List<RouteBase> secureRoutes = [
     builder: (BuildContext context, GoRouterState state) {
       return const VerificationScreen();
     },
-  ), GoRoute(
+  ),
+  GoRoute(
     path: RouteNames.CHANGE_PASSWORD.substring(1),
     builder: (BuildContext context, GoRouterState state) {
       return const ChangePassword();
+    },
+  ),
+  GoRoute(
+    path: RouteNames.BMI_CALCULATOR.substring(1),
+    builder: (BuildContext context, GoRouterState state) {
+      return const BMICalculatorScreen();
     },
   ),
 ];
@@ -119,4 +123,3 @@ final List<RouteBase> openRoutes = [
     builder: (context, state) => const ResetPasswordScreen(),
   ),
 ];
-

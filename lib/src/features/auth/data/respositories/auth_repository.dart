@@ -19,13 +19,11 @@ class AuthRepository {
   }
 
   Future<String> getAuthToken() async {
-    await Future.delayed(const Duration(seconds: 5));
     final token = await LocalStorage.getToken();
     return token;
   }
 
   Future<String> saveToken(String token) async {
-    await Future.delayed(const Duration(seconds: 5));
     await LocalStorage.saveToken(token);
     return token;
   }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nishauri/src/app/app_router.dart';
 import 'package:nishauri/src/app/app_theme.dart';
-import 'package:nishauri/src/features/navigation/routes.dart';
+import 'package:nishauri/src/app/navigation/app_router.dart';
 
 class NishauriApp extends ConsumerWidget {
   const NishauriApp({super.key});
