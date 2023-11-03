@@ -22,7 +22,7 @@ class _NishauriAppState extends ConsumerState<NishauriApp>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    handleAppStatusChange(AppLifecycleState.resumed);
+    // handleAppStatusChange(AppLifecycleState.resumed);
   }
 
   @override
@@ -37,74 +37,47 @@ class _NishauriAppState extends ConsumerState<NishauriApp>
   }
 
   void handleAppStatusChange(AppLifecycleState state) {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        ref.read(settingsNotifierProvider.notifier).clearSettings();
-        if (state == AppLifecycleState.resumed) {
-          final settings = ref.watch(settingsNotifierProvider);
-          final auth = ref.watch(authStateProvider);
-          // Move the code that depends on inherited widgets/providers here.
-          if (auth.value?.isNotEmpty == true && settings.isPrivacyEnabled) {
-            print("======================>Here");
-            showModalBottomSheet(
-              isDismissible: false,
-              // shape: const RoundedRectangleBorder(
-              //   borderRadius: BorderRadius.only(
-              //     topLeft: Radius.circular(Constants.ROUNDNESS),
-              //     topRight: Radius.circular(Constants.ROUNDNESS),
-              //   ),
-              // ),
-              context: context,
-              isScrollControlled: true,
-              builder: (BuildContext context) {
-                return const FractionallySizedBox(
-                  heightFactor: 1,
-                  child: PinAuthScreen(),
-                );
-              },
-            );
-          }
-        } else {
-          ref
-              .read(settingsNotifierProvider.notifier)
-              .patchSettings(isPrivacyEnabled: false);
-        }
-      },
-    );
+    final settings = ref.watch(settingsNotifierProvider);
+    final auth = ref.watch(authStateProvider);
+    if (auth.value?.isNotEmpty == true && //Check if user is logged in
+            settings.isPrivacyEnabled && // Check if user has enabled privacy
+            state !=
+                AppLifecycleState.resumed // Check if app is going in background
+        ) {
+      ref
+          .read(settingsNotifierProvider.notifier)
+          .patchSettings(isAuthenticated: false);
+    }
   }
-
-  //
-  // Future<void> authenticateOnForeground() async {
-  //   final isAvailable = await _localAuth.isDeviceSupported();
-  //   if (isAvailable) {
-  //     final isAuthenticated = await _localAuth.authenticate(
-  //       localizedReason: 'Authenticate to access Nishauri',
-  //     );
-  //
-  //     if (isAuthenticated) {
-  //       // Authentication was successful
-  //       // Proceed with your app logic
-  //     } else {
-  //       // Authentication failed
-  //       // Navigate to PinAuthScreen for PIN authentication
-  //       _router.go('/pin-auth'); // Replace with your actual route configuration
-  //     }
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
     final router = ref.watch(routesProvider);
+    final settings = ref.watch(settingsNotifierProvider);
+    final authState = ref.watch(authStateProvider);
+
+    bool requirePinAuth() =>
+        authState.value?.isNotEmpty == true &&
+        settings.isPrivacyEnabled &&
+        !settings.isAuthenticated;
+
+    final screens = [
+      const PinAuthScreen(),
+      MaterialApp.router(
+        title: "Nishauri",
+        routerConfig: router,
+        // routeInformationParser: GoRouterInformationParser(),
+        // routeInformationProvider: PlatformRouteInformationProvider(
+        //   initialRouteInformation: const RouteInformation(location: '/'),
+        // ),
+        theme: mainTheme,
+        debugShowCheckedModeBanner: false,
+      ),
+    ];
+
     // final router = ref.watch(appRouterProvider);
-    return MaterialApp.router(
-      title: "Nishauri",
-      routerConfig: router,
-      // routeInformationParser: GoRouterInformationParser(),
-      // routeInformationProvider: PlatformRouteInformationProvider(
-      //   initialRouteInformation: const RouteInformation(location: '/'),
-      // ),
-      theme: mainTheme,
-      debugShowCheckedModeBanner: false,
+    return Stack(
+      children: requirePinAuth() ? screens.reversed.toList() : screens,
     );
   }
 }

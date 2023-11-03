@@ -29,7 +29,7 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
   void onSubmit() {
     focusNode.unfocus();
     if (formKey.currentState!.validate()) {
-      //  TODO Remove screen
+      ref.read(settingsNotifierProvider.notifier).patchSettings(isAuthenticated: true);
     }
   }
 
