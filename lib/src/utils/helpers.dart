@@ -41,3 +41,33 @@ String getBMIStatus(double bmi) {
     return "Obese Class 3 (Very Severe)";
   }
 }
+
+/*
+1. Dependancy: flutter_local_auth
+
+final FlutterLocalAuth _localAuth = FlutterLocalAuth();
+bool isAuthenticated = false;
+
+Future<void> showPinAuthentication() async {
+  try {
+    final authenticated = await _localAuth.authenticate(
+      localizedReason: 'Authenticate with your PIN',
+      useErrorDialogs: true, // Display system dialogs for PIN entry
+      stickyAuth: true, // Keep the authentication alive in the app lifecycle
+    );
+
+    if (authenticated) {
+      // User has been authenticated successfully
+      setState(() {
+        isAuthenticated = true;
+      });
+    } else {
+      // Authentication failed
+      // Handle this case accordingly
+    }
+  } on PlatformException catch (e) {
+    // Handle errors (e.g., no biometric sensors found)
+    print(e);
+  }
+}
+*/

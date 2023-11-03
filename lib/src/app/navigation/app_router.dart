@@ -13,10 +13,13 @@ import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/HomeScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart';
+import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
+import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider);
+  final settingsState = ref.watch(settingsNotifierProvider);
 
   return GoRouter(
     initialLocation: RouteNames.ROOT,
@@ -64,6 +67,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
 final routesProvider = Provider((ref) {
   final authState = ref.watch(authStateProvider);
+  final settingsState = ref.watch(settingsNotifierProvider);
   return GoRouter(
     initialLocation: RouteNames.ROOT,
     routes: [
@@ -81,6 +85,9 @@ final routesProvider = Provider((ref) {
           });
         },
         routes: authState.value?.isNotEmpty == true ? secureRoutes : openRoutes,
+        // redirect: (BuildContext context, state) async {
+        //   return authState.value?.isNotEmpty == true && settingsState.isPrivacyEnabled ? '/unlock': null;
+        // },
       ),
     ],
   );
@@ -90,6 +97,12 @@ final List<RouteBase> secureRoutes = [
     path: RouteNames.VERIFY_ACCOUNT.substring(1),
     builder: (BuildContext context, GoRouterState state) {
       return const VerificationScreen();
+    },
+  ),
+  GoRoute(
+    path: RouteNames.UNLOCK_SCREEN.substring(1),
+    builder: (BuildContext context, GoRouterState state) {
+      return const PinAuthScreen();
     },
   ),
   GoRoute(

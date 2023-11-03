@@ -6,5 +6,6 @@ class RouteNames {
   static const ROOT = "/";
   static const CHANGE_PASSWORD = "/change-password";
   static const VERIFY_ACCOUNT = "/verify";
+  static const UNLOCK_SCREEN = "/unlock";
   static const BMI_CALCULATOR = "/bmi-calculator";
 }
