@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/input/FormInputTextField.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
-import 'package:nishauri/src/utils/routes.dart';
 
 class BMICalculatorScreen extends StatefulWidget {
   const BMICalculatorScreen({super.key});
@@ -31,12 +28,22 @@ class _BMICalculatorScreenState extends State<BMICalculatorScreen> {
     {"value": "g", "label": "Grams"},
     {"value": "lb", "label": "Pounds"},
   ];
+
+  final List<Map<String, String>> genderChoices = [
+    {"label": 'Male', 'value': "M"},
+    {"label": 'Female', 'value': "F"},
+  ];
+
   final _formKey = GlobalKey<FormState>();
   var weight = TextEditingController();
   var height = TextEditingController();
+  var gender = TextEditingController();
+  var age = TextEditingController();
 
   late String heightUnits;
   late String weightUnits;
+  late bool isPregnant;
+
   double? bmi;
 
   @override
@@ -44,6 +51,7 @@ class _BMICalculatorScreenState extends State<BMICalculatorScreen> {
     super.initState();
     heightUnits = _heightUnitChoices.first["value"]!;
     weightUnits = _weightUnitChoices.first['value']!;
+    isPregnant = false;
   }
 
   @override
@@ -114,6 +122,59 @@ class _BMICalculatorScreenState extends State<BMICalculatorScreen> {
                           style: TextStyle(color: Colors.black26),
                         ),
                         const SizedBox(height: Constants.SPACING),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: FormInputTextField(
+                                controler: age,
+                                keyboardType: TextInputType.number,
+                                placeholder: "e.g 28",
+                                prefixIcon: Icons.speed,
+                                label: "Age",
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: Constants.SPACING),
+                            DropdownMenu<String>(
+                              label: const Text("Gender"),
+                              leadingIcon: const IconButton(
+                                onPressed: null,
+                                icon: Icon(Icons.accessibility_outlined),
+                              ),
+                              initialSelection: genderChoices.first["value"],
+                              controller: gender,
+                              dropdownMenuEntries: genderChoices
+                                  .map<DropdownMenuEntry<String>>(
+                                    (Map<String, String> gender) =>
+                                        DropdownMenuEntry<String>(
+                                      value: gender['value']!,
+                                      label: gender['label']!,
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const Text("Pregnant: "),
+                            Switch(
+                              value: isPregnant,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  isPregnant = !isPregnant;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: Constants.SPACING),
                         FormInputTextField(
                           keyboardType: TextInputType.number,
                           controler: weight,
@@ -176,13 +237,16 @@ class _BMICalculatorScreenState extends State<BMICalculatorScreen> {
                         const SizedBox(height: 20),
                         LinkedRichText(
                           linked: "Your BMI:  ",
-                          unlinked: bmi != null ? bmi!.toStringAsFixed(1): "_",
-                          unlinkedStyle: const TextStyle(fontWeight: FontWeight.bold),
+                          unlinked: bmi != null ? bmi!.toStringAsFixed(1) : "_",
+                          unlinkedStyle:
+                              const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(height: Constants.SPACING), LinkedRichText(
+                        const SizedBox(height: Constants.SPACING),
+                        LinkedRichText(
                           linked: "BMI status:  ",
-                          unlinked: bmi != null ? getBMIStatus(bmi!): "_",
-                          unlinkedStyle: const TextStyle(fontWeight: FontWeight.bold),
+                          unlinked: bmi != null ? getBMIStatus(bmi!) : "_",
+                          unlinkedStyle:
+                              const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: Constants.SPACING),
                         Button(

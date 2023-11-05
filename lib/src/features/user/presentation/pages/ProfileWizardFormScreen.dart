@@ -24,6 +24,7 @@ class _ProfileWizardFormScreenState extends State<ProfileWizardFormScreen> {
   List<Step> get steps => [
         Step(
             title: const Text("Account Info"),
+            subtitle: const Text("Unique account information"),
             content: AccountInformation(
               username: username,
               phoneNumber: phoneNumber,
@@ -32,6 +33,7 @@ class _ProfileWizardFormScreenState extends State<ProfileWizardFormScreen> {
             isActive: currentStep == 0),
         Step(
             title: const Text("Personal Info"),
+            subtitle: const Text("Reasons for collecting information"),
             content: PersonalInformation(
                 firstName: firstName,
                 dateOfBirth: dateOfBirth,
