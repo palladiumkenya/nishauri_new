@@ -15,6 +15,8 @@ class FormInputTextField extends StatefulWidget {
   final TextEditingController? controler;
   final TextInputType? keyboardType;
   final double? borderRadius;
+  final bool readOnly;
+  final Function()? onTap;
 
   const FormInputTextField({
     super.key,
@@ -28,7 +30,10 @@ class FormInputTextField extends StatefulWidget {
     this.onsurfixIconPressed,
     this.surfixIcon,
     this.onChangeText,
-    this.borderRadius, this.keyboardType,
+    this.borderRadius,
+    this.keyboardType,
+    this.readOnly = false,
+    this.onTap,
   });
 
   @override
@@ -41,6 +46,8 @@ class _FormInputTextFieldState extends State<FormInputTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTap: widget.onTap,
+      readOnly: widget.readOnly,
       keyboardType: widget.keyboardType,
       controller: widget.controler,
       validator: widget.validator,

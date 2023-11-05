@@ -11,9 +11,9 @@ import 'package:nishauri/src/features/auth/presentation/pages/SplashScreen.dart'
 import 'package:nishauri/src/features/auth/presentation/pages/VerificationScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
-import 'package:nishauri/src/features/common/presentation/pages/HomeScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileScreen.dart';
+import 'package:nishauri/src/features/user/presentation/pages/ProfileWizardFormScreen.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PrivacySettingsScreen.dart';
@@ -129,6 +129,12 @@ final List<RouteBase> secureRoutes = [
     path: RouteNames.PROFILE_SETTINGS.substring(1),
     builder: (BuildContext context, GoRouterState state) {
       return const ProfileScreen();
+    },
+  ),
+  GoRoute(
+    path: RouteNames.PROFILE_EDIT_FORM.substring(1),
+    builder: (BuildContext context, GoRouterState state) {
+      return const ProfileWizardFormScreen();
     },
   ),
 ];

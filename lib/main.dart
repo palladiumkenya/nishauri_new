@@ -4,8 +4,6 @@ import 'package:nishauri/src/app/app.dart';
 
 void main() {
   runApp(
-    const ProviderScope(
-      child:MaterialApp(home: NishauriApp())
-    ),
+    const ProviderScope(child: NishauriApp()),
   );
 }

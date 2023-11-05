@@ -56,16 +56,18 @@ class _NishauriAppState extends ConsumerState<NishauriApp>
         authState.value?.isNotEmpty == true &&
         settings.isPrivacyEnabled &&
         !settings.isAuthenticated;
-    return Stack(
-      children: [
-        MaterialApp.router(
-          title: "Nishauri",
-          routerConfig: router,
-          theme: mainTheme,
-          debugShowCheckedModeBanner: false,
-        ),
-        if (requirePinAuth()) const PinAuthScreen(),
-      ],
+    return MaterialApp(
+      home: Stack(
+        children: [
+          MaterialApp.router(
+            title: "Nishauri",
+            routerConfig: router,
+            theme: mainTheme,
+            debugShowCheckedModeBanner: false,
+          ),
+          if (requirePinAuth()) const PinAuthScreen(),
+        ],
+      ),
     );
   }
 }
