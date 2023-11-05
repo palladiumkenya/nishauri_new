@@ -8,4 +8,5 @@ class RouteNames {
   static const VERIFY_ACCOUNT = "/verify";
   static const UNLOCK_SCREEN = "/unlock";
   static const BMI_CALCULATOR = "/bmi-calculator";
+  static const PRIVACY_SETTINGS = "/privacy";
 }

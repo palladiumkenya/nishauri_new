@@ -15,6 +15,7 @@ import 'package:nishauri/src/features/common/presentation/pages/HomeScreen.dart'
 import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
+import 'package:nishauri/src/features/user_preference/presentation/pages/PrivacySettingsScreen.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -115,6 +116,12 @@ final List<RouteBase> secureRoutes = [
     path: RouteNames.BMI_CALCULATOR.substring(1),
     builder: (BuildContext context, GoRouterState state) {
       return const BMICalculatorScreen();
+    },
+  ),
+  GoRoute(
+    path: RouteNames.PRIVACY_SETTINGS.substring(1),
+    builder: (BuildContext context, GoRouterState state) {
+      return const PrivacySettingsScreen();
     },
   ),
 ];

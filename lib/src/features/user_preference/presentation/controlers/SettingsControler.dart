@@ -21,6 +21,10 @@ class SettingsController extends StateNotifier<Settings> {
         isAuthenticated: isAuthenticated);
   }
 
+  Settings getState(){
+    return state;
+  }
+
   void patchSettings({
     String? userToken,
     String? theme,

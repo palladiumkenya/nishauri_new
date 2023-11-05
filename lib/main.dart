@@ -5,10 +5,7 @@ import 'package:nishauri/src/app/app.dart';
 void main() {
   runApp(
     const ProviderScope(
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: NishauriApp(),
-      ),
+      child:MaterialApp(home: NishauriApp())
     ),
   );
 }
