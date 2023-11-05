@@ -9,4 +9,5 @@ class RouteNames {
   static const UNLOCK_SCREEN = "/unlock";
   static const BMI_CALCULATOR = "/bmi-calculator";
   static const PRIVACY_SETTINGS = "/privacy";
+  static const PROFILE_SETTINGS = "/profile";
 }

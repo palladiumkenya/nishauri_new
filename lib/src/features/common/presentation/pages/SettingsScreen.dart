@@ -18,9 +18,16 @@ class _SettingsItem {
 }
 
 _settingsItem(BuildContext context) => [
-      _SettingsItem(title: "Profile", leadingIcon: Icons.account_circle),
+      _SettingsItem(
+        title: "Profile",
+        leadingIcon: Icons.account_circle,
+        onPress: () => context.go(RouteNames.PROFILE_SETTINGS),
+      ),
       _SettingsItem(title: "Theme", leadingIcon: Icons.light_mode),
-      _SettingsItem(title: "Privacy", leadingIcon: Icons.security, onPress: ()=> context.go(RouteNames.PRIVACY_SETTINGS)),
+      _SettingsItem(
+          title: "Privacy",
+          leadingIcon: Icons.security,
+          onPress: () => context.go(RouteNames.PRIVACY_SETTINGS)),
       _SettingsItem(
           title: "Plugins", leadingIcon: Icons.private_connectivity_outlined),
       _SettingsItem(
