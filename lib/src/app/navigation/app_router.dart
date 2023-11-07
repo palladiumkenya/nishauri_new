@@ -17,6 +17,7 @@ import 'package:nishauri/src/features/user/presentation/pages/ProfileWizardFormS
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PrivacySettingsScreen.dart';
+import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -86,6 +87,15 @@ final routesProvider = Provider((ref) {
           return authState.when(data: (data) {
             return data.isNotEmpty ? const MainScreen() : const WelcomeScreen();
           }, error: (error, _) {
+            // if(error is ResourceNotFoundException){
+            //   debugPrint("**************************| ${error.message} |********************");
+            // }else if(error is ValidationException){
+            //   debugPrint("**************************| ${error.errors} |********************");
+            //
+            // }else {
+            //   debugPrint("**************************| ${error.toString()} |********************");
+            //
+            // }
             return Center(
               child: Text(error.toString()),
             );

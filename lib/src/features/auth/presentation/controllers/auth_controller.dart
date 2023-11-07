@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
+import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 
 class AuthController extends StateNotifier<AsyncValue<String>> {
   /// Act as the view model that hold the state of component or screen
@@ -10,14 +12,13 @@ class AuthController extends StateNotifier<AsyncValue<String>> {
   }
 
   Future<void> login(String username, String password) async {
-    // await Future.delayed(Duration(seconds: 5));
     state = const AsyncValue.loading();
     try {
-      final token = await _authenticate(username, password);
+      final token = await _repository.authenticate(username, password);
       await _repository.saveToken(token);
       state = AsyncValue.data(token);
     } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
+      state = AsyncValue.error(e,StackTrace.current);
     }
   }
 
@@ -26,8 +27,8 @@ class AuthController extends StateNotifier<AsyncValue<String>> {
     state = const AsyncValue.loading();
     await Future.delayed(const Duration(seconds: 5));
     try {
-      final token = await _register(
-          username, phoneNumber, email, password, confirmPassword);
+      final token = await _repository.register(
+          username, phoneNumber, password, confirmPassword, email);
       await _repository.saveToken(token);
       state = AsyncValue.data(token);
     } catch (e) {
@@ -51,20 +52,8 @@ class AuthController extends StateNotifier<AsyncValue<String>> {
     state = const AsyncValue.data('');
   }
 
-  Future<String> _authenticate(String username, String password) async {
-    // final response = await _repository.authenticate(username, password);
-    // TODO Implement authenticate using repository
-    return "tokn";
-  }
-
   Future<String> _verifyUser(String otp) async {
     // TODO Implement very using repository
     return "12345";
-  }
-
-  Future<String> _register(String username, String phoneNumber, String email,
-      String password, String confirmPassword) async {
-    // TODO: Implement registration logic here.
-    return "";
   }
 }

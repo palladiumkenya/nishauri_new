@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
@@ -20,7 +20,7 @@ class AuthApiService extends HTTPService {
     if (response.statusCode == 200) {
       return response.headers["x-auth-token"]!;
     } else {
-      throw (await getException(response));
+      throw await getException(response);
     }
   }
 
