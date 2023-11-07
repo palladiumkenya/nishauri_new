@@ -56,6 +56,7 @@ class _NishauriAppState extends ConsumerState<NishauriApp>
         authState.value?.isNotEmpty == true &&
         settings.isPrivacyEnabled &&
         !settings.isAuthenticated;
+
     return MaterialApp(
       home: Stack(
         children: [
@@ -65,6 +66,7 @@ class _NishauriAppState extends ConsumerState<NishauriApp>
             theme: mainTheme,
             debugShowCheckedModeBanner: false,
           ),
+          // app,
           if (requirePinAuth()) const PinAuthScreen(),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
@@ -30,8 +31,8 @@ class _BMICalculatorScreenState extends State<BMICalculatorScreen> {
   ];
 
   final List<Map<String, String>> genderChoices = [
-    {"label": 'Male', 'value': "M"},
     {"label": 'Female', 'value': "F"},
+    {"label": 'Male', 'value': "M"},
   ];
 
   final _formKey = GlobalKey<FormState>();
@@ -43,6 +44,8 @@ class _BMICalculatorScreenState extends State<BMICalculatorScreen> {
   late String heightUnits;
   late String weightUnits;
   late bool isPregnant;
+  late bool _showSwitch = genderChoices.first["value"] == 'F';
+  late bool _disableForm = true;
 
   double? bmi;
 
@@ -51,7 +54,7 @@ class _BMICalculatorScreenState extends State<BMICalculatorScreen> {
     super.initState();
     heightUnits = _heightUnitChoices.first["value"]!;
     weightUnits = _weightUnitChoices.first['value']!;
-    isPregnant = false;
+    isPregnant = true;
   }
 
   @override
@@ -67,6 +70,28 @@ class _BMICalculatorScreenState extends State<BMICalculatorScreen> {
       builder: (context, ref, child) {
         void handleSubmit() async {
           if (_formKey.currentState!.validate()) {
+            _formKey.currentState!.save();
+            final _age = int.tryParse(age.text) ?? 0;
+
+            if (_age < 5 || isPregnant) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text("Warning!"),
+                  content: const Text(
+                    "Cant calculate BMI for person under age of 5 and for pregnant women",
+                  ),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          context.pop();
+                        },
+                        child: const Text("Ok")),
+                  ],
+                ),
+              );
+              return;
+            }
             setState(() {
               bmi = calculateBMI(
                   heightUnits,
@@ -133,7 +158,7 @@ class _BMICalculatorScreenState extends State<BMICalculatorScreen> {
                                 label: "Age",
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Please enter some text';
+                                    return 'Please provide age';
                                   }
                                   return null;
                                 },
@@ -148,6 +173,11 @@ class _BMICalculatorScreenState extends State<BMICalculatorScreen> {
                               ),
                               initialSelection: genderChoices.first["value"],
                               controller: gender,
+                              onSelected: (value) {
+                                setState(() {
+                                  _showSwitch = gender.text == 'Female';
+                                });
+                              },
                               dropdownMenuEntries: genderChoices
                                   .map<DropdownMenuEntry<String>>(
                                     (Map<String, String> gender) =>
@@ -160,20 +190,21 @@ class _BMICalculatorScreenState extends State<BMICalculatorScreen> {
                             ),
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            const Text("Pregnant: "),
-                            Switch(
-                              value: isPregnant,
-                              onChanged: (bool value) {
-                                setState(() {
-                                  isPregnant = !isPregnant;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
+                        if (_showSwitch)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const Text("Pregnant: "),
+                              Switch(
+                                value: isPregnant,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    isPregnant = !isPregnant;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
                         const SizedBox(height: Constants.SPACING),
                         FormInputTextField(
                           keyboardType: TextInputType.number,

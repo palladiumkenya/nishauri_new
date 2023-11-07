@@ -72,6 +72,13 @@ final routesProvider = Provider((ref) {
   final settingsState = ref.watch(settingsNotifierProvider);
   return GoRouter(
     initialLocation: RouteNames.ROOT,
+    // redirect: (BuildContext context, GoRouterState state) async {
+    //   bool requirePinAuth() =>
+    //       authState.value?.isNotEmpty == true &&
+    //       settingsState.isPrivacyEnabled &&
+    //       !settingsState.isAuthenticated;
+    //   return requirePinAuth() ? '/unlock?next=${state.path}' : null;
+    // },
     routes: [
       GoRoute(
         path: RouteNames.ROOT,
@@ -87,9 +94,6 @@ final routesProvider = Provider((ref) {
           });
         },
         routes: authState.value?.isNotEmpty == true ? secureRoutes : openRoutes,
-        // redirect: (BuildContext context, state) async {
-        //   return authState.value?.isNotEmpty == true && settingsState.isPrivacyEnabled ? '/unlock': null;
-        // },
       ),
     ],
   );
