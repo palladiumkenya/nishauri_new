@@ -24,7 +24,7 @@ class Settings {
       // Provide the initial theme ('light' or 'dark', for example)
       pin: '2222',
       // Provide the initial PIN if required
-      isPrivacyEnabled: true,
+      isPrivacyEnabled: false,
       // Provide the initial privacy setting
       isBiometricEnabled: false,
       isAuthenticated: false, // Provide the initial biometric setting
