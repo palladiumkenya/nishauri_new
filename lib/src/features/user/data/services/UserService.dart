@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
+import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
+import 'package:nishauri/src/utils/constants.dart';
 
-class UserService {
+class UserService extends HTTPService {
   Future<void> uploadImage(File imageFile) async {
     var request = http.MultipartRequest(
         'POST', Uri.parse('http://127.0.0.1:5000/auth/login'));
@@ -32,7 +34,8 @@ class UserService {
 
   Future<User> getUser(String token) async {
     var headers = {'x-auth-token': token};
-    var request = http.Request('GET', Uri.parse('http://127.0.0.1:5000/auth/profile'));
+    var request =
+        http.Request('GET', Uri.parse('${Constants.BASE_URL}auth/profile'));
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
@@ -41,18 +44,10 @@ class UserService {
       // Success: Parse and return the User object
       final responseString = await response.stream.bytesToString();
       final userData = json.decode(responseString);
-      return User.fromJson(userData); // Replace with your User object parsing logic
-    } else if (response.statusCode == 400) {
-      // Validation Error: Parse and return error details
-      final responseString = await response.stream.bytesToString();
-      final errorData = json.decode(responseString);
-      throw ValidationException(errorData['errors']);
-    } else if (response.statusCode == 404) {
-      // Client Error: Resource Not Found
-      throw ResourceNotFoundException("Resource Not Found");
+      return User.fromJson(
+          userData); // Replace with your User object parsing logic
     } else {
-      // Handle other status codes as needed
-      throw Exception('Failed to load user data');
+      throw await getException(response);
     }
   }
 }

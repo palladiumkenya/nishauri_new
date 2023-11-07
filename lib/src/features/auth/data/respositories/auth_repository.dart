@@ -12,9 +12,9 @@ class AuthRepository {
   }
 
   Future<String> register(String username, String phoneNumber, String password,
-      String confirmPassword) async {
+      String confirmPassword,String email) async {
     final response = await _authService.register(
-        username, phoneNumber, password, confirmPassword);
+        username, phoneNumber, password, confirmPassword, email);
     return response;
   }
 
