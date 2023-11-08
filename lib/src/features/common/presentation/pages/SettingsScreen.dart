@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/user/data/models/user.dart';
+import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
+import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 class _SettingsItem {
@@ -36,37 +40,38 @@ _settingsItem(BuildContext context) => [
           onPress: () => context.go(RouteNames.CHANGE_PASSWORD)),
     ];
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final _items = _settingsItem(context);
+    final user = ref.watch(userProvider);
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Center(child: Text("Settings")),
-      ),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          final item = _items[index];
-          return Column(
-            children: [
-              ListTile(
-                leading: Icon(item.leadingIcon),
-                title: Text(item.title),
-                onTap: item.onPress,
-              ),
-              Container(
-                height: 1,
-                color: Colors.black12,
-                margin: const EdgeInsets.all(5),
-              )
-            ],
-          );
-        },
-        itemCount: _items.length,
-        padding: const EdgeInsets.all(10),
-      ),
-    );
+        appBar: AppBar(
+          title: const Center(child: Text("Settings")),
+        ),
+        body: ListView.builder(
+          itemBuilder: (context, index) {
+            final item = _items[index];
+            return Column(
+              children: [
+                ListTile(
+                  leading: Icon(item.leadingIcon),
+                  title: Text(item.title),
+                  onTap: item.onPress,
+                ),
+                Container(
+                  height: 1,
+                  color: Colors.black12,
+                  margin: const EdgeInsets.all(5),
+                )
+              ],
+            );
+          },
+          itemCount: _items.length,
+          padding: const EdgeInsets.all(10),
+        ));
   }
 }
