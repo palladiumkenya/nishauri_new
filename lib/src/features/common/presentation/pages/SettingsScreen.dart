@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
+import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 class _SettingsItem {
@@ -47,7 +48,7 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final _items = _settingsItem(context);
     final user = ref.watch(userProvider);
-
+    final theme = Theme.of(context);
     return Scaffold(
         appBar: AppBar(
           title: const Center(child: Text("Settings")),
@@ -55,23 +56,22 @@ class SettingsScreen extends ConsumerWidget {
         body: ListView.builder(
           itemBuilder: (context, index) {
             final item = _items[index];
-            return Column(
-              children: [
-                ListTile(
+            return Card(
+              elevation: 0,
+              color: theme.colorScheme.onSecondary,
+              borderOnForeground: false,
+              // margin: const EdgeInsets.only(top: Constants.SPACING),
+              child: Padding(
+                padding: const EdgeInsets.all(Constants.SPACING),
+                child: ListTile(
                   leading: Icon(item.leadingIcon),
                   title: Text(item.title),
                   onTap: item.onPress,
                 ),
-                Container(
-                  height: 1,
-                  color: Colors.black12,
-                  margin: const EdgeInsets.all(5),
-                )
-              ],
+              ),
             );
           },
           itemCount: _items.length,
-          padding: const EdgeInsets.all(10),
         ));
   }
 }

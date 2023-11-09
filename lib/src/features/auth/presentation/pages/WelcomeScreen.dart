@@ -35,11 +35,11 @@ class WelcomeScreen extends StatelessWidget {
                   fontSize: 50,
                 ),
               ),
-              const Text(
+              Text(
                 "Your Health, Your Priority: Start Today, \nThrive Tomorrow.",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.black26,
+                  color: theme.colorScheme.onTertiaryContainer,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -71,7 +71,7 @@ class WelcomeScreen extends StatelessWidget {
                     child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 10),
                       height: 2,
-                      color: Colors.black12,
+                      color: theme.colorScheme.outline,
                     ),
                   ),
                   const Text(
@@ -82,8 +82,7 @@ class WelcomeScreen extends StatelessWidget {
                     child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 10),
                       height: 2,
-                      color: Colors.black12,
-                    ),
+                        color: theme.colorScheme.outline                    ),
                   ),
                 ],
               ),
@@ -94,6 +93,7 @@ class WelcomeScreen extends StatelessWidget {
                   DecoratedBox(
                     decoration: BoxDecoration(
                       border: Border.all(width: 1),
+                      color: theme.colorScheme.outlineVariant,
                       borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
                     ),
                     child: IconButton(
@@ -105,6 +105,7 @@ class WelcomeScreen extends StatelessWidget {
                   DecoratedBox(
                     decoration: BoxDecoration(
                       border: Border.all(width: 1),
+                      color: theme.colorScheme.outlineVariant,
                       borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
                     ),
                     child: IconButton(

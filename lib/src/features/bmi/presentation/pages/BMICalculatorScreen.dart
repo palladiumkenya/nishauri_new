@@ -284,6 +284,7 @@ class _BMICalculatorScreenState extends State<BMICalculatorScreen> {
                           title: "Calculate",
                           onPress: handleSubmit,
                         ),
+
                         const SizedBox(
                           height: Constants.SPACING,
                         ),

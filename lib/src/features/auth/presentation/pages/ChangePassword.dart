@@ -134,6 +134,11 @@ class _ChangePasswordState extends State<ChangePassword> {
                         onPress: () => context.go(RouteNames.LOGIN_SCREEN),
                       ),
                       const SizedBox(height: Constants.SPACING),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                            child: Text("Register"), onPressed: () {}),
+                      ),
                       Button(
                         title: "Register",
                         onPress: handleSubmit,

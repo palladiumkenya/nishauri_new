@@ -38,9 +38,9 @@ class LinkedRichText extends StatelessWidget {
           child: Text(
             unlinked,
             style: unlinkedStyle != null
-                ? unlinkedStyle?.copyWith(color: theme.primaryColor)
+                ? unlinkedStyle?.copyWith(color: theme.colorScheme.primary)
                 : TextStyle(
-                    color: theme.primaryColor,
+                    color: theme.colorScheme.primary,
                   ),
           ),
         )

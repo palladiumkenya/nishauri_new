@@ -81,11 +81,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 fontSize: 40, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 20),
-                          const Text(
+                          Text(
                             "Kindly provide your phone number \nor email address!",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.black26,
+                              color: Theme.of(context).colorScheme.onTertiaryContainer,
                             ),
                             textAlign: TextAlign.center,
                           ),

@@ -9,6 +9,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cardColor = Theme.of(context).colorScheme.onPrimary;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -23,75 +24,95 @@ class ProfileScreen extends StatelessWidget {
           )
         ],
       ),
-      body: ListView(
-        children: [
-          const CircleAvatar(
-            radius: 80,
-            child: Padding(
-              padding: EdgeInsets.all(Constants.SPACING),
-              child: Logo(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Constants.SPACING),
+        child: ListView(
+          children: [
+            const CircleAvatar(
+              radius: 80,
+              child: Padding(
+                padding: EdgeInsets.all(Constants.SPACING),
+                child: Logo(),
+              ),
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: Constants.SPACING),
-            padding: const EdgeInsets.only(top: Constants.SPACING),
-            color: Colors.white,
-            child: const ListTile(
-              leading: Icon(Icons.perm_identity),
-              title: Text("Username"),
-              subtitle: Text("omosh"),
+            Card(
+              color: cardColor,
+              margin: const EdgeInsets.only(top: Constants.SPACING),
+              child: const Padding(
+                padding: EdgeInsets.only(top: Constants.SPACING),
+                child: ListTile(
+                  leading: Icon(Icons.perm_identity),
+                  title: Text("Username"),
+                  subtitle: Text("omosh"),
+                ),
+              ),
             ),
-          ),Container(
-            margin: const EdgeInsets.only(top: Constants.SPACING),
-            padding: const EdgeInsets.only(top: Constants.SPACING),
-            color: Colors.white,
-            child: const ListTile(
-              leading: Icon(Icons.account_circle_outlined),
-              title: Text("Name"),
-              subtitle: Text("Laurent Ouma"),
+            Card(
+              color: cardColor,
+              margin: const EdgeInsets.only(top: Constants.SPACING),
+              child: const Padding(
+                padding: EdgeInsets.only(top: Constants.SPACING),
+                child: ListTile(
+                  leading: Icon(Icons.account_circle_outlined),
+                  title: Text("Name"),
+                  subtitle: Text("Laurent Ouma"),
+                ),
+              ),
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: Constants.SPACING),
-            padding: const EdgeInsets.only(top: Constants.SPACING),
-            color: Colors.white,
-            child: const ListTile(
-              leading: Icon(Icons.email),
-              title: Text("Email"),
-              subtitle: Text("lawiomosh3@gmail.com"),
+            Card(
+              color: cardColor,
+
+              margin: const EdgeInsets.only(top: Constants.SPACING),
+              child: const Padding(
+                padding: EdgeInsets.only(top: Constants.SPACING),
+                child: ListTile(
+                  leading: Icon(Icons.email),
+                  title: Text("Email"),
+                  subtitle: Text("lawiomosh3@gmail.com"),
+                ),
+              ),
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: Constants.SPACING),
-            color: Colors.white,
-            padding: const EdgeInsets.only(top: Constants.SPACING),
-            child: const ListTile(
-              leading: Icon(Icons.phone),
-              title: Text("Phone number"),
-              subtitle: Text("0793889658"),
+            Card(
+              color: cardColor,
+
+              margin: const EdgeInsets.only(top: Constants.SPACING),
+              child: const Padding(
+                padding: EdgeInsets.only(top: Constants.SPACING),
+                child: ListTile(
+                  leading: Icon(Icons.phone),
+                  title: Text("Phone number"),
+                  subtitle: Text("0793889658"),
+                ),
+              ),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(top: Constants.SPACING),
-            margin: const EdgeInsets.only(top: Constants.SPACING),
-            color: Colors.white,
-            child: const ListTile(
-              leading: Icon(Icons.account_circle_outlined),
-              title: Text("Gender"),
-              subtitle: Text("Male"),
+            Card(
+              color: cardColor,
+
+              margin: const EdgeInsets.only(top: Constants.SPACING),
+              child: const Padding(
+                padding: EdgeInsets.only(top: Constants.SPACING),
+                child: ListTile(
+                  leading: Icon(Icons.account_circle_outlined),
+                  title: Text("Gender"),
+                  subtitle: Text("Male"),
+                ),
+              ),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(top: Constants.SPACING),
-            margin: const EdgeInsets.only(top: Constants.SPACING),
-            color: Colors.white,
-            child: const ListTile(
-              leading: Icon(Icons.calendar_month),
-              title: Text("Date of birth"),
-              subtitle: Text("21st Oct 2000"),
+            Card(
+              color: cardColor,
+
+              margin: const EdgeInsets.only(top: Constants.SPACING),
+              child: const Padding(
+                padding: EdgeInsets.only(top: Constants.SPACING),
+                child: ListTile(
+                  leading: Icon(Icons.calendar_month),
+                  title: Text("Date of birth"),
+                  subtitle: Text("21st Oct 2000"),
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

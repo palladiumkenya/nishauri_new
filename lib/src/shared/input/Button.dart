@@ -42,48 +42,18 @@ class Button extends StatelessWidget {
     if (loading) {
       return CircularProgressIndicator(color: theme.primaryColor);
     }
-    final buttonChildren = [
-      const SizedBox(width: 15),
-      Text(
-        title,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-          color: textColor ?? theme.colorScheme.onPrimary,
-        ),
-      ),
-      const SizedBox(width: 15),
-    ];
-    if (prefixIcon != null) {
-      buttonChildren.insert(0, prefixIcon!);
-    }
-    if (surfixIcon != null) {
-      buttonChildren.add(surfixIcon!);
-    }
 
-    return GestureDetector(
-      onTap: disabled ? null : onPress,
-      child: Container(
-        height: 50,
-        decoration: mode == ButtonMode.contained
-            ? BoxDecoration(
-                color: disabled ? Colors.black26 :backgroundColor ?? Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(borderRadius),
-              )
-            : BoxDecoration(
-                borderRadius: BorderRadius.circular(borderRadius),
-                border: Border.all(
-                  color: disabled ? Colors.black26 : theme.primaryColor,
-                  width: 1,
-                )),
-        child: Padding(
-          padding: paddingGeometry ?? const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: mainAxisAlignment,
-            children: buttonChildren,
-          ),
-        ),
-      ),
+    return SizedBox(
+      width: double.infinity,
+      child: mode == ButtonMode.outline
+          ? OutlinedButton(
+              onPressed: onPress,
+              child: Text(title),
+            )
+          : ElevatedButton(
+              onPressed: onPress,
+              child: Text(title),
+            ),
     );
   }
 }

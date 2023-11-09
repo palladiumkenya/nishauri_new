@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/shared/input/FormInputTextField.dart';
+import 'package:nishauri/src/shared/input/ImagePicker.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class PersonalInformation extends StatelessWidget {
@@ -8,6 +9,7 @@ class PersonalInformation extends StatelessWidget {
   final TextEditingController lastName;
   final TextEditingController dateOfBirth;
   final TextEditingController gender;
+  final TextEditingController image;
 
   const PersonalInformation({
     super.key,
@@ -15,6 +17,7 @@ class PersonalInformation extends StatelessWidget {
     required this.lastName,
     required this.dateOfBirth,
     required this.gender,
+    required this.image,
   });
 
   @override
@@ -28,6 +31,8 @@ class PersonalInformation extends StatelessWidget {
     return Container(
       child: Column(
         children: [
+          const SizedBox(height: Constants.SPACING),
+          ImagePickerCustomFormField(image: "https://picsum.photos/200/300"),
           const SizedBox(height: Constants.SPACING),
           FormInputTextField(
             controler: firstName,

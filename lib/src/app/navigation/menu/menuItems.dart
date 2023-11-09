@@ -14,7 +14,7 @@ List<MenuItem> menuOptions(BuildContext context) => [
   MenuItem(icon: Icons.medication, title: "Medications", onPressed: () => ""),
   MenuItem(icon: Icons.science_outlined, title: "Lab", onPressed: () => ""),
   MenuItem(icon: Icons.calendar_month_rounded, title: "Appointments", onPressed: () => ""),
-  MenuItem(icon: Icons.science_outlined, title: "Lab",onPressed: () => ""),
+  MenuItem(icon: Icons.shopping_cart, title: "Drug Orders",onPressed: () => ""),
   MenuItem(
       icon: Icons.calculate_outlined, title: "BMI Calc", onPressed: () => context.go(RouteNames.BMI_CALCULATOR)),
   MenuItem(icon: Icons.medication, title: "Medication", onPressed: () => ""),

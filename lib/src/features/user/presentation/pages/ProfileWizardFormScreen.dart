@@ -20,6 +20,10 @@ class _ProfileWizardFormScreenState extends State<ProfileWizardFormScreen> {
   late TextEditingController lastName;
   late TextEditingController dateOfBirth;
   late TextEditingController gender;
+  late TextEditingController image;
+
+
+  String? _image;
 
   List<Step> get steps => [
         Step(
@@ -35,6 +39,7 @@ class _ProfileWizardFormScreenState extends State<ProfileWizardFormScreen> {
             title: const Text("Personal Info"),
             subtitle: const Text("Reasons for collecting information"),
             content: PersonalInformation(
+              image: image,
                 firstName: firstName,
                 dateOfBirth: dateOfBirth,
                 gender: gender,
@@ -52,6 +57,8 @@ class _ProfileWizardFormScreenState extends State<ProfileWizardFormScreen> {
     email = TextEditingController();
     dateOfBirth = TextEditingController();
     gender = TextEditingController();
+    image = TextEditingController();
+    image.addListener(() { debugPrint("*********|${image.text}|*******");});
   }
 
   @override
@@ -62,6 +69,7 @@ class _ProfileWizardFormScreenState extends State<ProfileWizardFormScreen> {
     phoneNumber.dispose();
     email.dispose();
     dateOfBirth.dispose();
+    image.dispose();
     gender.dispose();
     super.dispose();
   }
