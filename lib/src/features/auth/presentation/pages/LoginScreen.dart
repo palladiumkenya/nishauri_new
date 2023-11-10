@@ -45,7 +45,6 @@ class _LoginScreenState extends State<LoginScreen> {
               "username": username.text,
               "password": password.text
             };
-            // context.go('/');
           }
         }
 
@@ -53,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
           appBar: AppBar(
             title: const Text("Sign in"),
             leading: IconButton(
-              onPressed: () => context.go("/"),
+              onPressed: () => context.pop(),
               icon: const Icon(Icons.chevron_left),
             ),
           ),
@@ -120,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         LinkedRichText(
                           linked: "Don't have account?  ",
                           unlinked: 'Register   ',
-                          onPress: () => context.go(RouteNames.REGISTER_SCREEN),
+                          onPress: () => context.goNamed(RouteNames.REGISTER_SCREEN),
                         ),
                         const SizedBox(height: Constants.SPACING),
                         Button(
@@ -134,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           linked: "Forgot password ? ",
                           unlinked: "Reset",
                           onPress: () =>
-                              context.go(RouteNames.RESET_PASSWORD_SCREEN),
+                              context.goNamed(RouteNames.RESET_PASSWORD_SCREEN),
                         )
                       ],
                     ),

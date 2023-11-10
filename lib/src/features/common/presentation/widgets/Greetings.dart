@@ -41,14 +41,13 @@ class Greetings extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Hello 👋,",
-                  style: TextStyle(color: theme.colorScheme.onPrimary),
                 ),
                 Text(
                   name,
-                  style: TextStyle(
-                      fontSize: 20, color: theme.colorScheme.onPrimary),
+                  style: const TextStyle(
+                      fontSize: 20),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),

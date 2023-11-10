@@ -8,6 +8,7 @@ import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/Banners.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/Greetings.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -74,7 +75,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               leading: const Icon(Icons.verified),
               title: const Text("Verify"),
               onTap: () {
-                context.go("/verify");
+                context.goNamed(RouteNames.VERIFY_ACCOUNT);
                 // Close drawer
                 Navigator.pop(context);
               },

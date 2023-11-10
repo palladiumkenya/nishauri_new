@@ -52,7 +52,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
               "username": otpCode.text,
               "password": password.text
             };
-            // context.go('/');
           }
         }
 
@@ -160,7 +159,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           LinkedRichText(
                             linked: "",
                             unlinked: "Back to login",
-                            onPress: () => context.go(RouteNames.LOGIN_SCREEN),
+                            onPress: () => context.goNamed(RouteNames.LOGIN_SCREEN),
                           )
                         ],
                       ),

@@ -131,7 +131,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       LinkedRichText(
                         linked: "Already have account? ",
                         unlinked: "Login",
-                        onPress: () => context.go(RouteNames.LOGIN_SCREEN),
+                        onPress: () => context.goNamed(RouteNames.CHANGE_PASSWORD),
                       ),
                       const SizedBox(height: Constants.SPACING),
                       SizedBox(

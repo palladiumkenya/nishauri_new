@@ -26,19 +26,21 @@ _settingsItem(BuildContext context) => [
       _SettingsItem(
         title: "Profile",
         leadingIcon: Icons.account_circle,
-        onPress: () => context.go(RouteNames.PROFILE_SETTINGS),
+        onPress: () => context.goNamed(RouteNames.PROFILE_SETTINGS),
       ),
       _SettingsItem(title: "Theme", leadingIcon: Icons.light_mode),
       _SettingsItem(
-          title: "Privacy",
-          leadingIcon: Icons.security,
-          onPress: () => context.go(RouteNames.PRIVACY_SETTINGS)),
+        title: "Privacy",
+        leadingIcon: Icons.security,
+        onPress: () => context.goNamed(RouteNames.PRIVACY_SETTINGS),
+      ),
       _SettingsItem(
           title: "Plugins", leadingIcon: Icons.private_connectivity_outlined),
       _SettingsItem(
-          title: "Change Password",
-          leadingIcon: Icons.key,
-          onPress: () => context.go(RouteNames.CHANGE_PASSWORD)),
+        title: "Change Password",
+        leadingIcon: Icons.key,
+        onPress: () => context.goNamed(RouteNames.CHANGE_PASSWORD),
+      )
     ];
 
 class SettingsScreen extends ConsumerWidget {

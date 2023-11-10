@@ -5,7 +5,7 @@ final mainTheme = ThemeData(
   fontFamily: "Play",
   colorScheme: ColorScheme.fromSeed(
     seedColor: const Color(0xff2bb6aa),
-    brightness: Brightness.light,
+    brightness: Brightness.dark,
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(

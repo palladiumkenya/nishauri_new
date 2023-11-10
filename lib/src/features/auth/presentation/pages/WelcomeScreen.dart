@@ -4,6 +4,7 @@ import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -54,12 +55,12 @@ class WelcomeScreen extends StatelessWidget {
               const SizedBox(height: Constants.SPACING),
               Button(
                 title: "Login",
-                onPress: () => context.go("/login"),
+                onPress: () => context.goNamed(RouteNames.LOGIN_SCREEN),
               ),
               const SizedBox(height: 20),
               Button(
                 title: "Register",
-                onPress: () => context.go("/register"),
+                onPress: () => context.goNamed(RouteNames.REGISTER_SCREEN),
               ),
               const SizedBox(height: Constants.SPACING),
               const SizedBox(height: Constants.SPACING),
@@ -80,9 +81,9 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      height: 2,
-                        color: theme.colorScheme.outline                    ),
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
+                        height: 2,
+                        color: theme.colorScheme.outline),
                   ),
                 ],
               ),

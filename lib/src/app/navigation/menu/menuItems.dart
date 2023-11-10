@@ -11,17 +11,29 @@ class MenuItem {
 }
 
 List<MenuItem> menuOptions(BuildContext context) => [
-  MenuItem(icon: Icons.medication, title: "Medications", onPressed: () => ""),
-  MenuItem(icon: Icons.science_outlined, title: "Lab", onPressed: () => ""),
-  MenuItem(icon: Icons.calendar_month_rounded, title: "Appointments", onPressed: () => ""),
-  MenuItem(icon: Icons.shopping_cart, title: "Drug Orders",onPressed: () => ""),
-  MenuItem(
-      icon: Icons.calculate_outlined, title: "BMI Calc", onPressed: () => context.go(RouteNames.BMI_CALCULATOR)),
-  MenuItem(icon: Icons.medication, title: "Medication", onPressed: () => ""),
-  MenuItem(icon: Icons.medication, title: "Medication"),
-  MenuItem(icon: Icons.science_outlined, title: "Lab"),
-  MenuItem(icon: Icons.calendar_month_rounded, title: "Appointments"),
-  MenuItem(icon: Icons.science_outlined, title: "Lab"),
-  MenuItem(icon: Icons.calendar_month_rounded, title: "Appointments"),
-  MenuItem(icon: Icons.medication, title: "Medication"),
-];
+      MenuItem(
+          icon: Icons.medication, title: "Medications", onPressed: () => ""),
+      MenuItem(
+          icon: Icons.vaccines,
+          title: "HIV Program",
+          onPressed: () => context.goNamed(RouteNames.HIV_PROGRAM)),
+      MenuItem(
+          icon: Icons.calendar_month_rounded,
+          title: "Appointments",
+          onPressed: () => ""),
+      MenuItem(
+          icon: Icons.shopping_cart, title: "Drug Orders", onPressed: () => ""),
+      MenuItem(
+        icon: Icons.calculate_outlined,
+        title: "BMI Calc",
+        onPressed: () => context.goNamed(RouteNames.BMI_CALCULATOR),
+      ),
+      MenuItem(
+          icon: Icons.medication, title: "Medication", onPressed: () => ""),
+      MenuItem(icon: Icons.medication, title: "Medication"),
+      MenuItem(icon: Icons.science_outlined, title: "Lab"),
+      MenuItem(icon: Icons.calendar_month_rounded, title: "Appointments"),
+      MenuItem(icon: Icons.science_outlined, title: "Lab"),
+      MenuItem(icon: Icons.calendar_month_rounded, title: "Appointments"),
+      MenuItem(icon: Icons.medication, title: "Medication"),
+    ];

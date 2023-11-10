@@ -36,7 +36,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               "username": username.text,
               "password": password.text
             };
-            // context.go('/');
           }
         }
 
@@ -44,7 +43,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           appBar: AppBar(
             title: const Text("Reset password"),
             leading: IconButton(
-              onPressed: () => context.go("/"),
+              onPressed: () => context.pop(),
               icon: const Icon(Icons.chevron_left),
             ),
           ),
@@ -114,7 +113,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           LinkedRichText(
                             linked: "",
                             unlinked: "Back to login",
-                            onPress: () => context.go(RouteNames.LOGIN_SCREEN),
+                            onPress: () => context.goNamed(RouteNames.LOGIN_SCREEN),
                           )
                         ],
                       ),

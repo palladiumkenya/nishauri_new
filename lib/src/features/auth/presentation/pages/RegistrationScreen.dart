@@ -49,7 +49,6 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
         "username": username.text,
         "password": password.text
       };
-      // context.go('/');
     }
   }
 
@@ -60,7 +59,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
       appBar: AppBar(
         title: const Text("Sign Up"),
         leading: IconButton(
-          onPressed: () => context.go("/"),
+          onPressed: () => context.pop(),
           icon: const Icon(Icons.chevron_left),
         ),
       ),
@@ -167,7 +166,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                       LinkedRichText(
                         linked: "Already have account? ",
                         unlinked: "Login",
-                        onPress: () => context.go(RouteNames.LOGIN_SCREEN),
+                        onPress: () => context.goNamed(RouteNames.LOGIN_SCREEN),
                       ),
                       const SizedBox(height: Constants.SPACING),
                       Button(
