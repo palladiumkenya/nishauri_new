@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/ChangePassword.dart';
@@ -12,8 +11,14 @@ import 'package:nishauri/src/features/auth/presentation/pages/VerificationScreen
 import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart';
+import 'package:nishauri/src/features/hiv/presentation/pages/ARTSites.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/HIVMenu.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/ProgrameRegistration.dart';
+import 'package:nishauri/src/features/hiv/presentation/pages/RegimenHistory.dart';
+import 'package:nishauri/src/features/hiv/presentation/pages/dashboard/HIVDashboard.dart';
+import 'package:nishauri/src/features/hiv/presentation/pages/events/ARTEvents.dart';
+import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroups.dart';
+import 'package:nishauri/src/features/hiv/presentation/pages/orders/HIVDrugOrders.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileScreen.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileWizardFormScreen.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
@@ -140,6 +145,42 @@ final List<RouteBase> hivProgramRoutes = [
     path: 'hiv-verify',
     builder: (BuildContext context, GoRouterState state) {
       return const HIVProgramRegistration();
+    },
+  ),GoRoute(
+    name: RouteNames.HIV_DRUG_ORDERS,
+    path: 'drug-order',
+    builder: (BuildContext context, GoRouterState state) {
+      return const HIVDrugOrdersScreen();
+    },
+  ),GoRoute(
+    name: RouteNames.HIV_ART_SITES,
+    path: 'art-sites',
+    builder: (BuildContext context, GoRouterState state) {
+      return const ARTSitesScreen();
+    },
+  ),GoRoute(
+    name: RouteNames.HIV_DASHBOARD,
+    path: 'dashboard',
+    builder: (BuildContext context, GoRouterState state) {
+      return const HIVDashboardScreen();
+    },
+  ),GoRoute(
+    name: RouteNames.HIV_REGIMEN,
+    path: 'regimen',
+    builder: (BuildContext context, GoRouterState state) {
+      return const RegimenHistoryScreen();
+    },
+  ),GoRoute(
+    name: RouteNames.HIV_ART_GROUPS,
+    path: 'art-groups',
+    builder: (BuildContext context, GoRouterState state) {
+      return const ARTGroupsScreen();
+    },
+  ),GoRoute(
+    name: RouteNames.HIV_ART_EVENTS,
+    path: 'art-events',
+    builder: (BuildContext context, GoRouterState state) {
+      return const ARTEventsScreen();
     },
   ),
 ];

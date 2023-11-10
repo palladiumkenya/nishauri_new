@@ -9,13 +9,18 @@ _menuItems(BuildContext context) => [
       MenuItem(
           icon: Icons.app_registration,
           title: "Register",
-          onPressed: () => context.goNamed(RouteNames.HIV_PROGRAM_VERIFICATION)),
-      MenuItem(icon: Icons.shopping_cart, title: "Drug Orders"),
-      MenuItem(icon: Icons.local_hospital_outlined, title: "ART Sites"),
-      MenuItem(icon: Icons.dashboard_customize_outlined, title: "Dashboard"),
-      MenuItem(icon: Icons.medication, title: "Regimen"),
-      MenuItem(icon: Icons.group, title: "ART Groups"),
-      MenuItem(icon: Icons.event, title: "ART Events"),
+          onPressed: () =>
+              context.goNamed(RouteNames.HIV_PROGRAM_VERIFICATION)),
+      MenuItem(
+        icon: Icons.shopping_cart,
+        title: "Drug Orders",
+        onPressed: () => context.goNamed(RouteNames.HIV_DRUG_ORDERS),
+      ),
+      MenuItem(icon: Icons.local_hospital_outlined, title: "ART Sites", onPressed: ()=>context.goNamed(RouteNames.HIV_ART_SITES)),
+      MenuItem(icon: Icons.dashboard_customize_outlined, title: "Dashboard", onPressed: ()=>context.goNamed(RouteNames.HIV_DASHBOARD)),
+      MenuItem(icon: Icons.medication, title: "Regimen", onPressed: ()=>context.goNamed(RouteNames.HIV_REGIMEN)),
+      MenuItem(icon: Icons.group, title: "ART Groups", onPressed: ()=>context.goNamed(RouteNames.HIV_ART_GROUPS)),
+      MenuItem(icon: Icons.event, title: "ART Events", onPressed: ()=>context.goNamed(RouteNames.HIV_ART_EVENTS)),
     ];
 
 class HIVMenuScreen extends StatelessWidget {
