@@ -89,11 +89,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 fontSize: 30, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: Constants.SPACING),
-                          const Text(
+                          Text(
                             "Kindly use the OTP Code sent to you\n to complete account verification.\n\nReceive code through:",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.black26,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onTertiaryContainer,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -159,7 +161,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           LinkedRichText(
                             linked: "",
                             unlinked: "Back to login",
-                            onPress: () => context.goNamed(RouteNames.LOGIN_SCREEN),
+                            onPress: () =>
+                                context.goNamed(RouteNames.LOGIN_SCREEN),
                           )
                         ],
                       ),

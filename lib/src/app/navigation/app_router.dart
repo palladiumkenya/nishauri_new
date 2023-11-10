@@ -109,6 +109,7 @@ final List<RouteBase> secureRoutes = [
     builder: (BuildContext context, GoRouterState state) {
       return const HIVMenuScreen();
     },
+    routes: hivProgramRoutes
   ),
 ];
 final List<RouteBase> openRoutes = [

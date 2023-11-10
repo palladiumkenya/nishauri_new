@@ -18,11 +18,11 @@ class SplashScreen extends StatelessWidget {
             fontSize: 50,
           ),
         ),
-        const Text(
+        Text(
           "Your Health, Your Priority: Start Today, \nThrive Tomorrow.",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.black26,
+            color: Theme.of(context).colorScheme.onTertiaryContainer,
           ),
           textAlign: TextAlign.center,
         ),
