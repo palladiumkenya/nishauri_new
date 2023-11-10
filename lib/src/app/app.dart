@@ -58,12 +58,12 @@ class _NishauriAppState extends ConsumerState<NishauriApp>
     //     authState.value?.isNotEmpty == true &&
     //         settings.isPrivacyEnabled &&
     //         !settings.isAuthenticated;
-
+    final theme = ref.watch(mainTheme);
     return MaterialApp.router(
       key:_myKey,
       title: "Nishauri",
       routerConfig: router,
-      theme: mainTheme,
+      theme: theme,
       debugShowCheckedModeBanner: false,
     );
   }

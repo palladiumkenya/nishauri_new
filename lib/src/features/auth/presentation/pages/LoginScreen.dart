@@ -19,15 +19,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  var username = TextEditingController();
-  var password = TextEditingController();
+  String? _username;
+  String? _password;
 
-  @override
-  void dispose() {
-    username.dispose();
-    password.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +29,13 @@ class _LoginScreenState extends State<LoginScreen> {
       builder: (context, ref, child) {
         void handleSubmit() async {
           if (_formKey.currentState!.validate()) {
-            // If the form is valid, display a snack-bar. In the real world,
-            // you'd often call a server or save the information in a database.
-            ref.read(authStateProvider.notifier).login(username.text, password.text);
+            setState(() {
+              _formKey.currentState!.save();
+            });
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Login successfully!,')),
             );
-            final credentials = {
-              "username": username.text,
-              "password": password.text
-            };
+            ref.watch(authStateProvider.notifier).login(_username!, _password!);
           }
         }
 
@@ -90,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: Constants.SPACING),
                         FormInputTextField(
-                          controler: username,
+                          onSaved: (username)=>_username = username,
                           placeholder: "Enter username or email",
                           prefixIcon: Icons.account_circle,
                           label: "Username",
@@ -103,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: Constants.SPACING),
                         FormInputTextField(
-                          controler: password,
+                          onSaved: (password)=>_password = password,
                           placeholder: "********",
                           prefixIcon: Icons.lock,
                           label: "Password",

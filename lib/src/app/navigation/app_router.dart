@@ -26,6 +26,7 @@ import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuth
 import 'package:nishauri/src/features/user_preference/presentation/pages/PrivacySettingsScreen.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
+
 final routesProvider = Provider((ref) {
   final authState = ref.watch(authStateProvider);
   final settingsState = ref.watch(settingsNotifierProvider);

@@ -19,7 +19,7 @@ class ProfileScreen extends StatelessWidget {
         title: const Text('Profile'),
         actions: [
           IconButton(
-            onPressed: () => "",
+            onPressed: () => context.goNamed(RouteNames.PROFILE_EDIT_FORM),
             icon: const Icon(Icons.mode_edit_outlined),
           )
         ],

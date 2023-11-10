@@ -1,31 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
-final mainTheme = ThemeData(
-  fontFamily: "Play",
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: const Color(0xff2bb6aa),
-    brightness: Brightness.dark,
-  ),
-  outlinedButtonTheme: OutlinedButtonThemeData(
-    style: OutlinedButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
+final mainTheme = Provider<ThemeData>((ref) => ThemeData(
+      fontFamily: "Play",
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: const Color(0xff2bb6aa),
+        brightness: ref.watch(settingsNotifierProvider).theme == "dark"
+            ? Brightness.dark
+            : Brightness.light,
       ),
-      padding: const EdgeInsets.all(Constants.SPACING),
-    ),
-  ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
+          ),
+          padding: const EdgeInsets.all(Constants.SPACING),
         ),
-        padding: const EdgeInsets.all(Constants.SPACING),
-        textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: Constants.BUTTON_FONT_SIZE),),
-  ),
-  useMaterial3: true,
-);
-
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
+          ),
+          padding: const EdgeInsets.all(Constants.SPACING),
+          textStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: Constants.BUTTON_FONT_SIZE),
+        ),
+      ),
+      useMaterial3: true,
+    ));
 final mainTheme1 = ThemeData(
   fontFamily: "Play",
   colorScheme: ColorScheme.fromSeed(

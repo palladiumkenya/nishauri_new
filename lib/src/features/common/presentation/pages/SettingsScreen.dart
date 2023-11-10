@@ -3,13 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
+import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 class _SettingsItem {
   final IconData? leadingIcon;
-  final IconData? trailingIcon;
+  final Widget? trailingIcon;
   final String title;
   final String? subTitle;
   final void Function()? onPress;
@@ -28,7 +29,17 @@ _settingsItem(BuildContext context) => [
         leadingIcon: Icons.account_circle,
         onPress: () => context.goNamed(RouteNames.PROFILE_SETTINGS),
       ),
-      _SettingsItem(title: "Theme", leadingIcon: Icons.light_mode),
+      _SettingsItem(
+          title: "Theme",
+          leadingIcon: Icons.light_mode,
+          trailingIcon: Consumer(
+            builder: (context, ref, child) => Switch(
+              value: ref.watch(settingsNotifierProvider).theme == "dark",
+              onChanged: (value) => ref
+                  .read(settingsNotifierProvider.notifier)
+                  .patchSettings(theme: value ? "dark" : "light"),
+            ),
+          )),
       _SettingsItem(
         title: "Privacy",
         leadingIcon: Icons.security,
@@ -69,6 +80,7 @@ class SettingsScreen extends ConsumerWidget {
                   leading: Icon(item.leadingIcon),
                   title: Text(item.title),
                   onTap: item.onPress,
+                  trailing: item.trailingIcon,
                 ),
               ),
             );
