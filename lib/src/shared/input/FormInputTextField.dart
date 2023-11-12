@@ -18,6 +18,7 @@ class FormInputTextField extends StatefulWidget {
   final bool readOnly;
   final Function()? onTap;
   final void Function(String?)? onSaved;
+  final String? error;
 
   const FormInputTextField({
     super.key,
@@ -35,7 +36,8 @@ class FormInputTextField extends StatefulWidget {
     this.keyboardType,
     this.readOnly = false,
     this.onTap,
-    this.onSaved
+    this.onSaved,
+    this.error
   });
 
   @override
@@ -57,6 +59,7 @@ class _FormInputTextFieldState extends State<FormInputTextField> {
       obscureText: widget.password && showPassword == false,
       onChanged: widget.onChangeText,
       decoration: InputDecoration(
+        errorText: widget.error,
         suffixIcon: widget.password
             ? IconButton(
                 icon: Icon(showPassword

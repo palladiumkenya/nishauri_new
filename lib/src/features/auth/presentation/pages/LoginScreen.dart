@@ -9,6 +9,7 @@ import 'package:nishauri/src/shared/input/FormInputTextField.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
+import 'package:form_validator/form_validator.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,9 +23,9 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _username;
   String? _password;
 
-
   @override
   Widget build(BuildContext context) {
+    final buildContext = context;
     return Consumer(
       builder: (context, ref, child) {
         void handleSubmit() async {
@@ -32,10 +33,22 @@ class _LoginScreenState extends State<LoginScreen> {
             setState(() {
               _formKey.currentState!.save();
             });
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Login successfully!,')),
-            );
-            ref.watch(authStateProvider.notifier).login(_username!, _password!);
+            try {
+              await ref
+                  .read(authStateProvider.notifier)
+                  .login(_username!, _password!);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Login successfully!,')),
+              );
+            } on Exception catch (e) {
+              // Handle errors from the controller
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(e.toString()),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
           }
         }
 
@@ -81,36 +94,26 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: Constants.SPACING),
                         FormInputTextField(
-                          onSaved: (username)=>_username = username,
+                          onSaved: (username) => _username = username,
                           placeholder: "Enter username or email",
                           prefixIcon: Icons.account_circle,
                           label: "Username",
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
+                          validator: ValidationBuilder().required().build(),
                         ),
                         const SizedBox(height: Constants.SPACING),
                         FormInputTextField(
-                          onSaved: (password)=>_password = password,
-                          placeholder: "********",
-                          prefixIcon: Icons.lock,
-                          label: "Password",
-                          password: true,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
-                        ),
+                            onSaved: (password) => _password = password,
+                            placeholder: "********",
+                            prefixIcon: Icons.lock,
+                            label: "Password",
+                            password: true,
+                            validator: ValidationBuilder().required().build()),
                         const SizedBox(height: 20),
                         LinkedRichText(
                           linked: "Don't have account?  ",
                           unlinked: 'Register   ',
-                          onPress: () => context.goNamed(RouteNames.REGISTER_SCREEN),
+                          onPress: () =>
+                              context.goNamed(RouteNames.REGISTER_SCREEN),
                         ),
                         const SizedBox(height: Constants.SPACING),
                         Button(

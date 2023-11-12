@@ -8,7 +8,6 @@ import 'package:nishauri/src/features/auth/presentation/pages/ChangePassword.dar
 import 'package:nishauri/src/features/auth/presentation/pages/LoginScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/RegistrationScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/ResetPasswordScreen.dart';
-import 'package:nishauri/src/features/auth/presentation/pages/SplashScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/VerificationScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
@@ -23,7 +22,6 @@ import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroups.da
 import 'package:nishauri/src/features/hiv/presentation/pages/orders/HIVDrugOrders.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileScreen.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileWizardFormScreen.dart';
-import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PrivacySettingsScreen.dart';
 import 'package:nishauri/src/utils/routes.dart';
@@ -50,13 +48,12 @@ class RouterNotifier extends ChangeNotifier {
 
   FutureOr<String?> redirectLogic(BuildContext context, GoRouterState state) {
     final loginState = _ref.watch(authStateProvider);
-
+    if(loginState.isLoading || loginState.error != null) return "/auth/login";
     final areWeInOpenRoutes = state.matchedLocation.startsWith("/auth");
     // Is user not logged in?
     if (loginState.value?.isEmpty == true && areWeInOpenRoutes) return null;
     // if not logged in and trying to accept secure root then redirect to login
-    if (loginState.value?.isEmpty == true && !areWeInOpenRoutes)
-      return "/auth/login";
+    if (loginState.value?.isEmpty == true && !areWeInOpenRoutes) return "/auth/login";
     // If user already logged in and moving on open routes then redirect to home
     if (loginState.value?.isNotEmpty == true && areWeInOpenRoutes) return '/';
 
