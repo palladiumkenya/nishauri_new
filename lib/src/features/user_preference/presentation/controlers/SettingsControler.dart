@@ -21,7 +21,7 @@ class SettingsController extends StateNotifier<Settings> {
         isAuthenticated: isAuthenticated);
   }
 
-  Settings getState(){
+  Settings getState() {
     return state;
   }
 

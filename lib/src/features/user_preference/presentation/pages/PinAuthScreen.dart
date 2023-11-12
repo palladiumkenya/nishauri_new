@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
-import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:pinput/pinput.dart';
 
-class PinAuthScreen extends ConsumerStatefulWidget {
-  const PinAuthScreen({super.key});
+class PinAuthScreen extends StatefulWidget {
+  final String? Function(String?)? authenticate;
+
+  const PinAuthScreen({super.key, this.authenticate});
 
   @override
-  ConsumerState<PinAuthScreen> createState() => _PinAuthScreenState();
+  State<PinAuthScreen> createState() => _PinAuthScreenState();
 }
 
-class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
+class _PinAuthScreenState extends State<PinAuthScreen> {
   final pinController = TextEditingController();
   final focusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
@@ -28,8 +26,8 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
 
   void onSubmit() {
     focusNode.unfocus();
-    if (formKey.currentState!.validate()) {
-      ref.read(settingsNotifierProvider.notifier).patchSettings(isAuthenticated: true);
+    if (formKey.currentState!.validate() && widget.authenticate != null) {
+      widget.authenticate!(pinController.text);
     }
   }
 
@@ -38,7 +36,6 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
     const focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
     const fillColor = Color.fromRGBO(243, 246, 249, 0);
     const borderColor = Color.fromRGBO(23, 171, 144, 0.4);
-    final settings = ref.watch(settingsNotifierProvider);
 
     final defaultPinTheme = PinTheme(
       width: 56,
@@ -86,11 +83,7 @@ class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
                       listenForMultipleSmsOnAndroid: true,
                       defaultPinTheme: defaultPinTheme,
                       separatorBuilder: (index) => const SizedBox(width: 8),
-                      validator: (value) {
-                        return settings.checkPin(value)
-                            ? null
-                            : 'Pin is incorrect';
-                      },
+                      validator: widget.authenticate,
                       obscureText: true,
                       // onClipboardFound: (value) {
                       //   debugPrint('onClipboardFound: $value');

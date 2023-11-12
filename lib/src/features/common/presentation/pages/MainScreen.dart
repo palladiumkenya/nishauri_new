@@ -1,23 +1,99 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/VerificationScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/HomeScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/Homescreen2.dart';
 import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.dart';
+import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
+import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class MainScreen extends ConsumerStatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
-  State<MainScreen> createState() => _HomeScreenState();
+  ConsumerState<MainScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<MainScreen> {
+class _HomeScreenState extends ConsumerState<MainScreen>
+    with WidgetsBindingObserver {
+  OverlayEntry? _overlayEntry;
+  AppLifecycleState state = AppLifecycleState.inactive;
+  int rebuild = 0;
   var _currIndex = 0;
-  final _pages = [
-    const HomeScreen(),
-    const Homescreen2(),
-    const SettingsScreen(),
+  final _pages = const [
+    HomeScreen(),
+    Homescreen2(),
+    SettingsScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      handleAppStatusChange();
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    this.state = state;
+    handleAppStatusChange();
+  }
+
+  void handleAppStatusChange() {
+    final settings = ref.watch(settingsNotifierProvider);
+    // If app runs to background then set isAuthenticated to false
+    if (state != AppLifecycleState.resumed &&
+        settings.isPrivacyEnabled) {
+      ref
+          .read(settingsNotifierProvider.notifier)
+          .patchSettings(isAuthenticated: false);
+    }
+    // I user returns to foreground then show auth screen
+    if (state == AppLifecycleState.resumed &&
+        settings.isPrivacyEnabled &&
+        !settings.isAuthenticated) showPinAuth(context);
+
+  }
+
+  void showPinAuth(BuildContext context) {
+    // context.goNamed(RouteNames.UNLOCK_SCREEN);
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => PinAuthScreen(
+        authenticate: (value) {
+          final settings = ref.watch(settingsNotifierProvider);
+          final settingsSetter = ref.read(settingsNotifierProvider.notifier);
+          if (value != null && settings.pin == value) {
+            if (settings.isAuthenticated == false) {
+              context.pop();
+              settingsSetter.patchSettings(isAuthenticated: true);
+            }
+          } else {
+            return "Invalid pin";
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  void dismissPinAuthOverlay() {
+    debugPrint(
+        "********************| Dismissing pin auth |************************");
+    context.pop();
+    debugPrint("********************| Dismissed |************************");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +104,8 @@ class _HomeScreenState extends State<MainScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home_filled),
             label: "Home",
-          ),BottomNavigationBarItem(
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.home_filled),
             label: "Home2",
           ),
@@ -44,7 +121,6 @@ class _HomeScreenState extends State<MainScreen> {
           });
         },
       ),
-
       body: _pages.elementAt(_currIndex),
     );
   }

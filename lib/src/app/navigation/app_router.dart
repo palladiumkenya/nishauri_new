@@ -55,30 +55,34 @@ class RouterNotifier extends ChangeNotifier {
     // Is user not logged in?
     if (loginState.value?.isEmpty == true && areWeInOpenRoutes) return null;
     // if not logged in and trying to accept secure root then redirect to login
-    if (loginState.value?.isEmpty == true && !areWeInOpenRoutes) return "/auth/login";
+    if (loginState.value?.isEmpty == true && !areWeInOpenRoutes)
+      return "/auth/login";
     // If user already logged in and moving on open routes then redirect to home
     if (loginState.value?.isNotEmpty == true && areWeInOpenRoutes) return '/';
 
     return null;
   }
 
-  FutureOr<String?> _localRedirectLogic(BuildContext context, GoRouterState state) {
+  FutureOr<String?> _localRedirectLogic(
+      BuildContext context, GoRouterState state) {
     return null;
   }
 
   List<GoRoute> get routes => [
         GoRoute(
-            name: RouteNames.WELCOME_SCREEN,
-            path: '/auth',
-            builder: (BuildContext context, GoRouterState state) {
-              return const WelcomeScreen();
-            },
-            routes: openRoutes),
+          name: RouteNames.WELCOME_SCREEN,
+          path: '/auth',
+          builder: (BuildContext context, GoRouterState state) {
+            return const WelcomeScreen();
+          },
+          routes: openRoutes,
+        ),
         GoRoute(
-            name: RouteNames.LANDING_SCREEN,
-            path: '/',
-            builder: (context, state) => const MainScreen(),
-            routes: secureRoutes),
+          name: RouteNames.LANDING_SCREEN,
+          path: '/',
+          builder: (context, state) => const MainScreen(),
+          routes: secureRoutes,
+        ),
       ];
 }
 
