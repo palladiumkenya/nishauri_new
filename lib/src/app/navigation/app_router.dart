@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -26,39 +28,60 @@ import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuth
 import 'package:nishauri/src/features/user_preference/presentation/pages/PrivacySettingsScreen.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
-
-final routesProvider = Provider((ref) {
-  final authState = ref.watch(authStateProvider);
-  final settingsState = ref.watch(settingsNotifierProvider);
+final routesProvider = Provider<GoRouter>((ref) {
+  final router = RouterNotifier(ref);
   return GoRouter(
-    initialLocation: "/",
-    // redirect: (BuildContext context, GoRouterState state) async {
-    //   bool requirePinAuth() =>
-    //       authState.value?.isNotEmpty == true &&
-    //       settingsState.isPrivacyEnabled &&
-    //       !settingsState.isAuthenticated;
-    //   return requirePinAuth() ? '/unlock?next=${state.path}' : null;
-    // },
-    routes: [
-      GoRoute(
-        name: RouteNames.ROOT,
-        path: "/",
-        builder: (BuildContext context, GoRouterState state) {
-          return authState.when(data: (data) {
-            return data.isNotEmpty ? const MainScreen() : const WelcomeScreen();
-          }, error: (error, _) {
-            return Center(
-              child: Text(error.toString()),
-            );
-          }, loading: () {
-            return const SplashScreen();
-          });
-        },
-        routes: authState.value?.isNotEmpty == true ? secureRoutes : openRoutes,
-      ),
-    ],
+    debugLogDiagnostics: true,
+    refreshListenable: router,
+    redirect: router.redirectLogic,
+    routes: router.routes,
   );
 });
+
+class RouterNotifier extends ChangeNotifier {
+  final Ref _ref;
+
+  RouterNotifier(this._ref) {
+    _ref.listen<AsyncValue<String>>(
+      authStateProvider,
+      (_, __) => notifyListeners(),
+    );
+  }
+
+  FutureOr<String?> redirectLogic(BuildContext context, GoRouterState state) {
+    final loginState = _ref.watch(authStateProvider);
+
+    final areWeInOpenRoutes = state.matchedLocation.startsWith("/auth");
+    // Is user not logged in?
+    if (loginState.value?.isEmpty == true && areWeInOpenRoutes) return null;
+    // if not logged in and trying to accept secure root then redirect to login
+    if (loginState.value?.isEmpty == true && !areWeInOpenRoutes) return "/auth/login";
+    // If user already logged in and moving on open routes then redirect to home
+    if (loginState.value?.isNotEmpty == true && areWeInOpenRoutes) return '/';
+
+    return null;
+  }
+
+  FutureOr<String?> _localRedirectLogic(BuildContext context, GoRouterState state) {
+    return null;
+  }
+
+  List<GoRoute> get routes => [
+        GoRoute(
+            name: RouteNames.WELCOME_SCREEN,
+            path: '/auth',
+            builder: (BuildContext context, GoRouterState state) {
+              return const WelcomeScreen();
+            },
+            routes: openRoutes),
+        GoRoute(
+            name: RouteNames.LANDING_SCREEN,
+            path: '/',
+            builder: (context, state) => const MainScreen(),
+            routes: secureRoutes),
+      ];
+}
+
 final List<RouteBase> secureRoutes = [
   GoRoute(
     name: RouteNames.VERIFY_ACCOUNT,
@@ -110,13 +133,12 @@ final List<RouteBase> secureRoutes = [
     },
   ),
   GoRoute(
-    name: RouteNames.HIV_PROGRAM,
-    path: 'hiv-program',
-    builder: (BuildContext context, GoRouterState state) {
-      return const HIVMenuScreen();
-    },
-    routes: hivProgramRoutes
-  ),
+      name: RouteNames.HIV_PROGRAM,
+      path: 'hiv-program',
+      builder: (BuildContext context, GoRouterState state) {
+        return const HIVMenuScreen();
+      },
+      routes: hivProgramRoutes),
 ];
 final List<RouteBase> openRoutes = [
   GoRoute(
@@ -147,37 +169,43 @@ final List<RouteBase> hivProgramRoutes = [
     builder: (BuildContext context, GoRouterState state) {
       return const HIVProgramRegistration();
     },
-  ),GoRoute(
+  ),
+  GoRoute(
     name: RouteNames.HIV_DRUG_ORDERS,
     path: 'drug-order',
     builder: (BuildContext context, GoRouterState state) {
       return const HIVDrugOrdersScreen();
     },
-  ),GoRoute(
+  ),
+  GoRoute(
     name: RouteNames.HIV_ART_SITES,
     path: 'art-sites',
     builder: (BuildContext context, GoRouterState state) {
       return const ARTSitesScreen();
     },
-  ),GoRoute(
+  ),
+  GoRoute(
     name: RouteNames.HIV_DASHBOARD,
     path: 'dashboard',
     builder: (BuildContext context, GoRouterState state) {
       return const HIVDashboardScreen();
     },
-  ),GoRoute(
+  ),
+  GoRoute(
     name: RouteNames.HIV_REGIMEN,
     path: 'regimen',
     builder: (BuildContext context, GoRouterState state) {
       return const RegimenHistoryScreen();
     },
-  ),GoRoute(
+  ),
+  GoRoute(
     name: RouteNames.HIV_ART_GROUPS,
     path: 'art-groups',
     builder: (BuildContext context, GoRouterState state) {
       return const ARTGroupsScreen();
     },
-  ),GoRoute(
+  ),
+  GoRoute(
     name: RouteNames.HIV_ART_EVENTS,
     path: 'art-events',
     builder: (BuildContext context, GoRouterState state) {
