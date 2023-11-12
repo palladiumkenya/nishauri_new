@@ -53,8 +53,7 @@ class _HomeScreenState extends ConsumerState<MainScreen>
   void handleAppStatusChange() {
     final settings = ref.watch(settingsNotifierProvider);
     // If app runs to background then set isAuthenticated to false
-    if (state != AppLifecycleState.resumed &&
-        settings.isPrivacyEnabled) {
+    if (state != AppLifecycleState.resumed && settings.isPrivacyEnabled) {
       ref
           .read(settingsNotifierProvider.notifier)
           .patchSettings(isAuthenticated: false);
@@ -63,36 +62,36 @@ class _HomeScreenState extends ConsumerState<MainScreen>
     if (state == AppLifecycleState.resumed &&
         settings.isPrivacyEnabled &&
         !settings.isAuthenticated) showPinAuth(context);
-
   }
 
   void showPinAuth(BuildContext context) {
     // context.goNamed(RouteNames.UNLOCK_SCREEN);
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
-      builder: (BuildContext context) => PinAuthScreen(
-        authenticate: (value) {
-          final settings = ref.watch(settingsNotifierProvider);
-          final settingsSetter = ref.read(settingsNotifierProvider.notifier);
-          if (value != null && settings.pin == value) {
-            if (settings.isAuthenticated == false) {
-              context.pop();
-              settingsSetter.patchSettings(isAuthenticated: true);
-            }
-          } else {
-            return "Invalid pin";
-          }
-          return null;
+      isDismissible: false,
+      builder: (BuildContext context) => WillPopScope(
+        onWillPop: () async {
+          // Disable the default back button behavior
+          return false;
         },
+        child: PinAuthScreen(
+          authenticate: (value) {
+            final settings = ref.watch(settingsNotifierProvider);
+            final settingsSetter = ref.read(settingsNotifierProvider.notifier);
+            if (value != null && settings.pin == value) {
+              if (settings.isAuthenticated == false) {
+                context.pop();
+                settingsSetter.patchSettings(isAuthenticated: true);
+              }
+            } else {
+              return "Invalid pin";
+            }
+            return null;
+          },
+        ),
       ),
     );
-  }
-
-  void dismissPinAuthOverlay() {
-    debugPrint(
-        "********************| Dismissing pin auth |************************");
-    context.pop();
-    debugPrint("********************| Dismissed |************************");
   }
 
   @override
