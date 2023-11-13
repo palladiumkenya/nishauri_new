@@ -12,6 +12,7 @@ import 'package:nishauri/src/features/auth/presentation/pages/VerificationScreen
 import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart';
+import 'package:nishauri/src/features/events_calendar/presentation/pages/EventsCalendar.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/ARTSites.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/HIVMenu.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/ProgrameRegistration.dart';
@@ -89,6 +90,12 @@ final List<RouteBase> secureRoutes = [
     path: 'account-verify',
     builder: (BuildContext context, GoRouterState state) {
       return const VerificationScreen();
+    },
+  ),GoRoute(
+    name: RouteNames.EVENTS_CALENDAR,
+    path: 'my-calendar',
+    builder: (BuildContext context, GoRouterState state) {
+      return const EventsCalendar();
     },
   ),
   GoRoute(

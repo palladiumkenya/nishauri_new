@@ -19,10 +19,12 @@ List<MenuItem> menuOptions(BuildContext context) => [
           onPressed: () => context.goNamed(RouteNames.HIV_PROGRAM)),
       MenuItem(
           icon: Icons.calendar_month_rounded,
-          title: "Appointments",
-          onPressed: () => ""),
+          title: "My calendar",
+          onPressed: () => context.goNamed(RouteNames.EVENTS_CALENDAR)),
       MenuItem(
-          icon: Icons.shopping_cart, title: "Drug Orders", onPressed: () => ""),
+          icon: Icons.event_note,
+          title: "Menstrual Cycle",
+          onPressed: () => ""),
       MenuItem(
         icon: Icons.calculate_outlined,
         title: "BMI Calc",
