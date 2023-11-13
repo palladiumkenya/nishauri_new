@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/shared/states/AppFormState.dart';
 
 class AppFormStateNotifier extends StateNotifier<AppFormState> {
-  AppFormStateNotifier(Map<String, dynamic> initialValues)
-      : super(AppFormState(values: initialValues));
+  AppFormStateNotifier({
+    required Map<String, dynamic> initialValues,
+    Map<String, List<String? Function(String?)>>? validators,
+  }) : super(AppFormState(values: initialValues, validators: validators));
 
   void setFieldValue(String field, dynamic value) {
     if (isValidField(field)) {
@@ -26,9 +28,10 @@ class AppFormStateNotifier extends StateNotifier<AppFormState> {
     }
   }
 
-  void addFieldValidator(String field, FormFieldValidator validator) {
+  void addFieldValidator(String field, String? Function(String?) validator) {
     if (isValidField(field)) {
-      Map<String, List<FormFieldValidator>>? validators = state.validators;
+      Map<String, List<String? Function(String?)>>? validators =
+          state.validators;
       if (validators == null) {
         validators = {
           field: [validator]
@@ -47,7 +50,8 @@ class AppFormStateNotifier extends StateNotifier<AppFormState> {
     }
   }
 
-  void addFieldValidators(String field, List<FormFieldValidator> validators) {
+  void addFieldValidators(
+      String field, List<String? Function(String?)> validators) {
     if (isValidField(field)) {
       for (var validator in validators) {
         addFieldValidator(field, validator);
@@ -57,7 +61,8 @@ class AppFormStateNotifier extends StateNotifier<AppFormState> {
 
   void clearFieldValidators(String field) {
     if (isValidField(field)) {
-      Map<String, List<FormFieldValidator>>? validators = state.validators;
+      Map<String, List<String? Function(String?)>>? validators =
+          state.validators;
       if (validators != null && validators.containsKey(field)) {
         // Reset the validators for the specified field to an empty array
         validators[field] = [];
@@ -67,4 +72,30 @@ class AppFormStateNotifier extends StateNotifier<AppFormState> {
   }
 
   bool isValidField(String field) => state.values.containsKey(field);
+
+  void validateField(String field) {
+    debugPrint("****************| VALIDATING FIELD |*********************");
+    if (isValidField(field)) {
+      final validators = state.validators;
+      if (validators != null) {
+        var fieldValidators = validators[field];
+        if (fieldValidators != null) {
+          for (var validate in fieldValidators) {
+            final error = validate(state.values[field]);
+            if (error != null) {
+              setFieldError(field, error);
+              return;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  void clearFieldError(String field){
+    if(state.errors?.containsKey(field)==true){
+      final errors = state.errors;
+      errors!.removeWhere((key, _) => key == field);
+    }
+  }
 }

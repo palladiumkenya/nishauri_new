@@ -19,6 +19,7 @@ class FormInputTextField extends StatefulWidget {
   final Function()? onTap;
   final void Function(String?)? onSaved;
   final String? error;
+  final String? initialValue;
 
   const FormInputTextField({
     super.key,
@@ -37,7 +38,8 @@ class FormInputTextField extends StatefulWidget {
     this.readOnly = false,
     this.onTap,
     this.onSaved,
-    this.error
+    this.error,
+    this.initialValue
   });
 
   @override
@@ -50,6 +52,7 @@ class _FormInputTextFieldState extends State<FormInputTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: widget.initialValue,
       onSaved: widget.onSaved,
       onTap: widget.onTap,
       readOnly: widget.readOnly,
