@@ -1,6 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/shared/charts/BarChatWidget.dart';
+import 'package:nishauri/src/shared/charts/LineChartWidget.dart';
 
 class HIVDashboardScreen extends StatelessWidget {
   const HIVDashboardScreen({super.key});
@@ -17,10 +19,39 @@ class HIVDashboardScreen extends StatelessWidget {
       ),
       body: ListView(
         children: const [
-          //Initialize the chart widget
           Card(
             child: SizedBox(
               height: 300,
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    ExpansionTile(
+                      title: Text("BMI Trends"),
+                      leading: Icon(Icons.shutter_speed),
+                      children: [
+                        Text(
+                          "What is Lorem Ipsum?  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic.",
+                        )
+                      ],
+                    ),
+                    Expanded(
+                      child: LineChartWidget(
+                        [
+                          FlSpot(1, 30),
+                          FlSpot(2, 50),
+                          FlSpot(3, 40),
+                          FlSpot(4, 60),
+                          FlSpot(5, 60),
+                          FlSpot(6, 70),
+                        ],
+                        xLabel: "Duration",
+                        yLabel: "BMI",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
           Card(
@@ -28,13 +59,34 @@ class HIVDashboardScreen extends StatelessWidget {
               height: 300,
               child: Padding(
                 padding: EdgeInsets.all(8.0),
-                //Initialize the spark charts widget
+                child: Column(
+                  children: [
+                    ExpansionTile(
+                      title: Text("Lab Results"),
+                      leading: Icon(Icons.science_outlined),
+                      children: [
+                        Text(
+                          "What is Lorem Ipsum?  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic.",
+                        )
+                      ],
+                    ),
+                    Expanded(
+                      child: BarchartWidget(
+                        [
+                          FlSpot(1, 30),
+                          FlSpot(2, 50),
+                          FlSpot(3, 40),
+                          FlSpot(4, 60),
+                          FlSpot(5, 60),
+                          FlSpot(6, 70),
+                        ],
+                        xLabel: "Duration",
+                        yLabel: "Viral load",
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ),
-          Card(
-            child: SizedBox(
-              height: 300,
             ),
           )
         ],
@@ -42,4 +94,3 @@ class HIVDashboardScreen extends StatelessWidget {
     );
   }
 }
-

@@ -41,14 +41,15 @@ class _EventsCalendarState extends ConsumerState<EventsCalendar> {
         DateTime(2023, 12, 25): [
           'Re-fill Appointment',
           'Medication adherence',
-          "Blood Pressure"
+          "Blood Pressure",
+          "Chogo Event"
         ],
         // Christmas
         DateTime(2024, 1, 1): ['Clinical Review Appointment'],
         // New Year's Day
-        DateTime(2024, 2, 14): ['Lab Test Appointment'],
+        DateTime(2024, 2, 14): ['Lab Test Appointment', 'Chockablock ART'],
         // Valentine's Day
-        DateTime(2024, 4, 21): ['Clinical Review'],
+        DateTime(2024, 4, 21): ['Clinical Review', "Marathon ART"],
         // Easter Sunday
       });
     _selectedEvents = [];
@@ -84,6 +85,21 @@ class _EventsCalendarState extends ConsumerState<EventsCalendar> {
               canMarkersOverflow: true,
               todayDecoration: BoxDecoration(color: theme.colorScheme.primary),
               holidayDecoration: const BoxDecoration(color: Colors.redAccent),
+              selectedDecoration: BoxDecoration(
+                color: theme.colorScheme.inversePrimary,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(
+                    Constants.ROUNDNESS,
+                  ),
+                ),
+              ),
+              markerDecoration: BoxDecoration(
+                color: theme.colorScheme.primary,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+
             ),
             selectedDayPredicate: (day) {
               // Use `selectedDayPredicate` to determine which day is currently selected.
