@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:nishauri/src/shared/input/FormInputTextField.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class ARTSitesScreen extends StatefulWidget {
@@ -10,8 +12,17 @@ class ARTSitesScreen extends StatefulWidget {
 }
 
 class _ARTSitesScreenState extends State<ARTSitesScreen> {
+  late GoogleMapController myController;
+
+  final LatLng _center = const LatLng(45.521563, -122.677433);
+
+  void _onMapCreated(GoogleMapController controller) {
+    myController = controller;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -19,56 +30,76 @@ class _ARTSitesScreenState extends State<ARTSitesScreen> {
           icon: const Icon(Icons.chevron_left),
         ),
         title: const Text("ART Sites"),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: theme.primaryColor,
       ),
-      body: FractionallySizedBox(
-        heightFactor: 1,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(Constants.SPACING),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                          suffixIcon: Icon(Icons.search),
-                          border: OutlineInputBorder()),
+      body: Stack(
+        children: <Widget>[
+          GoogleMap(
+            onMapCreated: _onMapCreated,
+            initialCameraPosition: CameraPosition(
+              target: _center,
+              zoom: 10.0,
+            ),
+          ),
+          const Center(
+            child: Text("Map here"),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: FloatingActionButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (context) => FractionallySizedBox(
+                      heightFactor: 0.75,
+                      widthFactor: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(Constants.SPACING * 2),
+                        child: Column(
+                          children: [
+                            Text(
+                              "Search ART site",
+                              style: theme.textTheme.headlineLarge,
+                            ),
+                            const SizedBox(height: Constants.SPACING),
+                            const FormInputTextField(
+                              prefixIcon: Icons.search,
+                              label: "",
+                              placeholder: 'Search',
+                            ),
+                            const SizedBox(height: Constants.SPACING * 2),
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: 10,
+                                itemBuilder:
+                                    (BuildContext context, int index) => Card(
+                                  child: ExpansionTile(
+                                    title: Text("Site $index"),
+                                    leading: const Icon(Icons.local_hospital_outlined),
+                                    children: [
+                                      Text("Site $index description goes here")
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: Constants.SPACING * 2,
-                  ),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1),
-                      color: Theme.of(context).colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
-                    ),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.filter_list_alt, size: 45,),
-                    ),
-                  ),
-                ],
+                  );
+                },
+                materialTapTargetSize: MaterialTapTargetSize.padded,
+                child: const Icon(Icons.map, size: 30.0),
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (BuildContext context, int currIndex) => Card(
-                  child: ListTile(
-                    leading: const Icon(Icons.local_hospital_outlined),
-                    title: Text("ART Site $currIndex level $currIndex"),
-                    subtitle: Text("07655678$currIndex"),
-                    trailing: const Icon(Icons.chevron_right),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
+//

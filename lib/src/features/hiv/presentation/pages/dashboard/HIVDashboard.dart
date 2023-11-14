@@ -17,7 +17,7 @@ class HIVDashboardScreen extends StatelessWidget {
           onPressed: () => context.pop(),
           icon: const Icon(Icons.chevron_left),
         ),
-        title: const Text("HIV Dashboard"),
+        title: const Text("Program Dashboard"),
       ),
       body: ListView(
         children: [

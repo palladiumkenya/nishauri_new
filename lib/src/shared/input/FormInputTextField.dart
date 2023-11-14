@@ -11,7 +11,7 @@ class FormInputTextField extends StatefulWidget {
   final IconData prefixIcon;
   final Widget? surfixIcon;
   final String? placeholder;
-  final String label;
+  final String? label;
   final TextEditingController? controler;
   final TextInputType? keyboardType;
   final double? borderRadius;
@@ -27,7 +27,7 @@ class FormInputTextField extends StatefulWidget {
     this.validator,
     required this.prefixIcon,
     this.placeholder,
-    required this.label,
+    this.label,
     this.controler,
     this.onPrefixIconPressed,
     this.onsurfixIconPressed,
@@ -89,7 +89,7 @@ class _FormInputTextFieldState extends State<FormInputTextField> {
           onPressed: widget.onPrefixIconPressed,
         ),
         hintText: widget.placeholder,
-        label: Text(widget.label),
+        label: widget.label != null ? Text(widget.label!): null,
       ),
     );
   }
