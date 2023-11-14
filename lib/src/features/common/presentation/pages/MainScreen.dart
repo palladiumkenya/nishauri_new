@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
-import 'package:nishauri/src/features/auth/presentation/pages/VerificationScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/HomeScreen.dart';
-import 'package:nishauri/src/features/common/presentation/pages/Homescreen2.dart';
+import 'package:nishauri/src/features/common/presentation/pages/MainMenuScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
-import 'package:nishauri/src/utils/routes.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -25,7 +22,7 @@ class _HomeScreenState extends ConsumerState<MainScreen>
   var _currIndex = 0;
   final _pages = const [
     HomeScreen(),
-    Homescreen2(),
+    MainMenuScreen(),
     SettingsScreen(),
   ];
 
@@ -96,7 +93,17 @@ class _HomeScreenState extends ConsumerState<MainScreen>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            _currIndex = 1;
+          });
+        },
+        child: const Icon(Icons.apps),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Theme.of(context).colorScheme.primary,
         items: const [
@@ -105,8 +112,8 @@ class _HomeScreenState extends ConsumerState<MainScreen>
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: "Home2",
+            icon: Icon(Icons.apps_rounded),
+            label: "",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
