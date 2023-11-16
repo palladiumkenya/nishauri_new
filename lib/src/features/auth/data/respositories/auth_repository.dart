@@ -2,18 +2,18 @@ import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
 import 'package:nishauri/src/local_storage/LocalStorage.dart';
 
 class AuthRepository {
-  final AuthApiService _authService;
+  final AuthApiService _service;
 
-  AuthRepository(this._authService);
+  AuthRepository(this._service);
 
   Future<String> authenticate(String username, String password) async {
-    final response = await _authService.authenticate(username, password);
+    final response = await _service.authenticate(username, password);
     return response;
   }
 
   Future<String> register(String username, String phoneNumber, String password,
       String confirmPassword,String email) async {
-    final response = await _authService.register(
+    final response = await _service.register(
         username, phoneNumber, password, confirmPassword, email);
     return response;
   }

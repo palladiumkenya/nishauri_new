@@ -20,10 +20,12 @@ ARTSite _$ARTSiteFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ARTSite {
+  String? get id => throw _privateConstructorUsedError;
   String get mflCode => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String? get type => throw _privateConstructorUsedError;
   String? get telephone => throw _privateConstructorUsedError;
+  Address get address => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +37,15 @@ abstract class $ARTSiteCopyWith<$Res> {
   factory $ARTSiteCopyWith(ARTSite value, $Res Function(ARTSite) then) =
       _$ARTSiteCopyWithImpl<$Res, ARTSite>;
   @useResult
-  $Res call({String mflCode, String name, String? type, String? telephone});
+  $Res call(
+      {String? id,
+      String mflCode,
+      String name,
+      String? type,
+      String? telephone,
+      Address address});
+
+  $AddressCopyWith<$Res> get address;
 }
 
 /// @nodoc
@@ -51,12 +61,18 @@ class _$ARTSiteCopyWithImpl<$Res, $Val extends ARTSite>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? mflCode = null,
     Object? name = null,
     Object? type = freezed,
     Object? telephone = freezed,
+    Object? address = null,
   }) {
     return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       mflCode: null == mflCode
           ? _value.mflCode
           : mflCode // ignore: cast_nullable_to_non_nullable
@@ -73,7 +89,19 @@ class _$ARTSiteCopyWithImpl<$Res, $Val extends ARTSite>
           ? _value.telephone
           : telephone // ignore: cast_nullable_to_non_nullable
               as String?,
+      address: null == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as Address,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res> get address {
+    return $AddressCopyWith<$Res>(_value.address, (value) {
+      return _then(_value.copyWith(address: value) as $Val);
+    });
   }
 }
 
@@ -84,7 +112,16 @@ abstract class _$$ARTSiteImplCopyWith<$Res> implements $ARTSiteCopyWith<$Res> {
       __$$ARTSiteImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String mflCode, String name, String? type, String? telephone});
+  $Res call(
+      {String? id,
+      String mflCode,
+      String name,
+      String? type,
+      String? telephone,
+      Address address});
+
+  @override
+  $AddressCopyWith<$Res> get address;
 }
 
 /// @nodoc
@@ -98,12 +135,18 @@ class __$$ARTSiteImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? mflCode = null,
     Object? name = null,
     Object? type = freezed,
     Object? telephone = freezed,
+    Object? address = null,
   }) {
     return _then(_$ARTSiteImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       mflCode: null == mflCode
           ? _value.mflCode
           : mflCode // ignore: cast_nullable_to_non_nullable
@@ -120,6 +163,10 @@ class __$$ARTSiteImplCopyWithImpl<$Res>
           ? _value.telephone
           : telephone // ignore: cast_nullable_to_non_nullable
               as String?,
+      address: null == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as Address,
     ));
   }
 }
@@ -128,11 +175,18 @@ class __$$ARTSiteImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ARTSiteImpl with DiagnosticableTreeMixin implements _ARTSite {
   const _$ARTSiteImpl(
-      {required this.mflCode, required this.name, this.type, this.telephone});
+      {this.id,
+      required this.mflCode,
+      required this.name,
+      this.type,
+      this.telephone,
+      required this.address});
 
   factory _$ARTSiteImpl.fromJson(Map<String, dynamic> json) =>
       _$$ARTSiteImplFromJson(json);
 
+  @override
+  final String? id;
   @override
   final String mflCode;
   @override
@@ -141,10 +195,12 @@ class _$ARTSiteImpl with DiagnosticableTreeMixin implements _ARTSite {
   final String? type;
   @override
   final String? telephone;
+  @override
+  final Address address;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ARTSite(mflCode: $mflCode, name: $name, type: $type, telephone: $telephone)';
+    return 'ARTSite(id: $id, mflCode: $mflCode, name: $name, type: $type, telephone: $telephone, address: $address)';
   }
 
   @override
@@ -152,10 +208,12 @@ class _$ARTSiteImpl with DiagnosticableTreeMixin implements _ARTSite {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ARTSite'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('mflCode', mflCode))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('type', type))
-      ..add(DiagnosticsProperty('telephone', telephone));
+      ..add(DiagnosticsProperty('telephone', telephone))
+      ..add(DiagnosticsProperty('address', address));
   }
 
   @override
@@ -163,16 +221,19 @@ class _$ARTSiteImpl with DiagnosticableTreeMixin implements _ARTSite {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ARTSiteImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.mflCode, mflCode) || other.mflCode == mflCode) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.telephone, telephone) ||
-                other.telephone == telephone));
+                other.telephone == telephone) &&
+            (identical(other.address, address) || other.address == address));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, mflCode, name, type, telephone);
+  int get hashCode =>
+      Object.hash(runtimeType, id, mflCode, name, type, telephone, address);
 
   @JsonKey(ignore: true)
   @override
@@ -190,13 +251,17 @@ class _$ARTSiteImpl with DiagnosticableTreeMixin implements _ARTSite {
 
 abstract class _ARTSite implements ARTSite {
   const factory _ARTSite(
-      {required final String mflCode,
+      {final String? id,
+      required final String mflCode,
       required final String name,
       final String? type,
-      final String? telephone}) = _$ARTSiteImpl;
+      final String? telephone,
+      required final Address address}) = _$ARTSiteImpl;
 
   factory _ARTSite.fromJson(Map<String, dynamic> json) = _$ARTSiteImpl.fromJson;
 
+  @override
+  String? get id;
   @override
   String get mflCode;
   @override
@@ -205,6 +270,8 @@ abstract class _ARTSite implements ARTSite {
   String? get type;
   @override
   String? get telephone;
+  @override
+  Address get address;
   @override
   @JsonKey(ignore: true)
   _$$ARTSiteImplCopyWith<_$ARTSiteImpl> get copyWith =>

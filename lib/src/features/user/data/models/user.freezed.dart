@@ -25,9 +25,10 @@ mixin _$User {
   String? get firstName => throw _privateConstructorUsedError;
   String? get lastName => throw _privateConstructorUsedError;
   String? get gender => throw _privateConstructorUsedError;
-  String? get email => throw _privateConstructorUsedError;
-  String? get phoneNumber => throw _privateConstructorUsedError;
+  String get email => throw _privateConstructorUsedError;
+  String get phoneNumber => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
+  String? get token => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,9 +46,10 @@ abstract class $UserCopyWith<$Res> {
       String? firstName,
       String? lastName,
       String? gender,
-      String? email,
-      String? phoneNumber,
-      String? image});
+      String email,
+      String phoneNumber,
+      String? image,
+      String? token});
 }
 
 /// @nodoc
@@ -68,9 +70,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? firstName = freezed,
     Object? lastName = freezed,
     Object? gender = freezed,
-    Object? email = freezed,
-    Object? phoneNumber = freezed,
+    Object? email = null,
+    Object? phoneNumber = null,
     Object? image = freezed,
+    Object? token = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -93,17 +96,21 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
               as String?,
-      email: freezed == email
+      email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phoneNumber: freezed == phoneNumber
+              as String,
+      phoneNumber: null == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
+              as String?,
+      token: freezed == token
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -122,9 +129,10 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String? firstName,
       String? lastName,
       String? gender,
-      String? email,
-      String? phoneNumber,
-      String? image});
+      String email,
+      String phoneNumber,
+      String? image,
+      String? token});
 }
 
 /// @nodoc
@@ -142,9 +150,10 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? firstName = freezed,
     Object? lastName = freezed,
     Object? gender = freezed,
-    Object? email = freezed,
-    Object? phoneNumber = freezed,
+    Object? email = null,
+    Object? phoneNumber = null,
     Object? image = freezed,
+    Object? token = freezed,
   }) {
     return _then(_$UserImpl(
       id: freezed == id
@@ -167,17 +176,21 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
               as String?,
-      email: freezed == email
+      email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phoneNumber: freezed == phoneNumber
+              as String,
+      phoneNumber: null == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
+              as String?,
+      token: freezed == token
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -192,9 +205,10 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       this.firstName,
       this.lastName,
       this.gender,
-      this.email,
-      this.phoneNumber,
-      this.image});
+      required this.email,
+      required this.phoneNumber,
+      this.image,
+      this.token});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -210,15 +224,17 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   @override
   final String? gender;
   @override
-  final String? email;
+  final String email;
   @override
-  final String? phoneNumber;
+  final String phoneNumber;
   @override
   final String? image;
+  @override
+  final String? token;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'User(id: $id, username: $username, firstName: $firstName, lastName: $lastName, gender: $gender, email: $email, phoneNumber: $phoneNumber, image: $image)';
+    return 'User(id: $id, username: $username, firstName: $firstName, lastName: $lastName, gender: $gender, email: $email, phoneNumber: $phoneNumber, image: $image, token: $token)';
   }
 
   @override
@@ -233,7 +249,8 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       ..add(DiagnosticsProperty('gender', gender))
       ..add(DiagnosticsProperty('email', email))
       ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
-      ..add(DiagnosticsProperty('image', image));
+      ..add(DiagnosticsProperty('image', image))
+      ..add(DiagnosticsProperty('token', token));
   }
 
   @override
@@ -252,13 +269,14 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.phoneNumber, phoneNumber) ||
                 other.phoneNumber == phoneNumber) &&
-            (identical(other.image, image) || other.image == image));
+            (identical(other.image, image) || other.image == image) &&
+            (identical(other.token, token) || other.token == token));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, username, firstName,
-      lastName, gender, email, phoneNumber, image);
+      lastName, gender, email, phoneNumber, image, token);
 
   @JsonKey(ignore: true)
   @override
@@ -281,9 +299,10 @@ abstract class _User implements User {
       final String? firstName,
       final String? lastName,
       final String? gender,
-      final String? email,
-      final String? phoneNumber,
-      final String? image}) = _$UserImpl;
+      required final String email,
+      required final String phoneNumber,
+      final String? image,
+      final String? token}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -298,11 +317,13 @@ abstract class _User implements User {
   @override
   String? get gender;
   @override
-  String? get email;
+  String get email;
   @override
-  String? get phoneNumber;
+  String get phoneNumber;
   @override
   String? get image;
+  @override
+  String? get token;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

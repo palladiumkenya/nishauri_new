@@ -11,7 +11,6 @@ final authRepoProvider = Provider<AuthRepository>(
     (ref) => AuthRepository(ref.watch(authServiceProvider)));
 
 // 3. General auth provider(View model provider)
-final authStateProvider =
-    StateNotifierProvider<AuthController, AsyncValue<String>>((ref) {
+final authStateProvider = StateNotifierProvider<AuthController, String>((ref) {
   return AuthController(ref.read(authRepoProvider));
 });

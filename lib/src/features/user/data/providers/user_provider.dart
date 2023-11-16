@@ -9,6 +9,6 @@ final userProvider = StateNotifierProvider<UserController, AsyncValue<User?>>((r
   final token = ref.watch(authStateProvider);
   final service = UserService();
 
-  final repo = UserRepository(service, token.requireValue);
+  final repo = UserRepository(service, token);
   return UserController(repo);
 });

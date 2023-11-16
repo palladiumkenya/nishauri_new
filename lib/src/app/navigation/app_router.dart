@@ -41,7 +41,7 @@ class RouterNotifier extends ChangeNotifier {
   final Ref _ref;
 
   RouterNotifier(this._ref) {
-    _ref.listen<AsyncValue<String>>(
+    _ref.listen<String>(
       authStateProvider,
       (_, __) => notifyListeners(),
     );
@@ -49,14 +49,13 @@ class RouterNotifier extends ChangeNotifier {
 
   FutureOr<String?> redirectLogic(BuildContext context, GoRouterState state) {
     final loginState = _ref.watch(authStateProvider);
-    if(loginState.isLoading || loginState.error != null) return "/auth/login";
     final areWeInOpenRoutes = state.matchedLocation.startsWith("/auth");
-    // Is user not logged in?
-    if (loginState.value?.isEmpty == true && areWeInOpenRoutes) return null;
+    // Is user not logged in and accessing open route then let them be?
+    if (loginState.isEmpty && areWeInOpenRoutes) return null;
     // if not logged in and trying to accept secure root then redirect to login
-    if (loginState.value?.isEmpty == true && !areWeInOpenRoutes) return "/auth/login";
+    if (loginState.isEmpty && !areWeInOpenRoutes) return "/auth/login";
     // If user already logged in and moving on open routes then redirect to home
-    if (loginState.value?.isNotEmpty == true && areWeInOpenRoutes) return '/';
+    if (loginState.isNotEmpty == true && areWeInOpenRoutes) return '/';
 
     return null;
   }
@@ -91,7 +90,8 @@ final List<RouteBase> secureRoutes = [
     builder: (BuildContext context, GoRouterState state) {
       return const VerificationScreen();
     },
-  ),GoRoute(
+  ),
+  GoRoute(
     name: RouteNames.EVENTS_CALENDAR,
     path: 'my-calendar',
     builder: (BuildContext context, GoRouterState state) {
