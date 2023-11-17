@@ -1,4 +1,4 @@
-import 'package:nishauri/src/features/hiv/data/models/art_site.dart';
+import 'package:nishauri/src/features/hiv/data/models/art_sites/art_site.dart';
 import 'package:nishauri/src/features/hiv/data/services/art_sites_service.dart';
 
 class ARTSitesRepository {

@@ -1,5 +1,6 @@
-import 'package:nishauri/src/features/hiv/data/models/address.dart';
-import 'package:nishauri/src/features/hiv/data/models/art_site.dart';
+
+import 'package:nishauri/src/features/hiv/data/models/address/address.dart';
+import 'package:nishauri/src/features/hiv/data/models/art_sites/art_site.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 
 class ARTSitesService extends HTTPService {

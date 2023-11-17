@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
-import 'package:nishauri/src/features/hiv/data/models/address.dart';
+import 'package:nishauri/src/features/hiv/data/models/address/address.dart';
 import 'package:nishauri/src/features/hiv/data/models/models.dart';
 part 'art_event.freezed.dart';
 part 'art_event.g.dart';

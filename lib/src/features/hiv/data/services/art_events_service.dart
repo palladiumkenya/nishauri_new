@@ -1,4 +1,4 @@
-import 'package:nishauri/src/features/hiv/data/models/address.dart';
+import 'package:nishauri/src/features/hiv/data/models/address/address.dart';
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
 import 'package:nishauri/src/features/hiv/data/models/group/art_group.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
