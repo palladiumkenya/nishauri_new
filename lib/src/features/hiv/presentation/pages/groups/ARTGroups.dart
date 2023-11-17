@@ -50,8 +50,19 @@ class ARTGroupsScreen extends StatelessWidget {
               ),
             ),
             error: (error, _) => Center(child: Text(error.toString())),
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
+            loading: () =>Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Loading Your Subscribed Groups",
+                    style: theme.textTheme.headlineSmall,
+                  ),
+                  const SizedBox(height: Constants.SPACING * 2),
+                  const CircularProgressIndicator(),
+                ],
+              ),
             ),
           );
         },

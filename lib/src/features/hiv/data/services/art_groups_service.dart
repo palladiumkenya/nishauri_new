@@ -1,7 +1,8 @@
 import 'package:nishauri/src/features/hiv/data/models/models.dart';
+import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 
-class ARTGroupService {
-  String token;
+class ARTGroupService extends HTTPService {
+  final String _token;
   final List<ARTGroup> _groups = [
     const ARTGroup(
       title: "Marathon group ",
@@ -78,7 +79,7 @@ class ARTGroupService {
     const ARTGroupLead(group: "g-4", user: "u-4"),
   ];
 
-  ARTGroupService(this.token);
+  ARTGroupService(this._token);
 
   Future<List<ARTGroup>> getUserARTGroups() async {
     return _groups;
@@ -90,6 +91,7 @@ class ARTGroupService {
   }
 
   Future<List<ARTGroupSubscription>> getUserSubscriptions() async {
+    await Future.delayed(const Duration(seconds: 3));
     return _subscriptions;
   }
 

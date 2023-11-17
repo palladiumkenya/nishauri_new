@@ -26,7 +26,7 @@ mixin _$ARTEvent {
   Address get distributionLocation => throw _privateConstructorUsedError;
   List<String>? get reminderNotificationDates =>
       throw _privateConstructorUsedError;
-  String get group => throw _privateConstructorUsedError;
+  ARTGroup get group => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,9 +45,10 @@ abstract class $ARTEventCopyWith<$Res> {
       String distributionTime,
       Address distributionLocation,
       List<String>? reminderNotificationDates,
-      String group});
+      ARTGroup group});
 
   $AddressCopyWith<$Res> get distributionLocation;
+  $ARTGroupCopyWith<$Res> get group;
 }
 
 /// @nodoc
@@ -94,7 +95,7 @@ class _$ARTEventCopyWithImpl<$Res, $Val extends ARTEvent>
       group: null == group
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
-              as String,
+              as ARTGroup,
     ) as $Val);
   }
 
@@ -103,6 +104,14 @@ class _$ARTEventCopyWithImpl<$Res, $Val extends ARTEvent>
   $AddressCopyWith<$Res> get distributionLocation {
     return $AddressCopyWith<$Res>(_value.distributionLocation, (value) {
       return _then(_value.copyWith(distributionLocation: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ARTGroupCopyWith<$Res> get group {
+    return $ARTGroupCopyWith<$Res>(_value.group, (value) {
+      return _then(_value.copyWith(group: value) as $Val);
     });
   }
 }
@@ -121,10 +130,12 @@ abstract class _$$ARTEventImplCopyWith<$Res>
       String distributionTime,
       Address distributionLocation,
       List<String>? reminderNotificationDates,
-      String group});
+      ARTGroup group});
 
   @override
   $AddressCopyWith<$Res> get distributionLocation;
+  @override
+  $ARTGroupCopyWith<$Res> get group;
 }
 
 /// @nodoc
@@ -169,7 +180,7 @@ class __$$ARTEventImplCopyWithImpl<$Res>
       group: null == group
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
-              as String,
+              as ARTGroup,
     ));
   }
 }
@@ -210,7 +221,7 @@ class _$ARTEventImpl with DiagnosticableTreeMixin implements _ARTEvent {
   }
 
   @override
-  final String group;
+  final ARTGroup group;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -279,7 +290,7 @@ abstract class _ARTEvent implements ARTEvent {
       required final String distributionTime,
       required final Address distributionLocation,
       final List<String>? reminderNotificationDates,
-      required final String group}) = _$ARTEventImpl;
+      required final ARTGroup group}) = _$ARTEventImpl;
 
   factory _ARTEvent.fromJson(Map<String, dynamic> json) =
       _$ARTEventImpl.fromJson;
@@ -295,7 +306,7 @@ abstract class _ARTEvent implements ARTEvent {
   @override
   List<String>? get reminderNotificationDates;
   @override
-  String get group;
+  ARTGroup get group;
   @override
   @JsonKey(ignore: true)
   _$$ARTEventImplCopyWith<_$ARTEventImpl> get copyWith =>

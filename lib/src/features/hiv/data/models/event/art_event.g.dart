@@ -18,7 +18,7 @@ _$ARTEventImpl _$$ARTEventImplFromJson(Map<String, dynamic> json) =>
                   ?.map((e) => e as String)
                   .toList() ??
               const [],
-      group: json['group'] as String,
+      group: ARTGroup.fromJson(json['group'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$ARTEventImplToJson(_$ARTEventImpl instance) =>

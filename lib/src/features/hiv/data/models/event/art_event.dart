@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:nishauri/src/features/hiv/data/models/address.dart';
+import 'package:nishauri/src/features/hiv/data/models/models.dart';
 part 'art_event.freezed.dart';
 part 'art_event.g.dart';
 
@@ -12,7 +13,7 @@ class ARTEvent with _$ARTEvent {
     required String distributionTime,
     required Address distributionLocation,
     @Default([]) List<String>? reminderNotificationDates,
-    required String group,
+    required ARTGroup group,
   }) = _ARTEvent;
 
   factory ARTEvent.fromJson(Map<String, dynamic> json)=> _$ARTEventFromJson(json);
