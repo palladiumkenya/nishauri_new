@@ -1,6 +1,4 @@
-import 'package:nishauri/src/features/hiv/data/models/group/art_group.dart';
-import 'package:nishauri/src/features/hiv/data/models/group/art_group_lead.dart';
-import 'package:nishauri/src/features/hiv/data/models/group/art_group_subscription.dart';
+import 'package:nishauri/src/features/hiv/data/models/models.dart';
 
 class ARTGroupService {
   String token;
@@ -32,10 +30,46 @@ class ARTGroupService {
   ];
   final List<ARTGroupSubscription> _subscriptions = [
     const ARTGroupSubscription(
-        group: "g-1", patient: "u-1", name: "Omosh", isCurrent: true),
-    const ARTGroupSubscription(group: "g-2", patient: "u-1", name: "Omoshi"),
-    const ARTGroupSubscription(group: "g-3", patient: "u-1", name: "Lawi"),
-    const ARTGroupSubscription(group: "g-4", patient: "u-1", name: "<Omosh/>"),
+        group: ARTGroup(
+          title: "Marathon group ",
+          lead: "l-1",
+          id: "g-1",
+          description: "Some group description",
+        ),
+        patient: "u-1",
+        name: "Omosh",
+        createdAt: "25th Oct 2023",
+        isCurrent: true),
+    const ARTGroupSubscription(
+        group: ARTGroup(
+          title: "Jambo group ",
+          lead: "l-2",
+          id: "g-2",
+          description: "Some group description",
+        ),
+        patient: "u-1",
+        createdAt: "25th Oct 2023",
+        name: "Omoshi"),
+    const ARTGroupSubscription(
+        group: ARTGroup(
+          title: "Kabogo group ",
+          lead: "l-3",
+          id: "g-3",
+          description: "Some group description",
+        ),
+        patient: "u-1",
+        createdAt: "25th Oct 2023",
+        name: "Lawi"),
+    const ARTGroupSubscription(
+        group: ARTGroup(
+          title: "Oyula group ",
+          lead: "l-4",
+          id: "g-4",
+          description: "Some group description",
+        ),
+        createdAt: "25th Oct 2023",
+        patient: "u-1",
+        name: "<Omosh/>"),
   ];
   final List<ARTGroupLead> _leads = [
     const ARTGroupLead(group: "g-1", user: "u-1"),

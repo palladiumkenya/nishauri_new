@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/hiv/data/providers/art_group_provider.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class ARTGroupsScreen extends StatelessWidget {
@@ -16,30 +18,43 @@ class ARTGroupsScreen extends StatelessWidget {
         ),
         title: const Text("ART Groups"),
       ),
-      body: ListView.builder(
-        itemCount: 3,
-        itemBuilder: (BuildContext context, int index) => Card(
-          child: ListTile(
-            leading: Icon(
-              Icons.group,
-              color: index == 2 ? theme.colorScheme.primary : null,
+      body: Consumer(
+        builder: (BuildContext context, WidgetRef ref, Widget? child) {
+          final artGroups = ref.watch(art_group_provider);
+          return artGroups.when(
+            data: (data) => ListView.builder(
+              itemCount: data.length,
+              itemBuilder: (BuildContext context, int index) => Card(
+                child: ListTile(
+                  leading: Icon(
+                    Icons.group,
+                    color: data[index].isCurrent == true
+                        ? theme.colorScheme.primary
+                        : null,
+                  ),
+                  title: Text(data[index].group.title),
+                  subtitle: Text("From: ${data[index].createdAt} To: 31st Apr 2024"),
+                  trailing: data[index].isCurrent == true
+                      ? Container(
+                          padding: const EdgeInsets.all(Constants.SPACING),
+                          decoration: BoxDecoration(
+                            color: theme.primaryColor,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(Constants.ROUNDNESS),
+                            ),
+                          ),
+                          child: const Text("Current"),
+                        )
+                      : const Icon(Icons.chevron_right),
+                ),
+              ),
             ),
-            title: Text("Group $index"),
-            subtitle: const Text("From: 28th Nov 2023 To: 31st Apr 2024"),
-            trailing: index == 2
-                ? Container(
-                    padding: const EdgeInsets.all(Constants.SPACING),
-                    decoration: BoxDecoration(
-                      color: theme.primaryColor,
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(Constants.ROUNDNESS),
-                      ),
-                    ),
-                    child: const Text("Current"),
-                  )
-                : const Icon(Icons.chevron_right),
-          ),
-        ),
+            error: (error, _) => Center(child: Text(error.toString())),
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        },
       ),
     );
   }

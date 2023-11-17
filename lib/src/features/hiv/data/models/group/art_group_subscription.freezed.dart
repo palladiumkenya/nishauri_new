@@ -21,9 +21,10 @@ ARTGroupSubscription _$ARTGroupSubscriptionFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ARTGroupSubscription {
   String? get id => throw _privateConstructorUsedError;
-  String get group => throw _privateConstructorUsedError;
+  ARTGroup get group => throw _privateConstructorUsedError;
   String get patient => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
+  String get createdAt => throw _privateConstructorUsedError;
   bool? get isCurrent => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,10 +41,13 @@ abstract class $ARTGroupSubscriptionCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
-      String group,
+      ARTGroup group,
       String patient,
       String? name,
+      String createdAt,
       bool? isCurrent});
+
+  $ARTGroupCopyWith<$Res> get group;
 }
 
 /// @nodoc
@@ -64,6 +68,7 @@ class _$ARTGroupSubscriptionCopyWithImpl<$Res,
     Object? group = null,
     Object? patient = null,
     Object? name = freezed,
+    Object? createdAt = null,
     Object? isCurrent = freezed,
   }) {
     return _then(_value.copyWith(
@@ -74,7 +79,7 @@ class _$ARTGroupSubscriptionCopyWithImpl<$Res,
       group: null == group
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
-              as String,
+              as ARTGroup,
       patient: null == patient
           ? _value.patient
           : patient // ignore: cast_nullable_to_non_nullable
@@ -83,11 +88,23 @@ class _$ARTGroupSubscriptionCopyWithImpl<$Res,
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
       isCurrent: freezed == isCurrent
           ? _value.isCurrent
           : isCurrent // ignore: cast_nullable_to_non_nullable
               as bool?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ARTGroupCopyWith<$Res> get group {
+    return $ARTGroupCopyWith<$Res>(_value.group, (value) {
+      return _then(_value.copyWith(group: value) as $Val);
+    });
   }
 }
 
@@ -101,10 +118,14 @@ abstract class _$$ARTGroupSubscriptionImplCopyWith<$Res>
   @useResult
   $Res call(
       {String? id,
-      String group,
+      ARTGroup group,
       String patient,
       String? name,
+      String createdAt,
       bool? isCurrent});
+
+  @override
+  $ARTGroupCopyWith<$Res> get group;
 }
 
 /// @nodoc
@@ -122,6 +143,7 @@ class __$$ARTGroupSubscriptionImplCopyWithImpl<$Res>
     Object? group = null,
     Object? patient = null,
     Object? name = freezed,
+    Object? createdAt = null,
     Object? isCurrent = freezed,
   }) {
     return _then(_$ARTGroupSubscriptionImpl(
@@ -132,7 +154,7 @@ class __$$ARTGroupSubscriptionImplCopyWithImpl<$Res>
       group: null == group
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
-              as String,
+              as ARTGroup,
       patient: null == patient
           ? _value.patient
           : patient // ignore: cast_nullable_to_non_nullable
@@ -141,6 +163,10 @@ class __$$ARTGroupSubscriptionImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
       isCurrent: freezed == isCurrent
           ? _value.isCurrent
           : isCurrent // ignore: cast_nullable_to_non_nullable
@@ -159,6 +185,7 @@ class _$ARTGroupSubscriptionImpl
       required this.group,
       required this.patient,
       this.name,
+      required this.createdAt,
       this.isCurrent = false});
 
   factory _$ARTGroupSubscriptionImpl.fromJson(Map<String, dynamic> json) =>
@@ -167,18 +194,20 @@ class _$ARTGroupSubscriptionImpl
   @override
   final String? id;
   @override
-  final String group;
+  final ARTGroup group;
   @override
   final String patient;
   @override
   final String? name;
+  @override
+  final String createdAt;
   @override
   @JsonKey()
   final bool? isCurrent;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ARTGroupSubscription(id: $id, group: $group, patient: $patient, name: $name, isCurrent: $isCurrent)';
+    return 'ARTGroupSubscription(id: $id, group: $group, patient: $patient, name: $name, createdAt: $createdAt, isCurrent: $isCurrent)';
   }
 
   @override
@@ -190,6 +219,7 @@ class _$ARTGroupSubscriptionImpl
       ..add(DiagnosticsProperty('group', group))
       ..add(DiagnosticsProperty('patient', patient))
       ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('createdAt', createdAt))
       ..add(DiagnosticsProperty('isCurrent', isCurrent));
   }
 
@@ -202,6 +232,8 @@ class _$ARTGroupSubscriptionImpl
             (identical(other.group, group) || other.group == group) &&
             (identical(other.patient, patient) || other.patient == patient) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
             (identical(other.isCurrent, isCurrent) ||
                 other.isCurrent == isCurrent));
   }
@@ -209,7 +241,7 @@ class _$ARTGroupSubscriptionImpl
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, group, patient, name, isCurrent);
+      Object.hash(runtimeType, id, group, patient, name, createdAt, isCurrent);
 
   @JsonKey(ignore: true)
   @override
@@ -230,9 +262,10 @@ class _$ARTGroupSubscriptionImpl
 abstract class _ARTGroupSubscription implements ARTGroupSubscription {
   const factory _ARTGroupSubscription(
       {final String? id,
-      required final String group,
+      required final ARTGroup group,
       required final String patient,
       final String? name,
+      required final String createdAt,
       final bool? isCurrent}) = _$ARTGroupSubscriptionImpl;
 
   factory _ARTGroupSubscription.fromJson(Map<String, dynamic> json) =
@@ -241,11 +274,13 @@ abstract class _ARTGroupSubscription implements ARTGroupSubscription {
   @override
   String? get id;
   @override
-  String get group;
+  ARTGroup get group;
   @override
   String get patient;
   @override
   String? get name;
+  @override
+  String get createdAt;
   @override
   bool? get isCurrent;
   @override

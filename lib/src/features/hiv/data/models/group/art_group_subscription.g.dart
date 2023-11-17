@@ -10,9 +10,10 @@ _$ARTGroupSubscriptionImpl _$$ARTGroupSubscriptionImplFromJson(
         Map<String, dynamic> json) =>
     _$ARTGroupSubscriptionImpl(
       id: json['id'] as String?,
-      group: json['group'] as String,
+      group: ARTGroup.fromJson(json['group'] as Map<String, dynamic>),
       patient: json['patient'] as String,
       name: json['name'] as String?,
+      createdAt: json['createdAt'] as String,
       isCurrent: json['isCurrent'] as bool? ?? false,
     );
 
@@ -23,5 +24,6 @@ Map<String, dynamic> _$$ARTGroupSubscriptionImplToJson(
       'group': instance.group,
       'patient': instance.patient,
       'name': instance.name,
+      'createdAt': instance.createdAt,
       'isCurrent': instance.isCurrent,
     };
