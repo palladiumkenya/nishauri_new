@@ -8,17 +8,20 @@ class MenuOption extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final double? iconSize;
   final Color? iconColor;
+  final Color? bgColor;
   final void Function()? onPress;
 
-  const MenuOption(
-      {super.key,
-      required this.title,
-      required this.icon,
-      this.padding,
-      this.margin,
-      this.iconSize,
-      this.iconColor,
-      this.onPress});
+  const MenuOption({
+    super.key,
+    required this.title,
+    required this.icon,
+    this.padding,
+    this.margin,
+    this.iconSize,
+    this.iconColor,
+    this.bgColor,
+    this.onPress,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,18 +33,14 @@ class MenuOption extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          DecoratedBox(
-            decoration: BoxDecoration(
-              color: theme.colorScheme.primary,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(Constants.ROUNDNESS * 10),
-              ),
-            ),
-            child: IconButton(
-              onPressed: onPress,
-              color: iconColor ?? theme.colorScheme.onPrimary,
-              iconSize: iconSize,
-              icon: Icon(icon),
+          FloatingActionButton(
+            heroTag: null,
+            onPressed: onPress,
+            backgroundColor: bgColor,
+            child: Icon(
+              icon,
+              size: iconSize,
+              color: iconColor,
             ),
           ),
           Text(

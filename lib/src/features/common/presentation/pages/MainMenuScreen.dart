@@ -39,47 +39,13 @@ class MainMenuScreen extends StatelessWidget {
                 itemBuilder: (item) => MenuOption(
                   title: item.title ?? "",
                   icon: item.icon,
-                  iconSize: 50,
+                  // iconSize: 50,
                   onPress: item.onPressed,
+                  // iconColor: theme.colorScheme.primary,
+                  bgColor: item.title == "Add Programme" ? theme.colorScheme.secondary: null,
                 ),
                 items: menuOptions(context),
               ),
-              /*child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                ),
-                itemCount: menuOptions.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.all(Constants.SPACING),
-                    padding: const EdgeInsets.all(Constants.SPACING),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.primary,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(Constants.ROUNDNESS * 10),
-                            ),
-                          ),
-                          child: IconButton(
-                            onPressed: () {},
-                            iconSize: 50,
-                            color: theme.colorScheme.onPrimary,
-                            icon: Icon(menuOptions[index].icon),
-                          ),
-                        ),
-                        Text(
-                          menuOptions[index].title ?? "",
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),*/
             ),
           ],
         ),

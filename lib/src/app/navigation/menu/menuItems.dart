@@ -11,11 +11,11 @@ class MenuItem {
 }
 
 List<MenuItem> menuOptions(BuildContext context) => [
-      MenuItem(
-          icon: Icons.medication, title: "Medications", onPressed: () => ""),
+      MenuItem(icon: Icons.speed, title: "HBP", onPressed: () => ""),
+      MenuItem(icon: Icons.group_work, title: "Cancer", onPressed: () => ""),
       MenuItem(
           icon: Icons.vaccines,
-          title: "HIV Program",
+          title: "HIV",
           onPressed: () => context.goNamed(RouteNames.HIV_PROGRAM)),
       MenuItem(
           icon: Icons.calendar_month_rounded,
@@ -31,11 +31,7 @@ List<MenuItem> menuOptions(BuildContext context) => [
         onPressed: () => context.goNamed(RouteNames.BMI_CALCULATOR),
       ),
       MenuItem(
-          icon: Icons.medication, title: "Medication", onPressed: () => ""),
-      MenuItem(icon: Icons.medication, title: "Medication"),
-      MenuItem(icon: Icons.science_outlined, title: "Lab"),
-      MenuItem(icon: Icons.calendar_month_rounded, title: "Appointments"),
-      MenuItem(icon: Icons.science_outlined, title: "Lab"),
-      MenuItem(icon: Icons.calendar_month_rounded, title: "Appointments"),
-      MenuItem(icon: Icons.medication, title: "Medication"),
+          icon: Icons.add,
+          title: "Add Programme",
+          onPressed: () => context.goNamed(RouteNames.PROGRAME_REGISTRATION_SCREEN)),
     ];

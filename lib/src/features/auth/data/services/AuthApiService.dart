@@ -9,6 +9,7 @@ class AuthApiService extends HTTPService {
   var headers = {'Content-Type': 'application/json'};
 
   Future<String> authenticate(String username, String password) async {
+    return "token";
     var headers = {'Content-Type': 'application/json'};
     var request =
         http.Request('POST', Uri.parse('${Constants.BASE_URL}auth/login'));

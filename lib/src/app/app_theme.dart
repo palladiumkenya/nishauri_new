@@ -26,8 +26,9 @@ final mainTheme = Provider<ThemeData>((ref) => ThemeData(
           ),
           padding: const EdgeInsets.all(Constants.SPACING),
           textStyle: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: Constants.BUTTON_FONT_SIZE),
+            fontWeight: FontWeight.bold,
+            fontSize: Constants.BUTTON_FONT_SIZE,
+          ),
         ),
       ),
       useMaterial3: true,

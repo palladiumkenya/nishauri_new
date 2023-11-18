@@ -15,7 +15,7 @@ import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart'
 import 'package:nishauri/src/features/events_calendar/presentation/pages/EventsCalendar.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/ARTSites.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/HIVMenu.dart';
-import 'package:nishauri/src/features/hiv/presentation/pages/ProgrameRegistration.dart';
+import 'package:nishauri/src/features/hiv/presentation/pages/HIVProgramRegistration.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/RegimenHistory.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/dashboard/HIVDashboard.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/events/ARTEvents.dart';
@@ -25,6 +25,7 @@ import 'package:nishauri/src/features/user/presentation/pages/ProfileScreen.dart
 import 'package:nishauri/src/features/user/presentation/pages/ProfileWizardFormScreen.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PrivacySettingsScreen.dart';
+import 'package:nishauri/src/features/user_programes/presentation/pages/ProgramRegistrationScreen.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 final routesProvider = Provider<GoRouter>((ref) {
@@ -147,6 +148,13 @@ final List<RouteBase> secureRoutes = [
         return const HIVMenuScreen();
       },
       routes: hivProgramRoutes),
+  GoRoute(
+    name: RouteNames.PROGRAME_REGISTRATION_SCREEN,
+    path: 'program-register',
+    builder: (BuildContext context, GoRouterState state) {
+      return const ProgramRegistrationScreen();
+    },
+  ),
 ];
 final List<RouteBase> openRoutes = [
   GoRoute(
