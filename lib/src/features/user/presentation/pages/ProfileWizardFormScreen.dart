@@ -12,16 +12,6 @@ class ProfileWizardFormScreen extends StatefulWidget {
 
 class _ProfileWizardFormScreenState extends State<ProfileWizardFormScreen> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController username;
-  late TextEditingController phoneNumber;
-  late TextEditingController email;
-  late TextEditingController firstName;
-  late TextEditingController lastName;
-  late TextEditingController dateOfBirth;
-  late TextEditingController gender;
-  late TextEditingController image;
-
-  String? _image;
 
   List<Step> get steps => [
         Step(
@@ -29,11 +19,7 @@ class _ProfileWizardFormScreenState extends State<ProfileWizardFormScreen> {
           subtitle: const Text(
             "Create your account to personalize your healthcare experience.",
           ),
-          content: AccountInformation(
-            username: username,
-            phoneNumber: phoneNumber,
-            email: email,
-          ),
+          content: const AccountInformation(),
           isActive: currentStep == 0,
         ),
         Step(
@@ -41,12 +27,7 @@ class _ProfileWizardFormScreenState extends State<ProfileWizardFormScreen> {
           subtitle: const Text(
             "Provide basic personal details for a comprehensive profile.",
           ),
-          content: PersonalInformation(
-              image: image,
-              firstName: firstName,
-              dateOfBirth: dateOfBirth,
-              gender: gender,
-              lastName: lastName),
+          content: PersonalInformation(),
           isActive: currentStep == 1,
         ),
         Step(
@@ -109,35 +90,6 @@ class _ProfileWizardFormScreenState extends State<ProfileWizardFormScreen> {
         ),
       ];
 
-  @override
-  void initState() {
-    super.initState();
-    firstName = TextEditingController();
-    username = TextEditingController();
-    lastName = TextEditingController();
-    phoneNumber = TextEditingController();
-    email = TextEditingController();
-    dateOfBirth = TextEditingController();
-    gender = TextEditingController();
-    image = TextEditingController();
-    image.addListener(() {
-      debugPrint("*********|${image.text}|*******");
-    });
-  }
-
-  @override
-  void dispose() {
-    firstName.dispose();
-    username.dispose();
-    lastName.dispose();
-    phoneNumber.dispose();
-    email.dispose();
-    dateOfBirth.dispose();
-    image.dispose();
-    gender.dispose();
-    super.dispose();
-  }
-
   int currentStep = 0;
 
   @override
@@ -151,6 +103,7 @@ class _ProfileWizardFormScreenState extends State<ProfileWizardFormScreen> {
         title: const Text("Update profile"),
       ),
       body: Form(
+        key: _formKey,
         child: Stepper(
           currentStep: currentStep,
           onStepCancel: () {
@@ -162,12 +115,15 @@ class _ProfileWizardFormScreenState extends State<ProfileWizardFormScreen> {
           },
           onStepContinue: () {
             bool isLastStep = (currentStep == steps.length - 1);
-            if (isLastStep) {
-              //Do something with this information
-            } else {
-              setState(() {
-                currentStep += 1;
-              });
+            // Validate the current step
+            if (_formKey.currentState!.validate()) {
+              if (isLastStep) {
+                // Do something with the information on the last step
+              } else {
+                setState(() {
+                  currentStep += 1;
+                });
+              }
             }
           },
           onStepTapped: (step) => setState(() {

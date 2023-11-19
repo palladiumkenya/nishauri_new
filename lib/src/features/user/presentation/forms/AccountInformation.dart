@@ -3,15 +3,10 @@ import 'package:nishauri/src/shared/input/FormInputTextField.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class AccountInformation extends StatelessWidget {
-  final TextEditingController username;
-  final TextEditingController phoneNumber;
-  final TextEditingController email;
+
 
   const AccountInformation(
-      {super.key,
-      required this.username,
-      required this.phoneNumber,
-      required this.email});
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +15,6 @@ class AccountInformation extends StatelessWidget {
         children: [
           const SizedBox(height: Constants.SPACING),
           FormInputTextField(
-            controler: username,
             placeholder: "Enter your username",
             prefixIcon: Icons.account_circle_outlined,
             label: "Username",
@@ -33,7 +27,6 @@ class AccountInformation extends StatelessWidget {
           ),
           const SizedBox(height: Constants.SPACING),
           FormInputTextField(
-            controler: email,
             keyboardType: TextInputType.emailAddress,
             placeholder: "Enter your email",
             prefixIcon: Icons.email,
@@ -47,7 +40,6 @@ class AccountInformation extends StatelessWidget {
           ),
           const SizedBox(height: Constants.SPACING),
           FormInputTextField(
-            controler: phoneNumber,
             keyboardType: TextInputType.phone,
             placeholder: "Enter your phone number",
             prefixIcon: Icons.phone,
