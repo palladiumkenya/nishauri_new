@@ -11,7 +11,10 @@ class MenuItem {
 }
 
 List<MenuItem> menuOptions(BuildContext context) => [
-      MenuItem(icon: Icons.speed, title: "HBP", onPressed: () => ""),
+      MenuItem(icon: Icons.speed, title: "Hypertension", onPressed: () => ""),
+      MenuItem(icon: Icons.speed, title: "Asthma", onPressed: () => ""),
+      MenuItem(icon: Icons.sick, title: "TB", onPressed: () => ""),
+      MenuItem(icon: Icons.monitor_weight_outlined, title: "Diabetes", onPressed: () => ""),
       MenuItem(icon: Icons.group_work, title: "Cancer", onPressed: () => ""),
       MenuItem(
           icon: Icons.vaccines,
