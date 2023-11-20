@@ -15,7 +15,6 @@ import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart'
 import 'package:nishauri/src/features/events_calendar/presentation/pages/EventsCalendar.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/ARTSites.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/HIVMenu.dart';
-import 'package:nishauri/src/features/hiv/presentation/pages/HIVProgramRegistration.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/RegimenHistory.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/dashboard/HIVDashboard.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/events/ARTEvents.dart';
@@ -179,13 +178,6 @@ final List<RouteBase> openRoutes = [
 ];
 
 final List<RouteBase> hivProgramRoutes = [
-  GoRoute(
-    name: RouteNames.HIV_PROGRAM_VERIFICATION,
-    path: 'hiv-verify',
-    builder: (BuildContext context, GoRouterState state) {
-      return const HIVProgramRegistration();
-    },
-  ),
   GoRoute(
     name: RouteNames.HIV_DRUG_ORDERS,
     path: 'drug-order',

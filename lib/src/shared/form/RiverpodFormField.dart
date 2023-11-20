@@ -14,7 +14,7 @@ class RiverpodFormField extends ConsumerWidget {
   final String? placeholder;
   final String label;
   final TextInputType? keyboardType;
-  final AutoDisposeStateNotifierProvider<AppFormStateNotifier, AppFormState>
+  final StateNotifierProvider<AppFormStateNotifier, AppFormState>
       provider;
 
   const RiverpodFormField(

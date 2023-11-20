@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/user_programes/presentation/forms/HIVProgramRegistration.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -18,8 +19,10 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
   final List<String> programs = <String>[
     'HIV Program',
-    'Blood Pressure',
-    'Cancer',
+    'Hypertension Program',
+    'Diabetes program',
+    'Tuberculosis program',
+    'Cancer program',
   ];
 
   void handleSubmit() async {
@@ -31,7 +34,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme= Theme.of(context);
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -70,12 +73,29 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                       const Text(
                         "Add program",
                         style: TextStyle(
-                            fontSize: 40, fontWeight: FontWeight.bold),
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                      const SizedBox(height: Constants.SPACING),
+                      Text(
+                        "Kindly provide your HIV program details bellow to verify yourself.",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color:
+                              Theme.of(context).colorScheme.onTertiaryContainer,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: Constants.SPACING),
                       const SizedBox(height: Constants.SPACING),
                       SizedBox(
                         width: double.infinity,
                         child: DropdownMenu<String>(
+                          leadingIcon: const IconButton(
+                            onPressed: null,
+                            icon: Icon(Icons.read_more_outlined),
+                          ),
                           initialSelection: programs.first,
                           label: const Text("Program"),
                           onSelected: (String? value) {
@@ -91,6 +111,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                         ),
                       ),
                       const SizedBox(height: Constants.SPACING),
+                      const HIVProgramRegistration(),
                       Button(
                         title: "Register",
                         onPress: handleSubmit,
@@ -105,4 +126,10 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
       ),
     );
   }
+}
+
+
+Widget getProgramRegistrationForm(String program){
+  // if(program == "")
+  return HIVProgramRegistration();
 }

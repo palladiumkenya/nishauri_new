@@ -10,11 +10,12 @@ class AppFormStateNotifier extends StateNotifier<AppFormState> {
 
   void setFieldValue(String field, dynamic value) {
     if (isValidField(field)) {
-      final values = state.values;
-      values.addAll({field: value});
-      state = state.copyWith(values: values);
+      final Map<String, dynamic> values = Map.from(state.values); // Create a copy
+      values[field] = value; // Update the copy with the new value
+      state = state.copyWith(values: values); // Update the state with the new map
     }
   }
+
 
   void setFieldError(String field, String error) {
     if (isValidField(field)) {

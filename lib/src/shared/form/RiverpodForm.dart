@@ -20,10 +20,6 @@ class RiverpodForm extends StatelessWidget {
         StateNotifierProvider<AppFormStateNotifier, AppFormState>(
             (ref) => AppFormStateNotifier(initialValues: initialValues));
     return ProviderScope(
-      overrides: [
-        formStateProvider.overrideWith(
-            (ref) => AppFormStateNotifier(initialValues: initialValues))
-      ],
       child: builder(context, formStateProvider),
     );
   }

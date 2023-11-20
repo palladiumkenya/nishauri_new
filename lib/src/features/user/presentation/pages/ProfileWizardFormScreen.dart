@@ -116,14 +116,12 @@ class _ProfileWizardFormScreenState extends State<ProfileWizardFormScreen> {
           onStepContinue: () {
             bool isLastStep = (currentStep == steps.length - 1);
             // Validate the current step
-            if (_formKey.currentState!.validate()) {
-              if (isLastStep) {
-                // Do something with the information on the last step
-              } else {
-                setState(() {
-                  currentStep += 1;
-                });
-              }
+            if (isLastStep) {
+              // Do something with the information on the last step
+            } else {
+              setState(() {
+                currentStep += 1;
+              });
             }
           },
           onStepTapped: (step) => setState(() {

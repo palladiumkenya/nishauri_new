@@ -15,7 +15,6 @@ class RouteNames {
   static const PROFILE_SETTINGS = "profile";
   static const PROFILE_EDIT_FORM = "profile-edit";
   static const HIV_PROGRAM = "hiv";
-  static const HIV_PROGRAM_VERIFICATION = "hiv-verify";
   static const HIV_DRUG_ORDERS = "drug-orders";
   static const HIV_ART_SITES = "art-sites";
   static const HIV_DASHBOARD = "hiv-dashboard";
