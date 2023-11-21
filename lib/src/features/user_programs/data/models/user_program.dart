@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
-import 'package:nishauri/src/features/user_programes/data/models/program.dart';
+import 'package:nishauri/src/features/user_programs/data/models/program.dart';
 part 'user_program.freezed.dart';
 part 'user_program.g.dart';
 

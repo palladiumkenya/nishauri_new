@@ -24,7 +24,7 @@ import 'package:nishauri/src/features/user/presentation/pages/ProfileScreen.dart
 import 'package:nishauri/src/features/user/presentation/pages/ProfileWizardFormScreen.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PrivacySettingsScreen.dart';
-import 'package:nishauri/src/features/user_programes/presentation/pages/ProgramRegistrationScreen.dart';
+import 'package:nishauri/src/features/user_programs/presentation/pages/ProgramRegistrationScreen.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 final routesProvider = Provider<GoRouter>((ref) {
