@@ -7,9 +7,9 @@ import 'package:nishauri/src/features/hiv/data/services/art_sites_service.dart';
 final artSitesProvider = FutureProvider<List<ARTSite>>((ref) async {
   // Retrieve the authentication token from the authStateProvider
   await Future.delayed(const Duration(seconds: 5));
-  final String token = ref.watch(authStateProvider);
+  final authState = ref.watch(authStateProvider);
 
-  final service = ARTSitesService(token);
+  final service = ARTSitesService(authState.token);
   final repo = ARTSitesRepository(service);
   return await repo.getSites();
 });

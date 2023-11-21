@@ -9,8 +9,8 @@ final art_event_provider =
     StateNotifierProvider<ARTEventController, AsyncValue<List<ARTEvent>>>(
         (ref) {
   // Retrieve the authentication token from the authStateProvider
-  final String token = ref.watch(authStateProvider);
-  final service = ARTEventsService(token);
+  final authState = ref.watch(authStateProvider);
+  final service = ARTEventsService(authState.token);
   final repository = ARTEventRepository(service);
   return ARTEventController(repository);
 });

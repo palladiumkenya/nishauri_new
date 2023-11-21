@@ -9,8 +9,8 @@ final art_group_provider =
     StateNotifierProvider<ARTGroupController, AsyncValue<List<ARTGroupSubscription>>>(
         (ref) {
   // Retrieve the authentication token from the authStateProvider
-  final String token = ref.watch(authStateProvider);
-  final service = ARTGroupService(token);
+  final authState = ref.watch(authStateProvider);
+  final service = ARTGroupService(authState.token);
   final repository = ARTGroupRepository(service);
   return ARTGroupController(repository);
 });

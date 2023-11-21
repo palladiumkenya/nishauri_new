@@ -6,8 +6,8 @@ import 'package:nishauri/src/features/hiv/data/services/art_regimen_service.dart
 
 final art_regimen_provider = FutureProvider<List<ARTRegimen>>((ref) async {
   await Future.delayed(const Duration(seconds: 3));
-  final String token = ref.watch(authStateProvider);
-  final service = ARTRegimenService(token);
+  final authState = ref.watch(authStateProvider);
+  final service = ARTRegimenService(authState.token);
   final repository = ARTRegimenRepository(service);
   return await repository.getUserRegimenHistory();
 });

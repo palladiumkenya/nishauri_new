@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/ChangePassword.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/LoginScreen.dart';
@@ -41,7 +42,7 @@ class RouterNotifier extends ChangeNotifier {
   final Ref _ref;
 
   RouterNotifier(this._ref) {
-    _ref.listen<String>(
+    _ref.listen<AuthState>(
       authStateProvider,
       (_, __) => notifyListeners(),
     );
@@ -51,11 +52,11 @@ class RouterNotifier extends ChangeNotifier {
     final loginState = _ref.watch(authStateProvider);
     final areWeInOpenRoutes = state.matchedLocation.startsWith("/auth");
     // Is user not logged in and accessing open route then let them be?
-    if (loginState.isEmpty && areWeInOpenRoutes) return null;
+    if (loginState.token.isEmpty && areWeInOpenRoutes) return null;
     // if not logged in and trying to accept secure root then redirect to login
-    if (loginState.isEmpty && !areWeInOpenRoutes) return "/auth/login";
+    if (loginState.token.isEmpty && !areWeInOpenRoutes) return "/auth/login";
     // If user already logged in and moving on open routes then redirect to home
-    if (loginState.isNotEmpty == true && areWeInOpenRoutes) return '/';
+    if (loginState.token.isNotEmpty == true && areWeInOpenRoutes) return '/';
 
     return null;
   }
