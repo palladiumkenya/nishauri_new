@@ -27,6 +27,10 @@ class AuthApiService extends HTTPService {
     }
   }
 
+  Future<bool> accountVerify(String otp) async {
+    return true;
+  }
+
   Future<AuthState> register(String username, String phoneNumber, String password,
       String confirmPassword, String email) async {
     final authState = AuthState();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/RadioGroup.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
@@ -19,22 +20,10 @@ class VerificationScreen extends StatefulWidget {
 
 class _VerificationScreenState extends State<VerificationScreen> {
   final _formKey = GlobalKey<FormState>();
-  var otpCode = TextEditingController();
-  var password = TextEditingController();
+  String? otpCode;
   String? verificationMode;
   bool _sent = false;
   bool _canSubmit = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    otpCode.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +32,19 @@ class _VerificationScreenState extends State<VerificationScreen> {
       builder: (context, ref, child) {
         void handleSubmit() async {
           if (_formKey.currentState!.validate()) {
+            setState(() {
+              _formKey.currentState!.save();
+            });
             // If the form is valid, display a snack-bar. In the real world,
             // you'd often call a server or save the information in a database.
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Login successfully!,')),
-            );
-            final credentials = {
-              "username": otpCode.text,
-              "password": password.text
-            };
+            final authStateNotifier = ref.read(authStateProvider.notifier);
+            final authState = ref.read(authStateProvider);
+            authStateNotifier.verify(otpCode!);
+            if (authState.isAccountVerified) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Verification successfully!,')),
+              );
+            }
           }
         }
 
@@ -120,15 +113,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           ),
                           const SizedBox(height: Constants.SPACING),
                           FormInputTextField(
-                            controler: otpCode,
                             placeholder: "Enter OTP Verification code",
+                            onSaved: (value) => otpCode = value,
                             prefixIcon: Icons.account_circle,
+                            readOnly: !(verificationMode?.isNotEmpty == true),
                             surfixIcon: Text(
                               _sent ? "Resend Code" : "Get code",
-                              style: TextStyle(
-                                  color: verificationMode?.isNotEmpty == true
-                                      ? theme.primaryColor
-                                      : Colors.black26),
                             ),
                             onsurfixIconPressed: () {
                               setState(() {
@@ -152,8 +142,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           const SizedBox(height: Constants.SPACING),
                           Button(
                             title: "Verify",
-                            onPress: handleSubmit,
-                            disabled: _canSubmit == false,
+                            onPress: _canSubmit ? handleSubmit : null,
                           ),
                           const SizedBox(
                             height: Constants.SPACING,

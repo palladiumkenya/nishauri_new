@@ -18,6 +18,10 @@ class AuthRepository {
         username, phoneNumber, password, confirmPassword, email);
     return response;
   }
+  Future<bool> verifyAccount(String otp) async {
+    final response = await _service.accountVerify(otp);
+    return response;
+  }
 
   Future<String> getAuthToken() async {
     final token = await LocalStorage.getToken();

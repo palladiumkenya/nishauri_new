@@ -58,9 +58,13 @@ class RouterNotifier extends ChangeNotifier {
     // If user already logged in and moving on open routes then redirect to home
     if (loginState.token.isNotEmpty == true && areWeInOpenRoutes) return '/';
     // If user is logged in bt not verified account the redirect to verification
-    if(loginState.token.isNotEmpty && !loginState.isAccountVerified) return '/account-verify';
+    if (loginState.token.isNotEmpty && !loginState.isAccountVerified) {
+      return '/account-verify';
+    }
     // If user is logged in bt not completed profile account the redirect to profile update screen
-    if(loginState.token.isNotEmpty && !loginState.isProfileComplete) return '/profile-edit';
+    if (loginState.token.isNotEmpty && !loginState.isProfileComplete) {
+      return '/profile-edit';
+    }
 
     return null;
   }
@@ -85,17 +89,24 @@ class RouterNotifier extends ChangeNotifier {
           builder: (context, state) => const MainScreen(),
           routes: secureRoutes,
         ),
+        GoRoute(
+          name: RouteNames.VERIFY_ACCOUNT,
+          path: '/account-verify',
+          builder: (BuildContext context, GoRouterState state) {
+            return const VerificationScreen();
+          },
+        ),
+        GoRoute(
+          name: RouteNames.PROFILE_EDIT_FORM,
+          path: '/profile-edit',
+          builder: (BuildContext context, GoRouterState state) {
+            return const ProfileWizardFormScreen();
+          },
+        ),
       ];
 }
 
 final List<RouteBase> secureRoutes = [
-  GoRoute(
-    name: RouteNames.VERIFY_ACCOUNT,
-    path: 'account-verify',
-    builder: (BuildContext context, GoRouterState state) {
-      return const VerificationScreen();
-    },
-  ),
   GoRoute(
     name: RouteNames.EVENTS_CALENDAR,
     path: 'my-calendar',
@@ -136,13 +147,6 @@ final List<RouteBase> secureRoutes = [
     path: 'profile',
     builder: (BuildContext context, GoRouterState state) {
       return const ProfileScreen();
-    },
-  ),
-  GoRoute(
-    name: RouteNames.PROFILE_EDIT_FORM,
-    path: 'profile-edit',
-    builder: (BuildContext context, GoRouterState state) {
-      return const ProfileWizardFormScreen();
     },
   ),
   GoRoute(

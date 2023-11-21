@@ -37,21 +37,26 @@ class AuthController extends StateNotifier<AuthState> {
 
   Future<void> verify(String otp) async {
     try {
-      final token = await _verifyUser(otp);
-      await _repository.saveToken(token);
-      state = state.copyWith(token: token);
+      final isVerified = await _repository.verifyAccount(otp);
+      state = state.copyWith(isAccountVerified: isVerified);
     } catch (e) {
       rethrow;
     }
   }
+
+    Future<void> updateProfile(bool updateProfile) async {
+    try {
+      state = state.copyWith(isProfileComplete: updateProfile);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
 
   Future<void> logout() async {
     _repository.deleteToken();
     state = state.copyWith(token: "");
   }
 
-  Future<String> _verifyUser(String otp) async {
-    // TODO Implement very using repository
-    return "12345";
-  }
 }

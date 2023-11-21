@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/user/presentation/forms/forms.dart';
 
 class ProfileWizardFormScreen extends StatefulWidget {
@@ -76,37 +78,48 @@ class _ProfileWizardFormScreenState extends State<ProfileWizardFormScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => context.pop(),
+          onPressed: () {
+            try {
+              context.pop();
+            } on GoError catch (e) {
+              debugPrint("[DEBUG-PROFILE-WIZARD]: $e");
+            }
+          },
           icon: const Icon(Icons.chevron_left),
         ),
         title: const Text("Update profile"),
       ),
       body: Form(
         key: _formKey,
-        child: Stepper(
-          currentStep: currentStep,
-          onStepCancel: () {
-            currentStep == 0
-                ? null
-                : setState(() {
-                    currentStep -= 1;
+        child: Consumer(
+          builder: (context, ref, child) {
+            return Stepper(
+              currentStep: currentStep,
+              onStepCancel: () {
+                currentStep == 0
+                    ? null
+                    : setState(() {
+                        currentStep -= 1;
+                      });
+              },
+              onStepContinue: () {
+                bool isLastStep = (currentStep == steps.length - 1);
+                // Validate the current step
+                if (isLastStep) {
+                  // Do something with the information on the last step
+                  ref.read(authStateProvider.notifier).updateProfile(true);
+                } else {
+                  setState(() {
+                    currentStep += 1;
                   });
+                }
+              },
+              onStepTapped: (step) => setState(() {
+                currentStep = step;
+              }),
+              steps: steps,
+            );
           },
-          onStepContinue: () {
-            bool isLastStep = (currentStep == steps.length - 1);
-            // Validate the current step
-            if (isLastStep) {
-              // Do something with the information on the last step
-            } else {
-              setState(() {
-                currentStep += 1;
-              });
-            }
-          },
-          onStepTapped: (step) => setState(() {
-            currentStep = step;
-          }),
-          steps: steps,
         ),
       ),
     );

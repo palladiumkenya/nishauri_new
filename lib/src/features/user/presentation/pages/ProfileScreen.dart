@@ -37,78 +37,50 @@ class ProfileScreen extends StatelessWidget {
             ),
             Card(
               color: cardColor,
-              margin: const EdgeInsets.only(top: Constants.SPACING),
-              child: const Padding(
-                padding: EdgeInsets.only(top: Constants.SPACING),
-                child: ListTile(
-                  leading: Icon(Icons.perm_identity),
-                  title: Text("Username"),
-                  subtitle: Text("omosh"),
-                ),
+              child: const ListTile(
+                leading: Icon(Icons.perm_identity),
+                title: Text("Username"),
+                subtitle: Text("omosh"),
               ),
             ),
             Card(
               color: cardColor,
-              margin: const EdgeInsets.only(top: Constants.SPACING),
-              child: const Padding(
-                padding: EdgeInsets.only(top: Constants.SPACING),
-                child: ListTile(
-                  leading: Icon(Icons.account_circle_outlined),
-                  title: Text("Name"),
-                  subtitle: Text("Laurent Ouma"),
-                ),
+              child: const ListTile(
+                leading: Icon(Icons.account_circle_outlined),
+                title: Text("Name"),
+                subtitle: Text("Laurent Ouma"),
               ),
             ),
             Card(
               color: cardColor,
-
-              margin: const EdgeInsets.only(top: Constants.SPACING),
-              child: const Padding(
-                padding: EdgeInsets.only(top: Constants.SPACING),
-                child: ListTile(
-                  leading: Icon(Icons.email),
-                  title: Text("Email"),
-                  subtitle: Text("lawiomosh3@gmail.com"),
-                ),
+              child: const ListTile(
+                leading: Icon(Icons.email),
+                title: Text("Email"),
+                subtitle: Text("lawiomosh3@gmail.com"),
               ),
             ),
             Card(
               color: cardColor,
-
-              margin: const EdgeInsets.only(top: Constants.SPACING),
-              child: const Padding(
-                padding: EdgeInsets.only(top: Constants.SPACING),
-                child: ListTile(
-                  leading: Icon(Icons.phone),
-                  title: Text("Phone number"),
-                  subtitle: Text("0793889658"),
-                ),
+              child: const ListTile(
+                leading: Icon(Icons.phone),
+                title: Text("Phone number"),
+                subtitle: Text("0793889658"),
               ),
             ),
             Card(
               color: cardColor,
-
-              margin: const EdgeInsets.only(top: Constants.SPACING),
-              child: const Padding(
-                padding: EdgeInsets.only(top: Constants.SPACING),
-                child: ListTile(
-                  leading: Icon(Icons.account_circle_outlined),
-                  title: Text("Gender"),
-                  subtitle: Text("Male"),
-                ),
+              child: const ListTile(
+                leading: Icon(Icons.account_circle_outlined),
+                title: Text("Gender"),
+                subtitle: Text("Male"),
               ),
             ),
             Card(
               color: cardColor,
-
-              margin: const EdgeInsets.only(top: Constants.SPACING),
-              child: const Padding(
-                padding: EdgeInsets.only(top: Constants.SPACING),
-                child: ListTile(
-                  leading: Icon(Icons.calendar_month),
-                  title: Text("Date of birth"),
-                  subtitle: Text("21st Oct 2000"),
-                ),
+              child: const ListTile(
+                leading: Icon(Icons.calendar_month),
+                title: Text("Date of birth"),
+                subtitle: Text("21st Oct 2000"),
               ),
             ),
           ],

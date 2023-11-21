@@ -74,14 +74,11 @@ class SettingsScreen extends ConsumerWidget {
               color: theme.colorScheme.onSecondary,
               borderOnForeground: false,
               // margin: const EdgeInsets.only(top: Constants.SPACING),
-              child: Padding(
-                padding: const EdgeInsets.all(Constants.SPACING),
-                child: ListTile(
-                  leading: Icon(item.leadingIcon),
-                  title: Text(item.title),
-                  onTap: item.onPress,
-                  trailing: item.trailingIcon,
-                ),
+              child: ListTile(
+                leading: Icon(item.leadingIcon),
+                title: Text(item.title),
+                onTap: item.onPress,
+                trailing: item.trailingIcon,
               ),
             );
           },
