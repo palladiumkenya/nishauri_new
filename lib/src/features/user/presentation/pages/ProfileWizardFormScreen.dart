@@ -52,32 +52,11 @@ class _ProfileWizardFormScreenState extends State<ProfileWizardFormScreen> {
           isActive: currentStep == 4,
         ),
         Step(
-          title: const Text("Medical History"),
-          subtitle:
-              const Text("Share your medical history for personalized care"),
-          content: const MedicalHistoryInformation(),
-          isActive: currentStep == 5,
-        ),
-        Step(
-          title: const Text(" Location Details"),
-          subtitle: const Text(
-              " Inform us about your residence for context-specific healthcare information."),
-          content: const LocationInformation(),
-          isActive: currentStep == 6,
-        ),
-        Step(
-          title: const Text("Lifestyle Information"),
+          title: const Text("Social Information"),
           subtitle: const Text(
               "Share aspects of your lifestyle that may influence your health."),
           content: const LifeStyleInformation(),
           isActive: currentStep == 7,
-        ),
-        Step(
-          title: const Text("Emergency Contacts"),
-          subtitle: const Text(
-              "Provide contact details for individuals we can reach in emergencies."),
-          content: const EmergencyContactInformation(),
-          isActive: currentStep == 8,
         ),
         Step(
           title: const Text("Review and Submit"),

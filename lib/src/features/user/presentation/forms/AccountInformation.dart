@@ -15,7 +15,7 @@ class AccountInformation extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: Constants.SPACING),
-          ImagePickerCustomFormField(image: "https://picsum.photos/200"),
+          // ImagePickerCustomFormField(image: "https://picsum.photos/200"),
           const SizedBox(height: Constants.SPACING),
           FormInputTextField(
             placeholder: "Enter your username",
