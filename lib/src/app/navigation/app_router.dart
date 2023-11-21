@@ -57,6 +57,10 @@ class RouterNotifier extends ChangeNotifier {
     if (loginState.token.isEmpty && !areWeInOpenRoutes) return "/auth/login";
     // If user already logged in and moving on open routes then redirect to home
     if (loginState.token.isNotEmpty == true && areWeInOpenRoutes) return '/';
+    // If user is logged in bt not verified account the redirect to verification
+    if(loginState.token.isNotEmpty && !loginState.isAccountVerified) return '/account-verify';
+    // If user is logged in bt not completed profile account the redirect to profile update screen
+    if(loginState.token.isNotEmpty && !loginState.isProfileComplete) return '/profile-edit';
 
     return null;
   }
