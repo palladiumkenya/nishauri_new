@@ -129,7 +129,7 @@ _showDialog(BuildContext context){
     context: context,
     builder: (BuildContext context) =>
         AlertDialog(
-          icon: Icon(Icons.construction),
+          icon: const Icon(Icons.construction),
           title: Text(
             "Select Shortcut MenuOptions",
             style: theme.textTheme.titleMedium,
@@ -158,15 +158,22 @@ _showDialog(BuildContext context){
                                     (element) =>
                                 element ==
                                     item.title)) {
+                              // Delete shortcut
                               shortcutsNotifier
                                   .deleteShortcut(
                                 item.title ?? "",
                               );
                             } else {
-                              shortcutsNotifier
+                              // Add shortcut
+                              if(shortcuts.length >= shortcutsNotifier.maxShortcuts){
+                                context.pop();
+                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Max number of shortcuts reached")));
+                              }else {
+                                shortcutsNotifier
                                   .addShortcut(
                                 item.title ?? "",
                               );
+                              }
                             }
                           },
                           bgColor: shortcuts.any(
