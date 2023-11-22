@@ -74,14 +74,14 @@ class Greetings extends StatelessWidget {
                             itemBuilder: (item) => MenuOption(
                               title: item.title ?? "",
                               icon: item.icon,
-                              bgColor: item.title == "Add Program" ? theme.colorScheme.secondary : null,
+                              bgColor: item.title == "Edit Shortcut" ? theme.colorScheme.secondary : null,
                               onPress: item.onPressed ,
                             ),
                             items: getMenuItemByNames(context, shortcuts)
                               ..add(
                                 MenuItem(
-                                  icon: Icons.add,
-                                  title: "Add Program",
+                                  icon: Icons.edit_note_sharp,
+                                  title: "Edit Shortcut",
                                   onPressed: () => _showDialog(context),
                                 ),
                               ),
