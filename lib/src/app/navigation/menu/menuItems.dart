@@ -11,6 +11,10 @@ class MenuItem {
 }
 
 List<MenuItem> menuOptions(BuildContext context) => [
+  MenuItem(
+      icon: Icons.dashboard_customize_outlined,
+      title: "Dashboard",
+      onPressed: () => context.goNamed(RouteNames.DASHBOARD)),
       MenuItem(icon: Icons.speed, title: "Hypertension", onPressed: () => ""),
       MenuItem(icon: Icons.speed, title: "Asthma", onPressed: () => ""),
       MenuItem(icon: Icons.sick, title: "TB", onPressed: () => ""),

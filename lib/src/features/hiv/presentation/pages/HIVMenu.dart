@@ -15,10 +15,7 @@ _menuItems(BuildContext context) => [
           icon: Icons.local_hospital_outlined,
           title: "ART Sites",
           onPressed: () => context.goNamed(RouteNames.HIV_ART_SITES)),
-      MenuItem(
-          icon: Icons.dashboard_customize_outlined,
-          title: "Dashboard",
-          onPressed: () => context.goNamed(RouteNames.HIV_DASHBOARD)),
+
       MenuItem(
           icon: Icons.medication,
           title: "Regimen",

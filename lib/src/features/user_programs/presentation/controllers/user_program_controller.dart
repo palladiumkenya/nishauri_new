@@ -7,4 +7,6 @@ class UserProgramController extends StateNotifier<AsyncValue<List<UserProgram>>>
   UserProgramController(this._repository):super(const AsyncValue.loading()){
     _repository.getUserPrograms().then((value) => state = AsyncValue.data(value));
   }
+
+  // Future<void>
 }

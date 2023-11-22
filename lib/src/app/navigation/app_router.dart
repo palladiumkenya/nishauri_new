@@ -13,6 +13,7 @@ import 'package:nishauri/src/features/auth/presentation/pages/VerificationScreen
 import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart';
+import 'package:nishauri/src/features/dashboard/presentation/pages/Dashboard.dart';
 import 'package:nishauri/src/features/events_calendar/presentation/pages/EventsCalendar.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/ARTSites.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/HIVMenu.dart';
@@ -163,6 +164,13 @@ final List<RouteBase> secureRoutes = [
       return const ProgramRegistrationScreen();
     },
   ),
+  GoRoute(
+    name: RouteNames.DASHBOARD,
+    path: 'dashboard',
+    builder: (BuildContext context, GoRouterState state) {
+      return const Dashboard();
+    },
+  ),
 ];
 final List<RouteBase> openRoutes = [
   GoRoute(
@@ -199,13 +207,6 @@ final List<RouteBase> hivProgramRoutes = [
     path: 'art-sites',
     builder: (BuildContext context, GoRouterState state) {
       return const ARTSitesScreen();
-    },
-  ),
-  GoRoute(
-    name: RouteNames.HIV_DASHBOARD,
-    path: 'dashboard',
-    builder: (BuildContext context, GoRouterState state) {
-      return const HIVDashboardScreen();
     },
   ),
   GoRoute(

@@ -13,6 +13,7 @@ class UserProgram with _$UserProgram {
     @Default(false) bool isActive,
     required String user,
     required String createdAt,
+
   }) = _UserProgram;
 
   factory UserProgram.fromJson(Map<String, dynamic> json)=> _$UserProgramFromJson(json);

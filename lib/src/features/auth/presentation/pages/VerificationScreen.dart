@@ -147,12 +147,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           const SizedBox(
                             height: Constants.SPACING,
                           ),
-                          LinkedRichText(
+                          Consumer(builder: (context, ref, child) { return LinkedRichText(
                             linked: "",
                             unlinked: "Back to login",
                             onPress: () =>
-                                context.goNamed(RouteNames.LOGIN_SCREEN),
-                          )
+                                ref.read(authStateProvider.notifier).logout(),
+                          ); },)
                         ],
                       ),
                     ),
