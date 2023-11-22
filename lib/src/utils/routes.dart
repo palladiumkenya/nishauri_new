@@ -22,3 +22,24 @@ class RouteNames {
   static const HIV_ART_GROUPS = "hiv-art-groups";
   static const HIV_ART_EVENTS = "hiv-art-events";
 }
+
+class MenuItemNames {
+  static const MY_CALENDAR = "My calendar";
+  static const MENSTRUAL_CIRCLE = "Menstrual Circle";
+  static const BMI_CALCULATOR = "BMI Calc";
+  static const HIV_PROGRAM_MENU = "HIV Program";
+  static const TB_PROGRAM_MENU = "TB Program";
+  static const ASTHMA_PROGRAM_MENU = "Asthma";
+  static const DIABETES_PROGRAM_MENU = "Diabetes";
+  static const CANCER_PROGRAM_MENU = "Cancer";
+  static const HYPERTENSION_PROGRAM_MENU = "Hypertension";
+}
+
+class ProgramCodeNames {
+  static const HIV = "HIV";
+  static const TB = "TB";
+  static const ASTHMA = "ASTHMA";
+  static const DIABETES = "DIABETES";
+  static const CANCER = "CANCER";
+  static const HYPERTENSION = "HBP";
+}

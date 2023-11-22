@@ -30,6 +30,11 @@ class ProgramService extends HTTPService {
       name: "Cancer Program",
       createdAt: "20th Oct 2023",
     ),
+    const Program(
+      programCode: "HBP",
+      name: "Hypertension",
+      createdAt: "20th Oct 2023",
+    ),
   ];
   final List<UserProgram> _userPrograms = [
     const UserProgram(
@@ -77,11 +82,21 @@ class ProgramService extends HTTPService {
       user: "u-1",
       createdAt: "20th Oct 2023",
     ),
+    const UserProgram(
+      program: Program(
+        programCode: "HBP",
+        name: "Hypertension",
+        createdAt: "20th Oct 2023",
+      ),
+      user: "u-1",
+      createdAt: "20th Oct 2023",
+    ),
   ];
 
   ProgramService(this._token);
 
   Future<List<Program>> getPrograms() async {
+    await Future.delayed(const Duration(seconds: 3));
     return _programs;
   }
 

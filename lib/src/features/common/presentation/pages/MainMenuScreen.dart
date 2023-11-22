@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuItemsBuilder.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuOption.dart';
 import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
 import 'package:nishauri/src/features/common/presentation/helpers/constants.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/Greeting2.dart';
+import 'package:nishauri/src/features/user_programs/data/providers/program_provider.dart';
 import 'package:nishauri/src/shared/input/FormInputTextField.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
@@ -25,29 +29,56 @@ class MainMenuScreen extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(Constants.SPACING),
-              child: const FormInputTextField(
-                prefixIcon: Icons.search,
-                placeholder: "Search...",
-              ),
-            ),
-            Expanded(
-              child: MenuItemsBuilder(
-                itemBuilder: (item) => MenuOption(
-                  title: item.title ?? "",
-                  icon: item.icon,
-                  // iconSize: 50,
-                  onPress: item.onPressed,
-                  // iconColor: theme.colorScheme.primary,
-                  bgColor: item.title == "Add Programme" ? theme.colorScheme.secondary: null,
+        child: Consumer(
+          builder: (context, ref, child) {
+            final userProgram = ref.watch(programProvider);
+            return Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(Constants.SPACING),
+                  child: const FormInputTextField(
+                    prefixIcon: Icons.search,
+                    placeholder: "Search...",
+                  ),
                 ),
-                items: menuOptions(context),
-              ),
-            ),
-          ],
+                Expanded(
+                  child: userProgram.when(
+                    data: (data) => MenuItemsBuilder(
+                      itemBuilder: (item) => MenuOption(
+                        title: item.title ?? "",
+                        icon: item.icon,
+                        // iconSize: 50,
+                        onPress: item.onPressed,
+                        // iconColor: theme.colorScheme.primary,
+                        bgColor: item.title == "Add Programme"
+                            ? theme.colorScheme.secondary
+                            : null,
+                      ),
+                      items: [
+                        // get generic menu items
+                        ...getGenericMenuItems(context),
+                        // get program menu items
+                        ...data.map((e) {
+                          final programCode = e.program.programCode;
+                          return getProgramMenuItemByProgramCode(context, programCode);
+                        }).toList(),
+                        // Register new program
+                        MenuItem(
+                          icon: Icons.add,
+                          title: "Add Programme",
+                          onPressed: () => context.goNamed(RouteNames.PROGRAME_REGISTRATION_SCREEN),
+                        ),
+                      ],
+                    ),
+                    error: (error, _) => Center(child: Text(error.toString())),
+                    loading: () => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

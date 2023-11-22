@@ -9,8 +9,8 @@ class AuthState {
   AuthState({
     this.token = "",
     this.user,
-    this.isAccountVerified = false,
-    this.isProfileComplete = false,
+    this.isAccountVerified = true,
+    this.isProfileComplete = true,
   });
 
   AuthState copyWith({
