@@ -10,18 +10,6 @@ class MenuItem {
   MenuItem({required this.icon, this.title, this.onPressed});
 }
 
-String? _getProgramFromName(String name) {
-  final map = {
-    ProgramCodeNames.HIV: MenuItemNames.HIV_PROGRAM_MENU,
-    ProgramCodeNames.ASTHMA: MenuItemNames.ASTHMA_PROGRAM_MENU,
-    ProgramCodeNames.CANCER: MenuItemNames.CANCER_PROGRAM_MENU,
-    ProgramCodeNames.DIABETES: MenuItemNames.DIABETES_PROGRAM_MENU,
-    ProgramCodeNames.TB: MenuItemNames.TB_PROGRAM_MENU,
-    ProgramCodeNames.HYPERTENSION: MenuItemNames.HYPERTENSION_PROGRAM_MENU,
-  };
-  return map[name];
-}
-
 MenuItem getProgramMenuItemByProgramCode(
     BuildContext context, String programCode) {
   if (programCode == ProgramCodeNames.HIV) {
@@ -73,6 +61,11 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
       onPressed: () => context.goNamed(RouteNames.EVENTS_CALENDAR),
     ),
     MenuItem(
+      icon: Icons.dashboard_customize_outlined,
+      title: MenuItemNames.DASHBOARD,
+      onPressed: () => context.goNamed(RouteNames.DASHBOARD),
+    ),
+    MenuItem(
       icon: Icons.event_note,
       title: MenuItemNames.MENSTRUAL_CIRCLE,
       onPressed: () => "",
@@ -97,8 +90,9 @@ List<MenuItem> getMenuItemByNames(BuildContext context, List<String> names) {
   return [
     ...getGenericMenuItems(context),
     ...programNames.map((e) => getProgramMenuItemByProgramCode(context, e)),
-  ].where(
+  ]
+      .where(
         (menuItem) => names.any((name) => name == menuItem.title),
-  ).toList();
+      )
+      .toList();
 }
-

@@ -70,7 +70,23 @@ class Greetings extends StatelessWidget {
                       child: Consumer(
                         builder: (context, ref, child) {
                           final shortcuts = ref.watch(shortcutProvider);
-                          // final
+                          return MenuItemsBuilder(
+                            itemBuilder: (item) => MenuOption(
+                              title: item.title ?? "",
+                              icon: item.icon,
+                              bgColor: item.title == "Add Program" ? theme.colorScheme.secondary : null,
+                              onPress: item.onPressed ,
+                            ),
+                            items: getMenuItemByNames(context, shortcuts)
+                              ..add(
+                                MenuItem(
+                                  icon: Icons.add,
+                                  title: "Add Program",
+                                  onPressed: () => _showDialog(context),
+                                ),
+                              ),
+                          );
+
                           return Wrap(
                             alignment: WrapAlignment.spaceBetween,
                             crossAxisAlignment: WrapCrossAlignment.center,
@@ -87,84 +103,7 @@ class Greetings extends StatelessWidget {
                                 icon: Icons.add,
                                 title: "Add Shortcut",
                                 onPress: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        AlertDialog(
-                                      icon: Icon(Icons.construction),
-                                      title: Text(
-                                        "Select Shortcut MenuOptions",
-                                        style: theme.textTheme.titleMedium,
-                                      ),
-                                      content: Container(
-                                        width: double.maxFinite,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.5,
-                                        child: Consumer(
-                                          builder: (context, ref, child) {
-                                            final userProgram =
-                                                ref.watch(programProvider);
-                                            final shortcuts =
-                                                ref.watch(shortcutProvider);
-                                            final shortcutsNotifier = ref.watch(
-                                                shortcutProvider.notifier);
-                                            return userProgram.when(
-                                              data: (data) => MenuItemsBuilder(
-                                                itemBuilder: (item) =>
-                                                    MenuOption(
-                                                  title: item.title ?? "",
-                                                  icon: item.icon,
-                                                  onPress: () {
-                                                    if (shortcuts.any(
-                                                        (element) =>
-                                                            element ==
-                                                            item.title)) {
-                                                      shortcutsNotifier
-                                                          .deleteShortcut(
-                                                        item.title ?? "",
-                                                      );
-                                                    } else {
-                                                      shortcutsNotifier
-                                                          .addShortcut(
-                                                        item.title ?? "",
-                                                      );
-                                                    }
-                                                  },
-                                                  bgColor: shortcuts.any(
-                                                          (element) =>
-                                                              element ==
-                                                              item.title)
-                                                      ? theme
-                                                          .colorScheme.secondary
-                                                      : null,
-                                                ),
-                                                items: [
-                                                  // get generic menu items
-                                                  ...getGenericMenuItems(
-                                                      context),
-                                                  // get program menu items
-                                                  ...data.map((e) {
-                                                    final programCode =
-                                                        e.program.programCode;
-                                                    return getProgramMenuItemByProgramCode(
-                                                        context, programCode);
-                                                  }).toList(),
-                                                ],
-                                              ),
-                                              error: (error, _) => Center(
-                                                  child:
-                                                      Text(error.toString())),
-                                              loading: () => const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  );
+                                  _showDialog(context);
                                 },
                               ),
                             ],
@@ -181,4 +120,87 @@ class Greetings extends StatelessWidget {
       ),
     );
   }
+}
+
+
+_showDialog(BuildContext context){
+  final theme = Theme.of(context);
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) =>
+        AlertDialog(
+          icon: Icon(Icons.construction),
+          title: Text(
+            "Select Shortcut MenuOptions",
+            style: theme.textTheme.titleMedium,
+          ),
+          content: Container(
+            width: double.maxFinite,
+            height:
+            MediaQuery.of(context).size.height *
+                0.5,
+            child: Consumer(
+              builder: (context, ref, child) {
+                final userProgram =
+                ref.watch(programProvider);
+                final shortcuts =
+                ref.watch(shortcutProvider);
+                final shortcutsNotifier = ref.watch(
+                    shortcutProvider.notifier);
+                return userProgram.when(
+                  data: (data) => MenuItemsBuilder(
+                    itemBuilder: (item) =>
+                        MenuOption(
+                          title: item.title ?? "",
+                          icon: item.icon,
+                          onPress: () {
+                            if (shortcuts.any(
+                                    (element) =>
+                                element ==
+                                    item.title)) {
+                              shortcutsNotifier
+                                  .deleteShortcut(
+                                item.title ?? "",
+                              );
+                            } else {
+                              shortcutsNotifier
+                                  .addShortcut(
+                                item.title ?? "",
+                              );
+                            }
+                          },
+                          bgColor: shortcuts.any(
+                                  (element) =>
+                              element ==
+                                  item.title)
+                              ? theme
+                              .colorScheme.secondary
+                              : null,
+                        ),
+                    items: [
+                      // get generic menu items
+                      ...getGenericMenuItems(
+                          context),
+                      // get program menu items
+                      ...data.map((e) {
+                        final programCode =
+                            e.program.programCode;
+                        return getProgramMenuItemByProgramCode(
+                            context, programCode);
+                      }).toList(),
+                    ],
+                  ),
+                  error: (error, _) => Center(
+                      child:
+                      Text(error.toString())),
+                  loading: () => const Center(
+                    child:
+                    CircularProgressIndicator(),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+  );
 }

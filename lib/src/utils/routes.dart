@@ -25,6 +25,7 @@ class RouteNames {
 
 class MenuItemNames {
   static const MY_CALENDAR = "My calendar";
+  static const DASHBOARD = "Dashboard";
   static const MENSTRUAL_CIRCLE = "Menstrual Circle";
   static const BMI_CALCULATOR = "BMI Calc";
   static const HIV_PROGRAM_MENU = "HIV Program";
