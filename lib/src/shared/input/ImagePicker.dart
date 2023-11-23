@@ -6,12 +6,14 @@ class ImagePickerCustomFormField extends FormField<String> {
   final double size;
   final Color backgroundColor;
   final Color iconColor;
-  final void Function(String image)? onImageChange;
+  final void Function(String? image)? onImageChange;
   final TextEditingController? controller;
+  final String? error;
 
   ImagePickerCustomFormField(
       {Key? key,
       this.size = 150,
+      this.error,
       this.backgroundColor = Colors.grey,
       this.iconColor = Colors.white,
       String? image,
@@ -42,11 +44,14 @@ class ImagePickerCustomFormField extends FormField<String> {
                   onDelete: () {
                     state.didChange(null);
                     controller?.clear();
+                    if (onImageChange != null) {
+                      onImageChange(null);
+                    }
                   },
                 ),
-                state.hasError
+                state.hasError || error != null
                     ? Text(
-                        state.errorText!,
+                        state.errorText ?? error ?? "",
                         style: const TextStyle(color: Colors.red),
                       )
                     : Container()

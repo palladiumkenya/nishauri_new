@@ -1,65 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:nishauri/src/shared/form/AppFormTextInput.dart';
 import 'package:nishauri/src/shared/input/FormInputTextField.dart';
+import 'package:nishauri/src/shared/states/AppFormState.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class ContactInformation extends StatelessWidget {
-  const ContactInformation({super.key});
+  final AppFormState formState;
+  final void Function(String, String?) onFormFieldChanged;
+  const ContactInformation({super.key, required this.formState, required this.onFormFieldChanged});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const SizedBox(height: Constants.SPACING),
-        FormInputTextField(
+        AppFormTextInput(
+          name: "email",
+          formState: formState,
+          onChangeText: onFormFieldChanged,
           keyboardType: TextInputType.emailAddress,
           placeholder: "Enter your email",
           prefixIcon: Icons.email,
           label: "Email",
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter some text';
-            }
-            return null;
-          },
         ),
         const SizedBox(height: Constants.SPACING),
-        FormInputTextField(
+        AppFormTextInput(
+          name: "phoneNumber",
+          formState: formState,
+          onChangeText: onFormFieldChanged,
           keyboardType: TextInputType.phone,
           placeholder: "Enter your phone number",
           prefixIcon: Icons.phone,
           label: "Phone number",
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter some text';
-            }
-            return null;
-          },
+
         ),
         const SizedBox(height: Constants.SPACING),
-        FormInputTextField(
+        AppFormTextInput(
+          name: "country",
+          formState: formState,
+          onChangeText: onFormFieldChanged,
           keyboardType: TextInputType.phone,
           placeholder: "Enter your county",
           prefixIcon: Icons.location_city,
           label: "County",
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter some text';
-            }
-            return null;
-          },
         ),
         const SizedBox(height: Constants.SPACING),
-        FormInputTextField(
+        AppFormTextInput(
+          name: "constituency",
+          formState: formState,
+          onChangeText: onFormFieldChanged,
           keyboardType: TextInputType.phone,
           placeholder: "Enter your constituency",
           prefixIcon: Icons.map,
           label: "Constituency",
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter some text';
-            }
-            return null;
-          },
         ),
       ],
     );
