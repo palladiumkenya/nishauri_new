@@ -24,33 +24,30 @@ class MultiChoiceCheckList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: theme.textTheme.titleMedium ),
-        ...items
-            .map(
-              (e) => CheckboxListTile(
-                value: value.any((element) => element.value == e.value),
-                onChanged: onValueChanged != null
-                    ? (isChecked) {
-                        if (value.any((element) => element.value == e.value)) {
-                          // If in value then remove
-                          onValueChanged!(value
-                              .where((element) => element.value != e.value)
-                              .toList());
-                        } else {
-                          // else add to value
-                          onValueChanged!(value..add(e));
-                        }
+
+    return ExpansionTile(
+      title: Text(label, style: theme.textTheme.titleMedium),
+      children: items
+          .map(
+            (e) => CheckboxListTile(
+              value: value.any((element) => element.value == e.value),
+              onChanged: onValueChanged != null
+                  ? (isChecked) {
+                      if (value.any((element) => element.value == e.value)) {
+                        // If in value then remove
+                        onValueChanged!(value
+                            .where((element) => element.value != e.value)
+                            .toList());
+                      } else {
+                        // else add to value
+                        onValueChanged!(value..add(e));
                       }
-                    : null,
-                title: Text(e.label),
-              ),
-            )
-            .toList()
-      ],
+                    }
+                  : null,
+              title: Text(e.label),
+            ),
+          )
+          .toList(),
     );
   }
 }

@@ -50,7 +50,7 @@ class _HealthInformationState extends State<HealthInformation> {
             MultiChoiceCheckListChoice(label: "Cold", value: "cold"),
             MultiChoiceCheckListChoice(label: "Husk", value: "husk"),
           ],
-          label: "Select your allergies if any",
+          label: "Do you suffer from any allergies?",
           value: allergies,
           onValueChanged: (values) => setState(() {
             allergies = values;
@@ -63,7 +63,7 @@ class _HealthInformationState extends State<HealthInformation> {
             MultiChoiceCheckListChoice(label: "Cripple", value: "cripple"),
             MultiChoiceCheckListChoice(label: "Deaf", value: "deaf"),
           ],
-          label: "Select your disabilities if any",
+          label: "Do you have any disabilities?",
           value: disabilities,
           onValueChanged: (values) => setState(() {
             disabilities = values;
@@ -77,7 +77,7 @@ class _HealthInformationState extends State<HealthInformation> {
             MultiChoiceCheckListChoice(label: "Cancer", value: "cancer"),
             MultiChoiceCheckListChoice(label: "Diabetes", value: "diabetes"),
           ],
-          label: "Select your disabilities if any",
+          label: "Do you suffer from any chronic illness?",
           value: chronics,
           onValueChanged: (values) => setState(() {
             chronics = values;
