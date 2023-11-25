@@ -35,11 +35,11 @@ class _HealthInformationState extends State<HealthInformation> {
               formState: widget.formState,
               onItemSelected: widget.onFormFieldChanged,
               prefixIcon: Icons.bloodtype,
-              items: [
-                AppDropDownInputItem(value: "A", label: "A"),
-                AppDropDownInputItem(value: "B", label: "B"),
-                AppDropDownInputItem(value: "AB", label: "AB"),
-                AppDropDownInputItem(value: "O", label: "O"),
+              items: const [
+                DropdownMenuEntry(value: "A", label: "A"),
+                DropdownMenuEntry(value: "B", label: "B"),
+                DropdownMenuEntry(value: "AB", label: "AB"),
+                DropdownMenuEntry(value: "O", label: "O"),
               ],
             )),
         const SizedBox(height: Constants.SPACING),

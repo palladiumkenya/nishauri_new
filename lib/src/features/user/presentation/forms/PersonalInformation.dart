@@ -56,9 +56,9 @@ class PersonalInformation extends StatelessWidget {
             onItemSelected: onFormFieldChanged,
             prefixIcon: Icons.accessibility,
             label: "Gender",
-            items: [
-              AppDropDownInputItem(value: "M", label: "Male"),
-              AppDropDownInputItem(value: "F", label: "Female"),
+            items: const [
+              DropdownMenuEntry(value: "M", label: "Male"),
+              DropdownMenuEntry(value: "F", label: "Female"),
 
             ],
           ),

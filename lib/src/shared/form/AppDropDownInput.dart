@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:nishauri/src/shared/input/FormDropDownInput.dart';
 import 'package:nishauri/src/shared/states/AppFormState.dart';
 
-class AppDropDownInputItem {
-  final String value;
-  final String label;
-
-  AppDropDownInputItem({required this.value, required this.label});
-}
-
 class AppDropDownInput extends StatelessWidget {
-  final List<AppDropDownInputItem> items;
+  final List<DropdownMenuEntry<dynamic>> items;
   final String name;
   final String? label;
   final Function()? onPrefixIconPressed;
@@ -30,24 +24,20 @@ class AppDropDownInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownMenu<String>(
-      label: label != null ? Text(label!) : null,
-      leadingIcon: IconButton(
-        onPressed: onPrefixIconPressed,
-        icon: Icon(prefixIcon),
-      ),
+    return FormDropDownInput(
+      error: formState.errors?[name],
+      label: label,
+      prefixIcon: prefixIcon,
+      onPrefixIconPressed: onPrefixIconPressed,
       width: MediaQuery.of(context).size.width*0.75,
-      onSelected: (value)=>onItemSelected(name, value ?? ""),
+      onItemChange: (value)=>onItemSelected(name, value ?? ""),
       initialSelection: formState.values[name],
-      dropdownMenuEntries: items
-          .map<DropdownMenuEntry<String>>(
-            (AppDropDownInputItem item) => DropdownMenuEntry<String>(
-              value: item.value,
-              label: item.label,
-
-            ),
-          )
-          .toList(),
+      dropdownMenuEntries: items,
+      validator: (value) {
+        List<String?>? errors =
+        formState.validators?[name]?.map((fun) => fun(value)).where((element) => element != null).toList();
+        return errors?.isNotEmpty==true ? errors?.join(", "): null;
+      },
     );
   }
 }

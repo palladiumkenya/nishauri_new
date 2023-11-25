@@ -45,11 +45,11 @@ class _LifeStyleInformationState extends State<LifeStyleInformation> {
             prefixIcon: Icons.accessibility_sharp,
             label: "Marital status",
             onItemSelected: widget.onFormFieldChanged,
-            items: [
-              AppDropDownInputItem(value: "married", label: "Married"),
-              AppDropDownInputItem(value: "single", label: "Single"),
-              AppDropDownInputItem(value: "divorced", label: "Divorced"),
-              AppDropDownInputItem(
+            items: const [
+              DropdownMenuEntry(value: "married", label: "Married"),
+              DropdownMenuEntry(value: "single", label: "Single"),
+              DropdownMenuEntry(value: "divorced", label: "Divorced"),
+              DropdownMenuEntry(
                   value: "widow-widower", label: "Widow/Widower"),
             ],
           ),
@@ -63,9 +63,9 @@ class _LifeStyleInformationState extends State<LifeStyleInformation> {
             onItemSelected: widget.onFormFieldChanged,
             prefixIcon: Icons.language,
             label: "Primary Language",
-            items: [
-              AppDropDownInputItem(value: "swahili", label: "Swahili"),
-              AppDropDownInputItem(value: "english", label: "English"),
+            items: const [
+              DropdownMenuEntry(value: "swahili", label: "Swahili"),
+              DropdownMenuEntry(value: "english", label: "English"),
             ],
           ),
         ),
@@ -78,12 +78,12 @@ class _LifeStyleInformationState extends State<LifeStyleInformation> {
             prefixIcon: Icons.school_outlined,
             name: "educationLevel",
             label: "Education level",
-            items: [
-              AppDropDownInputItem(label: "Primary", value: "primary"),
-              AppDropDownInputItem(label: "Secondary", value: "secondary"),
-              AppDropDownInputItem(label: "Post secondary", value: "post-secondary"),
-              AppDropDownInputItem(label: "Undergraduate degree", value: "undergraduate"),
-              AppDropDownInputItem(label: "Postgraduate degree", value: "postgraduate"),
+            items: const [
+              DropdownMenuEntry(label: "Primary", value: "primary"),
+              DropdownMenuEntry(label: "Secondary", value: "secondary"),
+              DropdownMenuEntry(label: "Post secondary", value: "post-secondary"),
+              DropdownMenuEntry(label: "Undergraduate degree", value: "undergraduate"),
+              DropdownMenuEntry(label: "Postgraduate degree", value: "postgraduate"),
             ],
           ),
         ),
@@ -96,10 +96,10 @@ class _LifeStyleInformationState extends State<LifeStyleInformation> {
             prefixIcon: Icons.work,
             name: "occupation",
             label: "Occupation",
-            items: [
-              AppDropDownInputItem(label: "Employed", value: "employed"),
-              AppDropDownInputItem(label: "Self Employed", value: "self-employed"),
-              AppDropDownInputItem(label: "Unemployed", value: "unemployed"),
+            items: const [
+              DropdownMenuEntry(label: "Employed", value: "employed"),
+              DropdownMenuEntry(label: "Self Employed", value: "self-employed"),
+              DropdownMenuEntry(label: "Unemployed", value: "unemployed"),
             ],
           ),
         ),

@@ -15,4 +15,8 @@ class ProgramsRepository {
   Future<List<UserProgram>> getUserPrograms() async {
     return await _service.getUserPrograms();
   }
+
+  Future<UserProgram> registerProgram(Map<String, dynamic> program)async{
+    return await _service.registerProgram(program);
+  }
 }

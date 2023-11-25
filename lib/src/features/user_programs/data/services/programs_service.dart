@@ -37,60 +37,60 @@ class ProgramService extends HTTPService {
     ),
   ];
   final List<UserProgram> _userPrograms = [
-    const UserProgram(
-      program: Program(
-        programCode: "HIV",
-        name: "HIV Program",
-        createdAt: "20th Oct 2023",
-      ),
-      user: "u-1",
-      createdAt: "20th Oct 2023",
-    ),
-    const UserProgram(
-      program: Program(
-        programCode: "TB",
-        name: "Tuberculosis Program",
-        createdAt: "20th Oct 2023",
-      ),
-      user: "u-1",
-      createdAt: "20th Oct 2023",
-    ),
-    const UserProgram(
-      program: Program(
-        programCode: "ASTHMA",
-        name: "Asthma Program",
-        createdAt: "20th Oct 2023",
-      ),
-      user: "u-1",
-      createdAt: "20th Oct 2023",
-    ),
-    const UserProgram(
-      program: Program(
-        programCode: "DIABETES",
-        name: "Diabetes Program",
-        createdAt: "20th Oct 2023",
-      ),
-      user: "u-1",
-      createdAt: "20th Oct 2023",
-    ),
-    const UserProgram(
-      program: Program(
-        programCode: "CANCER",
-        name: "Cancer Program",
-        createdAt: "20th Oct 2023",
-      ),
-      user: "u-1",
-      createdAt: "20th Oct 2023",
-    ),
-    const UserProgram(
-      program: Program(
-        programCode: "HBP",
-        name: "Hypertension",
-        createdAt: "20th Oct 2023",
-      ),
-      user: "u-1",
-      createdAt: "20th Oct 2023",
-    ),
+    // const UserProgram(
+    //   program: Program(
+    //     programCode: "HIV",
+    //     name: "HIV Program",
+    //     createdAt: "20th Oct 2023",
+    //   ),
+    //   user: "u-1",
+    //   createdAt: "20th Oct 2023",
+    // ),
+    // const UserProgram(
+    //   program: Program(
+    //     programCode: "TB",
+    //     name: "Tuberculosis Program",
+    //     createdAt: "20th Oct 2023",
+    //   ),
+    //   user: "u-1",
+    //   createdAt: "20th Oct 2023",
+    // ),
+    // const UserProgram(
+    //   program: Program(
+    //     programCode: "ASTHMA",
+    //     name: "Asthma Program",
+    //     createdAt: "20th Oct 2023",
+    //   ),
+    //   user: "u-1",
+    //   createdAt: "20th Oct 2023",
+    // ),
+    // const UserProgram(
+    //   program: Program(
+    //     programCode: "DIABETES",
+    //     name: "Diabetes Program",
+    //     createdAt: "20th Oct 2023",
+    //   ),
+    //   user: "u-1",
+    //   createdAt: "20th Oct 2023",
+    // ),
+    // const UserProgram(
+    //   program: Program(
+    //     programCode: "CANCER",
+    //     name: "Cancer Program",
+    //     createdAt: "20th Oct 2023",
+    //   ),
+    //   user: "u-1",
+    //   createdAt: "20th Oct 2023",
+    // ),
+    // const UserProgram(
+    //   program: Program(
+    //     programCode: "HBP",
+    //     name: "Hypertension",
+    //     createdAt: "20th Oct 2023",
+    //   ),
+    //   user: "u-1",
+    //   createdAt: "20th Oct 2023",
+    // ),
   ];
 
   ProgramService(this._token);
@@ -102,5 +102,17 @@ class ProgramService extends HTTPService {
 
   Future<List<UserProgram>> getUserPrograms() async {
     return _userPrograms;
+  }
+
+  Future<UserProgram> registerProgram(Map<String, dynamic> data) async {
+    await Future.delayed(const Duration(seconds: 3));
+    final userProgram = UserProgram(
+        program: _programs
+            .where((element) => element.programCode == data["program"])
+            .first,
+        user: "u-1",
+        createdAt: "25th Aug 2023");
+    _userPrograms.add(userProgram);
+    return userProgram;
   }
 }

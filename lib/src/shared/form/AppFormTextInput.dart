@@ -47,7 +47,7 @@ class AppFormTextInput extends StatelessWidget {
       validator: (value) {
         List<String?>? errors =
             formState.validators?[name]?.map((fun) => fun(value)).where((element) => element != null).toList();
-        return errors?.join(", ");
+        return errors?.isNotEmpty==true ? errors?.join(", "): null;
       },
       prefixIcon: prefixIcon,
       password: password,

@@ -43,4 +43,25 @@ class ProgramCodeNames {
   static const DIABETES = "DIABETES";
   static const CANCER = "CANCER";
   static const HYPERTENSION = "HBP";
+
+  static const SUPPOTED_PROGRAM_CODES = [
+    HIV,
+    TB,
+    ASTHMA,
+    DIABETES,
+    CANCER,
+    HYPERTENSION
+  ];
+
+    static String? getProgramNameByCode(String code){
+    final map = {
+      HIV: "Hiv Program",
+      TB: "Tuberculosis Program",
+      HYPERTENSION: "Hypertension Program",
+      CANCER: "Cancer Program",
+      DIABETES: "Diabetes Program",
+      ASTHMA: "Asthma Program",
+    };
+    return map[code];
+  }
 }

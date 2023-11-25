@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImagePickerCustomFormField extends FormField<String> {
-  final double size;
-  final Color backgroundColor;
-  final Color iconColor;
-  final void Function(String? image)? onImageChange;
-  final TextEditingController? controller;
-  final String? error;
+    final double size;
+    final Color backgroundColor;
+    final Color iconColor;
+    final void Function(String? image)? onImageChange;
+    final TextEditingController? controller;
+    final String? error;
 
   ImagePickerCustomFormField(
       {Key? key,

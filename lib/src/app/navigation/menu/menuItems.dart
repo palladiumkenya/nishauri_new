@@ -79,14 +79,7 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
 }
 
 List<MenuItem> getMenuItemByNames(BuildContext context, List<String> names) {
-  final programNames = [
-    ProgramCodeNames.HYPERTENSION,
-    ProgramCodeNames.ASTHMA,
-    ProgramCodeNames.TB,
-    ProgramCodeNames.DIABETES,
-    ProgramCodeNames.CANCER,
-    ProgramCodeNames.HIV,
-  ];
+  const programNames = ProgramCodeNames.SUPPOTED_PROGRAM_CODES;
   return [
     ...getGenericMenuItems(context),
     ...programNames.map((e) => getProgramMenuItemByProgramCode(context, e)),
