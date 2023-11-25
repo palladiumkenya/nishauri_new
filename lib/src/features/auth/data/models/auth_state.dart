@@ -19,8 +19,8 @@ class AuthState {
     return AuthState(
       token: "",
       user: null,
-      isAccountVerified: false,
-      isProfileComplete: false,
+      isAccountVerified: true,
+      isProfileComplete: true,
     );
   }
 

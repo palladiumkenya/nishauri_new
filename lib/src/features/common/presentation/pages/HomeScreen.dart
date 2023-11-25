@@ -5,7 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/app/navigation/drawer/UserDrawerHeader.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
-import 'package:nishauri/src/features/common/presentation/widgets/Banners.dart';
+import 'package:nishauri/src/features/common/data/providers/announcements_provider.dart';
+import 'package:nishauri/src/features/common/presentation/widgets/AnnouncementCard.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/Greetings.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
@@ -137,47 +138,43 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             const Greetings(
               name: "Laurent Ouma",
             ),
-            const Text(
-              "\t\t\tDeals",
-              style: TextStyle(fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.all(Constants.SPACING),
+              child: Text(
+                "Did you know?",
+                style: theme.textTheme.titleLarge,
+              ),
             ),
             const SizedBox(
               height: Constants.SPACING,
             ),
-            SizedBox(
-              height: screenSize.width * 0.4, // Adjust the height as needed
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: 10,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, currIndex) => Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Container(
-                    width: screenSize.width * 0.7,
-                    decoration: BoxDecoration(
-                      image: const DecorationImage(
-                        image: AssetImage("assets/images/p.jpg"),
-                        fit: BoxFit.cover,
-                      ),
-                      backgroundBlendMode: BlendMode.darken,
-                      color: theme.primaryColor,
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(Constants.SPACING),
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Banner: ${currIndex + 1}",
-                        style: TextStyle(
-                          color: theme.colorScheme.onPrimary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
+            Consumer(
+              builder: (context, ref, child) {
+                final announcementsAsync = ref.watch(announcementsProvider);
+                return announcementsAsync.when(
+                  data: (data) => SizedBox(
+                    height: screenSize.width * 0.4,
+                    // Adjust the height as needed
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: data.length,
+                      scrollDirection: Axis.horizontal,
+                      // aspectRatio: 0.4,
+                      itemBuilder: (context, currIndex) => AnnouncementCard(
+                        width: MediaQuery.of(context).size.width * 0.75,
+                        image: data[currIndex].image,
+                        source: data[currIndex].source,
+                        title: data[currIndex].title,
+                        description: data[currIndex].description,
                       ),
                     ),
                   ),
-                ),
-              ),
+                  error: (error, _) => Container(),
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              },
             ),
             const SizedBox(
               height: Constants.SPACING,
@@ -191,7 +188,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             const SizedBox(
               height: Constants.SPACING,
             ),
-
           ],
         ),
       ),
