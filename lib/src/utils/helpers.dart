@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 // Function to calculate BMI
 double calculateBMI(
@@ -40,6 +41,11 @@ String getBMIStatus(double bmi) {
   } else {
     return "Obese Class 3 (Very Severe)";
   }
+}
+
+Future<String> loadJsonData(String path) async {
+  final String data = await rootBundle.loadString(path);
+  return data;
 }
 
 /*

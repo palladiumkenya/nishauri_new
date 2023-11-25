@@ -27,6 +27,8 @@ import 'package:nishauri/src/features/user/presentation/pages/ProfileWizardFormS
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PrivacySettingsScreen.dart';
 import 'package:nishauri/src/features/user_programs/presentation/pages/ProgramRegistrationScreen.dart';
+import 'package:nishauri/src/features/visits/presentations/pages/FacilityVisitDetailScreen.dart';
+import 'package:nishauri/src/features/visits/presentations/pages/FacilityVisitsScreen.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 final routesProvider = Provider<GoRouter>((ref) {
@@ -171,6 +173,21 @@ final List<RouteBase> secureRoutes = [
       return const Dashboard();
     },
   ),
+  GoRoute(
+      name: RouteNames.FACILITY_VISITS,
+      path: 'facility-visits',
+      builder: (BuildContext context, GoRouterState state) {
+        return const FacilityVisitsScreen();
+      },
+      routes: [
+        GoRoute(
+          name: RouteNames.FACILITY_VISIT_DETAIL,
+          path: ':visitId',
+          builder: (BuildContext context, GoRouterState state) {
+            return FacilityVisitDetailScreen(visitId: state.pathParameters["visitId"]!);
+          },
+        )
+      ]),
 ];
 final List<RouteBase> openRoutes = [
   GoRoute(

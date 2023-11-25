@@ -43,7 +43,7 @@ class Greetings extends StatelessWidget {
           Positioned(
             bottom: -(headerHeight * 0.25),
             height: headerHeight * 1.25,
-            width: screenSize.width * 0.85,
+            width: screenSize.width * 0.89,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -59,7 +59,7 @@ class Greetings extends StatelessWidget {
                 Expanded(
                   child: AppCard(
                     color: theme.colorScheme.onPrimary,
-                    variant: CardVariant.OUTLINED,
+                    variant: CardVariant.ELEVETED,
                     child: Container(
                       padding: const EdgeInsets.all(Constants.SPACING),
                       width: double.infinity,

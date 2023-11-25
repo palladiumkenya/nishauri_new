@@ -21,6 +21,8 @@ class RouteNames {
   static const HIV_REGIMEN = "regimen-history";
   static const HIV_ART_GROUPS = "hiv-art-groups";
   static const HIV_ART_EVENTS = "hiv-art-events";
+  static const FACILITY_VISITS = "facility-visits";
+  static const FACILITY_VISIT_DETAIL = "facility-visit-detail";
 }
 
 class MenuItemNames {
@@ -34,6 +36,7 @@ class MenuItemNames {
   static const DIABETES_PROGRAM_MENU = "Diabetes";
   static const CANCER_PROGRAM_MENU = "Cancer";
   static const HYPERTENSION_PROGRAM_MENU = "Hypertension";
+  static const FACILITY_VISITS = "Visits";
 }
 
 class ProgramCodeNames {
@@ -53,7 +56,7 @@ class ProgramCodeNames {
     HYPERTENSION
   ];
 
-    static String? getProgramNameByCode(String code){
+  static String? getProgramNameByCode(String code) {
     final map = {
       HIV: "Hiv Program",
       TB: "Tuberculosis Program",

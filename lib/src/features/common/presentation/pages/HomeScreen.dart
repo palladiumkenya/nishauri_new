@@ -8,6 +8,7 @@ import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/common/data/providers/announcements_provider.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/AnnouncementCard.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/Greetings.dart';
+import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
@@ -153,7 +154,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 final announcementsAsync = ref.watch(announcementsProvider);
                 return announcementsAsync.when(
                   data: (data) => SizedBox(
-                    height: screenSize.width * 0.4,
+                    height: screenSize.height * 0.22,
                     // Adjust the height as needed
                     child: ListView.builder(
                       shrinkWrap: true,
@@ -181,11 +182,37 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             const SizedBox(
               height: Constants.SPACING,
             ),
-            Card(
-              child: Row(children: [
-
-              ]),
-            ),
+            /*SizedBox(
+                height: screenSize.height * 0.1,
+                child: ListView.builder(
+                  itemCount: 8,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) => AppCard(
+                    clipBehaviour: Clip.antiAlias,
+                    variant: CardVariant.ELEVETED,
+                    color: theme.colorScheme.onPrimary,
+                    child: SizedBox(
+                      width: screenSize.height * 0.1,
+                      height: screenSize.height * 0.1,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Icon(
+                            Icons.access_alarms_rounded,
+                            size: screenSize.height * 0.07,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.5)),
+                            width: double.infinity,
+                            height: double.infinity,
+                            child: Center(child: Text("$index", style: theme.textTheme.headlineLarge?.copyWith(color: Colors.white),)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )),*/
             const SizedBox(
               height: Constants.SPACING,
             ),
