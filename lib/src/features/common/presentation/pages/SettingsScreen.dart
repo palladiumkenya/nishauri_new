@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
+import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
@@ -69,11 +70,8 @@ class SettingsScreen extends ConsumerWidget {
         body: ListView.builder(
           itemBuilder: (context, index) {
             final item = _items[index];
-            return Card(
-              elevation: 0,
-              color: theme.colorScheme.onSecondary,
-              borderOnForeground: false,
-              // margin: const EdgeInsets.only(top: Constants.SPACING),
+            return AppCard(
+              variant: CardVariant.OUTLINED,
               child: ListTile(
                 leading: Icon(item.leadingIcon),
                 title: Text(item.title),

@@ -2,7 +2,7 @@ import 'package:nishauri/src/features/common/data/models/announcement.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 
 class AnnouncementService extends HTTPService {
-  final _announcements = [
+  final List<Announcement> _announcements = [
     const Announcement(
       id: "1",
       image: "https://picsum.photos/seed/pizza/200/300",

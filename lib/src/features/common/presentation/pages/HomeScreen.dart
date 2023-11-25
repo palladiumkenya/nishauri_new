@@ -161,7 +161,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       scrollDirection: Axis.horizontal,
                       // aspectRatio: 0.4,
                       itemBuilder: (context, currIndex) => AnnouncementCard(
-                        width: MediaQuery.of(context).size.width * 0.75,
+                        width: data.length > 1
+                            ? screenSize.width * 0.75
+                            : screenSize.width * 0.99,
                         image: data[currIndex].image,
                         source: data[currIndex].source,
                         title: data[currIndex].title,
@@ -179,11 +181,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             const SizedBox(
               height: Constants.SPACING,
             ),
-            const Card(
-              child: ListTile(
-                leading: Icon(Icons.refresh),
-                title: Text('Sync your account with your medical records'),
-              ),
+            Card(
+              child: Row(children: [
+
+              ]),
             ),
             const SizedBox(
               height: Constants.SPACING,
