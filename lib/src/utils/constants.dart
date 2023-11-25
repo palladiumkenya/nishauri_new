@@ -1,6 +1,6 @@
 class Constants {
-  static const String BASE_URL = "http://192.168.2.166:5000/";
-  // static const String BASE_URL = "http://192.168.100.40:5000/";
+  // static const String BASE_URL = "http://192.168.2.166:5000/";
+  static const String BASE_URL = "http://192.168.100.40:5000/";
   static const ROUNDNESS = 10.0;
   static const TOKEN_KEY = 'jwt_token_key';
   static const SPACING = 10.0;

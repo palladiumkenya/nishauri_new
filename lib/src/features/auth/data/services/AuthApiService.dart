@@ -9,19 +9,19 @@ import 'package:nishauri/src/utils/constants.dart';
 class AuthApiService extends HTTPService {
   var headers = {'Content-Type': 'application/json'};
 
-  Future<AuthState> authenticate(String username, String password) async {
-    final authState = AuthState(token: "token");
-    return authState;
+  Future<AuthState> authenticate(Map<String, dynamic> credentials) async {
+
     var headers = {'Content-Type': 'application/json'};
     var request =
         http.Request('POST', Uri.parse('${Constants.BASE_URL}auth/login'));
-    request.body = json.encode({"username": username, "password": password});
+    request.body = json.encode(credentials);
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      return authState.copyWith(token: response.headers["x-auth-token"]!);
+      final authState = AuthState.fromResponse(token: response.headers["x-auth-token"]!);
+      return authState;
     } else {
       throw await getException(response);
     }
@@ -31,24 +31,17 @@ class AuthApiService extends HTTPService {
     return true;
   }
 
-  Future<AuthState> register(String username, String phoneNumber, String password,
-      String confirmPassword, String email) async {
-    final authState = AuthState();
-    return authState;
+  Future<AuthState> register(Map<String, dynamic> data) async {
     var headers = {'Content-Type': 'application/json'};
     var request =
         http.Request('POST', Uri.parse('${Constants.BASE_URL}auth/register'));
-    request.body = json.encode({
-      "username": username,
-      "email": email,
-      "phoneNumber": phoneNumber,
-      "password": password,
-      "confirmPassword": confirmPassword
-    });
+    request.body = json.encode(data);
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-      return authState.copyWith(token: response.headers['token']!);
+      // await Future.delayed(const Duration(seconds: 5));
+      final authState = AuthState.fromResponse(token: response.headers["x-auth-token"]!);
+      return authState;
     } else {
       throw await getException(response);
     }

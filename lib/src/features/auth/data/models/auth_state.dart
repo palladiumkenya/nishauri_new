@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:nishauri/src/features/user/data/models/user.dart';
 
 class AuthState {
@@ -7,11 +9,34 @@ class AuthState {
   final bool isProfileComplete;
 
   AuthState({
-    this.token = "",
-    this.user,
-    this.isAccountVerified = true,
-    this.isProfileComplete = true,
+    required this.token,
+    required this.user,
+    required this.isAccountVerified,
+    required this.isProfileComplete,
   });
+
+  factory AuthState.defaultState() {
+    return AuthState(
+      token: "",
+      user: null,
+      isAccountVerified: false,
+      isProfileComplete: false,
+    );
+  }
+
+  factory AuthState.fromResponse({
+    String token = "",
+    User? user,
+    bool isAccountVerified = false,
+    bool isProfileComplete = false,
+  }) {
+    return AuthState(
+      token: token,
+      user: user,
+      isAccountVerified: isAccountVerified,
+      isProfileComplete: isProfileComplete,
+    );
+  }
 
   AuthState copyWith({
     String? token,

@@ -7,15 +7,13 @@ class AuthRepository {
 
   AuthRepository(this._service);
 
-  Future<AuthState> authenticate(String username, String password) async {
-    final response = await _service.authenticate(username, password);
+  Future<AuthState> authenticate(Map<String, dynamic> credentials) async {
+    final response = await _service.authenticate(credentials);
     return response;
   }
 
-  Future<AuthState> register(String username, String phoneNumber, String password,
-      String confirmPassword,String email) async {
-    final response = await _service.register(
-        username, phoneNumber, password, confirmPassword, email);
+  Future<AuthState> register(Map<String, dynamic> data) async {
+    final response = await _service.register(data);
     return response;
   }
   Future<bool> verifyAccount(String otp) async {

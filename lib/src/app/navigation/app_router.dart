@@ -32,7 +32,7 @@ import 'package:nishauri/src/utils/routes.dart';
 final routesProvider = Provider<GoRouter>((ref) {
   final router = RouterNotifier(ref);
   return GoRouter(
-    debugLogDiagnostics: true,
+    // debugLogDiagnostics: true,
     refreshListenable: router,
     redirect: router.redirectLogic,
     routes: router.routes,

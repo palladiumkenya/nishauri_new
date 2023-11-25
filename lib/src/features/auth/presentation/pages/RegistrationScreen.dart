@@ -1,60 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
+import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
+import 'package:nishauri/src/shared/form/AppFormTextInput.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/input/FormInputTextField.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
+import 'package:nishauri/src/shared/states/AppFormState.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
-class RegistrationScreen extends ConsumerStatefulWidget {
+class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
 
   @override
-  ConsumerState<RegistrationScreen> createState() => _RegistrationScreenState();
+  State<RegistrationScreen> createState() => _RegistrationScreenState();
 }
 
-class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
+class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
-  var username = TextEditingController();
-  var password = TextEditingController();
-  var confirmPassword = TextEditingController();
-  var phoneNumber = TextEditingController();
-  var email = TextEditingController();
-
-  @override
-  void dispose() {
-    confirmPassword.dispose();
-    phoneNumber.dispose();
-    email.dispose();
-    username.dispose();
-    password.dispose();
-
-    super.dispose();
-  }
-
-  void handleSubmit() async {
-    if (_formKey.currentState!.validate()) {
-      // If the form is valid, display a snack-bar. In the real world,
-      // you'd often call a server or save the information in a database.
-      ref.read(authStateProvider.notifier).register(username.text, phoneNumber.text,
-          email.text, password.text, confirmPassword.text);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login successfully!,')),
-      );
-      final credentials = {
-        "username": username.text,
-        "password": password.text
-      };
-    }
-  }
+  AppFormState _formState = AppFormState(values: {
+    "username": "omosh",
+    "phoneNumber": "0793889658",
+    "email": "omosh@gmail.com",
+    "password": "1234",
+    "confirmPassword": "1234"
+  }, validators: {
+    "username": [ValidationBuilder().required().build()],
+    "phoneNumber": [ValidationBuilder().required().phone().build()],
+    "email": [ValidationBuilder().required().email().build()],
+    "password": [ValidationBuilder().required().build()],
+    "confirmPassword": [ValidationBuilder().required().build()],
+  });
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    void handleFormFieldChange(String name, String value) {
+      setState(() {
+        _formState =
+            _formState.copyWith(values: {..._formState.values, name: value});
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Sign Up"),
@@ -92,75 +84,55 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                       const SizedBox(height: Constants.SPACING),
                       const Text(
                         "Sign Up",
-                        style:
-                            TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 40, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      FormInputTextField(
-                        controler: username,
+                      AppFormTextInput(
+                        name: "username",
+                        onChangeText: handleFormFieldChange,
+                        formState: _formState,
                         placeholder: "Enter username or email",
                         prefixIcon: Icons.account_circle,
                         label: "Username",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      FormInputTextField(
-                        controler: phoneNumber,
+                      AppFormTextInput(
+                        name: "phoneNumber",
+                        onChangeText: handleFormFieldChange,
+                        formState: _formState,
                         placeholder: "e.g 0712345678",
                         prefixIcon: Icons.phone,
                         label: "Phone number",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      FormInputTextField(
-                        controler: email,
+                      AppFormTextInput(
+                        name: "email",
+                        onChangeText: handleFormFieldChange,
+                        formState: _formState,
                         placeholder: "e.g abc@gmail.com",
                         prefixIcon: Icons.email,
                         label: "Email address",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      FormInputTextField(
-                        controler: password,
+                      AppFormTextInput(
+                        name: "password",
+                        onChangeText: handleFormFieldChange,
+                        formState: _formState,
                         placeholder: "********",
                         prefixIcon: Icons.lock,
                         label: "Password",
                         password: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      FormInputTextField(
-                        controler: confirmPassword,
+                      AppFormTextInput(
+                        name: "confirmPassword",
+                        onChangeText: handleFormFieldChange,
+                        formState: _formState,
                         placeholder: "********",
                         prefixIcon: Icons.lock,
                         label: "Confirm Password",
                         password: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
                       ),
                       const SizedBox(height: Constants.SPACING),
                       LinkedRichText(
@@ -169,9 +141,56 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                         onPress: () => context.goNamed(RouteNames.LOGIN_SCREEN),
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      Button(
-                        title: "Register",
-                        onPress: handleSubmit,
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final authState = ref.watch(authStateProvider);
+                          return Button(
+                            loading: _formState.submitting,
+                            title: "Register",
+                            onPress: () {
+                              if (_formKey.currentState!.validate()) {
+                                // If the form is valid, display a snack-bar. In the real world,
+                                // you'd often call a server or save the information in a database.
+                                setState(() {
+                                  _formState =
+                                      _formState.copyWith(submitting: true);
+                                });
+                                ref
+                                    .read(authStateProvider.notifier)
+                                    .register(_formState.values)
+                                    .then((value) {
+                                  setState(() {
+                                    _formState =
+                                        _formState.copyWith(submitting: false);
+                                  });
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Login successfully!,')),
+                                  );
+                                }).catchError((error) {
+                                  setState(() {
+                                    _formState =
+                                        _formState.copyWith(submitting: false);
+                                  });
+                                  switch (error) {
+                                    case ValidationException e:
+                                      setState(() {
+                                        _formState = _formState.copyWith(
+                                            errors: Map.castFrom(e.errors));
+                                      });
+                                      break;
+                                    default:
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                            content: Text(error.toString())),
+                                      );
+                                  }
+                                });
+                              }
+                            },
+                          );
+                        },
                       )
                     ],
                   ),
