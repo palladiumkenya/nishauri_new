@@ -50,6 +50,8 @@ dependencies:
   intl: ^0.18.1
   image_picker: ^1.0.4
   google_maps_flutter: ^2.5.0
+  carousel_slider: ^4.2.1
+  dots_indicator: ^3.0.0
 
 dev_dependencies:
   flutter_test:

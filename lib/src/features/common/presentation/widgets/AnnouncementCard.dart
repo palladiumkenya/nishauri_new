@@ -15,7 +15,7 @@ class AnnouncementCard extends StatelessWidget {
       required this.source,
       required this.title,
       this.description,
-      this.width = 100})
+      this.width = double.infinity})
       : super(key: key);
 
   @override
@@ -38,6 +38,7 @@ class AnnouncementCard extends StatelessWidget {
             Container(
               color: Colors.black.withOpacity(0.5),
               padding: const EdgeInsets.all(10),
+              width: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,

@@ -23,31 +23,33 @@ class AllergiesTab extends StatelessWidget {
         ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: DataTable(
-            columns: [
-              DataColumn(label: Text("Allergen", style: theme.textTheme.titleMedium)),
-              DataColumn(label: Text("Reaction", style: theme.textTheme.titleMedium)),
-              DataColumn(label: Text("Severity", style: theme.textTheme.titleMedium)),
-              DataColumn(label: Text("Date Recorded", style: theme.textTheme.titleMedium))
-            ],
-            rows: allergies
-                .map(
-                  (e) => DataRow(
-                cells: [
-                  DataCell(Text(e.allergen)),
-                  DataCell(Text(e.reaction)),
-                  DataCell(Text(e.severity)),
-                  DataCell(
-                    Text(
-                      DateFormat("dd MMM yyy").format(
-                        DateTime.parse(e.dateRecorded),
+          child: AppCard(
+            child: DataTable(
+              columns: [
+                DataColumn(label: Text("Allergen", style: theme.textTheme.titleMedium)),
+                DataColumn(label: Text("Reaction", style: theme.textTheme.titleMedium)),
+                DataColumn(label: Text("Severity", style: theme.textTheme.titleMedium)),
+                DataColumn(label: Text("Date Recorded", style: theme.textTheme.titleMedium))
+              ],
+              rows: allergies
+                  .map(
+                    (e) => DataRow(
+                  cells: [
+                    DataCell(Text(e.allergen)),
+                    DataCell(Text(e.reaction)),
+                    DataCell(Text(e.severity)),
+                    DataCell(
+                      Text(
+                        DateFormat("dd MMM yyy").format(
+                          DateTime.parse(e.dateRecorded),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            )
-                .toList(),
+                  ],
+                ),
+              )
+                  .toList(),
+            ),
           ),
         ),
       ],

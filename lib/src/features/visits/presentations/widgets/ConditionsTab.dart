@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/visits/data/models/condition.dart';
+import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class ConditionsTab extends StatelessWidget {
@@ -22,39 +23,42 @@ class ConditionsTab extends StatelessWidget {
         ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: DataTable(
-            columns: [
-              DataColumn(label: Text("Name", style: theme.textTheme.titleMedium)),
-              DataColumn(label: Text("Value", style: theme.textTheme.titleMedium)),
-              DataColumn(label: Text("Status", style: theme.textTheme.titleMedium)),
-              DataColumn(label: Text("On set Date", style: theme.textTheme.titleMedium)),
-              DataColumn(label: Text("Date Recorded", style: theme.textTheme.titleMedium))
-            ],
-            rows: conditions
-                .map(
-                  (e) => DataRow(
-                cells: [
-                  DataCell(Text(e.name)),
-                  DataCell(Text(e.value)),
-                  DataCell(Text(e.status)),
-                  DataCell(
-                    e.onsetDate != null && e.onsetDate?.isNotEmpty == true? Text(
-                      DateFormat("dd MMM yyy").format(
-                        DateTime.parse(e.onsetDate!),
-                      ),
-                    ): const Text("-"),
-                  ),
-                  DataCell(
-                    Text(
-                      DateFormat("dd MMM yyy").format(
-                        DateTime.parse(e.dateRecorded),
+          child: AppCard(
+            variant: CardVariant.ELEVETED,
+            child: DataTable(
+              columns: [
+                DataColumn(label: Text("Name", style: theme.textTheme.titleMedium)),
+                DataColumn(label: Text("Value", style: theme.textTheme.titleMedium)),
+                DataColumn(label: Text("Status", style: theme.textTheme.titleMedium)),
+                DataColumn(label: Text("On set Date", style: theme.textTheme.titleMedium)),
+                DataColumn(label: Text("Date Recorded", style: theme.textTheme.titleMedium))
+              ],
+              rows: conditions
+                  .map(
+                    (e) => DataRow(
+                  cells: [
+                    DataCell(Text(e.name)),
+                    DataCell(Text(e.value)),
+                    DataCell(Text(e.status)),
+                    DataCell(
+                      e.onsetDate != null && e.onsetDate?.isNotEmpty == true? Text(
+                        DateFormat("dd MMM yyy").format(
+                          DateTime.parse(e.onsetDate!),
+                        ),
+                      ): const Text("-"),
+                    ),
+                    DataCell(
+                      Text(
+                        DateFormat("dd MMM yyy").format(
+                          DateTime.parse(e.dateRecorded),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            )
-                .toList(),
+                  ],
+                ),
+              )
+                  .toList(),
+            ),
           ),
         ),
       ],
