@@ -33,6 +33,14 @@ class UserService extends HTTPService {
   }
 
   Future<User> getUser(String token) async {
+    await Future.delayed(const Duration(seconds: 3));
+    return User.fromJson({
+      "username": "omosh",
+      "phoneNumber": "0793889658",
+      "email": "omosh@gmail.com",
+      "password": "1234",
+      "confirmPassword": "1234"
+    });
     var headers = {'x-auth-token': token};
     var request =
         http.Request('GET', Uri.parse('${Constants.BASE_URL}auth/profile'));

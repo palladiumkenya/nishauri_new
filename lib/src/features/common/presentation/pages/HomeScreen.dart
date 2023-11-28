@@ -154,7 +154,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               padding: const EdgeInsets.all(Constants.SPACING),
               child: Text(
                 "Did you know?",
-                style: theme.textTheme.titleLarge,
+                style: theme.textTheme.titleSmall,
               ),
             ),
             const SizedBox(
@@ -168,18 +168,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     children: [
                       CarouselSlider(
                         options: CarouselOptions(
-                          height: screenSize.height * 0.20,
-                          autoPlay: true,
-                          autoPlayInterval: const Duration(seconds: 3),
-                          enlargeCenterPage: true,
-                          enlargeFactor: 0.3,
-                          autoPlayCurve: Curves.fastOutSlowIn,
+                            height: screenSize.height * 0.20,
+                            autoPlay: true,
+                            autoPlayInterval: const Duration(seconds: 3),
+                            enlargeCenterPage: true,
+                            enlargeFactor: 0.3,
+                            autoPlayCurve: Curves.fastOutSlowIn,
                             onPageChanged: (index, reason) {
                               setState(() {
                                 _currentIndex = index;
                               });
-                            }
-                        ),
+                            }),
                         items: data.map((announcement) {
                           return Builder(
                             builder: (BuildContext context) {
@@ -197,14 +196,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         dotsCount: data.length,
                         position: _currentIndex,
                         decorator: DotsDecorator(
-                          size: const Size.square(9.0),
-                          activeSize: const Size(18.0, 9.0),
-                          activeShape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          activeColor: theme.colorScheme.primary
-                        ),
-
+                            size: const Size.square(9.0),
+                            activeSize: const Size(18.0, 9.0),
+                            activeShape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            activeColor: theme.colorScheme.primary),
                       )
                     ],
                   ),
@@ -217,6 +214,85 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
             const SizedBox(
               height: Constants.SPACING,
+            ),
+            Consumer(
+              builder: (context, ref, child) {
+                final announcementsAsync = ref.watch(announcementsProvider);
+                return announcementsAsync.when(
+                  data: (data) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(Constants.SPACING),
+                        child: Text(
+                          "Upcoming appointments",
+                          style: theme.textTheme.titleSmall,
+                        ),
+                      ),
+                      CarouselSlider(
+                        options: CarouselOptions(
+                          enableInfiniteScroll: false,
+                          height: screenSize.height * 0.10,
+                          enlargeCenterPage: true,
+                          enlargeFactor: 0.3,
+                        ),
+                        items: data.map((announcement) {
+                          return Builder(
+                            builder: (BuildContext context) {
+                              return AppCard(
+                                color: theme.colorScheme.onPrimary,
+                                variant: CardVariant.ELEVETED,
+                                child: ListTile(
+                                  leading: Container(
+                                    padding: const EdgeInsets.all(
+                                      Constants.SPACING,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: theme.colorScheme.background,
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(
+                                          Constants.ROUNDNESS,
+                                        ),
+                                      ),
+                                    ),
+                                    child: const Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.calendar_month),
+                                      ],
+                                    ),
+                                  ),
+                                  title: const Text(
+                                      "Clinical Review Appointments",
+                                      maxLines: 1),
+                                  titleTextStyle: theme.textTheme.titleSmall
+                                      ?.copyWith(
+                                          overflow: TextOverflow.ellipsis),
+                                  subtitle: const Text("3 days Remaining"),
+                                  subtitleTextStyle: theme.textTheme.bodySmall,
+                                  trailing: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                    children: [
+                                      Text("20th", style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),),
+                                      Text("Oct", style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                  error: (error, _) => Container(),
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              },
             ),
             const SizedBox(
               height: Constants.SPACING,

@@ -2,10 +2,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/features/user/data/respositories/UserRepository.dart';
 
-class UserController extends StateNotifier<AsyncValue<User?>> {
+class UserController extends StateNotifier<AsyncValue<User>> {
   final UserRepository _repository;
 
-  UserController(this._repository) : super(const AsyncValue.data(null));
+  UserController(this._repository) : super(const AsyncValue.loading()){
+    getUser();
+  }
 
   Future<void> getUser() async {
     state = const AsyncValue.loading();

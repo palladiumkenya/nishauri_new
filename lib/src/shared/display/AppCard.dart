@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nishauri/src/utils/constants.dart';
 
 enum CardVariant { FILLED, OUTLINED, ELEVETED }
 
@@ -33,7 +34,7 @@ class AppCard extends StatelessWidget {
           side: BorderSide(
             color: theme.colorScheme.outline,
           ),
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          borderRadius: const BorderRadius.all(Radius.circular(Constants.ROUNDNESS)),
         ),
         child: InkWell(
           splashColor: theme.colorScheme.primary.withAlpha(30),

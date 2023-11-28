@@ -5,6 +5,7 @@ import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
+import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/form/AppFormTextInput.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
@@ -74,12 +75,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       const SizedBox(height: Constants.SPACING),
                       DecoratedBox(
                         decoration: const BoxDecoration(),
-                        child: SvgPicture.asset(
-                          "assets/images/patient.svg",
-                          semanticsLabel: "Doctors",
-                          fit: BoxFit.contain,
-                          height: 150,
-                        ),
+                        child: Logo(),
                       ),
                       const SizedBox(height: Constants.SPACING),
                       const Text(
@@ -165,7 +161,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   });
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                        content: Text('Login successfully!,')),
+                                        content: Text('Registration successfull!,')),
                                   );
                                 }).catchError((error) {
                                   setState(() {

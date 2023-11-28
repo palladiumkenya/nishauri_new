@@ -34,9 +34,9 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  Future<void> verify(String otp) async {
+  Future<void> verify(Map<String, dynamic> data) async {
     try {
-      final isVerified = await _repository.verifyAccount(otp);
+      final isVerified = await _repository.verifyAccount(data);
       state = state.copyWith(isAccountVerified: isVerified);
     } catch (e) {
       rethrow;

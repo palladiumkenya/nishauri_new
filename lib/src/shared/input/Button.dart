@@ -40,7 +40,7 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     if (loading) {
-      return CircularProgressIndicator(color: theme.primaryColor);
+      return const CircularProgressIndicator();
     }
 
     return SizedBox(

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
+import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/form/AppFormTextInput.dart';
 import 'package:nishauri/src/shared/form/RiverpodForm.dart';
@@ -68,14 +69,9 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 children: [
                   const SizedBox(height: Constants.SPACING),
-                  DecoratedBox(
-                    decoration: const BoxDecoration(),
-                    child: SvgPicture.asset(
-                      "assets/images/doctors.svg",
-                      semanticsLabel: "Doctors",
-                      fit: BoxFit.contain,
-                      height: 150,
-                    ),
+                  const DecoratedBox(
+                    decoration: BoxDecoration(),
+                    child: Logo(),
                   ),
                   const SizedBox(height: 20),
                   const Text(

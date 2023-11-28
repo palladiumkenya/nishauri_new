@@ -16,8 +16,8 @@ class AuthRepository {
     final response = await _service.register(data);
     return response;
   }
-  Future<bool> verifyAccount(String otp) async {
-    final response = await _service.accountVerify(otp);
+  Future<bool> verifyAccount(Map<String, dynamic> data) async {
+    final response = await _service.accountVerify(data);
     return response;
   }
 
