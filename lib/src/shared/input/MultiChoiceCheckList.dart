@@ -10,8 +10,8 @@ class MultiChoiceCheckListChoice {
 class MultiChoiceCheckList extends StatelessWidget {
   final String label;
   final List<MultiChoiceCheckListChoice> items;
-  final List<MultiChoiceCheckListChoice> value;
-  final void Function(List<MultiChoiceCheckListChoice> value)? onValueChanged;
+  final List<dynamic> value;
+  final void Function(List<dynamic> value)? onValueChanged;
 
   const MultiChoiceCheckList({
     super.key,
@@ -30,17 +30,17 @@ class MultiChoiceCheckList extends StatelessWidget {
       children: items
           .map(
             (e) => CheckboxListTile(
-              value: value.any((element) => element.value == e.value),
+              value: value.any((element) => element == e.value),
               onChanged: onValueChanged != null
                   ? (isChecked) {
-                      if (value.any((element) => element.value == e.value)) {
+                      if (value.any((element) => element == e.value)) {
                         // If in value then remove
                         onValueChanged!(value
-                            .where((element) => element.value != e.value)
+                            .where((element) => element != e.value)
                             .toList());
                       } else {
                         // else add to value
-                        onValueChanged!(value..add(e));
+                        onValueChanged!(value..add(e.value));
                       }
                     }
                   : null,

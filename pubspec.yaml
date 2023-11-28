@@ -52,6 +52,8 @@ dependencies:
   google_maps_flutter: ^2.5.0
   carousel_slider: ^4.2.1
   dots_indicator: ^3.0.0
+  flutter_hooks: ^0.20.3
+  hooks_riverpod: ^2.4.9
 
 dev_dependencies:
   flutter_test:

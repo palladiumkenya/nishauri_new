@@ -6,7 +6,7 @@ import 'package:nishauri/src/utils/constants.dart';
 
 class HealthInformation extends StatefulWidget {
   final AppFormState formState;
-  final void Function(String, String?) onFormFieldChanged;
+  final void Function(String, dynamic) onFormFieldChanged;
 
   const HealthInformation(
       {super.key, required this.formState, required this.onFormFieldChanged});
@@ -51,10 +51,8 @@ class _HealthInformationState extends State<HealthInformation> {
             MultiChoiceCheckListChoice(label: "Husk", value: "husk"),
           ],
           label: "Do you suffer from any allergies?",
-          value: allergies,
-          onValueChanged: (values) => setState(() {
-            allergies = values;
-          }),
+          value: widget.formState.values["allergies"],
+          onValueChanged: (values) => widget.onFormFieldChanged("allergies", values),
         ),
         const SizedBox(height: Constants.SPACING),
         MultiChoiceCheckList(
@@ -64,10 +62,8 @@ class _HealthInformationState extends State<HealthInformation> {
             MultiChoiceCheckListChoice(label: "Deaf", value: "deaf"),
           ],
           label: "Do you have any disabilities?",
-          value: disabilities,
-          onValueChanged: (values) => setState(() {
-            disabilities = values;
-          }),
+          value: widget.formState.values["disabilities"],
+          onValueChanged: (values) => widget.onFormFieldChanged("disabilities", values),
         ),
         const SizedBox(height: Constants.SPACING),
         MultiChoiceCheckList(
@@ -79,9 +75,7 @@ class _HealthInformationState extends State<HealthInformation> {
           ],
           label: "Do you suffer from any chronic illness?",
           value: chronics,
-          onValueChanged: (values) => setState(() {
-            chronics = values;
-          }),
+          onValueChanged: (values) => widget.onFormFieldChanged("chronics", values),
         ),
         const SizedBox(height: Constants.SPACING),
       ],
