@@ -1,10 +1,35 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/helpers.dart';
+
+var _user = User.fromJson({
+  "username": "omosh",
+  "image": null,
+  "firstName": "",
+  "lastName": "",
+  "dateOfBirth": null,
+  "gender": null,
+  "email": "lawiomosh3@gmail.com",
+  "phoneNumber": "254793889658",
+  "county": null,
+  "constituency": null,
+  "bloodGroup": null,
+  "allergies": [],
+  "disabilities": [],
+  "chronics": [],
+  "weight": null,
+  "height": null,
+  "maritalStatus": null,
+  "educationLevel": null,
+  "primaryLanguage": null,
+  "occupation": null
+});
 
 class UserService extends HTTPService {
   Future<void> uploadImage(File imageFile) async {
@@ -32,15 +57,15 @@ class UserService extends HTTPService {
     }
   }
 
+  Future<User> updateProfile(User user) async {
+    await Future.delayed(const Duration(seconds: 3));
+    _user = user;
+    return _user;
+  }
+
   Future<User> getUser(String token) async {
     await Future.delayed(const Duration(seconds: 3));
-    return User.fromJson({
-      "username": "omosh",
-      "phoneNumber": "0793889658",
-      "email": "omosh@gmail.com",
-      "password": "1234",
-      "confirmPassword": "1234"
-    });
+    return _user;
     var headers = {'x-auth-token': token};
     var request =
         http.Request('GET', Uri.parse('${Constants.BASE_URL}auth/profile'));

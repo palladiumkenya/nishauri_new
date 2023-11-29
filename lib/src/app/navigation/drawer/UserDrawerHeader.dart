@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:nishauri/src/shared/extensions/extensions.dart';
+import 'package:nishauri/src/utils/helpers.dart';
 
 class UserDrawerHeader extends StatelessWidget {
   final String? email;
@@ -13,18 +17,18 @@ class UserDrawerHeader extends StatelessWidget {
       required this.phoneNumber,
       this.image});
 
-  get getAvatar => image != null && image!.isNotEmpty
-      ? Image.network(image!)
-      : Text(name.substring(0, 1).toUpperCase());
-
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return DrawerHeader(
       child: Row(
         children: [
           CircleAvatar(
             radius: 50,
-            child: getAvatar,
+            backgroundImage: image != null ? _buildUserImage(image!): null,
+            child: ClipOval(
+              child: image == null ? Text(name.abbreviation): null,
+            ),
           ),
           const SizedBox(
             width: 20,
@@ -41,15 +45,16 @@ class UserDrawerHeader extends StatelessWidget {
                         name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleLarge,
                       ),
                     ),
                   ],
                 ),
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.email_outlined,
-                      color: Colors.black54,
+                      color: theme.colorScheme.onTertiaryContainer,
                     ),
                     const SizedBox(
                       width: 10,
@@ -59,17 +64,15 @@ class UserDrawerHeader extends StatelessWidget {
                         email ?? "None",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Colors.black54,
-                        ),
+                        style: theme.textTheme.bodySmall,
                       ),
                     ),
                   ],
                 ),
                 Row(
                   children: [
-                    const Icon(
-                      color: Colors.black54,
+                    Icon(
+                      color: theme.colorScheme.onTertiaryContainer,
                       Icons.phone,
                     ),
                     const SizedBox(
@@ -80,9 +83,7 @@ class UserDrawerHeader extends StatelessWidget {
                         phoneNumber,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Colors.black54,
-                        ),
+                        style: theme.textTheme.bodySmall,
                       ),
                     ),
                   ],
@@ -94,4 +95,14 @@ class UserDrawerHeader extends StatelessWidget {
       ),
     );
   }
+}
+
+_buildUserImage(String imagePath) {
+  return isNetworkUri(imagePath)
+      ? NetworkImage(
+          imagePath,
+        )
+      : FileImage(
+          File.fromUri(Uri.parse(imagePath)),
+        );
 }

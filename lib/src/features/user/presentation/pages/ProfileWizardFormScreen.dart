@@ -1,14 +1,37 @@
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:form_validator/form_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
+import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user/presentation/forms/forms.dart';
-import 'package:nishauri/src/shared/states/AppFormState.dart';
+import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/utils/routes.dart';
+
+final _data = {
+  "username": "omosh",
+  "image": null,
+  "firstName": "",
+  "lastName": "",
+  "dateOfBirth": null,
+  "gender": null,
+  "email": "lawiomosh3@gmail.com",
+  "phoneNumber": "254793889658",
+  "county": null,
+  "constituency": null,
+  "bloodGroup": null,
+  "allergies": [],
+  "disabilities": [],
+  "chronics": [],
+  "weight": null,
+  "height": null,
+  "maritalStatus": null,
+  "educationLevel": null,
+  "primaryLanguage": null,
+  "occupation": null
+};
 
 class ProfileWizardFormScreen extends HookConsumerWidget {
   const ProfileWizardFormScreen({super.key});
@@ -17,7 +40,6 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(() => GlobalKey<FormBuilderState>());
     final currentStep = useState<int>(0);
-    final asyncUser = ref.watch(userProvider);
 
     List<Step> steps = [
       Step(
@@ -47,25 +69,21 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
         title: const Text("Health Information"),
         subtitle: const Text(
             " Share important health details for better healthcare assistance."),
-        content: const HealthInformation(
-
-        ),
+        content: const HealthInformation(),
         isActive: currentStep.value == 3,
       ),
       Step(
         title: const Text("Physical Characteristics"),
         subtitle: const Text(
             "Provide information about your physical attributes for a more comprehensive"),
-        content: const PhysicalCharacteristicInformation(
-        ),
+        content: const PhysicalCharacteristicInformation(),
         isActive: currentStep.value == 4,
       ),
       Step(
         title: const Text("Social Information"),
         subtitle: const Text(
             "Share aspects of your lifestyle that may influence your health."),
-        content: const LifeStyleInformation(
-        ),
+        content: const LifeStyleInformation(),
         isActive: currentStep.value == 5,
       ),
       Step(
@@ -78,6 +96,29 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
         isActive: currentStep.value == 6,
       ),
     ];
+
+    void handleSubmit() async {
+      if (formKey.currentState!.saveAndValidate()) {
+        try {
+          await ref
+              .read(userProvider.notifier)
+              .updateUser(User.fromJson(formKey.currentState!.value))
+              .then(
+                (value) => ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text("Profile updated successfully!")),
+                ),
+              );
+          ref.read(authStateProvider.notifier).markProfileAsUpdated();
+        } on ValidationException catch (e) {
+          for (var err in e.errors.entries) {
+            formKey.currentState!.fields[err.key]?.invalidate(err.value);
+          }
+        } catch (e) {
+          debugPrint("[PROFILE-WIZARD]: ${e.toString()}");
+        }
+      }
+    }
 
     return WillPopScope(
       onWillPop: () async {
@@ -120,10 +161,8 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                 bool isLastStep = (currentStep.value == steps.length - 1);
                 // Validate the current step
                 if (isLastStep) {
-                  // Do something with the information on the last step
-                  // if (formKey.currentState!.validate()) {
-                  ref.read(authStateProvider.notifier).updateProfile(true);
-                  // }
+                  // Submit form
+                  handleSubmit();
                 } else {
                   // if (formKey.currentState!.validate()) {
                   currentStep.value += 1;
@@ -132,6 +171,7 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
               },
               onStepTapped: (step) => currentStep.value = step,
               steps: steps,
+
             ),
           ),
         ),

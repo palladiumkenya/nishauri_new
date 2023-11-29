@@ -77,3 +77,10 @@ Future<void> showPinAuthentication() async {
   }
 }
 */
+
+
+bool isNetworkUri(String uri) {
+  final imageUri = Uri.parse(uri);
+  final schemes = ['http', 'https', 'ftp', 'ftps'];
+  return schemes.contains(imageUri.scheme);
+}

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
+import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 
 class AuthController extends StateNotifier<AuthState> {
@@ -43,9 +44,9 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  Future<void> updateProfile(bool updateProfile) async {
+  Future<void> markProfileAsUpdated() async {
     try {
-      state = state.copyWith(isProfileComplete: updateProfile);
+      state = state.copyWith(isProfileComplete: true);
     } catch (e) {
       rethrow;
     }

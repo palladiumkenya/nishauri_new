@@ -9,8 +9,10 @@ import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/common/data/providers/announcements_provider.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/AnnouncementCard.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/Greetings.dart';
+import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:nishauri/src/shared/extensions/extensions.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
@@ -45,6 +47,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
       'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
     ];
+    final asyncUser = ref.watch(userProvider);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -71,24 +74,33 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
         child: ListView(
           children: [
-            const UserDrawerHeader(
-                email: "ouma.omondi1@students.jkuat.ac.ke",
-                name: "Laurent Ouma Omondi",
-                phoneNumber: "+254793889658"),
+            if (asyncUser.hasValue)
+              GestureDetector(
+                child: UserDrawerHeader(
+                  email: asyncUser.value!.email,
+                  name:
+                      "${asyncUser.value!.firstName} ${asyncUser.value!.lastName}"
+                          .titleCase,
+                  phoneNumber: asyncUser.value!.phoneNumber,
+                  image: asyncUser.value!.image,
+                ),
+                onTap: () => context.goNamed(RouteNames.PROFILE_SETTINGS),
+              ),
+
             ListTile(
               leading: const Icon(Icons.dashboard_customize_rounded),
               title: const Text("Dashboard"),
               onTap: () {
+                context.goNamed(RouteNames.DASHBOARD);
                 // Close drawer
                 Navigator.pop(context);
               },
             ),
 
             ListTile(
-              leading: const Icon(Icons.verified),
-              title: const Text("Verify"),
+              leading: const Icon(Icons.notifications),
+              title: const Text("Notification"),
               onTap: () {
-                context.goNamed(RouteNames.VERIFY_ACCOUNT);
                 // Close drawer
                 Navigator.pop(context);
               },
@@ -143,163 +155,188 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Greetings(
-              name: "Laurent Ouma",
-            ),
-            Padding(
-              padding: const EdgeInsets.all(Constants.SPACING),
-              child: Text(
-                "Did you know?",
-                style: theme.textTheme.titleSmall,
-              ),
-            ),
-            const SizedBox(
-              height: Constants.SPACING,
-            ),
-            Consumer(
-              builder: (context, ref, child) {
-                final announcementsAsync = ref.watch(announcementsProvider);
-                return announcementsAsync.when(
-                  data: (data) => Column(
-                    children: [
-                      CarouselSlider(
-                        options: CarouselOptions(
-                            height: screenSize.height * 0.20,
-                            autoPlay: true,
-                            autoPlayInterval: const Duration(seconds: 3),
-                            enlargeCenterPage: true,
-                            enlargeFactor: 0.3,
-                            autoPlayCurve: Curves.fastOutSlowIn,
-                            onPageChanged: (index, reason) {
-                              setState(() {
-                                _currentIndex = index;
-                              });
-                            }),
-                        items: data.map((announcement) {
-                          return Builder(
-                            builder: (BuildContext context) {
-                              return AnnouncementCard(
-                                image: announcement.image,
-                                source: announcement.source,
-                                title: announcement.title,
-                                description: announcement.description,
-                              );
-                            },
-                          );
-                        }).toList(),
+      body: asyncUser.when(
+          data: (user) => SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Greetings(
+                      name: "${user.firstName} ${user.lastName}".titleCase,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(Constants.SPACING),
+                      child: Text(
+                        "Did you know?",
+                        style: theme.textTheme.titleSmall,
                       ),
-                      DotsIndicator(
-                        dotsCount: data.length,
-                        position: _currentIndex,
-                        decorator: DotsDecorator(
-                            size: const Size.square(9.0),
-                            activeSize: const Size(18.0, 9.0),
-                            activeShape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                            activeColor: theme.colorScheme.primary),
-                      )
-                    ],
-                  ),
-                  error: (error, _) => Container(),
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(
-              height: Constants.SPACING,
-            ),
-            Consumer(
-              builder: (context, ref, child) {
-                final announcementsAsync = ref.watch(announcementsProvider);
-                return announcementsAsync.when(
-                  data: (data) => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(Constants.SPACING),
-                        child: Text(
-                          "Upcoming appointments",
-                          style: theme.textTheme.titleSmall,
-                        ),
-                      ),
-                      CarouselSlider(
-                        options: CarouselOptions(
-                          enableInfiniteScroll: false,
-                          height: screenSize.height * 0.10,
-                          enlargeCenterPage: true,
-                          enlargeFactor: 0.3,
-                        ),
-                        items: data.map((announcement) {
-                          return Builder(
-                            builder: (BuildContext context) {
-                              return AppCard(
-                                color: theme.colorScheme.onPrimary,
-                                variant: CardVariant.ELEVETED,
-                                child: ListTile(
-                                  leading: Container(
-                                    padding: const EdgeInsets.all(
-                                      Constants.SPACING,
+                    ),
+                    const SizedBox(
+                      height: Constants.SPACING,
+                    ),
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final announcementsAsync =
+                            ref.watch(announcementsProvider);
+                        return announcementsAsync.when(
+                          data: (data) => Column(
+                            children: [
+                              CarouselSlider(
+                                options: CarouselOptions(
+                                    height: screenSize.height * 0.20,
+                                    autoPlay: true,
+                                    autoPlayInterval:
+                                        const Duration(seconds: 3),
+                                    enlargeCenterPage: true,
+                                    enlargeFactor: 0.3,
+                                    autoPlayCurve: Curves.fastOutSlowIn,
+                                    onPageChanged: (index, reason) {
+                                      setState(() {
+                                        _currentIndex = index;
+                                      });
+                                    }),
+                                items: data.map((announcement) {
+                                  return Builder(
+                                    builder: (BuildContext context) {
+                                      return AnnouncementCard(
+                                        image: announcement.image,
+                                        source: announcement.source,
+                                        title: announcement.title,
+                                        description: announcement.description,
+                                      );
+                                    },
+                                  );
+                                }).toList(),
+                              ),
+                              DotsIndicator(
+                                dotsCount: data.length,
+                                position: _currentIndex,
+                                decorator: DotsDecorator(
+                                    size: const Size.square(9.0),
+                                    activeSize: const Size(18.0, 9.0),
+                                    activeShape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
                                     ),
-                                    decoration: BoxDecoration(
-                                      color: theme.colorScheme.background,
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(
-                                          Constants.ROUNDNESS,
-                                        ),
-                                      ),
-                                    ),
-                                    child: const Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.calendar_month),
-                                      ],
-                                    ),
-                                  ),
-                                  title: const Text(
-                                      "Clinical Review Appointments",
-                                      maxLines: 1),
-                                  titleTextStyle: theme.textTheme.titleSmall
-                                      ?.copyWith(
-                                          overflow: TextOverflow.ellipsis),
-                                  subtitle: const Text("3 days Remaining"),
-                                  subtitleTextStyle: theme.textTheme.bodySmall,
-                                  trailing: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                    children: [
-                                      Text("20th", style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),),
-                                      Text("Oct", style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),),
-                                    ],
-                                  ),
+                                    activeColor: theme.colorScheme.primary),
+                              )
+                            ],
+                          ),
+                          error: (error, _) => Container(),
+                          loading: () => const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      height: Constants.SPACING,
+                    ),
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final announcementsAsync =
+                            ref.watch(announcementsProvider);
+                        return announcementsAsync.when(
+                          data: (data) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.all(Constants.SPACING),
+                                child: Text(
+                                  "Upcoming appointments",
+                                  style: theme.textTheme.titleSmall,
                                 ),
-                              );
-                            },
-                          );
-                        }).toList(),
-                      ),
-                    ],
-                  ),
-                  error: (error, _) => Container(),
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(
-              height: Constants.SPACING,
-            ),
-          ],
-        ),
-      ),
+                              ),
+                              CarouselSlider(
+                                options: CarouselOptions(
+                                  enableInfiniteScroll: false,
+                                  height: screenSize.height * 0.10,
+                                  enlargeCenterPage: true,
+                                  enlargeFactor: 0.3,
+                                ),
+                                items: data.map((announcement) {
+                                  return Builder(
+                                    builder: (BuildContext context) {
+                                      return AppCard(
+                                        color: theme.colorScheme.onPrimary,
+                                        variant: CardVariant.ELEVETED,
+                                        child: ListTile(
+                                          leading: Container(
+                                            padding: const EdgeInsets.all(
+                                              Constants.SPACING,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  theme.colorScheme.background,
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                Radius.circular(
+                                                  Constants.ROUNDNESS,
+                                                ),
+                                              ),
+                                            ),
+                                            child: const Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(Icons.calendar_month),
+                                              ],
+                                            ),
+                                          ),
+                                          title: const Text(
+                                              "Clinical Review Appointments",
+                                              maxLines: 1),
+                                          titleTextStyle: theme
+                                              .textTheme.titleSmall
+                                              ?.copyWith(
+                                                  overflow:
+                                                      TextOverflow.ellipsis),
+                                          subtitle:
+                                              const Text("3 days Remaining"),
+                                          subtitleTextStyle:
+                                              theme.textTheme.bodySmall,
+                                          trailing: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "20th",
+                                                style: theme.textTheme.bodySmall
+                                                    ?.copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Oct",
+                                                style: theme.textTheme.bodySmall
+                                                    ?.copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          ),
+                          error: (error, _) => Container(),
+                          loading: () => const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      height: Constants.SPACING,
+                    ),
+                  ],
+                ),
+              ),
+          error: (error, _) => Center(child: Text(error.toString())),
+          loading: () => const Center(child: CircularProgressIndicator())),
     );
   }
 }

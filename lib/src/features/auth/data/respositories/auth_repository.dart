@@ -1,5 +1,6 @@
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
+import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/local_storage/LocalStorage.dart';
 
 class AuthRepository {
@@ -25,6 +26,7 @@ class AuthRepository {
     final token = await LocalStorage.getToken();
     return token;
   }
+
 
   Future<String> saveToken(String token) async {
     await LocalStorage.saveToken(token);

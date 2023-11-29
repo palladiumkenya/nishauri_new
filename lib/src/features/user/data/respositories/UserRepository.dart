@@ -14,5 +14,8 @@ class UserRepository {
     return user;
   }
 
-
+  Future<User> updateProfile(User user) async {
+    final user_ = await _service.updateProfile(user);
+    return user_;
+  }
 }

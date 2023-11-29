@@ -57,6 +57,7 @@ class PersonalInformation extends StatelessWidget {
                 validator: FormBuilderValidators.compose([
                   FormBuilderValidators.required(),
                 ]),
+                valueTransformer: (date) => date?.toIso8601String(),
               ),
               const SizedBox(height: Constants.SPACING),
               FormBuilderDropdown(

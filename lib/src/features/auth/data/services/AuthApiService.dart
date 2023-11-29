@@ -30,9 +30,9 @@ class AuthApiService extends HTTPService {
 
   Future<bool> accountVerify(Map<String, dynamic> data) async {
     await Future.delayed(const Duration(seconds: 3));
-    debugPrint("*********************| $data |*****************************");
     return true;
   }
+
 
   Future<AuthState> register(Map<String, dynamic> data) async {
     await Future.delayed(const Duration(seconds: 3));
