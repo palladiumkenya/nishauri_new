@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:form_validator/form_validator.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
-import 'package:nishauri/src/shared/form/AppFormTextInput.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
-import 'package:nishauri/src/shared/input/FormInputTextField.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
-import 'package:nishauri/src/shared/states/AppFormState.dart';
+import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
@@ -23,30 +21,19 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  final _formKey = GlobalKey<FormState>();
-  AppFormState _formState = AppFormState(values: {
-    "username": "omosh",
-    "phoneNumber": "0793889658",
-    "email": "omosh@gmail.com",
-    "password": "1234",
-    "confirmPassword": "1234"
-  }, validators: {
-    "username": [ValidationBuilder().required().build()],
-    "phoneNumber": [ValidationBuilder().required().phone().build()],
-    "email": [ValidationBuilder().required().email().build()],
-    "password": [ValidationBuilder().required().build()],
-    "confirmPassword": [ValidationBuilder().required().build()],
-  });
+  final _formKey = GlobalKey<FormBuilderState>();
+  bool _hidePassword = true;
+  bool _loading = false;
+
+  void _toggleShowPassword() {
+    setState(() {
+      _hidePassword = !_hidePassword;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    void handleFormFieldChange(String name, String value) {
-      setState(() {
-        _formState =
-            _formState.copyWith(values: {..._formState.values, name: value});
-      });
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -64,7 +51,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               color: color,
               borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
             ),
-            child: Form(
+            child: FormBuilder(
               key: _formKey,
               child: SingleChildScrollView(
                 child: Padding(
@@ -73,8 +60,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   child: Column(
                     children: [
                       const SizedBox(height: Constants.SPACING),
-                      DecoratedBox(
-                        decoration: const BoxDecoration(),
+                      const DecoratedBox(
+                        decoration: BoxDecoration(),
                         child: Logo(),
                       ),
                       const SizedBox(height: Constants.SPACING),
@@ -84,51 +71,78 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             fontSize: 40, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      AppFormTextInput(
+                      FormBuilderTextField(
+                        initialValue: "omosh",
                         name: "username",
-                        onChangeText: handleFormFieldChange,
-                        formState: _formState,
-                        placeholder: "Enter username or email",
-                        prefixIcon: Icons.account_circle,
-                        label: "Username",
+                        decoration: inputDecoration(
+                          placeholder: "Enter username or email",
+                          prefixIcon: Icons.account_circle,
+                          label: "Username",
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      AppFormTextInput(
+                      FormBuilderTextField(
+                        initialValue: "254793889658",
                         name: "phoneNumber",
-                        onChangeText: handleFormFieldChange,
-                        formState: _formState,
-                        placeholder: "e.g 0712345678",
-                        prefixIcon: Icons.phone,
-                        label: "Phone number",
+                        decoration: inputDecoration(
+                          placeholder: "e.g 0712345678",
+                          prefixIcon: Icons.phone,
+                          label: "Phone number",
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      AppFormTextInput(
+                      FormBuilderTextField(
+                        initialValue: "lawiomosh3@gmail.com",
                         name: "email",
-                        onChangeText: handleFormFieldChange,
-                        formState: _formState,
-                        placeholder: "e.g abc@gmail.com",
-                        prefixIcon: Icons.email,
-                        label: "Email address",
+                        decoration: inputDecoration(
+                          placeholder: "e.g abc@gmail.com",
+                          prefixIcon: Icons.email,
+                          label: "Email address",
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      AppFormTextInput(
+                      FormBuilderTextField(
+                        initialValue: "1234",
                         name: "password",
-                        onChangeText: handleFormFieldChange,
-                        formState: _formState,
-                        placeholder: "********",
-                        prefixIcon: Icons.lock,
-                        label: "Password",
-                        password: true,
+                        obscureText: _hidePassword,
+                        decoration: inputDecoration(
+                            placeholder: "********",
+                            prefixIcon: Icons.lock,
+                            label: "Password",
+                            surfixIcon: _hidePassword
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            onSurfixIconPressed: _toggleShowPassword),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      AppFormTextInput(
+                      FormBuilderTextField(
+                        initialValue: "1234",
+                        obscureText: _hidePassword,
                         name: "confirmPassword",
-                        onChangeText: handleFormFieldChange,
-                        formState: _formState,
-                        placeholder: "********",
-                        prefixIcon: Icons.lock,
-                        label: "Confirm Password",
-                        password: true,
+                        decoration: inputDecoration(
+                            placeholder: "********",
+                            prefixIcon: Icons.lock,
+                            label: "Confirm Password",
+                            surfixIcon: _hidePassword
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            onSurfixIconPressed: _toggleShowPassword),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                          (value)=>_formKey.currentState!.value["password"] != value ? "Password didn't match" : null
+                        ]),
                       ),
                       const SizedBox(height: Constants.SPACING),
                       LinkedRichText(
@@ -141,39 +155,29 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         builder: (context, ref, child) {
                           final authState = ref.watch(authStateProvider);
                           return Button(
-                            loading: _formState.submitting,
+                            loading: _loading,
                             title: "Register",
                             onPress: () {
-                              if (_formKey.currentState!.validate()) {
-                                // If the form is valid, display a snack-bar. In the real world,
-                                // you'd often call a server or save the information in a database.
+                              if (_formKey.currentState!.saveAndValidate()) {
+                                final formState = _formKey.currentState!.value;
                                 setState(() {
-                                  _formState =
-                                      _formState.copyWith(submitting: true);
+                                  _loading = true;
                                 });
                                 ref
                                     .read(authStateProvider.notifier)
-                                    .register(_formState.values)
+                                    .register(formState)
                                     .then((value) {
-                                  setState(() {
-                                    _formState =
-                                        _formState.copyWith(submitting: false);
-                                  });
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                        content: Text('Registration successfull!,')),
+                                        content:
+                                            Text('Registration successful!,')),
                                   );
                                 }).catchError((error) {
-                                  setState(() {
-                                    _formState =
-                                        _formState.copyWith(submitting: false);
-                                  });
                                   switch (error) {
                                     case ValidationException e:
-                                      setState(() {
-                                        _formState = _formState.copyWith(
-                                            errors: Map.castFrom(e.errors));
-                                      });
+                                      for (var err in e.errors.entries) {
+                                        _formKey.currentState!.fields[err.key]?.invalidate(err.value);
+                                      }
                                       break;
                                     default:
                                       ScaffoldMessenger.of(context)
@@ -182,7 +186,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                             content: Text(error.toString())),
                                       );
                                   }
-                                });
+                                }).whenComplete(() => setState(() {
+                                          _loading = false;
+                                        }));
                               }
                             },
                           );

@@ -1,6 +1,10 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
@@ -14,6 +18,7 @@ import 'package:nishauri/src/shared/input/FormInputTextField.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/states/AppFormState.dart';
 import 'package:nishauri/src/shared/states/AppFormStateNotifier.dart';
+import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 import 'package:form_validator/form_validator.dart';
@@ -26,24 +31,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
-  AppFormState _formState = AppFormState(values: {
-    "username": "",
-    "password": "",
-  }, validators: {
-    "username": [ValidationBuilder().required().build()],
-    "password": [ValidationBuilder().required().build()],
-  });
+  final _formKey = GlobalKey<FormBuilderState>();
+  bool _hidePassword = true;
+  bool _loading = false;
+
+  void _togglePassword() {
+    setState(() {
+      _hidePassword = !_hidePassword;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    void handleFormFieldChange(String name, String value) {
-      setState(() {
-        _formState =
-            _formState.copyWith(values: {..._formState.values, name: value});
-      });
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Sign in"),
@@ -54,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       body: ResponsiveWidgetFormLayout(
         buildPageContent: (BuildContext context, Color? color) => SafeArea(
-            child: Form(
+            child: FormBuilder(
           key: _formKey,
           child: Container(
             padding: const EdgeInsets.all(Constants.SPACING * 2),
@@ -79,23 +78,34 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: Constants.SPACING),
-                  AppFormTextInput(
+                  FormBuilderTextField(
                     name: "username",
-                    onChangeText: handleFormFieldChange,
-                    formState: _formState,
-                    prefixIcon: Icons.account_circle,
-                    label: "Username",
-                    placeholder: "e.g john",
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                    ]),
+                    initialValue: "omosh",
+                    decoration: inputDecoration(
+                      prefixIcon: Icons.account_circle,
+                      label: "Username",
+                      placeholder: "e.g john",
+                    ),
                   ),
                   const SizedBox(height: Constants.SPACING),
-                  AppFormTextInput(
+                  FormBuilderTextField(
+                    initialValue: "1234",
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                    ]),
                     name: "password",
-                    onChangeText: handleFormFieldChange,
-                    formState: _formState,
-                    prefixIcon: Icons.lock,
-                    label: "Password",
-                    password: true,
-                    placeholder: "********",
+                    obscureText: _hidePassword,
+                    decoration: inputDecoration(
+                        prefixIcon: Icons.lock,
+                        label: "Password",
+                        placeholder: "********",
+                        onSurfixIconPressed: _togglePassword,
+                        surfixIcon: _hidePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off),
                   ),
                   const SizedBox(height: Constants.SPACING * 2),
                   LinkedRichText(
@@ -108,37 +118,30 @@ class _LoginScreenState extends State<LoginScreen> {
                     builder: (context, ref, child) {
                       return Button(
                         title: "LOGIN",
+                        loading: _loading,
                         onPress: () {
-                          if (_formKey.currentState!.validate()) {
+                          if (_formKey.currentState!.saveAndValidate()) {
                             // If the form is valid, display a snack-bar. In the real world,
                             // you'd often call a server or save the information in a database.
                             setState(() {
-                              _formState =
-                                  _formState.copyWith(submitting: true);
+                              _loading = true;
                             });
                             ref
                                 .read(authStateProvider.notifier)
-                                .login(_formState.values)
+                                .login(_formKey.currentState!.value)
                                 .then((value) {
-                              setState(() {
-                                _formState =
-                                    _formState.copyWith(submitting: false);
-                              });
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text('Login successfully!,')),
                               );
                             }).catchError((error) {
-                              setState(() {
-                                _formState =
-                                    _formState.copyWith(submitting: false);
-                              });
                               switch (error) {
                                 case ValidationException e:
-                                  setState(() {
-                                    _formState = _formState.copyWith(
-                                        errors: Map.castFrom(e.errors));
-                                  });
+                                  // field error
+                                  for (var err in e.errors.entries) {
+                                    _formKey.currentState!.fields[err.key]
+                                        ?.invalidate(err.value);
+                                  }
                                   break;
                                 default:
                                   // ScaffoldMessenger.of(context)
@@ -148,7 +151,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   // );
                                   throw error;
                               }
-                            });
+                            }).whenComplete(
+                              () => setState(() {
+                                _loading = false;
+                              }),
+                            );
                           }
                         },
                       );
