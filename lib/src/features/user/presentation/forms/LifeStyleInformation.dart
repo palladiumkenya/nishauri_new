@@ -1,109 +1,115 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/form/AppDropDownInput.dart';
 import 'package:nishauri/src/shared/input/FormInputTextField.dart';
 import 'package:nishauri/src/shared/states/AppFormState.dart';
+import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
-class LifeStyleInformation extends StatefulWidget {
-  final AppFormState formState;
-  final void Function(String, String?) onFormFieldChanged;
-
-  const LifeStyleInformation(
-      {super.key, required this.formState, required this.onFormFieldChanged});
-
-  @override
-  State<LifeStyleInformation> createState() => _LifeStyleInformationState();
-}
-
-class _LifeStyleInformationState extends State<LifeStyleInformation> {
-  final List<String> maritalStatus = <String>[
-    'Married',
-    'Single',
-    'Divorced',
-  ];
-  final List<String> languages = <String>[
-    'English',
-    'Swahili',
-  ];
-  final List<String> educationLevels = <String>[
-    'Degree',
-    'KCSE',
-    'KCPE',
-    'None',
-  ];
+class LifeStyleInformation extends StatelessWidget {
+  const LifeStyleInformation({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: Constants.SPACING),
-        SizedBox(
-          width: double.infinity,
-          child: AppDropDownInput(
-            formState: widget.formState,
-            name: "maritalStatus",
-            prefixIcon: Icons.accessibility_sharp,
-            label: "Marital status",
-            onItemSelected: widget.onFormFieldChanged,
-            items: const [
-              DropdownMenuEntry(value: "married", label: "Married"),
-              DropdownMenuEntry(value: "single", label: "Single"),
-              DropdownMenuEntry(value: "divorced", label: "Divorced"),
-              DropdownMenuEntry(
-                  value: "widow-widower", label: "Widow/Widower"),
+    return Consumer(
+      builder: (context, ref, child) {
+        final asyncUser = ref.watch(userProvider);
+        return asyncUser.when(
+          data: (user) => Column(
+            children: [
+              const SizedBox(height: Constants.SPACING),
+              FormBuilderDropdown(
+                initialValue: user.maritalState,
+                name: "maritalStatus",
+                decoration: inputDecoration(
+                  prefixIcon: Icons.accessibility_sharp,
+                  label: "Marital status",
+                ),
+                items: const [
+                  DropdownMenuItem(value: "married", child: Text("Married")),
+                  DropdownMenuItem(value: "single", child: Text("Single")),
+                  DropdownMenuItem(value: "divorced", child: Text("Divorced")),
+                  DropdownMenuItem(
+                      value: "widow-widower", child: Text("Widow/Widower")),
+                ],
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                ]),
+              ),
+              const SizedBox(height: Constants.SPACING),
+              FormBuilderDropdown(
+                initialValue: user.educationLevel,
+                name: "educationLevel",
+                decoration: inputDecoration(
+                  prefixIcon: Icons.school_outlined,
+                  label: "Education level",
+                ),
+                items: const [
+                  DropdownMenuItem(value: "primary", child: Text("Primary")),
+                  DropdownMenuItem(
+                      value: "secondary", child: Text("Secondary")),
+                  DropdownMenuItem(
+                      value: "post-secondary", child: Text("Post secondary")),
+                  DropdownMenuItem(
+                      value: "undergraduate",
+                      child: Text("Undergraduate degree")),
+                  DropdownMenuItem(
+                      value: "postgraduate",
+                      child: Text("Postgraduate degree")),
+                ],
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                ]),
+              ),
+              const SizedBox(height: Constants.SPACING),
+              FormBuilderRadioGroup(
+                initialValue: user.primaryLanguage,
+                name: "primaryLanguage",
+                decoration: inputDecoration(
+                  prefixIcon: Icons.language,
+                  label: "Primary Language",
+                ),
+                options: const [
+                  FormBuilderFieldOption(
+                      value: "swahili", child: Text("Swahili")),
+                  FormBuilderFieldOption(
+                      value: "english", child: Text("English")),
+                ],
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                ]),
+              ),
+              const SizedBox(height: Constants.SPACING),
+              FormBuilderRadioGroup(
+                initialValue: user.occupation,
+                name: "occupation",
+                decoration: inputDecoration(
+                  prefixIcon: Icons.work,
+                  label: "Occupation",
+                ),
+                options: const [
+                  FormBuilderFieldOption(
+                      value: "employed", child: Text("Employed")),
+                  FormBuilderFieldOption(
+                      value: "self-employed", child: Text("Self Employed")),
+                  FormBuilderFieldOption(
+                      value: "unemployed", child: Text("Unemployed")),
+                ],
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                ]),
+              ),
             ],
           ),
-        ),
-        const SizedBox(height: Constants.SPACING),
-        SizedBox(
-          width: double.infinity,
-          child: AppDropDownInput(
-            name: "primaryLanguage",
-            formState: widget.formState,
-            onItemSelected: widget.onFormFieldChanged,
-            prefixIcon: Icons.language,
-            label: "Primary Language",
-            items: const [
-              DropdownMenuEntry(value: "swahili", label: "Swahili"),
-              DropdownMenuEntry(value: "english", label: "English"),
-            ],
+          error: (error, _) => Center(child: Text(error.toString())),
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
           ),
-        ),
-        const SizedBox(height: Constants.SPACING),
-        SizedBox(
-          width: double.infinity,
-          child: AppDropDownInput(
-            onItemSelected: widget.onFormFieldChanged,
-            formState: widget.formState,
-            prefixIcon: Icons.school_outlined,
-            name: "educationLevel",
-            label: "Education level",
-            items: const [
-              DropdownMenuEntry(label: "Primary", value: "primary"),
-              DropdownMenuEntry(label: "Secondary", value: "secondary"),
-              DropdownMenuEntry(label: "Post secondary", value: "post-secondary"),
-              DropdownMenuEntry(label: "Undergraduate degree", value: "undergraduate"),
-              DropdownMenuEntry(label: "Postgraduate degree", value: "postgraduate"),
-            ],
-          ),
-        ),
-        const SizedBox(height: Constants.SPACING),
-        SizedBox(
-          width: double.infinity,
-          child: AppDropDownInput(
-            onItemSelected: widget.onFormFieldChanged,
-            formState: widget.formState,
-            prefixIcon: Icons.work,
-            name: "occupation",
-            label: "Occupation",
-            items: const [
-              DropdownMenuEntry(label: "Employed", value: "employed"),
-              DropdownMenuEntry(label: "Self Employed", value: "self-employed"),
-              DropdownMenuEntry(label: "Unemployed", value: "unemployed"),
-            ],
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
 }

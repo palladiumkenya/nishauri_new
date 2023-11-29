@@ -6,14 +6,14 @@ import 'package:nishauri/src/shared/states/AppFormState.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class ReviewAndSubmit extends StatelessWidget {
-  final AppFormState formState;
 
-  const ReviewAndSubmit({super.key, required this.formState});
+  const ReviewAndSubmit({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Wrap(children: [
+    return Placeholder();
+    /*return Wrap(children: [
       if (formState.values['image'] != null)
         ListTile(
           leading: ClipOval(
@@ -118,6 +118,6 @@ class ReviewAndSubmit extends StatelessWidget {
         title: const Text("Occupation"),
         subtitle: Text(formState.values['occupation']),
       ),
-    ]);
+    ]);*/
   }
 }

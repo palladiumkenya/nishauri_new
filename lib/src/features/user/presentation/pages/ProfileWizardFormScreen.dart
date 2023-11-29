@@ -1,6 +1,5 @@
-import 'dart:convert';
-import 'dart:ffi';
-import 'package:http/http.dart' as http;
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -16,55 +15,9 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formState = useState<AppFormState>(AppFormState(
-      values: {
-        "image": null,
-        "username": "",
-        "firstName": "",
-        "lastName": "",
-        "dateOfBirth": null,
-        "gender": "",
-        "email": "",
-        "phoneNumber": "",
-        "country": "",
-        "constituency": "",
-        "bloodGroup": "",
-        "allergies": [],
-        "disabilities": [],
-        "chronics": [],
-        "weight": "",
-        "height": "",
-        "maritalStatus": "",
-        "primaryLanguage": "",
-        "educationLevel": "",
-        "occupation": ""
-      },
-    ));
-    final formKey = useMemoized(() => GlobalKey<FormState>());
+    final formKey = useMemoized(() => GlobalKey<FormBuilderState>());
     final currentStep = useState<int>(0);
     final asyncUser = ref.watch(userProvider);
-
-    void _handleFormFieldChanged(name, value) {
-      debugPrint("*****************| $value |*********************");
-      formState.value = formState.value
-          .copyWith(values: {...formState.value.values, name: value});
-    }
-
-    Future<void> fetchData() async {
-      asyncUser.whenData((user) {
-        formState.value = formState.value.copyWith(values: {...formState.value.values, ...user.toJson()});
-      });
-    }
-
-    useEffect(() {
-      // Use useEffect for side effects, such as fetching data
-
-      fetchData();
-      // The return function is called when the component is disposed
-      return null;
-    }, const []);
-
-
 
     List<Step> steps = [
       Step(
@@ -72,10 +25,7 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
         subtitle: const Text(
           "Create your account to personalize your healthcare experience.",
         ),
-        content: AccountInformation(
-          formState: formState.value,
-          onFormFieldChanged: _handleFormFieldChanged,
-        ),
+        content: const AccountInformation(),
         isActive: currentStep.value == 0,
       ),
       Step(
@@ -83,28 +33,22 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
         subtitle: const Text(
           "Provide basic personal details for a comprehensive profile.",
         ),
-        content: PersonalInformation(
-          formState: formState.value,
-          onFormFieldChanged: _handleFormFieldChanged,
-        ),
+        content: const PersonalInformation(),
         isActive: currentStep.value == 1,
       ),
       Step(
         title: const Text("Contact Details"),
         subtitle: const Text(
             "Share your contact information for communication purposes."),
-        content: ContactInformation(
-            onFormFieldChanged: _handleFormFieldChanged,
-            formState: formState.value),
+        content: const ContactInformation(),
         isActive: currentStep.value == 2,
       ),
       Step(
         title: const Text("Health Information"),
         subtitle: const Text(
             " Share important health details for better healthcare assistance."),
-        content: HealthInformation(
-          formState: formState.value,
-          onFormFieldChanged: _handleFormFieldChanged,
+        content: const HealthInformation(
+
         ),
         isActive: currentStep.value == 3,
       ),
@@ -112,9 +56,7 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
         title: const Text("Physical Characteristics"),
         subtitle: const Text(
             "Provide information about your physical attributes for a more comprehensive"),
-        content: PhysicalCharacteristicInformation(
-          onFormFieldChanged: _handleFormFieldChanged,
-          formState: formState.value,
+        content: const PhysicalCharacteristicInformation(
         ),
         isActive: currentStep.value == 4,
       ),
@@ -122,9 +64,8 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
         title: const Text("Social Information"),
         subtitle: const Text(
             "Share aspects of your lifestyle that may influence your health."),
-        content: LifeStyleInformation(
-            formState: formState.value,
-            onFormFieldChanged: _handleFormFieldChanged),
+        content: const LifeStyleInformation(
+        ),
         isActive: currentStep.value == 5,
       ),
       Step(
@@ -133,12 +74,10 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
           "Thank you for completing your patient profile! Your information will help us provide you with better healthcare."
           "Review your information for accuracy before submission.",
         ),
-        content: ReviewAndSubmit(formState: formState.value),
+        content: const ReviewAndSubmit(),
         isActive: currentStep.value == 6,
       ),
     ];
-
-
 
     return WillPopScope(
       onWillPop: () async {
@@ -166,29 +105,33 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
           title: const Text("Update profile"),
         ),
         body: SafeArea(
-          child: Form(
+          child: FormBuilder(
             key: formKey,
-            child: Consumer(
-              builder: (context, ref, child) {
-                return Stepper(
-                  currentStep: currentStep.value,
-                  onStepCancel: () {
-                    currentStep.value == 0 ? null : currentStep.value -= 1;
-                  },
-                  onStepContinue: () {
-                    bool isLastStep = (currentStep.value == steps.length - 1);
-                    // Validate the current step
-                    if (isLastStep) {
-                      // Do something with the information on the last step
-                      ref.read(authStateProvider.notifier).updateProfile(true);
-                    } else {
-                      currentStep.value += 1;
-                    }
-                  },
-                  onStepTapped: (step) => currentStep.value = step,
-                  steps: steps,
-                );
+            child: Stepper(
+              currentStep: currentStep.value,
+              onStepCancel: () {
+                currentStep.value == 0 ? null : currentStep.value -= 1;
               },
+              onStepContinue: () {
+                formKey.currentState?.saveAndValidate();
+                debugPrint(formKey.currentState?.value.toString());
+                debugPrint(formKey.currentState?.errors.toString());
+
+                bool isLastStep = (currentStep.value == steps.length - 1);
+                // Validate the current step
+                if (isLastStep) {
+                  // Do something with the information on the last step
+                  // if (formKey.currentState!.validate()) {
+                  ref.read(authStateProvider.notifier).updateProfile(true);
+                  // }
+                } else {
+                  // if (formKey.currentState!.validate()) {
+                  currentStep.value += 1;
+                  // }
+                }
+              },
+              onStepTapped: (step) => currentStep.value = step,
+              steps: steps,
             ),
           ),
         ),

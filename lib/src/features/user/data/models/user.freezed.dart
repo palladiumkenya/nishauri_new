@@ -21,14 +21,26 @@ User _$UserFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$User {
   String? get id => throw _privateConstructorUsedError;
+  String? get image => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
   String? get lastName => throw _privateConstructorUsedError;
+  String? get dateOfBirth => throw _privateConstructorUsedError;
   String? get gender => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get phoneNumber => throw _privateConstructorUsedError;
-  String? get image => throw _privateConstructorUsedError;
-  String? get token => throw _privateConstructorUsedError;
+  String? get country => throw _privateConstructorUsedError;
+  String? get constituency => throw _privateConstructorUsedError;
+  String? get bloodGroup => throw _privateConstructorUsedError;
+  List<String> get allergies => throw _privateConstructorUsedError;
+  List<String> get disabilities => throw _privateConstructorUsedError;
+  List<String> get chronics => throw _privateConstructorUsedError;
+  String? get weight => throw _privateConstructorUsedError;
+  String? get height => throw _privateConstructorUsedError;
+  String? get maritalState => throw _privateConstructorUsedError;
+  String? get educationLevel => throw _privateConstructorUsedError;
+  String? get primaryLanguage => throw _privateConstructorUsedError;
+  String? get occupation => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,14 +54,26 @@ abstract class $UserCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
+      String? image,
       String username,
       String? firstName,
       String? lastName,
+      String? dateOfBirth,
       String? gender,
       String email,
       String phoneNumber,
-      String? image,
-      String? token});
+      String? country,
+      String? constituency,
+      String? bloodGroup,
+      List<String> allergies,
+      List<String> disabilities,
+      List<String> chronics,
+      String? weight,
+      String? height,
+      String? maritalState,
+      String? educationLevel,
+      String? primaryLanguage,
+      String? occupation});
 }
 
 /// @nodoc
@@ -66,19 +90,35 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   @override
   $Res call({
     Object? id = freezed,
+    Object? image = freezed,
     Object? username = null,
     Object? firstName = freezed,
     Object? lastName = freezed,
+    Object? dateOfBirth = freezed,
     Object? gender = freezed,
     Object? email = null,
     Object? phoneNumber = null,
-    Object? image = freezed,
-    Object? token = freezed,
+    Object? country = freezed,
+    Object? constituency = freezed,
+    Object? bloodGroup = freezed,
+    Object? allergies = null,
+    Object? disabilities = null,
+    Object? chronics = null,
+    Object? weight = freezed,
+    Object? height = freezed,
+    Object? maritalState = freezed,
+    Object? educationLevel = freezed,
+    Object? primaryLanguage = freezed,
+    Object? occupation = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
               as String?,
       username: null == username
           ? _value.username
@@ -92,6 +132,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String?,
+      dateOfBirth: freezed == dateOfBirth
+          ? _value.dateOfBirth
+          : dateOfBirth // ignore: cast_nullable_to_non_nullable
+              as String?,
       gender: freezed == gender
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
@@ -104,13 +148,53 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      image: freezed == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
+      country: freezed == country
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
               as String?,
-      token: freezed == token
-          ? _value.token
-          : token // ignore: cast_nullable_to_non_nullable
+      constituency: freezed == constituency
+          ? _value.constituency
+          : constituency // ignore: cast_nullable_to_non_nullable
+              as String?,
+      bloodGroup: freezed == bloodGroup
+          ? _value.bloodGroup
+          : bloodGroup // ignore: cast_nullable_to_non_nullable
+              as String?,
+      allergies: null == allergies
+          ? _value.allergies
+          : allergies // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      disabilities: null == disabilities
+          ? _value.disabilities
+          : disabilities // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      chronics: null == chronics
+          ? _value.chronics
+          : chronics // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      weight: freezed == weight
+          ? _value.weight
+          : weight // ignore: cast_nullable_to_non_nullable
+              as String?,
+      height: freezed == height
+          ? _value.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as String?,
+      maritalState: freezed == maritalState
+          ? _value.maritalState
+          : maritalState // ignore: cast_nullable_to_non_nullable
+              as String?,
+      educationLevel: freezed == educationLevel
+          ? _value.educationLevel
+          : educationLevel // ignore: cast_nullable_to_non_nullable
+              as String?,
+      primaryLanguage: freezed == primaryLanguage
+          ? _value.primaryLanguage
+          : primaryLanguage // ignore: cast_nullable_to_non_nullable
+              as String?,
+      occupation: freezed == occupation
+          ? _value.occupation
+          : occupation // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -125,14 +209,26 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
+      String? image,
       String username,
       String? firstName,
       String? lastName,
+      String? dateOfBirth,
       String? gender,
       String email,
       String phoneNumber,
-      String? image,
-      String? token});
+      String? country,
+      String? constituency,
+      String? bloodGroup,
+      List<String> allergies,
+      List<String> disabilities,
+      List<String> chronics,
+      String? weight,
+      String? height,
+      String? maritalState,
+      String? educationLevel,
+      String? primaryLanguage,
+      String? occupation});
 }
 
 /// @nodoc
@@ -146,19 +242,35 @@ class __$$UserImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? image = freezed,
     Object? username = null,
     Object? firstName = freezed,
     Object? lastName = freezed,
+    Object? dateOfBirth = freezed,
     Object? gender = freezed,
     Object? email = null,
     Object? phoneNumber = null,
-    Object? image = freezed,
-    Object? token = freezed,
+    Object? country = freezed,
+    Object? constituency = freezed,
+    Object? bloodGroup = freezed,
+    Object? allergies = null,
+    Object? disabilities = null,
+    Object? chronics = null,
+    Object? weight = freezed,
+    Object? height = freezed,
+    Object? maritalState = freezed,
+    Object? educationLevel = freezed,
+    Object? primaryLanguage = freezed,
+    Object? occupation = freezed,
   }) {
     return _then(_$UserImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
               as String?,
       username: null == username
           ? _value.username
@@ -172,6 +284,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String?,
+      dateOfBirth: freezed == dateOfBirth
+          ? _value.dateOfBirth
+          : dateOfBirth // ignore: cast_nullable_to_non_nullable
+              as String?,
       gender: freezed == gender
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
@@ -184,13 +300,53 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      image: freezed == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
+      country: freezed == country
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
               as String?,
-      token: freezed == token
-          ? _value.token
-          : token // ignore: cast_nullable_to_non_nullable
+      constituency: freezed == constituency
+          ? _value.constituency
+          : constituency // ignore: cast_nullable_to_non_nullable
+              as String?,
+      bloodGroup: freezed == bloodGroup
+          ? _value.bloodGroup
+          : bloodGroup // ignore: cast_nullable_to_non_nullable
+              as String?,
+      allergies: null == allergies
+          ? _value._allergies
+          : allergies // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      disabilities: null == disabilities
+          ? _value._disabilities
+          : disabilities // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      chronics: null == chronics
+          ? _value._chronics
+          : chronics // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      weight: freezed == weight
+          ? _value.weight
+          : weight // ignore: cast_nullable_to_non_nullable
+              as String?,
+      height: freezed == height
+          ? _value.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as String?,
+      maritalState: freezed == maritalState
+          ? _value.maritalState
+          : maritalState // ignore: cast_nullable_to_non_nullable
+              as String?,
+      educationLevel: freezed == educationLevel
+          ? _value.educationLevel
+          : educationLevel // ignore: cast_nullable_to_non_nullable
+              as String?,
+      primaryLanguage: freezed == primaryLanguage
+          ? _value.primaryLanguage
+          : primaryLanguage // ignore: cast_nullable_to_non_nullable
+              as String?,
+      occupation: freezed == occupation
+          ? _value.occupation
+          : occupation // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -201,14 +357,29 @@ class __$$UserImplCopyWithImpl<$Res>
 class _$UserImpl with DiagnosticableTreeMixin implements _User {
   const _$UserImpl(
       {required this.id,
+      this.image,
       required this.username,
       this.firstName,
       this.lastName,
+      this.dateOfBirth,
       this.gender,
       required this.email,
       required this.phoneNumber,
-      this.image,
-      this.token});
+      this.country,
+      this.constituency,
+      this.bloodGroup,
+      final List<String> allergies = const [],
+      final List<String> disabilities = const [],
+      final List<String> chronics = const [],
+      this.weight,
+      this.height,
+      this.maritalState,
+      this.educationLevel,
+      this.primaryLanguage,
+      this.occupation})
+      : _allergies = allergies,
+        _disabilities = disabilities,
+        _chronics = chronics;
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -216,11 +387,15 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   @override
   final String? id;
   @override
+  final String? image;
+  @override
   final String username;
   @override
   final String? firstName;
   @override
   final String? lastName;
+  @override
+  final String? dateOfBirth;
   @override
   final String? gender;
   @override
@@ -228,13 +403,54 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   @override
   final String phoneNumber;
   @override
-  final String? image;
+  final String? country;
   @override
-  final String? token;
+  final String? constituency;
+  @override
+  final String? bloodGroup;
+  final List<String> _allergies;
+  @override
+  @JsonKey()
+  List<String> get allergies {
+    if (_allergies is EqualUnmodifiableListView) return _allergies;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_allergies);
+  }
+
+  final List<String> _disabilities;
+  @override
+  @JsonKey()
+  List<String> get disabilities {
+    if (_disabilities is EqualUnmodifiableListView) return _disabilities;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_disabilities);
+  }
+
+  final List<String> _chronics;
+  @override
+  @JsonKey()
+  List<String> get chronics {
+    if (_chronics is EqualUnmodifiableListView) return _chronics;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_chronics);
+  }
+
+  @override
+  final String? weight;
+  @override
+  final String? height;
+  @override
+  final String? maritalState;
+  @override
+  final String? educationLevel;
+  @override
+  final String? primaryLanguage;
+  @override
+  final String? occupation;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'User(id: $id, username: $username, firstName: $firstName, lastName: $lastName, gender: $gender, email: $email, phoneNumber: $phoneNumber, image: $image, token: $token)';
+    return 'User(id: $id, image: $image, username: $username, firstName: $firstName, lastName: $lastName, dateOfBirth: $dateOfBirth, gender: $gender, email: $email, phoneNumber: $phoneNumber, country: $country, constituency: $constituency, bloodGroup: $bloodGroup, allergies: $allergies, disabilities: $disabilities, chronics: $chronics, weight: $weight, height: $height, maritalState: $maritalState, educationLevel: $educationLevel, primaryLanguage: $primaryLanguage, occupation: $occupation)';
   }
 
   @override
@@ -243,14 +459,26 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
     properties
       ..add(DiagnosticsProperty('type', 'User'))
       ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('image', image))
       ..add(DiagnosticsProperty('username', username))
       ..add(DiagnosticsProperty('firstName', firstName))
       ..add(DiagnosticsProperty('lastName', lastName))
+      ..add(DiagnosticsProperty('dateOfBirth', dateOfBirth))
       ..add(DiagnosticsProperty('gender', gender))
       ..add(DiagnosticsProperty('email', email))
       ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
-      ..add(DiagnosticsProperty('image', image))
-      ..add(DiagnosticsProperty('token', token));
+      ..add(DiagnosticsProperty('country', country))
+      ..add(DiagnosticsProperty('constituency', constituency))
+      ..add(DiagnosticsProperty('bloodGroup', bloodGroup))
+      ..add(DiagnosticsProperty('allergies', allergies))
+      ..add(DiagnosticsProperty('disabilities', disabilities))
+      ..add(DiagnosticsProperty('chronics', chronics))
+      ..add(DiagnosticsProperty('weight', weight))
+      ..add(DiagnosticsProperty('height', height))
+      ..add(DiagnosticsProperty('maritalState', maritalState))
+      ..add(DiagnosticsProperty('educationLevel', educationLevel))
+      ..add(DiagnosticsProperty('primaryLanguage', primaryLanguage))
+      ..add(DiagnosticsProperty('occupation', occupation));
   }
 
   @override
@@ -259,24 +487,67 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
         (other.runtimeType == runtimeType &&
             other is _$UserImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.image, image) || other.image == image) &&
             (identical(other.username, username) ||
                 other.username == username) &&
             (identical(other.firstName, firstName) ||
                 other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
                 other.lastName == lastName) &&
+            (identical(other.dateOfBirth, dateOfBirth) ||
+                other.dateOfBirth == dateOfBirth) &&
             (identical(other.gender, gender) || other.gender == gender) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.phoneNumber, phoneNumber) ||
                 other.phoneNumber == phoneNumber) &&
-            (identical(other.image, image) || other.image == image) &&
-            (identical(other.token, token) || other.token == token));
+            (identical(other.country, country) || other.country == country) &&
+            (identical(other.constituency, constituency) ||
+                other.constituency == constituency) &&
+            (identical(other.bloodGroup, bloodGroup) ||
+                other.bloodGroup == bloodGroup) &&
+            const DeepCollectionEquality()
+                .equals(other._allergies, _allergies) &&
+            const DeepCollectionEquality()
+                .equals(other._disabilities, _disabilities) &&
+            const DeepCollectionEquality().equals(other._chronics, _chronics) &&
+            (identical(other.weight, weight) || other.weight == weight) &&
+            (identical(other.height, height) || other.height == height) &&
+            (identical(other.maritalState, maritalState) ||
+                other.maritalState == maritalState) &&
+            (identical(other.educationLevel, educationLevel) ||
+                other.educationLevel == educationLevel) &&
+            (identical(other.primaryLanguage, primaryLanguage) ||
+                other.primaryLanguage == primaryLanguage) &&
+            (identical(other.occupation, occupation) ||
+                other.occupation == occupation));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, username, firstName,
-      lastName, gender, email, phoneNumber, image, token);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        id,
+        image,
+        username,
+        firstName,
+        lastName,
+        dateOfBirth,
+        gender,
+        email,
+        phoneNumber,
+        country,
+        constituency,
+        bloodGroup,
+        const DeepCollectionEquality().hash(_allergies),
+        const DeepCollectionEquality().hash(_disabilities),
+        const DeepCollectionEquality().hash(_chronics),
+        weight,
+        height,
+        maritalState,
+        educationLevel,
+        primaryLanguage,
+        occupation
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -295,19 +566,33 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
 abstract class _User implements User {
   const factory _User(
       {required final String? id,
+      final String? image,
       required final String username,
       final String? firstName,
       final String? lastName,
+      final String? dateOfBirth,
       final String? gender,
       required final String email,
       required final String phoneNumber,
-      final String? image,
-      final String? token}) = _$UserImpl;
+      final String? country,
+      final String? constituency,
+      final String? bloodGroup,
+      final List<String> allergies,
+      final List<String> disabilities,
+      final List<String> chronics,
+      final String? weight,
+      final String? height,
+      final String? maritalState,
+      final String? educationLevel,
+      final String? primaryLanguage,
+      final String? occupation}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
   @override
   String? get id;
+  @override
+  String? get image;
   @override
   String get username;
   @override
@@ -315,15 +600,37 @@ abstract class _User implements User {
   @override
   String? get lastName;
   @override
+  String? get dateOfBirth;
+  @override
   String? get gender;
   @override
   String get email;
   @override
   String get phoneNumber;
   @override
-  String? get image;
+  String? get country;
   @override
-  String? get token;
+  String? get constituency;
+  @override
+  String? get bloodGroup;
+  @override
+  List<String> get allergies;
+  @override
+  List<String> get disabilities;
+  @override
+  List<String> get chronics;
+  @override
+  String? get weight;
+  @override
+  String? get height;
+  @override
+  String? get maritalState;
+  @override
+  String? get educationLevel;
+  @override
+  String? get primaryLanguage;
+  @override
+  String? get occupation;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>
