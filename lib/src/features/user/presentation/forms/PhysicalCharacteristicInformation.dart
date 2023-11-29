@@ -3,9 +3,6 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
-import 'package:nishauri/src/shared/form/AppFormTextInput.dart';
-import 'package:nishauri/src/shared/input/FormInputTextField.dart';
-import 'package:nishauri/src/shared/states/AppFormState.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 

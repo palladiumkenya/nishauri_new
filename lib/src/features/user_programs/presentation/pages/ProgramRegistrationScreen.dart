@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:form_validator/form_validator.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/user_programs/data/models/user_program.dart';
 import 'package:nishauri/src/features/user_programs/data/providers/program_provider.dart';
 import 'package:nishauri/src/features/user_programs/presentation/forms/HIVProgramRegistration.dart';
-import 'package:nishauri/src/shared/form/AppDropDownInput.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
-import 'package:nishauri/src/shared/states/AppFormState.dart';
+import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
@@ -22,49 +22,12 @@ class ProgramRegistrationScreen extends StatefulWidget {
 }
 
 class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
-  final _formKey = GlobalKey<FormState>();
-  AppFormState _formState = AppFormState(values: {
-    "program": null
-  }, validators: {
-    "program": [ValidationBuilder().required().build()],
-    "cccNumber": [ValidationBuilder().required().build()],
-    "firstName": [ValidationBuilder().required().build()]
-  });
-
-  final List<String> programs = <String>[
-    'HIV Program',
-    'Hypertension Program',
-    'Diabetes program',
-    'Tuberculosis program',
-    'Cancer program',
-  ];
+  final _formKey = GlobalKey<FormBuilderState>();
+  String? _program;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    void _handleFormFieldChange(String name, String? value) {
-      setState(() {
-        _formState =
-            _formState.copyWith(values: {..._formState.values, name: value});
-      });
-    }
-
-    void _handleInitializeProgramormState(String programCode) {
-      Map<String, dynamic> form = {};
-      if (programCode == ProgramCodeNames.HIV) {
-        form = {"cccNumber": "", "firstName": ""};
-      }
-      if (programCode == ProgramCodeNames.HYPERTENSION) {}
-      if (programCode == ProgramCodeNames.CANCER) {}
-      if (programCode == ProgramCodeNames.DIABETES) {}
-      if (programCode == ProgramCodeNames.TB) {}
-      if (programCode == ProgramCodeNames.ASTHMA) {}
-
-      setState(() {
-        _formState =
-            _formState.copyWith(values: {"program": programCode, ...form});
-      });
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -82,7 +45,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
               color: color,
               borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
             ),
-            child: Form(
+            child: FormBuilder(
               key: _formKey,
               child: SingleChildScrollView(
                 child: Padding(
@@ -122,18 +85,23 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                       const SizedBox(height: Constants.SPACING),
                       Consumer(
                         builder: (context, ref, child) {
-                          final programs = ref.watch(programProvider);
-                          return programs.when(
-                            data: (data) => AppDropDownInput(
+                          final asyncUserPrograms = ref.watch(programProvider);
+                          return asyncUserPrograms.when(
+                            data: (userPrograms) => FormBuilderDropdown<String>(
                               name: "program",
-                              prefixIcon: Icons.read_more_outlined,
-                              onItemSelected: (name, value) {
-                                _handleFormFieldChange(name, value);
-                                _handleInitializeProgramormState(value);
+                              decoration: inputDecoration(
+                                prefixIcon: Icons.read_more_outlined,
+                                label: "Program",
+                              ),
+                              items: _getUnregisteredPrograms(userPrograms),
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(),
+                              ]),
+                              onChanged: (value) {
+                                setState(() {
+                                  _program = value;
+                                });
                               },
-                              formState: _formState,
-                              items: _getUnregisteredPrograms(data),
-                              label: "Program",
                             ),
                             error: (error, _) => Text(error.toString()),
                             loading: () => const Center(
@@ -143,34 +111,34 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                         },
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      if (_formState.values['program'] != null)
+                      if (_program != null)
                         _getProgramRegistrationForm(
-                            _formState, _handleFormFieldChange),
-                      if (_formState.values['program'] != null)
-                        Consumer(
-                          builder: (context, ref, child) {
-                            final programsNotifier =
-                                ref.read(programProvider.notifier);
-                            return Button(
-                              title: "Register",
-                              onPress: () {
-                                if (_formKey.currentState!.validate()) {
-                                  programsNotifier
-                                      .registerProgram(_formState.values)
-                                      .then((value) {
-                                    context.pop();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                            "${ProgramCodeNames.getProgramNameByCode(_formState.values['program'])} Program Registered successfully"),
-                                      ),
-                                    );
-                                  });
-                                }
-                              },
-                            );
-                          },
-                        )
+                            _program),
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final programsNotifier =
+                              ref.read(programProvider.notifier);
+                          return Button(
+                            title: "Register",
+                            onPress: () {
+                              if (_formKey.currentState!.saveAndValidate()) {
+                                programsNotifier
+                                    .registerProgram(
+                                        _formKey.currentState!.value)
+                                    .then((value) {
+                                  context.pop();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          "${ProgramCodeNames.getProgramNameByCode(_formKey.currentState!.value['program'])} Program Registered successfully"),
+                                    ),
+                                  );
+                                });
+                              }
+                            },
+                          );
+                        },
+                      )
                     ],
                   ),
                 ),
@@ -183,24 +151,21 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
   }
 }
 
-List<DropdownMenuEntry> _getUnregisteredPrograms(List<UserProgram> programs) {
+List<DropdownMenuItem<String>> _getUnregisteredPrograms(
+    List<UserProgram> programs) {
   return ProgramCodeNames.SUPPOTED_PROGRAM_CODES
       .where((code) =>
           !programs.any((program) => program.program.programCode == code))
-      .map((e) => DropdownMenuEntry(
+      .map((e) => DropdownMenuItem(
           value: e,
-          label: ProgramCodeNames.getProgramNameByCode(e) ?? "Not Supported"))
+          child: Text(
+              ProgramCodeNames.getProgramNameByCode(e) ?? "Not Supported")))
       .toList();
 }
 
-Widget _getProgramRegistrationForm(
-    AppFormState formState, void Function(String, String?) onFormFieldChange) {
-  final program = formState.values["program"];
+Widget _getProgramRegistrationForm(program) {
   if (program == ProgramCodeNames.HIV) {
-    return HIVProgramRegistration(
-      formState: formState,
-      onFormFieldChange: onFormFieldChange,
-    );
+    return const HIVProgramRegistration();
   }
   return Padding(
     padding: const EdgeInsets.all(Constants.SPACING),

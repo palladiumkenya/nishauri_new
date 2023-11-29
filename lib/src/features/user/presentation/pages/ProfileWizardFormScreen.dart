@@ -10,28 +10,6 @@ import 'package:nishauri/src/features/user/presentation/forms/forms.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
-final _data = {
-  "username": "omosh",
-  "image": null,
-  "firstName": "",
-  "lastName": "",
-  "dateOfBirth": null,
-  "gender": null,
-  "email": "lawiomosh3@gmail.com",
-  "phoneNumber": "254793889658",
-  "county": null,
-  "constituency": null,
-  "bloodGroup": null,
-  "allergies": [],
-  "disabilities": [],
-  "chronics": [],
-  "weight": null,
-  "height": null,
-  "maritalStatus": null,
-  "educationLevel": null,
-  "primaryLanguage": null,
-  "occupation": null
-};
 
 class ProfileWizardFormScreen extends HookConsumerWidget {
   const ProfileWizardFormScreen({super.key});
@@ -92,7 +70,7 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
           "Thank you for completing your patient profile! Your information will help us provide you with better healthcare."
           "Review your information for accuracy before submission.",
         ),
-        content: const ReviewAndSubmit(),
+        content: ReviewAndSubmit(formKey: formKey),
         isActive: currentStep.value == 6,
       ),
     ];

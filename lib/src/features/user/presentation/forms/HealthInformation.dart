@@ -3,9 +3,6 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
-import 'package:nishauri/src/shared/form/AppDropDownInput.dart';
-import 'package:nishauri/src/shared/input/MultiChoiceCheckList.dart';
-import 'package:nishauri/src/shared/states/AppFormState.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
@@ -45,6 +42,7 @@ class HealthInformation extends StatelessWidget {
               FormBuilderFilterChip(
                 initialValue: user.allergies,
                 name: "allergies",
+                spacing: Constants.SPACING,
                 decoration: inputDecoration(
                   label: "Do you suffer from any allergies?",
                   prefixIcon: Icons.ac_unit,

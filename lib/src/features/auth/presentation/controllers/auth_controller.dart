@@ -37,6 +37,7 @@ class AuthController extends StateNotifier<AuthState> {
 
   Future<void> verify(Map<String, dynamic> data) async {
     try {
+      debugPrint("*********************$data");
       final isVerified = await _repository.verifyAccount(data);
       state = state.copyWith(isAccountVerified: isVerified);
     } catch (e) {
