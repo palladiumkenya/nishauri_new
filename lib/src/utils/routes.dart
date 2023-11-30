@@ -23,6 +23,7 @@ class RouteNames {
   static const HIV_ART_EVENTS = "hiv-art-events";
   static const FACILITY_VISITS = "facility-visits";
   static const FACILITY_VISIT_DETAIL = "facility-visit-detail";
+  static const VERIFY_PROGRAM_OTP = "verify-program-otp";
 }
 
 class MenuItemNames {

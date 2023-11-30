@@ -7,10 +7,12 @@ import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/user_programs/data/models/user_program.dart';
 import 'package:nishauri/src/features/user_programs/data/providers/program_provider.dart';
 import 'package:nishauri/src/features/user_programs/presentation/forms/HIVProgramRegistration.dart';
+import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 class ProgramRegistrationScreen extends StatefulWidget {
@@ -24,6 +26,7 @@ class ProgramRegistrationScreen extends StatefulWidget {
 class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   String? _program;
+  bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -114,26 +117,30 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                       if (_program != null)
                         _getProgramRegistrationForm(
                             _program),
+                      if (_program != null)
                       Consumer(
                         builder: (context, ref, child) {
                           final programsNotifier =
                               ref.read(programProvider.notifier);
                           return Button(
                             title: "Register",
+                            loading: _loading,
                             onPress: () {
                               if (_formKey.currentState!.saveAndValidate()) {
+                                setState(() {
+                                  _loading = true;
+                                });
                                 programsNotifier
                                     .registerProgram(
                                         _formKey.currentState!.value)
                                     .then((value) {
-                                  context.pop();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                          "${ProgramCodeNames.getProgramNameByCode(_formKey.currentState!.value['program'])} Program Registered successfully"),
-                                    ),
-                                  );
-                                });
+                                  context.goNamed(RouteNames.VERIFY_PROGRAM_OTP, extra: {"message":value, "program": _program});
+                                }).catchError((err){
+
+                                  handleResponseError(context, _formKey.currentState!.fields, err);
+                                }).whenComplete(() => setState(() {
+                                  _loading = false;
+                                }));
                               }
                             },
                           );

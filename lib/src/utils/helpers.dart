@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 
 // Function to calculate BMI
 double calculateBMI(
@@ -78,9 +80,31 @@ Future<void> showPinAuthentication() async {
 }
 */
 
-
 bool isNetworkUri(String uri) {
   final imageUri = Uri.parse(uri);
   final schemes = ['http', 'https', 'ftp', 'ftps'];
   return schemes.contains(imageUri.scheme);
+}
+
+void handleResponseError(
+    BuildContext context,
+    Map<String, FormBuilderFieldState<FormBuilderField<dynamic>, dynamic>>
+        formState,
+    err) {
+  switch (err) {
+    case ValidationException e:
+      for (var err in e.errors.entries) {
+        formState[err.key]?.invalidate(err.value);
+      }
+      break;
+    default:
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(err.toString())),
+      );
+  }
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(err.toString()),
+    ),
+  );
 }

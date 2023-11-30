@@ -17,13 +17,20 @@ class UserProgramController
         .then((value) => state = AsyncValue.data(value));
   }
 
-  Future<void> registerProgram(Map<String, dynamic> data) async {
-    state = const AsyncValue.loading();
+  Future<String> registerProgram(Map<String, dynamic> data) async {
     try {
-      await _repository.registerProgram(data);
+      return await _repository.registerProgram(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> verifyProgramOTP(Map<String, dynamic> data) async {
+    try {
+      await _repository.verifyProgramOTP(data);
       _getUserPrograms();
     } catch (e) {
-      AsyncValue.error(e, StackTrace.current);
+      rethrow;
     }
   }
 

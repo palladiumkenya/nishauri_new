@@ -12,6 +12,7 @@ import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -126,22 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     content: Text('Login successfully!,')),
                               );
                             }).catchError((error) {
-                              switch (error) {
-                                case ValidationException e:
-                                  // field error
-                                  for (var err in e.errors.entries) {
-                                    _formKey.currentState!.fields[err.key]
-                                        ?.invalidate(err.value);
-                                  }
-                                  break;
-                                default:
-                                  // ScaffoldMessenger.of(context)
-                                  //     .showSnackBar(
-                                  //   SnackBar(
-                                  //       content: Text(error.toString())),
-                                  // );
-                                  throw error;
-                              }
+                              handleResponseError(context, _formKey.currentState!.fields, error);
                             }).whenComplete(
                               () => setState(() {
                                 _loading = false;

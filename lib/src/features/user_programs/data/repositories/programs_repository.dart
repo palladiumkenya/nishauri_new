@@ -16,7 +16,10 @@ class ProgramsRepository {
     return await _service.getUserPrograms();
   }
 
-  Future<UserProgram> registerProgram(Map<String, dynamic> program)async{
+  Future<String> registerProgram(Map<String, dynamic> program)async{
     return await _service.registerProgram(program);
+  }
+  Future<UserProgram> verifyProgramOTP(Map<String, dynamic> data)async{
+    return await _service.verifyProgramOTP(data);
   }
 }

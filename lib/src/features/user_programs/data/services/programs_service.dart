@@ -104,7 +104,11 @@ class ProgramService extends HTTPService {
     return _userPrograms;
   }
 
-  Future<UserProgram> registerProgram(Map<String, dynamic> data) async {
+  Future<String> registerProgram(Map<String, dynamic> data) async {
+    await Future.delayed(const Duration(seconds: 3));
+    return "OTP sent to 254793****58";
+  }
+  Future<UserProgram> verifyProgramOTP(Map<String, dynamic> data) async {
     await Future.delayed(const Duration(seconds: 3));
     final userProgram = UserProgram(
         program: _programs

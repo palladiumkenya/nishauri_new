@@ -18,7 +18,6 @@ import 'package:nishauri/src/features/events_calendar/presentation/pages/EventsC
 import 'package:nishauri/src/features/hiv/presentation/pages/ARTSites.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/HIVMenu.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/RegimenHistory.dart';
-import 'package:nishauri/src/features/hiv/presentation/pages/dashboard/HIVDashboard.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/events/ARTEvents.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroups.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/orders/HIVDrugOrders.dart';
@@ -27,6 +26,7 @@ import 'package:nishauri/src/features/user/presentation/pages/ProfileWizardFormS
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PrivacySettingsScreen.dart';
 import 'package:nishauri/src/features/user_programs/presentation/pages/ProgramRegistrationScreen.dart';
+import 'package:nishauri/src/features/user_programs/presentation/pages/ProgramVerificationScreen.dart';
 import 'package:nishauri/src/features/visits/presentations/pages/FacilityVisitDetailScreen.dart';
 import 'package:nishauri/src/features/visits/presentations/pages/FacilityVisitsScreen.dart';
 import 'package:nishauri/src/utils/routes.dart';
@@ -153,18 +153,28 @@ final List<RouteBase> secureRoutes = [
     },
   ),
   GoRoute(
-      name: RouteNames.HIV_PROGRAM,
-      path: 'hiv-program',
-      builder: (BuildContext context, GoRouterState state) {
-        return const HIVMenuScreen();
-      },
-      routes: hivProgramRoutes),
+    name: RouteNames.HIV_PROGRAM,
+    path: 'hiv-program',
+    builder: (BuildContext context, GoRouterState state) {
+      return const HIVMenuScreen();
+    },
+    routes: hivProgramRoutes,
+  ),
   GoRoute(
     name: RouteNames.PROGRAME_REGISTRATION_SCREEN,
     path: 'program-register',
     builder: (BuildContext context, GoRouterState state) {
       return const ProgramRegistrationScreen();
     },
+    routes: [
+      GoRoute(
+        name: RouteNames.VERIFY_PROGRAM_OTP,
+        path: 'verify',
+        builder: (BuildContext context, GoRouterState state) {
+          return ProgramVerificationScreen(extra: state.extra);
+        },
+      ),
+    ],
   ),
   GoRoute(
     name: RouteNames.DASHBOARD,
@@ -184,7 +194,8 @@ final List<RouteBase> secureRoutes = [
           name: RouteNames.FACILITY_VISIT_DETAIL,
           path: ':visitId',
           builder: (BuildContext context, GoRouterState state) {
-            return FacilityVisitDetailScreen(visitId: state.pathParameters["visitId"]!);
+            return FacilityVisitDetailScreen(
+                visitId: state.pathParameters["visitId"]!);
           },
         )
       ]),
