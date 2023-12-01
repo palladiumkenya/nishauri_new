@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_group_provider.dart';
+import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class ARTGroupsScreen extends StatelessWidget {
   const ARTGroupsScreen({super.key});
@@ -20,21 +22,25 @@ class ARTGroupsScreen extends StatelessWidget {
       ),
       body: Consumer(
         builder: (BuildContext context, WidgetRef ref, Widget? child) {
-          final artGroups = ref.watch(art_group_provider);
-          return artGroups.when(
-            data: (data) => ListView.builder(
-              itemCount: data.length,
-              itemBuilder: (BuildContext context, int index) => Card(
+          final artGroupsAsync = ref.watch(art_group_provider);
+          return artGroupsAsync.when(
+            data: (artGroups) => ListView.builder(
+              itemCount: artGroups.length,
+              itemBuilder: (BuildContext context, int index) => AppCard(
+                variant: CardVariant.ELEVETED,
+                onTap: () => context.goNamed(RouteNames.HIV_ART_GROUP_DETAIL,
+                    pathParameters: {"id": artGroups[index].id!}),
                 child: ListTile(
                   leading: Icon(
                     Icons.group,
-                    color: data[index].isCurrent == true
+                    color: artGroups[index].isCurrent == true
                         ? theme.colorScheme.primary
                         : null,
                   ),
-                  title: Text(data[index].group.title),
-                  subtitle: Text("From: ${data[index].createdAt} To: 31st Apr 2024"),
-                  trailing: data[index].isCurrent == true
+                  title: Text(artGroups[index].group.title),
+                  subtitle:
+                      Text("From: ${artGroups[index].createdAt} To: 31st Apr 2024"),
+                  trailing: artGroups[index].isCurrent == true
                       ? Container(
                           padding: const EdgeInsets.all(Constants.SPACING),
                           decoration: BoxDecoration(
@@ -50,7 +56,7 @@ class ARTGroupsScreen extends StatelessWidget {
               ),
             ),
             error: (error, _) => Center(child: Text(error.toString())),
-            loading: () =>Center(
+            loading: () => Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,

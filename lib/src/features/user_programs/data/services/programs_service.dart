@@ -1,5 +1,6 @@
 import 'package:nishauri/src/features/user_programs/data/models/program.dart';
 import 'package:nishauri/src/features/user_programs/data/models/user_program.dart';
+import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 
 class ProgramService extends HTTPService {

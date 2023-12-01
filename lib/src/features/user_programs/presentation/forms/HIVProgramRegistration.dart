@@ -13,6 +13,7 @@ class HIVProgramRegistration extends StatelessWidget {
     return Column(
       children: [
         FormBuilderTextField(
+          initialValue: '1234567890',
           name: "cccNumber",
           decoration: inputDecoration(
             placeholder: "e.g 1234567890",
@@ -21,10 +22,12 @@ class HIVProgramRegistration extends StatelessWidget {
           ),
           validator: FormBuilderValidators.compose([
             FormBuilderValidators.required(),
+            FormBuilderValidators.equalLength(10,errorText: 'Invalid ccc number.Must be 10 characters long'),
           ]),
         ),
         const SizedBox(height: Constants.SPACING),
         FormBuilderTextField(
+          initialValue: "Betty",
           name: "firstName",
           decoration: inputDecoration(
             placeholder: "e.g John",

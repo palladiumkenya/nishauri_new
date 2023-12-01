@@ -10,7 +10,6 @@ import 'package:nishauri/src/features/user/presentation/forms/forms.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
-
 class ProfileWizardFormScreen extends HookConsumerWidget {
   const ProfileWizardFormScreen({super.key});
 
@@ -18,6 +17,15 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(() => GlobalKey<FormBuilderState>());
     final currentStep = useState<int>(0);
+
+    final stepFieldsToValidate = [
+      ["image", "username"],
+      ["firstName", "lastName", "dateOfBirth", "gender"],
+      ["email", "phoneNumber", "country", "constituency"],
+      ["bloodGroup", "allergies", "disabilities", "chronics"],
+      ["weight", "height"],
+      ["maritalStatus", "educationLevel", "primaryLanguage", "occupation"],
+    ];
 
     List<Step> steps = [
       Step(
@@ -132,10 +140,16 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                 currentStep.value == 0 ? null : currentStep.value -= 1;
               },
               onStepContinue: () {
-                formKey.currentState?.saveAndValidate();
-                debugPrint(formKey.currentState?.value.toString());
-                debugPrint(formKey.currentState?.errors.toString());
+                // 1.save form values
+                formKey.currentState!.save();
+                // 2.validate current step fields
+                final currentStepFields =
+                    stepFieldsToValidate[currentStep.value];
 
+                if (currentStepFields.any((field) =>
+                    !formKey.currentState!.fields[field]!.validate())) {
+                  return; //Don't move to next step if current step not valid
+                }
                 bool isLastStep = (currentStep.value == steps.length - 1);
                 // Validate the current step
                 if (isLastStep) {
@@ -149,7 +163,6 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
               },
               onStepTapped: (step) => currentStep.value = step,
               steps: steps,
-
             ),
           ),
         ),

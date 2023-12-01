@@ -31,6 +31,7 @@ class ARTGroupService extends HTTPService {
   ];
   final List<ARTGroupSubscription> _subscriptions = [
     const ARTGroupSubscription(
+        id: "s-1",
         group: ARTGroup(
           title: "Marathon group ",
           lead: "l-1",
@@ -42,6 +43,7 @@ class ARTGroupService extends HTTPService {
         createdAt: "25th Oct 2023",
         isCurrent: true),
     const ARTGroupSubscription(
+        id: "s-2",
         group: ARTGroup(
           title: "Jambo group ",
           lead: "l-2",
@@ -52,6 +54,7 @@ class ARTGroupService extends HTTPService {
         createdAt: "25th Oct 2023",
         name: "Omoshi"),
     const ARTGroupSubscription(
+        id: "s-3",
         group: ARTGroup(
           title: "Kabogo group ",
           lead: "l-3",
@@ -62,6 +65,7 @@ class ARTGroupService extends HTTPService {
         createdAt: "25th Oct 2023",
         name: "Lawi"),
     const ARTGroupSubscription(
+        id: "s-4",
         group: ARTGroup(
           title: "Oyula group ",
           lead: "l-4",

@@ -20,6 +20,7 @@ class RouteNames {
   static const DASHBOARD = "dashboard";
   static const HIV_REGIMEN = "regimen-history";
   static const HIV_ART_GROUPS = "hiv-art-groups";
+  static const HIV_ART_GROUP_DETAIL = "hiv-art-groups-detail";
   static const HIV_ART_EVENTS = "hiv-art-events";
   static const FACILITY_VISITS = "facility-visits";
   static const FACILITY_VISIT_DETAIL = "facility-visit-detail";

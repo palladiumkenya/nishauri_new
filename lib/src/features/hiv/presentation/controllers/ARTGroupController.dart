@@ -6,9 +6,17 @@ class ARTGroupController
     extends StateNotifier<AsyncValue<List<ARTGroupSubscription>>> {
   final ARTGroupRepository _repository;
 
-  ARTGroupController(this._repository) : super(const AsyncValue.loading()) {
-    _repository
-        .getUserGroupSubscriptions()
-        .then((value) => state = AsyncValue.data(value));
+  ARTGroupController(this._repository) : super(const AsyncValue.data([])) {
+    getUserPrograms();
+  }
+
+  Future<void> getUserPrograms() async {
+    state = const AsyncValue.loading();
+    try {
+      final userSubscriptions = await _repository.getUserGroupSubscriptions();
+      state = AsyncValue.data(userSubscriptions);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
   }
 }
