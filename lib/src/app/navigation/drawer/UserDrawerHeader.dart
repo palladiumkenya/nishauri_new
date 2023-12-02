@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:nishauri/src/shared/display/AppAvatar.dart';
 import 'package:nishauri/src/shared/extensions/extensions.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 
@@ -23,12 +24,10 @@ class UserDrawerHeader extends StatelessWidget {
     return DrawerHeader(
       child: Row(
         children: [
-          CircleAvatar(
+          AppAvatar(
             radius: 50,
-            backgroundImage: image != null ? _buildUserImage(image!): null,
-            child: ClipOval(
-              child: image == null ? Text(name.abbreviation): null,
-            ),
+            image: image,
+            alt: Text(name.abbreviation),
           ),
           const SizedBox(
             width: 20,

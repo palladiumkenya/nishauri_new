@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
+import 'package:nishauri/src/shared/display/AppAvatar.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/extensions/extensions.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -39,16 +40,10 @@ class ProfileScreen extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: Constants.SPACING),
               child: ListView(
                 children: [
-                  CircleAvatar(
+                  AppAvatar(
                     radius: 70,
-                    backgroundImage: user.image != null
-                        ? _buildUserImage(user.image!)
-                        : null,
-                    child: ClipOval(
-                      child: user.image == null
-                          ? Text("${user.firstName} ${user.lastName}".abbreviation)
-                          : null,
-                    ),
+                    image: user.image,
+                    alt: Text("${user.firstName} ${user.lastName}".abbreviation),
                   ),
                   AppCard(
                     child: ListTile(
@@ -111,12 +106,3 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-_buildUserImage(String imagePath) {
-  return isNetworkUri(imagePath)
-      ? NetworkImage(
-          imagePath,
-        )
-      : FileImage(
-          File.fromUri(Uri.parse(imagePath)),
-        );
-}
