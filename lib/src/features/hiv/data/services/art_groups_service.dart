@@ -1,4 +1,5 @@
 import 'package:nishauri/src/features/hiv/data/models/models.dart';
+import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 
 class ARTGroupService extends HTTPService {
@@ -89,9 +90,17 @@ class ARTGroupService extends HTTPService {
     return _groups;
   }
 
-  Future<ARTGroup> addARTGroup(ARTGroup group) async {
+  Future<ARTGroupSubscription> addARTGroup(ARTGroup group) async {
+    // throw ValidationException({"title": "Group with title already exist", "description": "Description is too long"});
     _groups.add(group);
-    return group;
+    final subscription = ARTGroupSubscription(
+      id: "s-${_subscriptions.length}-1",
+      group: group,
+      patient: "patient",
+      createdAt: DateTime.now().toIso8601String(),
+    );
+    _subscriptions.add(subscription);
+    return subscription;
   }
 
   Future<List<ARTGroupSubscription>> getUserSubscriptions() async {
@@ -110,4 +119,5 @@ class ARTGroupService extends HTTPService {
   Future<ARTGroupLead> getGroupLeadById(String id) async {
     return _leads.firstWhere((element) => element.id == id);
   }
+
 }

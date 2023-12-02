@@ -15,12 +15,14 @@ import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen
 import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart';
 import 'package:nishauri/src/features/dashboard/presentation/pages/Dashboard.dart';
 import 'package:nishauri/src/features/events_calendar/presentation/pages/EventsCalendar.dart';
+import 'package:nishauri/src/features/hiv/data/models/group/art_group.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/ARTSites.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/HIVMenu.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/RegimenHistory.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/events/ARTEventDetail.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/events/ARTEvents.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroupDetail.dart';
+import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroupFormScreen.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroups.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/orders/HIVDrugOrders.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileScreen.dart';
@@ -247,35 +249,47 @@ final List<RouteBase> hivProgramRoutes = [
     },
   ),
   GoRoute(
-    name: RouteNames.HIV_ART_GROUPS,
-    path: 'art-groups',
-    builder: (BuildContext context, GoRouterState state) {
-      return const ARTGroupsScreen();
-    },
-    routes: [
-      GoRoute(
-        name: RouteNames.HIV_ART_GROUP_DETAIL,
-        path: ':id',
-        builder: (BuildContext context, GoRouterState state) {
-          return ARTGroupDetailScreen(groupId: state.pathParameters["id"]!,);
-        },
-      )
-    ]
-  ),
+      name: RouteNames.HIV_ART_GROUPS,
+      path: 'art-groups',
+      builder: (BuildContext context, GoRouterState state) {
+        return const ARTGroupsScreen();
+      },
+      routes: [
+        GoRoute(
+          name: RouteNames.HIV_ART_GROUP_FORM,
+          path: 'form',
+          builder: (BuildContext context, GoRouterState state) {
+            final extras = state.extra as ARTGroup?;
+            return ARTGroupFormScreen(
+              group: extras,
+            );
+          },
+        ),
+        GoRoute(
+          name: RouteNames.HIV_ART_GROUP_DETAIL,
+          path: ':id',
+          builder: (BuildContext context, GoRouterState state) {
+            return ARTGroupDetailScreen(
+              groupId: state.pathParameters["id"]!,
+            );
+          },
+        ),
+      ]),
   GoRoute(
-    name: RouteNames.HIV_ART_EVENTS,
-    path: 'art-events',
-    builder: (BuildContext context, GoRouterState state) {
-      return const ARTEventsScreen();
-    },
-    routes: [
-      GoRoute(
-        name: RouteNames.HIV_ART_EVENT_DETAILS,
-        path: ':id',
-        builder: (BuildContext context, GoRouterState state) {
-          return ARTEventDetailScreen(eventId: state.pathParameters["id"]!,);
-        },
-      )
-    ]
-  ),
+      name: RouteNames.HIV_ART_EVENTS,
+      path: 'art-events',
+      builder: (BuildContext context, GoRouterState state) {
+        return const ARTEventsScreen();
+      },
+      routes: [
+        GoRoute(
+          name: RouteNames.HIV_ART_EVENT_DETAILS,
+          path: ':id',
+          builder: (BuildContext context, GoRouterState state) {
+            return ARTEventDetailScreen(
+              eventId: state.pathParameters["id"]!,
+            );
+          },
+        )
+      ]),
 ];

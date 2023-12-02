@@ -21,6 +21,13 @@ class ARTEventsScreen extends ConsumerWidget {
         ),
         title: const Text("ART Events"),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {},
+        label: const Text("Add Event"),
+        icon: const Icon(Icons.edit_calendar_rounded),
+        foregroundColor: theme.colorScheme.surface,
+        backgroundColor: theme.colorScheme.primary,
+      ),
       body: events.when(
         data: (data) => ListView.builder(
           itemCount: data.length,

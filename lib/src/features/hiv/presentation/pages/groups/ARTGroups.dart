@@ -20,34 +20,45 @@ class ARTGroupsScreen extends StatelessWidget {
         ),
         title: const Text("ART Groups"),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          context.goNamed(RouteNames.HIV_ART_GROUP_FORM, extra: null);
+        },
+        heroTag: "add-group",
+        label: const Text("Add Group"),
+        icon: const Icon(Icons.group_add),
+        foregroundColor: theme.colorScheme.surface,
+        backgroundColor: theme.colorScheme.primary,
+      ),
       body: Consumer(
         builder: (BuildContext context, WidgetRef ref, Widget? child) {
-          final artGroupsAsync = ref.watch(art_group_provider);
-          return artGroupsAsync.when(
-            data: (artGroups) => ListView.builder(
-              itemCount: artGroups.length,
+          final artGroupsSubscriptionsAsync = ref.watch(art_group_provider);
+          return artGroupsSubscriptionsAsync.when(
+            data: (artGroupSubscriptions) => ListView.builder(
+              itemCount: artGroupSubscriptions.length,
               itemBuilder: (BuildContext context, int index) => Column(
                 children: [
                   const Divider(),
                   ListTile(
-                  onTap: () => context.goNamed(RouteNames.HIV_ART_GROUP_DETAIL,
-                      pathParameters: {"id": artGroups[index].id!}),
+                    onTap: () => context.goNamed(
+                        RouteNames.HIV_ART_GROUP_DETAIL,
+                        pathParameters: {"id": artGroupSubscriptions[index].id!}),
                     leading: CircleAvatar(
                       child: Icon(
                         Icons.group,
-                        color: artGroups[index].isCurrent == true
+                        color: artGroupSubscriptions[index].isCurrent == true
                             ? theme.colorScheme.primary
                             : null,
                       ),
                     ),
-                    title: Text(artGroups[index].group.title),
-                    subtitle:
-                        Text("From: ${artGroups[index].createdAt} To: 31st Apr 2024"),
-                    trailing: artGroups[index].isCurrent == true
+                    title: Text(artGroupSubscriptions[index].group.title),
+                    subtitle: Text(
+                        "From: ${artGroupSubscriptions[index].createdAt} To: 31st Apr 2024"),
+                    trailing: artGroupSubscriptions[index].isCurrent == true
                         ? Container(
                             padding: const EdgeInsets.all(Constants.SPACING),
                             decoration: BoxDecoration(
-                              color: theme.primaryColor.withOpacity(0.2),
+                              color: theme.colorScheme.primary.withOpacity(0.2),
                               borderRadius: const BorderRadius.all(
                                 Radius.circular(Constants.ROUNDNESS),
                               ),

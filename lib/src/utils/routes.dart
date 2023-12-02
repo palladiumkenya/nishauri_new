@@ -21,6 +21,7 @@ class RouteNames {
   static const HIV_REGIMEN = "regimen-history";
   static const HIV_ART_GROUPS = "hiv-art-groups";
   static const HIV_ART_GROUP_DETAIL = "hiv-art-groups-detail";
+  static const HIV_ART_GROUP_FORM = "hiv-art-groups-form";
   static const HIV_ART_EVENTS = "hiv-art-events";
   static const HIV_ART_EVENT_DETAILS = "hiv-art-event-details";
   static const FACILITY_VISITS = "facility-visits";

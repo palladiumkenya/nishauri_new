@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_group_provider.dart';
 import 'package:nishauri/src/shared/display/ProfileCard.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class ARTGroupDetailScreen extends StatelessWidget {
   final String groupId;
@@ -66,7 +67,9 @@ class ARTGroupDetailScreen extends StatelessWidget {
                                 )),
                             child: const Text("\t\tCurrent\t\t"),
                           ),
-                          CircleAvatar(child: IconButton(icon: const Icon(Icons.edit),onPressed: (){},))
+                          CircleAvatar(child: IconButton(icon: const Icon(Icons.edit),onPressed: (){
+                            context.goNamed(RouteNames.HIV_ART_GROUP_FORM, extra: artGroup.group);
+                          },))
                         ],
                       ),
                     ),
@@ -104,19 +107,15 @@ class ARTGroupDetailScreen extends StatelessWidget {
                     subtitle: Text("4 Members"),
                   ),
                   const Divider(),
-                  const ExpansionTile(
+                  ExpansionTile(
 
-                    title: Text("Group description"),
-                    leading: CircleAvatar(child: Icon(Icons.info)),
-                    subtitle: Text("Brief descriptions truncated ...."),
+                    title: const Text("Group description"),
+                    leading: const CircleAvatar(child: Icon(Icons.info)),
+                    subtitle: Text(artGroup.group.description ?? "", maxLines: 1, overflow: TextOverflow.ellipsis),
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(Constants.SPACING),
-                        child: Text("""What is Lorem Ipsum?
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-when an unknown printer took a galley of type and scrambled it to make a type 
-specimen book. It has survived not only five centuries, but also the leap  """),
+                        padding: const EdgeInsets.all(Constants.SPACING),
+                        child: Text(artGroup.group.description ?? ""),
                       ),
                     ],
                   ),

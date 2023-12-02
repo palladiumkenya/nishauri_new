@@ -36,7 +36,7 @@ class RegimenHistoryScreen extends ConsumerWidget {
                     ? Container(
                         padding: const EdgeInsets.all(Constants.SPACING),
                         decoration: BoxDecoration(
-                          color: theme.primaryColor.withOpacity(0.2),
+                          color: theme.colorScheme.primary.withOpacity(0.2),
                           borderRadius: const BorderRadius.all(
                             Radius.circular(Constants.ROUNDNESS),
                           ),

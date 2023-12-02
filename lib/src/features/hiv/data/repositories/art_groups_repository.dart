@@ -15,7 +15,11 @@ class ARTGroupRepository {
     return await _service.getUserARTGroups();
   }
 
-  Future<ARTGroup> addGroup(ARTGroup group) async {
+  Future<ARTGroupSubscription> addGroup(ARTGroup group) async {
+    return await _service.addARTGroup(group);
+  }
+
+  Future<ARTGroupSubscription> updateGroup(ARTGroup group)async {
     return await _service.addARTGroup(group);
   }
 }
