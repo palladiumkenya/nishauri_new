@@ -3,62 +3,85 @@ import 'package:nishauri/src/utils/constants.dart';
 
 class ProfileCard extends StatelessWidget {
   final double height;
+  final String? coverPhoto;
+  final Widget Function(BuildContext, dynamic)? buildItem;
+  final List<dynamic> items;
+  final BoxDecoration? bodyContainerDecoration;
+  final EdgeInsetsGeometry? bodyContainerPadding;
+  final EdgeInsetsGeometry? bodyContainerMargin;
+  final Widget? header;
+  final double headerFactor;
 
-  const ProfileCard({super.key, this.height = 220});
+  const ProfileCard({super.key,
+    this.height = 600,
+    this.coverPhoto,
+    this.buildItem,
+    this.items = const [],
+    this.bodyContainerDecoration,
+    this.bodyContainerMargin,
+    this.bodyContainerPadding,
+  this.header,
+    this.headerFactor = 0.2
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      height: height,
-      decoration: BoxDecoration(
-        color: theme.colorScheme.primary,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(Constants.ROUNDNESS),
-        ),
-      ),
-      child: Stack(
-        // alignment: Alignment.center,
-        children: [
-          Container(
-            // Cover photo
-            width: double.maxFinite,
-            // height: height,
-            // decoration: BoxDecoration(color: theme.colorScheme.error),
-            child: Column(children: [
-              Container(
-                height: height * 0.45,
-                width: double.maxFinite,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                      "https://picsum.photos/200/300",
+    final headerHeight = height * headerFactor;
+    return Column(
+      children: [
+        Container(
+          height: headerHeight,
+          decoration: bodyContainerDecoration,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Column(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        backgroundBlendMode: BlendMode.darken,
+                        image: coverPhoto != null ? DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(
+                            coverPhoto!,
+                          ),
+                        ):null,
+                      ),
                     ),
                   ),
+                  const Spacer(flex: 2),
+                ],
+              ),
+              CircleAvatar(
+                radius: headerHeight * 0.42,
+                child: Icon(
+                  Icons.group,
+                  size: headerHeight * 0.3,
                 ),
               ),
-            ]),
+            ],
           ),
-          Align(
-            heightFactor: 1.6,
-            child: CircleAvatar(
-              radius: height * 0.35,
-              child: Icon(
-                Icons.group,
-                size: height * 0.3,
+        ),
+        if(header != null)
+          header!,
+        if (buildItem != null)
+          Expanded(
+            child: Container(
+              decoration: bodyContainerDecoration,
+              padding: bodyContainerPadding,
+              margin: bodyContainerMargin,
+              child: ListView.builder(
+                itemCount: items.length,
+                itemBuilder: (context, index) =>
+                    buildItem!(context, items[index]),
               ),
             ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Text(
-              "Omondi Laurent Ouma",
-              style: theme.textTheme.titleLarge,
-            ),
           )
-        ],
-      ),
+      ],
     );
   }
 }
