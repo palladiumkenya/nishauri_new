@@ -8,6 +8,7 @@ import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user/presentation/forms/forms.dart';
+import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -80,15 +81,28 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
       ),
       Step(
         title: const Text("Review and Submit"),
-        subtitle: const Text(
-          "Thank you for completing your patient profile! Your information will help us provide you with better healthcare."
-          "Review your information for accuracy before submission.",
-        ),
-        content: SvgPicture.asset(
-          "assets/images/security.svg",
-          semanticsLabel: "Security",
-          fit: BoxFit.contain,
-          height: 150,
+        content: AppCard(
+          child: Padding(
+            padding: const EdgeInsets.all(Constants.SPACING),
+            child: Column(
+              children: [
+                SvgPicture.asset(
+                  "assets/images/review.svg",
+                  semanticsLabel: "Security",
+                  fit: BoxFit.contain,
+                  height: 150,
+                ),
+                const SizedBox(height: Constants.SPACING),
+                const Text(
+                  "Thank you for completing your patient profile! Your information will help us provide you with better healthcare.",
+                ),
+                const SizedBox(height: Constants.SPACING),
+                const Text(
+                    "Review your information for accuracy before submission."
+                )
+              ],
+            ),
+          ),
         ),
         isActive: currentStep.value == 6,
       ),
@@ -197,14 +211,15 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                             (currentStep.value == steps.length - 1);
                         if (isLastStep) {
                           return Button(
-                            onPress: ()async {
+                            onPress: () async {
                               final results = await showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
                                   title: const Text("Confirm Details Entered"),
                                   content: SizedBox(
                                     width: double.maxFinite,
-                                    height: MediaQuery.of(context).size.height * 0.5,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.5,
                                     child: SingleChildScrollView(
                                       child: ReviewAndSubmit(
                                         formState:
@@ -213,14 +228,23 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                                     ),
                                   ),
                                   actions: [
-                                    Button(title: "Submit", onPress: (){
-                                      context.pop(1);
-                                    },),
-                                    Button(title: "Cancel", onPress: context.pop, titleStyle: theme.textTheme.titleLarge?.copyWith(color: theme.colorScheme.error),),
+                                    Button(
+                                      title: "Submit",
+                                      onPress: () {
+                                        context.pop(1);
+                                      },
+                                    ),
+                                    Button(
+                                      title: "Cancel",
+                                      onPress: context.pop,
+                                      titleStyle: theme.textTheme.titleLarge
+                                          ?.copyWith(
+                                              color: theme.colorScheme.error),
+                                    ),
                                   ],
                                 ),
                               );
-                              if(results == 1){
+                              if (results == 1) {
                                 details.onStepContinue!();
                               }
                             },
