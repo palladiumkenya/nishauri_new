@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nishauri/src/shared/display/AppAvatar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class ProfileCard extends StatelessWidget {
@@ -11,6 +12,8 @@ class ProfileCard extends StatelessWidget {
   final EdgeInsetsGeometry? bodyContainerMargin;
   final Widget? header;
   final double headerFactor;
+  final String? image;
+  final IconData icon;
 
   const ProfileCard({super.key,
     this.height = 600,
@@ -20,8 +23,10 @@ class ProfileCard extends StatelessWidget {
     this.bodyContainerDecoration,
     this.bodyContainerMargin,
     this.bodyContainerPadding,
-  this.header,
-    this.headerFactor = 0.2
+    this.header,
+    this.headerFactor = 0.2,
+    this.image,
+    this.icon=Icons.person,
   });
 
   @override
@@ -49,19 +54,20 @@ class ProfileCard extends StatelessWidget {
                           image: NetworkImage(
                             coverPhoto!,
                           ),
-                        ):null,
+                        ) : null,
                       ),
                     ),
                   ),
                   const Spacer(flex: 2),
                 ],
               ),
-              CircleAvatar(
+              AppAvatar(
                 radius: headerHeight * 0.42,
-                child: Icon(
-                  Icons.group,
+                alt: Icon(
+                  icon,
                   size: headerHeight * 0.3,
                 ),
+                image:image,
               ),
             ],
           ),

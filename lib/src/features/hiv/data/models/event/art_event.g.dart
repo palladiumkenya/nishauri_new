@@ -11,8 +11,7 @@ _$ARTEventImpl _$$ARTEventImplFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String?,
       title: json['title'] as String,
       distributionTime: json['distributionTime'] as String,
-      distributionLocation: Address.fromJson(
-          json['distributionLocation'] as Map<String, dynamic>),
+      venue: json['venue'] as String,
       reminderNotificationDates:
           (json['reminderNotificationDates'] as List<dynamic>?)
                   ?.map((e) => e as String)
@@ -26,7 +25,7 @@ Map<String, dynamic> _$$ARTEventImplToJson(_$ARTEventImpl instance) =>
       'id': instance.id,
       'title': instance.title,
       'distributionTime': instance.distributionTime,
-      'distributionLocation': instance.distributionLocation,
+      'venue': instance.venue,
       'reminderNotificationDates': instance.reminderNotificationDates,
       'group': instance.group,
     };

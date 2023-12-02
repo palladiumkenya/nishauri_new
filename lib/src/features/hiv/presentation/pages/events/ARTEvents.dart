@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_events_provider.dart';
+import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class ARTEventsScreen extends ConsumerWidget {
   const ARTEventsScreen({super.key});
@@ -22,10 +24,11 @@ class ARTEventsScreen extends ConsumerWidget {
       body: events.when(
         data: (data) => ListView.builder(
           itemCount: data.length,
-          itemBuilder: (BuildContext context, int index) => Card(
+          itemBuilder: (BuildContext context, int index) => AppCard(
+            onTap: ()=>context.goNamed(RouteNames.HIV_ART_EVENT_DETAILS, pathParameters: {"id": data[index].id!}),
             child: ListTile(
               leading: const Icon(
-                Icons.group,
+                Icons.event,
               ),
               title: Text(data[index].title),
               subtitle: Text(data[index].distributionTime),

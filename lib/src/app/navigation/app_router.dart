@@ -18,6 +18,7 @@ import 'package:nishauri/src/features/events_calendar/presentation/pages/EventsC
 import 'package:nishauri/src/features/hiv/presentation/pages/ARTSites.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/HIVMenu.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/RegimenHistory.dart';
+import 'package:nishauri/src/features/hiv/presentation/pages/events/ARTEventDetail.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/events/ARTEvents.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroupDetail.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroups.dart';
@@ -267,5 +268,14 @@ final List<RouteBase> hivProgramRoutes = [
     builder: (BuildContext context, GoRouterState state) {
       return const ARTEventsScreen();
     },
+    routes: [
+      GoRoute(
+        name: RouteNames.HIV_ART_EVENT_DETAILS,
+        path: ':id',
+        builder: (BuildContext context, GoRouterState state) {
+          return ARTEventDetailScreen(eventId: state.pathParameters["id"]!,);
+        },
+      )
+    ]
   ),
 ];
