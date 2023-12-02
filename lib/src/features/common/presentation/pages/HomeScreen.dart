@@ -55,7 +55,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         backgroundColor: theme.primaryColor,
         leading: IconButton(
           onPressed: toggleDrawer,
-          icon: const Icon(Icons.menu),
+          icon: const Icon(Icons.sort),
         ),
         actions: [
           IconButton(

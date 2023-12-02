@@ -97,7 +97,7 @@ class ARTEventDetailScreen extends StatelessWidget {
                         "${artEvent.reminderNotificationDates.length} Reminders"),
                     children: artEvent.reminderNotificationDates
                         .map((e) => ListTile(
-                              leading: Icon(Icons.watch_later_outlined),
+                              leading: const Icon(Icons.watch_later_outlined),
                               title: Text(
                                 DateFormat("dd MMM yyyy hh:mm").format(
                                   DateTime.parse(e),

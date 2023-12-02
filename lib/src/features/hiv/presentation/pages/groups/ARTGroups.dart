@@ -26,33 +26,37 @@ class ARTGroupsScreen extends StatelessWidget {
           return artGroupsAsync.when(
             data: (artGroups) => ListView.builder(
               itemCount: artGroups.length,
-              itemBuilder: (BuildContext context, int index) => AppCard(
-                variant: CardVariant.ELEVETED,
-                onTap: () => context.goNamed(RouteNames.HIV_ART_GROUP_DETAIL,
-                    pathParameters: {"id": artGroups[index].id!}),
-                child: ListTile(
-                  leading: Icon(
-                    Icons.group,
-                    color: artGroups[index].isCurrent == true
-                        ? theme.colorScheme.primary
-                        : null,
-                  ),
-                  title: Text(artGroups[index].group.title),
-                  subtitle:
-                      Text("From: ${artGroups[index].createdAt} To: 31st Apr 2024"),
-                  trailing: artGroups[index].isCurrent == true
-                      ? Container(
-                          padding: const EdgeInsets.all(Constants.SPACING),
-                          decoration: BoxDecoration(
-                            color: theme.primaryColor,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(Constants.ROUNDNESS),
+              itemBuilder: (BuildContext context, int index) => Column(
+                children: [
+                  const Divider(),
+                  ListTile(
+                  onTap: () => context.goNamed(RouteNames.HIV_ART_GROUP_DETAIL,
+                      pathParameters: {"id": artGroups[index].id!}),
+                    leading: CircleAvatar(
+                      child: Icon(
+                        Icons.group,
+                        color: artGroups[index].isCurrent == true
+                            ? theme.colorScheme.primary
+                            : null,
+                      ),
+                    ),
+                    title: Text(artGroups[index].group.title),
+                    subtitle:
+                        Text("From: ${artGroups[index].createdAt} To: 31st Apr 2024"),
+                    trailing: artGroups[index].isCurrent == true
+                        ? Container(
+                            padding: const EdgeInsets.all(Constants.SPACING),
+                            decoration: BoxDecoration(
+                              color: theme.primaryColor.withOpacity(0.2),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(Constants.ROUNDNESS),
+                              ),
                             ),
-                          ),
-                          child: const Text("Current"),
-                        )
-                      : const Icon(Icons.chevron_right),
-                ),
+                            child: const Text("Current"),
+                          )
+                        : const Icon(Icons.chevron_right),
+                  ),
+                ],
               ),
             ),
             error: (error, _) => Center(child: Text(error.toString())),

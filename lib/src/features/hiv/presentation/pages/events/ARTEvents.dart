@@ -24,16 +24,21 @@ class ARTEventsScreen extends ConsumerWidget {
       body: events.when(
         data: (data) => ListView.builder(
           itemCount: data.length,
-          itemBuilder: (BuildContext context, int index) => AppCard(
-            onTap: ()=>context.goNamed(RouteNames.HIV_ART_EVENT_DETAILS, pathParameters: {"id": data[index].id!}),
-            child: ListTile(
-              leading: const Icon(
-                Icons.event,
+          itemBuilder: (BuildContext context, int index) => Column(
+            children: [
+              const Divider(),
+              ListTile(
+              onTap: ()=>context.goNamed(RouteNames.HIV_ART_EVENT_DETAILS, pathParameters: {"id": data[index].id!}),
+                leading: const CircleAvatar(
+                  child: Icon(
+                    Icons.event,
+                  ),
+                ),
+                title: Text(data[index].title),
+                subtitle: Text(data[index].distributionTime),
+                trailing: const Icon(Icons.chevron_right),
               ),
-              title: Text(data[index].title),
-              subtitle: Text(data[index].distributionTime),
-              trailing: const Icon(Icons.chevron_right),
-            ),
+            ],
           ),
         ),
         error: (error, _) => Center(child: Text(error.toString())),

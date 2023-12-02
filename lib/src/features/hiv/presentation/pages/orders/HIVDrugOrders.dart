@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/shared/display/AppSearch.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class HIVDrugOrdersScreen extends StatelessWidget {
@@ -21,44 +23,23 @@ class HIVDrugOrdersScreen extends StatelessWidget {
         heightFactor: 1,
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(Constants.SPACING),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                          suffixIcon: Icon(Icons.search),
-                          border: OutlineInputBorder()),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: Constants.SPACING * 2,
-                  ),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1),
-                      color: Theme.of(context).colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
-                    ),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.filter_list_alt, size: 45,),
-                    ),
-                  ),
-                ],
-              ),
+            const Padding(
+              padding: EdgeInsets.all(Constants.SPACING),
+              child: AppSearch(),
             ),
             Expanded(
               child: ListView.builder(
                 itemCount: 10,
-                itemBuilder: (BuildContext context, int currIndex) => Card(
-                  child: ListTile(
-                    leading: const Icon(Icons.shopping_cart),
-                    title: Text("Order $currIndex name here"),
-                    subtitle: Text("$currIndex October 2023"),
-                    trailing: const Icon(Icons.chevron_right),
-                  ),
+                itemBuilder: (BuildContext context, int currIndex) => Column(
+                  children: [
+                    const Divider(),
+                    ListTile(
+                      leading: const Icon(Icons.shopping_cart),
+                      title: Text("Order $currIndex name here"),
+                      subtitle: Text("$currIndex October 2023"),
+                      trailing: const Icon(Icons.chevron_right),
+                    ),
+                  ],
                 ),
               ),
             ),

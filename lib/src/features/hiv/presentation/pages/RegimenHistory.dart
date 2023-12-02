@@ -22,27 +22,30 @@ class RegimenHistoryScreen extends ConsumerWidget {
       body: regimen.when(
         data: (data) => ListView.builder(
           itemCount: data.length,
-          itemBuilder: (BuildContext context, int index) => Card(
-            child: ListTile(
-              leading: Icon(
-                Icons.medication,
-                color: data[index].isCurrent ? theme.colorScheme.primary : null,
-              ),
-              title: Text(data[index].name),
-              subtitle:  Text("From: ${data[index].createdAt} To: 31st Apr 2024"),
-              trailing: data[index].isCurrent
-                  ? Container(
-                      padding: const EdgeInsets.all(Constants.SPACING),
-                      decoration: BoxDecoration(
-                        color: theme.primaryColor,
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(Constants.ROUNDNESS),
+          itemBuilder: (BuildContext context, int index) => Column(
+            children: [
+              const Divider(),
+              ListTile(
+                leading: Icon(
+                  Icons.medication,
+                  color: data[index].isCurrent ? theme.colorScheme.primary : null,
+                ),
+                title: Text(data[index].name),
+                subtitle:  Text("From: ${data[index].createdAt} To: 31st Apr 2024"),
+                trailing: data[index].isCurrent
+                    ? Container(
+                        padding: const EdgeInsets.all(Constants.SPACING),
+                        decoration: BoxDecoration(
+                          color: theme.primaryColor.withOpacity(0.2),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(Constants.ROUNDNESS),
+                          ),
                         ),
-                      ),
-                      child: const Text("Current"),
-                    )
-                  : null,
-            ),
+                        child: const Text("Current"),
+                      )
+                    : null,
+              ),
+            ],
           ),
         ),
         error: (error, _) => Center(child: Text(error.toString())),
