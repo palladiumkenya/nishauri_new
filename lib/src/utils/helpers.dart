@@ -102,9 +102,9 @@ void handleResponseError(
         SnackBar(content: Text(err.toString())),
       );
   }
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(err.toString()),
-    ),
-  );
+  // ScaffoldMessenger.of(context).showSnackBar(
+  //   SnackBar(
+  //     content: Text(err.toString()),
+  //   ),
+  // );
 }

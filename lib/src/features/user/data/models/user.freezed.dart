@@ -37,7 +37,7 @@ mixin _$User {
   List<String> get chronics => throw _privateConstructorUsedError;
   String? get weight => throw _privateConstructorUsedError;
   String? get height => throw _privateConstructorUsedError;
-  String? get maritalState => throw _privateConstructorUsedError;
+  String? get maritalStatus => throw _privateConstructorUsedError;
   String? get educationLevel => throw _privateConstructorUsedError;
   String? get primaryLanguage => throw _privateConstructorUsedError;
   String? get occupation => throw _privateConstructorUsedError;
@@ -70,7 +70,7 @@ abstract class $UserCopyWith<$Res> {
       List<String> chronics,
       String? weight,
       String? height,
-      String? maritalState,
+      String? maritalStatus,
       String? educationLevel,
       String? primaryLanguage,
       String? occupation});
@@ -106,7 +106,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? chronics = null,
     Object? weight = freezed,
     Object? height = freezed,
-    Object? maritalState = freezed,
+    Object? maritalStatus = freezed,
     Object? educationLevel = freezed,
     Object? primaryLanguage = freezed,
     Object? occupation = freezed,
@@ -180,9 +180,9 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
               as String?,
-      maritalState: freezed == maritalState
-          ? _value.maritalState
-          : maritalState // ignore: cast_nullable_to_non_nullable
+      maritalStatus: freezed == maritalStatus
+          ? _value.maritalStatus
+          : maritalStatus // ignore: cast_nullable_to_non_nullable
               as String?,
       educationLevel: freezed == educationLevel
           ? _value.educationLevel
@@ -225,7 +225,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       List<String> chronics,
       String? weight,
       String? height,
-      String? maritalState,
+      String? maritalStatus,
       String? educationLevel,
       String? primaryLanguage,
       String? occupation});
@@ -258,7 +258,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? chronics = null,
     Object? weight = freezed,
     Object? height = freezed,
-    Object? maritalState = freezed,
+    Object? maritalStatus = freezed,
     Object? educationLevel = freezed,
     Object? primaryLanguage = freezed,
     Object? occupation = freezed,
@@ -332,9 +332,9 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
               as String?,
-      maritalState: freezed == maritalState
-          ? _value.maritalState
-          : maritalState // ignore: cast_nullable_to_non_nullable
+      maritalStatus: freezed == maritalStatus
+          ? _value.maritalStatus
+          : maritalStatus // ignore: cast_nullable_to_non_nullable
               as String?,
       educationLevel: freezed == educationLevel
           ? _value.educationLevel
@@ -373,7 +373,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       final List<String> chronics = const [],
       this.weight,
       this.height,
-      this.maritalState,
+      this.maritalStatus,
       this.educationLevel,
       this.primaryLanguage,
       this.occupation})
@@ -440,7 +440,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   @override
   final String? height;
   @override
-  final String? maritalState;
+  final String? maritalStatus;
   @override
   final String? educationLevel;
   @override
@@ -450,7 +450,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'User(id: $id, image: $image, username: $username, firstName: $firstName, lastName: $lastName, dateOfBirth: $dateOfBirth, gender: $gender, email: $email, phoneNumber: $phoneNumber, country: $country, constituency: $constituency, bloodGroup: $bloodGroup, allergies: $allergies, disabilities: $disabilities, chronics: $chronics, weight: $weight, height: $height, maritalState: $maritalState, educationLevel: $educationLevel, primaryLanguage: $primaryLanguage, occupation: $occupation)';
+    return 'User(id: $id, image: $image, username: $username, firstName: $firstName, lastName: $lastName, dateOfBirth: $dateOfBirth, gender: $gender, email: $email, phoneNumber: $phoneNumber, country: $country, constituency: $constituency, bloodGroup: $bloodGroup, allergies: $allergies, disabilities: $disabilities, chronics: $chronics, weight: $weight, height: $height, maritalStatus: $maritalStatus, educationLevel: $educationLevel, primaryLanguage: $primaryLanguage, occupation: $occupation)';
   }
 
   @override
@@ -475,7 +475,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       ..add(DiagnosticsProperty('chronics', chronics))
       ..add(DiagnosticsProperty('weight', weight))
       ..add(DiagnosticsProperty('height', height))
-      ..add(DiagnosticsProperty('maritalState', maritalState))
+      ..add(DiagnosticsProperty('maritalStatus', maritalStatus))
       ..add(DiagnosticsProperty('educationLevel', educationLevel))
       ..add(DiagnosticsProperty('primaryLanguage', primaryLanguage))
       ..add(DiagnosticsProperty('occupation', occupation));
@@ -512,8 +512,8 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
             const DeepCollectionEquality().equals(other._chronics, _chronics) &&
             (identical(other.weight, weight) || other.weight == weight) &&
             (identical(other.height, height) || other.height == height) &&
-            (identical(other.maritalState, maritalState) ||
-                other.maritalState == maritalState) &&
+            (identical(other.maritalStatus, maritalStatus) ||
+                other.maritalStatus == maritalStatus) &&
             (identical(other.educationLevel, educationLevel) ||
                 other.educationLevel == educationLevel) &&
             (identical(other.primaryLanguage, primaryLanguage) ||
@@ -543,7 +543,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
         const DeepCollectionEquality().hash(_chronics),
         weight,
         height,
-        maritalState,
+        maritalStatus,
         educationLevel,
         primaryLanguage,
         occupation
@@ -582,7 +582,7 @@ abstract class _User implements User {
       final List<String> chronics,
       final String? weight,
       final String? height,
-      final String? maritalState,
+      final String? maritalStatus,
       final String? educationLevel,
       final String? primaryLanguage,
       final String? occupation}) = _$UserImpl;
@@ -624,7 +624,7 @@ abstract class _User implements User {
   @override
   String? get height;
   @override
-  String? get maritalState;
+  String? get maritalStatus;
   @override
   String? get educationLevel;
   @override

@@ -5,7 +5,7 @@ import 'package:nishauri/src/features/user/data/respositories/UserRepository.dar
 class UserController extends StateNotifier<AsyncValue<User>> {
   final UserRepository _repository;
 
-  UserController(this._repository) : super(const AsyncValue.loading()){
+  UserController(this._repository) : super(const AsyncValue.loading()) {
     getUser();
   }
 
@@ -20,12 +20,11 @@ class UserController extends StateNotifier<AsyncValue<User>> {
   }
 
   Future<void> updateUser(User user) async {
-    state = const AsyncValue.loading();
     try {
       final user_ = await _repository.updateProfile(user);
       state = AsyncValue.data(user_);
     } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
+      rethrow;
     }
   }
 }

@@ -59,6 +59,7 @@ class UserService extends HTTPService {
 
   Future<User> updateProfile(User user) async {
     await Future.delayed(const Duration(seconds: 3));
+    throw ValidationException({"dateOfBirth":'Invalid date of birth'});
     _user = user;
     return _user;
   }

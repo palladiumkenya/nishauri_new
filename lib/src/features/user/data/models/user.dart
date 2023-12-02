@@ -23,7 +23,7 @@ class User with _$User {
     @Default([]) List<String> chronics,
     String? weight,
     String? height,
-    String? maritalState,
+    String? maritalStatus,
     String? educationLevel,
     String? primaryLanguage,
     String? occupation,

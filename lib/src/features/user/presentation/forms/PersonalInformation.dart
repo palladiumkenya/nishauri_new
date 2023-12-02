@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -49,6 +50,8 @@ class PersonalInformation extends StatelessWidget {
                 firstDate: DateTime(1950),
                 lastDate: DateTime(2100),
                 name: "dateOfBirth",
+                format: DateFormat('dd MMM yyy'),
+                inputType: InputType.date,
                 decoration: inputDecoration(
                   placeholder: "Enter your date of birth",
                   prefixIcon: Icons.calendar_month_rounded,

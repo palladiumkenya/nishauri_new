@@ -36,9 +36,9 @@ class FacilityVisitsScreen extends StatelessWidget {
                     leading: const Icon(
                       Icons.move_down,
                     ),
-                    title: Text(data[index].visitDate),
+                    title: const Text("Mbagathi Referal Hospital"),
                     subtitle: Text(
-                        "From: ${DateFormat("yyyy MMM dd").format(DateTime.parse(data[index].visitDate))}"),
+                        "Visit Date: ${DateFormat("yyyy MMM dd").format(DateTime.parse(data[index].visitDate))}"),
                     trailing: const Icon(Icons.chevron_right)),
               ),
             ),

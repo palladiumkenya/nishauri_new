@@ -17,6 +17,7 @@ class Button extends StatelessWidget {
   final double borderRadius;
   final MainAxisAlignment mainAxisAlignment;
   final EdgeInsetsGeometry? paddingGeometry;
+  final TextStyle? titleStyle;
 
   final void Function()? onPress;
 
@@ -34,25 +35,34 @@ class Button extends StatelessWidget {
       this.mode = ButtonMode.contained,
       this.mainAxisAlignment = MainAxisAlignment.center,
       this.paddingGeometry,
+      this.titleStyle,
       this.disabled = false});
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     if (loading) {
-      return const CircularProgressIndicator();
+      return const Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircularProgressIndicator(),
+        ],
+      );
     }
 
     return SizedBox(
       width: double.infinity,
       child: mode == ButtonMode.outline
           ? OutlinedButton(
-              onPressed: onPress,
-              child: Text(title),
+              onPressed: disabled ? null : onPress,
+              child: Text(title, style: titleStyle),
             )
           : ElevatedButton(
-              onPressed: onPress,
-              child: Text(title),
+              onPressed: disabled ? null : onPress,
+              child: Text(
+                title,
+                style: titleStyle,
+              ),
             ),
     );
   }

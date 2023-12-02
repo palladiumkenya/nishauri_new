@@ -19,7 +19,7 @@ class LifeStyleInformation extends StatelessWidget {
             children: [
               const SizedBox(height: Constants.SPACING),
               FormBuilderDropdown(
-                initialValue: user.maritalState,
+                initialValue: user.maritalStatus,
                 name: "maritalStatus",
                 decoration: inputDecoration(
                   prefixIcon: Icons.accessibility_sharp,
