@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_events_provider.dart';
-import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
@@ -22,8 +21,10 @@ class ARTEventsScreen extends ConsumerWidget {
         title: const Text("ART Events"),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        label: const Text("Add Event"),
+        onPressed: () {
+          context.goNamed(RouteNames.HIV_ART_EVENT_FORM, extra: null);
+        },
+        label: const Text("Add art Event"),
         icon: const Icon(Icons.edit_calendar_rounded),
         foregroundColor: theme.colorScheme.surface,
         backgroundColor: theme.colorScheme.primary,
@@ -55,7 +56,7 @@ class ARTEventsScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Loading Events",
+                "Loading ART Events",
                 style: theme.textTheme.headlineSmall,
               ),
               const SizedBox(height: Constants.SPACING * 2),

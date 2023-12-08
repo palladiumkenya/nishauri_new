@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nishauri/src/shared/display/AppAvatar.dart';
-import 'package:nishauri/src/utils/constants.dart';
 
 class ProfileCard extends StatelessWidget {
   final double height;

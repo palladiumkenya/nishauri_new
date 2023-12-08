@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_events_provider.dart';
 import 'package:nishauri/src/shared/display/ProfileCard.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class ARTEventDetailScreen extends StatelessWidget {
   final String eventId;
@@ -31,7 +32,7 @@ class ARTEventDetailScreen extends StatelessWidget {
                   artEvents.where((element) => element.id == eventId).first;
               return ProfileCard(
                 icon: Icons.event,
-                coverPhoto: "https://picsum.photos/seed/picsum/200/300",
+                coverPhoto: "https://picsum.photos/seed/picsum/757/300",
                 buildItem: (context, item) => item,
                 height: MediaQuery.of(context).size.height,
                 header: Column(
@@ -60,7 +61,9 @@ class ARTEventDetailScreen extends StatelessWidget {
                           CircleAvatar(
                               child: IconButton(
                             icon: const Icon(Icons.edit),
-                            onPressed: () {},
+                            onPressed: () {
+                              context.goNamed(RouteNames.HIV_ART_EVENT_FORM, extra: artEvent);
+                            },
                           ))
                         ],
                       ),

@@ -17,16 +17,23 @@ class ReviewAndSubmit extends StatelessWidget {
     // return Placeholder();
     return Container(
       child: Wrap(children: [
+        const Divider(),
+
         ListTile(
-          leading: AppAvatar(alt: Icon(Icons.person), image: formState["image"]),
+          leading:
+              AppAvatar(alt: Icon(Icons.person), image: formState["image"]),
           title: const Text("Username"),
           subtitle: Text(formState['username'] ?? "None"),
         ),
+        const Divider(),
+
         ListTile(
           title: const Text("Full name"),
           subtitle: Text(
               "${formState['firstName'] ?? "None"} ${formState['lastName'] ?? "None"}"),
         ),
+        const Divider(),
+
         ListTile(
           title: const Text("Date of birth"),
           subtitle: Text(
@@ -36,6 +43,8 @@ class ReviewAndSubmit extends StatelessWidget {
                 : "None",
           ),
         ),
+        const Divider(),
+
         ListTile(
           title: const Text("Gender"),
           subtitle: Text(
@@ -44,16 +53,22 @@ class ReviewAndSubmit extends StatelessWidget {
                 : "None",
           ),
         ),
+        const Divider(),
+
         ListTile(
           title: const Text("Email"),
           subtitle: Text(formState['email'] ?? "None"),
         ),
+        const Divider(),
+
         ListTile(
           title: const Text("Phone number"),
           subtitle: Text(
             formState['phoneNumber'] ?? "None",
           ),
         ),
+        const Divider(),
+
         Row(
           children: [
             Expanded(
@@ -75,11 +90,15 @@ class ReviewAndSubmit extends StatelessWidget {
           ],
         ),
         // TODO Remove null checks
+        const Divider(),
+
         if (formState['bloodGroup'] != null)
           ListTile(
             title: const Text("Blood Group"),
             subtitle: Text(formState['bloodGroup']),
           ),
+        const Divider(),
+
         if (formState['allergies'] != null)
           ListTile(
             title: const Text("Allergies"),
@@ -87,6 +106,8 @@ class ReviewAndSubmit extends StatelessWidget {
                 ? formState['allergies'].join(", ")
                 : "None"),
           ),
+        const Divider(),
+
         if (formState['disabilities'] != null)
           ListTile(
             title: const Text("Disabilities"),
@@ -94,6 +115,8 @@ class ReviewAndSubmit extends StatelessWidget {
                 ? formState['disabilities'].join(", ")
                 : "None"),
           ),
+        const Divider(),
+
         if (formState['chronics'] != null)
           ListTile(
             title: const Text("Chronic Illnesses"),
@@ -101,6 +124,8 @@ class ReviewAndSubmit extends StatelessWidget {
                 ? formState['chronics'].join(", ")
                 : "None"),
           ),
+        const Divider(),
+
         if (formState['weight'] != null)
           Row(
             children: [
@@ -118,26 +143,35 @@ class ReviewAndSubmit extends StatelessWidget {
               ),
             ],
           ),
+        const Divider(),
+
         if (formState['maritalStatus'] != null)
           ListTile(
             title: const Text("Marital status"),
             subtitle: Text(formState['maritalStatus']),
           ),
+        const Divider(),
+
         if (formState['primaryLanguage'] != null)
           ListTile(
             title: const Text("Primary language"),
             subtitle: Text(formState['primaryLanguage']),
           ),
+        const Divider(),
+
         if (formState['educationLevel'] != null)
           ListTile(
             title: const Text("Education level"),
             subtitle: Text(formState['educationLevel']),
           ),
+        const Divider(),
+
         if (formState['occupation'] != null)
           ListTile(
             title: const Text("Occupation"),
             subtitle: Text(formState['occupation']),
           ),
+        const Divider(),
       ]),
     );
   }

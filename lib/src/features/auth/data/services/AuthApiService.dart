@@ -11,6 +11,9 @@ class AuthApiService extends HTTPService {
   var headers = {'Content-Type': 'application/json'};
 
   Future<AuthState> authenticate(Map<String, dynamic> credentials) async {
+    await Future.delayed(const Duration(seconds: 3));
+
+    return AuthState.fromResponse(token: "token");
     var headers = {'Content-Type': 'application/json'};
     var request =
         http.Request('POST', Uri.parse('${Constants.BASE_URL}auth/login'));

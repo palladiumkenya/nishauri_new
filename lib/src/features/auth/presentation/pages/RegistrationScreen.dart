@@ -94,6 +94,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
+                          FormBuilderValidators.minLength(10),
+                          FormBuilderValidators.maxLength(13),
                         ]),
                       ),
                       const SizedBox(height: Constants.SPACING),
@@ -107,6 +109,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
+                          FormBuilderValidators.email(),
+
                         ]),
                       ),
                       const SizedBox(height: Constants.SPACING),

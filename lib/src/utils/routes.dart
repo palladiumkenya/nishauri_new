@@ -23,6 +23,7 @@ class RouteNames {
   static const HIV_ART_GROUP_DETAIL = "hiv-art-groups-detail";
   static const HIV_ART_GROUP_FORM = "hiv-art-groups-form";
   static const HIV_ART_EVENTS = "hiv-art-events";
+  static const HIV_ART_EVENT_FORM = "hiv-art-event-form";
   static const HIV_ART_EVENT_DETAILS = "hiv-art-event-details";
   static const FACILITY_VISITS = "facility-visits";
   static const FACILITY_VISIT_DETAIL = "facility-visit-detail";
