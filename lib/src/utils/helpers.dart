@@ -97,6 +97,10 @@ void handleResponseError(
         formState[err.key]?.invalidate(err.value);
       }
       break;
+    case ResourceNotFoundException e:
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(err.message.toString())),
+      );
     default:
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(err.toString())),

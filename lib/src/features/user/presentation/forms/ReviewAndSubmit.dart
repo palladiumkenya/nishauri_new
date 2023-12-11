@@ -91,86 +91,68 @@ class ReviewAndSubmit extends StatelessWidget {
         ),
         // TODO Remove null checks
         const Divider(),
-
-        if (formState['bloodGroup'] != null)
-          ListTile(
-            title: const Text("Blood Group"),
-            subtitle: Text(formState['bloodGroup']),
-          ),
+        ListTile(
+          title: const Text("Blood Group"),
+          subtitle: Text(formState['bloodGroup'] ?? "None"),
+        ),
         const Divider(),
-
-        if (formState['allergies'] != null)
-          ListTile(
-            title: const Text("Allergies"),
-            subtitle: Text(formState['allergies'].isNotEmpty
-                ? formState['allergies'].join(", ")
-                : "None"),
-          ),
+        ListTile(
+          title: const Text("Allergies"),
+          subtitle: Text(formState['allergies'].isNotEmpty
+              ? formState['allergies'].join(", ")
+              : "None"),
+        ),
         const Divider(),
-
-        if (formState['disabilities'] != null)
-          ListTile(
-            title: const Text("Disabilities"),
-            subtitle: Text(formState['disabilities'].isNotEmpty
-                ? formState['disabilities'].join(", ")
-                : "None"),
-          ),
+        ListTile(
+          title: const Text("Disabilities"),
+          subtitle: Text(formState['disabilities'].isNotEmpty
+              ? formState['disabilities'].join(", ")
+              : "None"),
+        ),
         const Divider(),
-
-        if (formState['chronics'] != null)
-          ListTile(
-            title: const Text("Chronic Illnesses"),
-            subtitle: Text(formState['chronics'].isNotEmpty
-                ? formState['chronics'].join(", ")
-                : "None"),
-          ),
+        ListTile(
+          title: const Text("Chronic Illnesses"),
+          subtitle: Text(formState['chronics'].isNotEmpty
+              ? formState['chronics'].join(", ")
+              : "None"),
+        ),
         const Divider(),
-
-        if (formState['weight'] != null)
-          Row(
-            children: [
-              Expanded(
-                child: ListTile(
-                  title: const Text("Weight"),
-                  subtitle: Text("${formState['weight']} kgs"),
-                ),
+        Row(
+          children: [
+            Expanded(
+              child: ListTile(
+                title: const Text("Weight"),
+                subtitle: Text("${formState['weight'] ?? "None"} kgs"),
               ),
-              Expanded(
-                child: ListTile(
-                  title: const Text("Height"),
-                  subtitle: Text("${formState['height']} cm"),
-                ),
+            ),
+            Expanded(
+              child: ListTile(
+                title: const Text("Height"),
+                subtitle: Text("${formState['height'] ?? "None"} cm"),
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
         const Divider(),
-
-        if (formState['maritalStatus'] != null)
-          ListTile(
-            title: const Text("Marital status"),
-            subtitle: Text(formState['maritalStatus']),
-          ),
+        ListTile(
+          title: const Text("Marital status"),
+          subtitle: Text(formState['maritalStatus'] ?? "None"),
+        ),
         const Divider(),
-
-        if (formState['primaryLanguage'] != null)
-          ListTile(
-            title: const Text("Primary language"),
-            subtitle: Text(formState['primaryLanguage']),
-          ),
+        ListTile(
+          title: const Text("Primary language"),
+          subtitle: Text(formState['primaryLanguage'] ?? "None"),
+        ),
         const Divider(),
-
-        if (formState['educationLevel'] != null)
-          ListTile(
-            title: const Text("Education level"),
-            subtitle: Text(formState['educationLevel']),
-          ),
+        ListTile(
+          title: const Text("Education level"),
+          subtitle: Text(formState['educationLevel'] ?? "None"),
+        ),
         const Divider(),
-
-        if (formState['occupation'] != null)
-          ListTile(
-            title: const Text("Occupation"),
-            subtitle: Text(formState['occupation']),
-          ),
+        ListTile(
+          title: const Text("Occupation"),
+          subtitle: Text(formState['occupation'] ?? "None"),
+        ),
         const Divider(),
       ]),
     );

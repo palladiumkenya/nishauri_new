@@ -79,7 +79,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 child: UserDrawerHeader(
                   email: asyncUser.value!.email,
                   name:
-                      "${asyncUser.value!.firstName} ${asyncUser.value!.lastName}"
+                      (asyncUser.value?.name ?? "")
                           .titleCase,
                   phoneNumber: asyncUser.value!.phoneNumber,
                   image: asyncUser.value!.image,
@@ -161,7 +161,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Greetings(
-                      name: "${user.firstName} ${user.lastName}".titleCase,
+                      name: (user.name ?? "").titleCase,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(Constants.SPACING),

@@ -1,10 +1,11 @@
+import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/user_programs/data/models/program.dart';
 import 'package:nishauri/src/features/user_programs/data/models/user_program.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 
 class ProgramService extends HTTPService {
-  final String _token;
+  final AuthState _authState;
   final List<Program> _programs = [
     const Program(
       programCode: "HIV",
@@ -94,7 +95,7 @@ class ProgramService extends HTTPService {
     // ),
   ];
 
-  ProgramService(this._token);
+  ProgramService(this._authState);
 
   Future<List<Program>> getPrograms() async {
     await Future.delayed(const Duration(seconds: 3));

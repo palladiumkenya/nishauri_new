@@ -2,36 +2,18 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 
-var _user = User.fromJson({
-  "username": "omosh",
-  "image": null,
-  "firstName": "",
-  "lastName": "",
-  "dateOfBirth": null,
-  "gender": null,
-  "email": "lawiomosh3@gmail.com",
-  "phoneNumber": "254793889658",
-  "county": null,
-  "constituency": null,
-  "bloodGroup": null,
-  "allergies": [],
-  "disabilities": [],
-  "chronics": [],
-  "weight": null,
-  "height": null,
-  "maritalStatus": null,
-  "educationLevel": null,
-  "primaryLanguage": null,
-  "occupation": null
-});
-
 class UserService extends HTTPService {
+  final AuthState _authState;
+
+  UserService(this._authState);
+
   Future<void> uploadImage(File imageFile) async {
     var request = http.MultipartRequest(
         'POST', Uri.parse('http://127.0.0.1:5000/auth/login'));
@@ -60,26 +42,31 @@ class UserService extends HTTPService {
   Future<User> updateProfile(User user) async {
     await Future.delayed(const Duration(seconds: 3));
     // throw ValidationException({"dateOfBirth":'Invalid date of birth'});
-    _user = user;
-    return _user;
+    // _user = user;
+    // return _user;
+    return user;
   }
 
-  Future<User> getUser(String token) async {
-    await Future.delayed(const Duration(seconds: 3));
-    return _user;
-    var headers = {'x-auth-token': token};
-    var request =
-        http.Request('GET', Uri.parse('${Constants.BASE_URL}auth/profile'));
-    request.headers.addAll(headers);
-
+  Future<User> getUser() async {
+    var request = http.Request('GET',
+        Uri.parse('${Constants.BASE_URL}profile?user_id=${_authState.user}'));
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
       // Success: Parse and return the User object
       final responseString = await response.stream.bytesToString();
       final userData = json.decode(responseString);
-      return User.fromJson(
-          userData); // Replace with your User object parsing logic
+      Map<String, dynamic> data =
+          userData["data"].isEmpty ? {} : userData["data"][0];
+      return User.fromJson({
+        "id": "",
+        "username": data["phone_no"] ?? "",
+        "phoneNumber": data["phone_no"] ?? "",
+        "email": data["email"] ?? "",
+        "name": data["client_name"] ?? "",
+        // "lastName": userData["client_name"].toString().split(" ")[1],
+        "gender": data["gender"] == "Female" ? "F" : "M"
+      });
     } else {
       throw await getException(response);
     }

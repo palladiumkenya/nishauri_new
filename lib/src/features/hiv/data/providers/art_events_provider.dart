@@ -10,7 +10,7 @@ final art_event_provider =
         (ref) {
   // Retrieve the authentication token from the authStateProvider
   final authState = ref.watch(authStateProvider);
-  final service = ARTEventsService(authState.token);
+  final service = ARTEventsService(authState);
   final repository = ARTEventRepository(service);
   return ARTEventController(repository);
 });

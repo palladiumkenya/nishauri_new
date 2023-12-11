@@ -9,7 +9,7 @@ final artSitesProvider = FutureProvider<List<ARTSite>>((ref) async {
   await Future.delayed(const Duration(seconds: 5));
   final authState = ref.watch(authStateProvider);
 
-  final service = ARTSitesService(authState.token);
+  final service = ARTSitesService(authState);
   final repo = ARTSitesRepository(service);
   return await repo.getSites();
 });

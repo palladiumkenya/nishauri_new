@@ -25,6 +25,7 @@ mixin _$User {
   String get username => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
   String? get lastName => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
   String? get dateOfBirth => throw _privateConstructorUsedError;
   String? get gender => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
@@ -58,6 +59,7 @@ abstract class $UserCopyWith<$Res> {
       String username,
       String? firstName,
       String? lastName,
+      String? name,
       String? dateOfBirth,
       String? gender,
       String email,
@@ -94,6 +96,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? username = null,
     Object? firstName = freezed,
     Object? lastName = freezed,
+    Object? name = freezed,
     Object? dateOfBirth = freezed,
     Object? gender = freezed,
     Object? email = null,
@@ -131,6 +134,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
       lastName: freezed == lastName
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String?,
       dateOfBirth: freezed == dateOfBirth
           ? _value.dateOfBirth
@@ -213,6 +220,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String username,
       String? firstName,
       String? lastName,
+      String? name,
       String? dateOfBirth,
       String? gender,
       String email,
@@ -246,6 +254,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? username = null,
     Object? firstName = freezed,
     Object? lastName = freezed,
+    Object? name = freezed,
     Object? dateOfBirth = freezed,
     Object? gender = freezed,
     Object? email = null,
@@ -283,6 +292,10 @@ class __$$UserImplCopyWithImpl<$Res>
       lastName: freezed == lastName
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String?,
       dateOfBirth: freezed == dateOfBirth
           ? _value.dateOfBirth
@@ -361,6 +374,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       required this.username,
       this.firstName,
       this.lastName,
+      this.name,
       this.dateOfBirth,
       this.gender,
       required this.email,
@@ -394,6 +408,8 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   final String? firstName;
   @override
   final String? lastName;
+  @override
+  final String? name;
   @override
   final String? dateOfBirth;
   @override
@@ -450,7 +466,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'User(id: $id, image: $image, username: $username, firstName: $firstName, lastName: $lastName, dateOfBirth: $dateOfBirth, gender: $gender, email: $email, phoneNumber: $phoneNumber, country: $country, constituency: $constituency, bloodGroup: $bloodGroup, allergies: $allergies, disabilities: $disabilities, chronics: $chronics, weight: $weight, height: $height, maritalStatus: $maritalStatus, educationLevel: $educationLevel, primaryLanguage: $primaryLanguage, occupation: $occupation)';
+    return 'User(id: $id, image: $image, username: $username, firstName: $firstName, lastName: $lastName, name: $name, dateOfBirth: $dateOfBirth, gender: $gender, email: $email, phoneNumber: $phoneNumber, country: $country, constituency: $constituency, bloodGroup: $bloodGroup, allergies: $allergies, disabilities: $disabilities, chronics: $chronics, weight: $weight, height: $height, maritalStatus: $maritalStatus, educationLevel: $educationLevel, primaryLanguage: $primaryLanguage, occupation: $occupation)';
   }
 
   @override
@@ -463,6 +479,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       ..add(DiagnosticsProperty('username', username))
       ..add(DiagnosticsProperty('firstName', firstName))
       ..add(DiagnosticsProperty('lastName', lastName))
+      ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('dateOfBirth', dateOfBirth))
       ..add(DiagnosticsProperty('gender', gender))
       ..add(DiagnosticsProperty('email', email))
@@ -494,6 +511,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
                 other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
                 other.lastName == lastName) &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.dateOfBirth, dateOfBirth) ||
                 other.dateOfBirth == dateOfBirth) &&
             (identical(other.gender, gender) || other.gender == gender) &&
@@ -531,6 +549,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
         username,
         firstName,
         lastName,
+        name,
         dateOfBirth,
         gender,
         email,
@@ -570,6 +589,7 @@ abstract class _User implements User {
       required final String username,
       final String? firstName,
       final String? lastName,
+      final String? name,
       final String? dateOfBirth,
       final String? gender,
       required final String email,
@@ -599,6 +619,8 @@ abstract class _User implements User {
   String? get firstName;
   @override
   String? get lastName;
+  @override
+  String? get name;
   @override
   String? get dateOfBirth;
   @override

@@ -1,9 +1,10 @@
+import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/hiv/data/models/models.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 
 class ARTGroupService extends HTTPService {
-  final String _token;
+  final AuthState _authState;
   final List<ARTGroup> _groups = [
     const ARTGroup(
       title: "Marathon group ",
@@ -84,7 +85,7 @@ class ARTGroupService extends HTTPService {
     const ARTGroupLead(group: "g-4", user: "u-4"),
   ];
 
-  ARTGroupService(this._token);
+  ARTGroupService(this._authState);
 
   Future<List<ARTGroup>> getUserARTGroups() async {
     return _groups;

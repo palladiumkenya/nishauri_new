@@ -71,25 +71,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             fontSize: 40, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      FormBuilderTextField(
-                        initialValue: "omosh",
-                        name: "username",
-                        decoration: inputDecoration(
-                          placeholder: "Enter username or email",
-                          prefixIcon: Icons.account_circle,
-                          label: "Username",
-                        ),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                        ]),
-                      ),
                       const SizedBox(height: Constants.SPACING),
                       FormBuilderTextField(
                         initialValue: "254793889658",
-                        name: "phoneNumber",
+                        name: "msisdn",
                         decoration: inputDecoration(
                           placeholder: "e.g 0712345678",
-                          prefixIcon: Icons.phone,
+                          prefixIcon: Icons.account_circle,
                           label: "Phone number",
                         ),
                         validator: FormBuilderValidators.compose([
@@ -110,7 +98,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
                           FormBuilderValidators.email(),
-
                         ]),
                       ),
                       const SizedBox(height: Constants.SPACING),
@@ -134,7 +121,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       FormBuilderTextField(
                         initialValue: "1234",
                         obscureText: _hidePassword,
-                        name: "confirmPassword",
+                        name: "re_password",
                         decoration: inputDecoration(
                             placeholder: "********",
                             prefixIcon: Icons.lock,
@@ -145,8 +132,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             onSurfixIconPressed: _toggleShowPassword),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
-                          (value)=>_formKey.currentState!.value["password"] != value ? "Password didn't match" : null
+                          (value) =>
+                              _formKey.currentState!.value["password"] != value
+                                  ? "Password didn't match"
+                                  : null
                         ]),
+                      ),
+                      FormBuilderCheckbox(
+                        initialValue: false,
+                        name: "termsAccepted",
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                          (value) => value == false
+                              ? "You must accept terms and conditions"
+                              : null
+                        ]),
+                        title: const Text("Accept terms and conditions"),
                       ),
                       const SizedBox(height: Constants.SPACING),
                       LinkedRichText(
@@ -173,15 +174,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     .then((value) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                        content:
-                                            Text('Registration successful!,')),
+                                      content:
+                                          Text('Registration successful!,'),
+                                    ),
                                   );
                                 }).catchError((error) {
                                   switch (error) {
                                     case ValidationException e:
                                       for (var err in e.errors.entries) {
-                                        _formKey.currentState!.fields[err.key]?.invalidate(err.value);
+                                        _formKey.currentState!.fields[err.key]
+                                            ?.invalidate(err.value);
                                       }
+                                      break;
+                                    case ResourceNotFoundException e:
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                            content: Text(e.message.toString())),
+                                      );
                                       break;
                                     default:
                                       ScaffoldMessenger.of(context)
@@ -190,9 +200,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                             content: Text(error.toString())),
                                       );
                                   }
-                                }).whenComplete(() => setState(() {
-                                          _loading = false;
-                                        }));
+                                }).whenComplete(
+                                  () => setState(() {
+                                    _loading = false;
+                                  }),
+                                );
                               }
                             },
                           );

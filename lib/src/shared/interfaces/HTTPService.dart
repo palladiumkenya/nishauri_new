@@ -17,4 +17,8 @@ abstract class HTTPService {
       return ResourceNotFoundException(errorData['detail']);
     }
   }
+
+  Future<Exception> getExceptionFromString(String error)async {
+    return ResourceNotFoundException(error);
+  }
 }

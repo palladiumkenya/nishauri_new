@@ -4,7 +4,7 @@ import 'package:nishauri/src/features/user/data/models/user.dart';
 
 class AuthState {
   final String token;
-  final User? user;
+  final String user;
   final bool isAccountVerified;
   final bool isProfileComplete;
 
@@ -18,7 +18,7 @@ class AuthState {
   factory AuthState.defaultState() {
     return AuthState(
       token: "",
-      user: null,
+      user: '',
       isAccountVerified: true,
       isProfileComplete: true,
     );
@@ -26,13 +26,13 @@ class AuthState {
 
   factory AuthState.fromResponse({
     String token = "",
-    User? user,
+    String user = '',
     bool isAccountVerified = false,
     bool isProfileComplete = false,
   }) {
     return AuthState(
       token: token,
-      user: user,
+      user: user ,
       isAccountVerified: isAccountVerified,
       isProfileComplete: isProfileComplete,
     );
@@ -40,7 +40,7 @@ class AuthState {
 
   AuthState copyWith({
     String? token,
-    User? user,
+    String? user,
     bool? isAccountVerified,
     bool? isProfileComplete,
   }) =>
@@ -50,4 +50,9 @@ class AuthState {
         isAccountVerified: isAccountVerified ?? this.isAccountVerified,
         isProfileComplete: isProfileComplete ?? this.isProfileComplete,
       );
+
+  @override
+  String toString() {
+    return "AuthState<userId:$user, token:$token, isAccountVerified: $isAccountVerified, isProfileComplete: $isProfileComplete>";
+  }
 }

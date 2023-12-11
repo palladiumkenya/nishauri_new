@@ -10,15 +10,20 @@ class AuthController extends StateNotifier<AuthState> {
   final AuthRepository _repository;
 
   AuthController(this._repository) : super(AuthState.defaultState()) {
-    _repository
-        .getAuthToken()
-        .then((value) => state = state.copyWith(token: value));
+    loadAuthState();
+  }
+
+  Future<void> loadAuthState() async {
+    String token = await _repository.getAuthToken();
+    String user = await _repository.getUserId();
+    state = state.copyWith(token: token, user: user);
   }
 
   Future<void> login(Map<String, dynamic> credentials) async {
     try {
       final authState = await _repository.authenticate(credentials);
       await _repository.saveToken(authState.token);
+      await _repository.saveUserId(authState.user);
       state = authState;
     } catch (e) {
       rethrow;
@@ -37,7 +42,6 @@ class AuthController extends StateNotifier<AuthState> {
 
   Future<void> verify(Map<String, dynamic> data) async {
     try {
-      debugPrint("*********************$data");
       final isVerified = await _repository.verifyAccount(data);
       state = state.copyWith(isAccountVerified: isVerified);
     } catch (e) {
@@ -55,6 +59,7 @@ class AuthController extends StateNotifier<AuthState> {
 
   Future<void> logout() async {
     _repository.deleteToken();
-    state = state.copyWith(token: "");
+    _repository.deleteUserId();
+    state = state.copyWith(token: "", user: "");
   }
 }

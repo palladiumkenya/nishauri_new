@@ -7,7 +7,7 @@ import 'package:nishauri/src/features/user_programs/presentation/controllers/use
 
 final programProvider = StateNotifierProvider<UserProgramController, AsyncValue<List<UserProgram>>>((ref){
   final authState = ref.watch(authStateProvider);
-  final service = ProgramService(authState.token);
+  final service = ProgramService(authState);
   final repository = ProgramsRepository(service);
   return UserProgramController(repository);
 });

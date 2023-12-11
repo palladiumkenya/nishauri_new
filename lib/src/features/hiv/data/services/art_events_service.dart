@@ -1,10 +1,11 @@
+import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/hiv/data/models/address/address.dart';
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
 import 'package:nishauri/src/features/hiv/data/models/group/art_group.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 
 class ARTEventsService extends HTTPService {
-  String _token;
+  AuthState _authState;
   final List<ARTEvent> _events = [
     const ARTEvent(
       id: "e-1",
@@ -38,7 +39,7 @@ class ARTEventsService extends HTTPService {
     ),
   ];
 
-  ARTEventsService(this._token);
+  ARTEventsService(this._authState);
 
   Future<List<ARTEvent>> getUserRelatedEvents() async {
     await Future.delayed(const Duration(seconds: 3));

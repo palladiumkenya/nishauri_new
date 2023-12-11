@@ -10,7 +10,7 @@ final art_group_provider =
         (ref) {
   // Retrieve the authentication token from the authStateProvider
   final authState = ref.watch(authStateProvider);
-  final service = ARTGroupService(authState.token);
+  final service = ARTGroupService(authState);
   final repository = ARTGroupRepository(service);
   return ARTGroupController(repository);
 });

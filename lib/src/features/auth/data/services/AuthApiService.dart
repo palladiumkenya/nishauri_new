@@ -11,20 +11,21 @@ class AuthApiService extends HTTPService {
   var headers = {'Content-Type': 'application/json'};
 
   Future<AuthState> authenticate(Map<String, dynamic> credentials) async {
-    await Future.delayed(const Duration(seconds: 3));
-
-    return AuthState.fromResponse(token: "token");
     var headers = {'Content-Type': 'application/json'};
     var request =
-        http.Request('POST', Uri.parse('${Constants.BASE_URL}auth/login'));
+        http.Request('POST', Uri.parse('${Constants.BASE_URL}signin'));
     request.body = json.encode(credentials);
     request.headers.addAll(headers);
-
     http.StreamedResponse response = await request.send();
-
     if (response.statusCode == 200) {
-      final authState = AuthState.fromResponse(token: response.headers["x-auth-token"]!);
-      return authState;
+      final responseString = await response.stream.bytesToString();
+      final data = jsonDecode(responseString);
+      if (data["success"]) {
+        final authState =
+            AuthState.fromResponse(token: data["data"]["token"],user: data["data"]["user_id"]);
+        return authState;
+      }
+      throw await getExceptionFromString(data["msg"]);
     } else {
       throw await getException(response);
     }
@@ -35,21 +36,21 @@ class AuthApiService extends HTTPService {
     return true;
   }
 
-
   Future<AuthState> register(Map<String, dynamic> data) async {
-    await Future.delayed(const Duration(seconds: 3));
-    return AuthState(token: "token", user: User.fromJson(data), isAccountVerified: false, isProfileComplete: false);
-    // -----------------------------------------------------------
     var headers = {'Content-Type': 'application/json'};
-    var request =
-        http.Request('POST', Uri.parse('${Constants.BASE_URL}auth/register'));
+    var request = http.Request(
+        'POST', Uri.parse('${Constants.BASE_URL}signup'));
     request.body = json.encode(data);
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-      // await Future.delayed(const Duration(seconds: 5));
-      final authState = AuthState.fromResponse(token: response.headers["x-auth-token"]!);
-      return authState;
+      final responseString = await response.stream.bytesToString();
+      final data = jsonDecode(responseString);
+      if (data["success"]) {
+        final authState = AuthState.fromResponse(token: '');
+        return authState;
+      }
+      throw await getExceptionFromString(data["msg"]);
     } else {
       throw await getException(response);
     }

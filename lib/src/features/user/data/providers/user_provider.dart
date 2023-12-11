@@ -7,8 +7,7 @@ import 'package:nishauri/src/features/user/presentation/controllers/UserControle
 
 final userProvider = StateNotifierProvider<UserController, AsyncValue<User>>((ref) {
   final authState = ref.watch(authStateProvider);
-  final service = UserService();
-
-  final repo = UserRepository(service, authState.token);
+  final service = UserService(authState);
+  final repo = UserRepository(service);
   return UserController(repo);
 });

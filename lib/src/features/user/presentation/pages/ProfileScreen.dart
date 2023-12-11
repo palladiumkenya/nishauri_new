@@ -38,7 +38,7 @@ class ProfileScreen extends StatelessWidget {
           return userAsync.when(
             data: (user) => ProfileCard(
               height: MediaQuery.of(context).size.height,
-              header: Text("${user.firstName} ${user.lastName}".titleCase),
+              header: Text((user.name ?? "").titleCase),
               image: user.image,
               icon: Icons.person,
               buildItem: (context, item) => item,
