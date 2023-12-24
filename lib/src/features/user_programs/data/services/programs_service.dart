@@ -1,8 +1,12 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/user_programs/data/models/program.dart';
 import 'package:nishauri/src/features/user_programs/data/models/user_program.dart';
-import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
+import 'package:http/http.dart' as http;
+import 'package:nishauri/src/utils/constants.dart';
 
 class ProgramService extends HTTPService {
   final AuthState _authState;
@@ -107,9 +111,31 @@ class ProgramService extends HTTPService {
   }
 
   Future<String> registerProgram(Map<String, dynamic> data) async {
-    await Future.delayed(const Duration(seconds: 3));
-    return "OTP sent to 254793****58";
+    final _data = Map.from(data)
+      ..removeWhere((key, value) => key == "program")
+      ..addAll({"user_id": _authState.user});
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          'Bearer ${_authState.token}',
+    };
+    var request = http.Request(
+        'POST', Uri.parse('${Constants.BASE_URL}validate_program'));
+    request.body = json.encode(_data);
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+      final data = jsonDecode(responseString);
+      if (data["success"]) {
+        return "OTP sent to 254793****58";
+      }
+      throw await getExceptionFromString(data["msg"]);
+    } else {
+      throw await getException(response);
+    }
   }
+
   Future<UserProgram> verifyProgramOTP(Map<String, dynamic> data) async {
     await Future.delayed(const Duration(seconds: 3));
     final userProgram = UserProgram(

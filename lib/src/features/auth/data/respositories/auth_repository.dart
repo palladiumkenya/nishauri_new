@@ -1,6 +1,7 @@
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
 import 'package:nishauri/src/local_storage/LocalStorage.dart';
+import 'package:nishauri/src/shared/models/token_pair.dart';
 
 class AuthRepository {
   final AuthApiService _service;
@@ -16,18 +17,18 @@ class AuthRepository {
     final response = await _service.register(data);
     return response;
   }
+
   Future<bool> verifyAccount(Map<String, dynamic> data) async {
     final response = await _service.accountVerify(data);
     return response;
   }
 
-  Future<String> getAuthToken() async {
+  Future<TokenPair> getAuthToken() async {
     final token = await LocalStorage.getToken();
     return token;
   }
 
-
-  Future<String> saveToken(String token) async {
+  Future<TokenPair> saveToken(TokenPair token) async {
     await LocalStorage.saveToken(token);
     return token;
   }
@@ -36,12 +37,14 @@ class AuthRepository {
     await LocalStorage.deleteToken();
   }
 
-  Future<String> getUserId()async{
+  Future<String> getUserId() async {
     return await LocalStorage.get("user");
   }
-  Future<void> saveUserId(String userId)async{
+
+  Future<void> saveUserId(String userId) async {
     await LocalStorage.save("user", userId);
   }
+
   Future<void> deleteUserId() async {
     await LocalStorage.delete("user");
   }

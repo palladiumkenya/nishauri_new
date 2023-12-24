@@ -70,11 +70,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: Constants.SPACING),
                   FormBuilderTextField(
-                    name: "user_name",
+                    name: "username",
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(),
                     ]),
-                    initialValue: "254793889658",
                     decoration: inputDecoration(
                       prefixIcon: Icons.account_circle,
                       label: "Username",
@@ -83,7 +82,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: Constants.SPACING),
                   FormBuilderTextField(
-                    initialValue: "1234",
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(),
                     ]),

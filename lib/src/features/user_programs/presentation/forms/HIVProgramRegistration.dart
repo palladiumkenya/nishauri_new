@@ -14,7 +14,7 @@ class HIVProgramRegistration extends StatelessWidget {
       children: [
         FormBuilderTextField(
           initialValue: '1234567890',
-          name: "cccNumber",
+          name: "ccc_no",
           decoration: inputDecoration(
             placeholder: "e.g 1234567890",
             prefixIcon: Icons.verified_user,
@@ -28,7 +28,7 @@ class HIVProgramRegistration extends StatelessWidget {
         const SizedBox(height: Constants.SPACING),
         FormBuilderTextField(
           initialValue: "Betty",
-          name: "firstName",
+          name: "firstname",
           decoration: inputDecoration(
             placeholder: "e.g John",
             prefixIcon: Icons.person,

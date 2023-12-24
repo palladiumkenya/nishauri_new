@@ -4,6 +4,7 @@ import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
 import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
+import 'package:nishauri/src/shared/models/token_pair.dart';
 
 class AuthController extends StateNotifier<AuthState> {
   /// Act as the view model that hold the state of component or screen
@@ -14,15 +15,22 @@ class AuthController extends StateNotifier<AuthState> {
   }
 
   Future<void> loadAuthState() async {
-    String token = await _repository.getAuthToken();
+    TokenPair token = await _repository.getAuthToken();
     String user = await _repository.getUserId();
-    state = state.copyWith(token: token, user: user);
+    state = state.copyWith(
+      token: token.accessToken,
+      refresh: token.refreshToken,
+      user: user,
+    );
   }
 
   Future<void> login(Map<String, dynamic> credentials) async {
     try {
       final authState = await _repository.authenticate(credentials);
-      await _repository.saveToken(authState.token);
+      await _repository.saveToken(TokenPair(
+        accessToken: authState.token,
+        refreshToken: authState.refresh,
+      ));
       await _repository.saveUserId(authState.user);
       state = authState;
     } catch (e) {
@@ -33,7 +41,10 @@ class AuthController extends StateNotifier<AuthState> {
   Future<void> register(Map<String, dynamic> data) async {
     try {
       final authState = await _repository.register(data);
-      await _repository.saveToken(authState.token);
+      await _repository.saveToken(TokenPair(
+        accessToken: authState.token,
+        refreshToken: authState.refresh,
+      ));
       state = authState;
     } catch (e) {
       rethrow;

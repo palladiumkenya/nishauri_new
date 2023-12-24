@@ -16,7 +16,7 @@ class User with _$User {
     String? gender,
     required String email,
     required String phoneNumber,
-    String? country,
+    String? county,
     String? constituency,
     String? bloodGroup,
     @Default([]) List<String> allergies,

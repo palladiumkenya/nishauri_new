@@ -106,7 +106,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                   const SizedBox(height: Constants.SPACING),
                                   FormBuilderRadioGroup(
                                     name: "mode",
-                                    decoration: const InputDecoration(label: Text("Want to receive OTP code through?")),
+                                    initialValue: "sms",
+                                    decoration: const InputDecoration(
+                                        label: Text(
+                                            "Want to receive OTP code through?")),
                                     options: [
                                       FormBuilderFieldOption(
                                         value: "email",
@@ -115,10 +118,17 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                             trailing: const Icon(Icons.email)),
                                       ),
                                       FormBuilderFieldOption(
-                                        value: "phone",
+                                        value: "watsapp",
                                         child: ListTile(
                                             title: Text(user.phoneNumber),
-                                            trailing: const Icon(Icons.phone)),
+                                            trailing: const Icon(
+                                                Icons.chat_outlined)),
+                                      ),
+                                      FormBuilderFieldOption(
+                                        value: "sms",
+                                        child: ListTile(
+                                            title: Text(user.phoneNumber),
+                                            trailing: const Icon(Icons.sms)),
                                       ),
                                     ],
                                     validator: FormBuilderValidators.compose([
@@ -152,7 +162,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                   const SizedBox(height: Constants.SPACING),
                                   Button(
                                     title: "Verify",
-                                    onPress:handleSubmit,
+                                    onPress: handleSubmit,
                                     loading: _loading,
                                   ),
                                   const SizedBox(

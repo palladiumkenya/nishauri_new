@@ -73,9 +73,9 @@ class ReviewAndSubmit extends StatelessWidget {
           children: [
             Expanded(
               child: ListTile(
-                title: const Text("Country"),
+                title: const Text("County"),
                 subtitle: Text(
-                  formState['country'] ?? "None",
+                  formState['county'] ?? "None",
                 ),
               ),
             ),

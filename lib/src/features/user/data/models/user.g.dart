@@ -17,7 +17,7 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       gender: json['gender'] as String?,
       email: json['email'] as String,
       phoneNumber: json['phoneNumber'] as String,
-      country: json['country'] as String?,
+      county: json['county'] as String?,
       constituency: json['constituency'] as String?,
       bloodGroup: json['bloodGroup'] as String?,
       allergies: (json['allergies'] as List<dynamic>?)
@@ -52,7 +52,7 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'gender': instance.gender,
       'email': instance.email,
       'phoneNumber': instance.phoneNumber,
-      'country': instance.country,
+      'county': instance.county,
       'constituency': instance.constituency,
       'bloodGroup': instance.bloodGroup,
       'allergies': instance.allergies,

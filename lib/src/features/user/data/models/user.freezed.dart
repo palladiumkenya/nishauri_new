@@ -30,7 +30,7 @@ mixin _$User {
   String? get gender => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get phoneNumber => throw _privateConstructorUsedError;
-  String? get country => throw _privateConstructorUsedError;
+  String? get county => throw _privateConstructorUsedError;
   String? get constituency => throw _privateConstructorUsedError;
   String? get bloodGroup => throw _privateConstructorUsedError;
   List<String> get allergies => throw _privateConstructorUsedError;
@@ -64,7 +64,7 @@ abstract class $UserCopyWith<$Res> {
       String? gender,
       String email,
       String phoneNumber,
-      String? country,
+      String? county,
       String? constituency,
       String? bloodGroup,
       List<String> allergies,
@@ -101,7 +101,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? gender = freezed,
     Object? email = null,
     Object? phoneNumber = null,
-    Object? country = freezed,
+    Object? county = freezed,
     Object? constituency = freezed,
     Object? bloodGroup = freezed,
     Object? allergies = null,
@@ -155,9 +155,9 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      country: freezed == country
-          ? _value.country
-          : country // ignore: cast_nullable_to_non_nullable
+      county: freezed == county
+          ? _value.county
+          : county // ignore: cast_nullable_to_non_nullable
               as String?,
       constituency: freezed == constituency
           ? _value.constituency
@@ -225,7 +225,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String? gender,
       String email,
       String phoneNumber,
-      String? country,
+      String? county,
       String? constituency,
       String? bloodGroup,
       List<String> allergies,
@@ -259,7 +259,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? gender = freezed,
     Object? email = null,
     Object? phoneNumber = null,
-    Object? country = freezed,
+    Object? county = freezed,
     Object? constituency = freezed,
     Object? bloodGroup = freezed,
     Object? allergies = null,
@@ -313,9 +313,9 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      country: freezed == country
-          ? _value.country
-          : country // ignore: cast_nullable_to_non_nullable
+      county: freezed == county
+          ? _value.county
+          : county // ignore: cast_nullable_to_non_nullable
               as String?,
       constituency: freezed == constituency
           ? _value.constituency
@@ -379,7 +379,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       this.gender,
       required this.email,
       required this.phoneNumber,
-      this.country,
+      this.county,
       this.constituency,
       this.bloodGroup,
       final List<String> allergies = const [],
@@ -419,7 +419,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   @override
   final String phoneNumber;
   @override
-  final String? country;
+  final String? county;
   @override
   final String? constituency;
   @override
@@ -466,7 +466,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'User(id: $id, image: $image, username: $username, firstName: $firstName, lastName: $lastName, name: $name, dateOfBirth: $dateOfBirth, gender: $gender, email: $email, phoneNumber: $phoneNumber, country: $country, constituency: $constituency, bloodGroup: $bloodGroup, allergies: $allergies, disabilities: $disabilities, chronics: $chronics, weight: $weight, height: $height, maritalStatus: $maritalStatus, educationLevel: $educationLevel, primaryLanguage: $primaryLanguage, occupation: $occupation)';
+    return 'User(id: $id, image: $image, username: $username, firstName: $firstName, lastName: $lastName, name: $name, dateOfBirth: $dateOfBirth, gender: $gender, email: $email, phoneNumber: $phoneNumber, county: $county, constituency: $constituency, bloodGroup: $bloodGroup, allergies: $allergies, disabilities: $disabilities, chronics: $chronics, weight: $weight, height: $height, maritalStatus: $maritalStatus, educationLevel: $educationLevel, primaryLanguage: $primaryLanguage, occupation: $occupation)';
   }
 
   @override
@@ -484,7 +484,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       ..add(DiagnosticsProperty('gender', gender))
       ..add(DiagnosticsProperty('email', email))
       ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
-      ..add(DiagnosticsProperty('country', country))
+      ..add(DiagnosticsProperty('county', county))
       ..add(DiagnosticsProperty('constituency', constituency))
       ..add(DiagnosticsProperty('bloodGroup', bloodGroup))
       ..add(DiagnosticsProperty('allergies', allergies))
@@ -518,7 +518,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.phoneNumber, phoneNumber) ||
                 other.phoneNumber == phoneNumber) &&
-            (identical(other.country, country) || other.country == country) &&
+            (identical(other.county, county) || other.county == county) &&
             (identical(other.constituency, constituency) ||
                 other.constituency == constituency) &&
             (identical(other.bloodGroup, bloodGroup) ||
@@ -554,7 +554,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
         gender,
         email,
         phoneNumber,
-        country,
+        county,
         constituency,
         bloodGroup,
         const DeepCollectionEquality().hash(_allergies),
@@ -594,7 +594,7 @@ abstract class _User implements User {
       final String? gender,
       required final String email,
       required final String phoneNumber,
-      final String? country,
+      final String? county,
       final String? constituency,
       final String? bloodGroup,
       final List<String> allergies,
@@ -630,7 +630,7 @@ abstract class _User implements User {
   @override
   String get phoneNumber;
   @override
-  String? get country;
+  String? get county;
   @override
   String? get constituency;
   @override
