@@ -18,11 +18,6 @@ class AuthRepository {
     return response;
   }
 
-  Future<bool> verifyAccount(Map<String, dynamic> data) async {
-    final response = await _service.accountVerify(data);
-    return response;
-  }
-
   Future<TokenPair> getAuthToken() async {
     final token = await LocalStorage.getToken();
     return token;
@@ -40,6 +35,8 @@ class AuthRepository {
   Future<String> getUserId() async {
     return await LocalStorage.get("user");
   }
+
+
 
   Future<void> saveUserId(String userId) async {
     await LocalStorage.save("user", userId);

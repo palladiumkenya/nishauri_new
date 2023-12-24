@@ -42,6 +42,8 @@ mixin _$User {
   String? get educationLevel => throw _privateConstructorUsedError;
   String? get primaryLanguage => throw _privateConstructorUsedError;
   String? get occupation => throw _privateConstructorUsedError;
+  bool get profileUpdated => throw _privateConstructorUsedError;
+  bool get accountVerified => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -75,7 +77,9 @@ abstract class $UserCopyWith<$Res> {
       String? maritalStatus,
       String? educationLevel,
       String? primaryLanguage,
-      String? occupation});
+      String? occupation,
+      bool profileUpdated,
+      bool accountVerified});
 }
 
 /// @nodoc
@@ -113,6 +117,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? educationLevel = freezed,
     Object? primaryLanguage = freezed,
     Object? occupation = freezed,
+    Object? profileUpdated = null,
+    Object? accountVerified = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -203,6 +209,14 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.occupation
           : occupation // ignore: cast_nullable_to_non_nullable
               as String?,
+      profileUpdated: null == profileUpdated
+          ? _value.profileUpdated
+          : profileUpdated // ignore: cast_nullable_to_non_nullable
+              as bool,
+      accountVerified: null == accountVerified
+          ? _value.accountVerified
+          : accountVerified // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -236,7 +250,9 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String? maritalStatus,
       String? educationLevel,
       String? primaryLanguage,
-      String? occupation});
+      String? occupation,
+      bool profileUpdated,
+      bool accountVerified});
 }
 
 /// @nodoc
@@ -271,6 +287,8 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? educationLevel = freezed,
     Object? primaryLanguage = freezed,
     Object? occupation = freezed,
+    Object? profileUpdated = null,
+    Object? accountVerified = null,
   }) {
     return _then(_$UserImpl(
       id: freezed == id
@@ -361,6 +379,14 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.occupation
           : occupation // ignore: cast_nullable_to_non_nullable
               as String?,
+      profileUpdated: null == profileUpdated
+          ? _value.profileUpdated
+          : profileUpdated // ignore: cast_nullable_to_non_nullable
+              as bool,
+      accountVerified: null == accountVerified
+          ? _value.accountVerified
+          : accountVerified // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -390,7 +416,9 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       this.maritalStatus,
       this.educationLevel,
       this.primaryLanguage,
-      this.occupation})
+      this.occupation,
+      this.profileUpdated = false,
+      this.accountVerified = false})
       : _allergies = allergies,
         _disabilities = disabilities,
         _chronics = chronics;
@@ -463,10 +491,16 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   final String? primaryLanguage;
   @override
   final String? occupation;
+  @override
+  @JsonKey()
+  final bool profileUpdated;
+  @override
+  @JsonKey()
+  final bool accountVerified;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'User(id: $id, image: $image, username: $username, firstName: $firstName, lastName: $lastName, name: $name, dateOfBirth: $dateOfBirth, gender: $gender, email: $email, phoneNumber: $phoneNumber, county: $county, constituency: $constituency, bloodGroup: $bloodGroup, allergies: $allergies, disabilities: $disabilities, chronics: $chronics, weight: $weight, height: $height, maritalStatus: $maritalStatus, educationLevel: $educationLevel, primaryLanguage: $primaryLanguage, occupation: $occupation)';
+    return 'User(id: $id, image: $image, username: $username, firstName: $firstName, lastName: $lastName, name: $name, dateOfBirth: $dateOfBirth, gender: $gender, email: $email, phoneNumber: $phoneNumber, county: $county, constituency: $constituency, bloodGroup: $bloodGroup, allergies: $allergies, disabilities: $disabilities, chronics: $chronics, weight: $weight, height: $height, maritalStatus: $maritalStatus, educationLevel: $educationLevel, primaryLanguage: $primaryLanguage, occupation: $occupation, profileUpdated: $profileUpdated, accountVerified: $accountVerified)';
   }
 
   @override
@@ -495,7 +529,9 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       ..add(DiagnosticsProperty('maritalStatus', maritalStatus))
       ..add(DiagnosticsProperty('educationLevel', educationLevel))
       ..add(DiagnosticsProperty('primaryLanguage', primaryLanguage))
-      ..add(DiagnosticsProperty('occupation', occupation));
+      ..add(DiagnosticsProperty('occupation', occupation))
+      ..add(DiagnosticsProperty('profileUpdated', profileUpdated))
+      ..add(DiagnosticsProperty('accountVerified', accountVerified));
   }
 
   @override
@@ -537,7 +573,11 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
             (identical(other.primaryLanguage, primaryLanguage) ||
                 other.primaryLanguage == primaryLanguage) &&
             (identical(other.occupation, occupation) ||
-                other.occupation == occupation));
+                other.occupation == occupation) &&
+            (identical(other.profileUpdated, profileUpdated) ||
+                other.profileUpdated == profileUpdated) &&
+            (identical(other.accountVerified, accountVerified) ||
+                other.accountVerified == accountVerified));
   }
 
   @JsonKey(ignore: true)
@@ -565,7 +605,9 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
         maritalStatus,
         educationLevel,
         primaryLanguage,
-        occupation
+        occupation,
+        profileUpdated,
+        accountVerified
       ]);
 
   @JsonKey(ignore: true)
@@ -605,7 +647,9 @@ abstract class _User implements User {
       final String? maritalStatus,
       final String? educationLevel,
       final String? primaryLanguage,
-      final String? occupation}) = _$UserImpl;
+      final String? occupation,
+      final bool profileUpdated,
+      final bool accountVerified}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -653,6 +697,10 @@ abstract class _User implements User {
   String? get primaryLanguage;
   @override
   String? get occupation;
+  @override
+  bool get profileUpdated;
+  @override
+  bool get accountVerified;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

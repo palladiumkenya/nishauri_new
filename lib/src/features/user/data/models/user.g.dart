@@ -38,6 +38,8 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       educationLevel: json['educationLevel'] as String?,
       primaryLanguage: json['primaryLanguage'] as String?,
       occupation: json['occupation'] as String?,
+      profileUpdated: json['profileUpdated'] as bool? ?? false,
+      accountVerified: json['accountVerified'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
@@ -64,4 +66,6 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'educationLevel': instance.educationLevel,
       'primaryLanguage': instance.primaryLanguage,
       'occupation': instance.occupation,
+      'profileUpdated': instance.profileUpdated,
+      'accountVerified': instance.accountVerified,
     };

@@ -54,11 +54,6 @@ class AuthApiService extends HTTPService {
     }
   }
 
-  Future<bool> accountVerify(Map<String, dynamic> data) async {
-    await Future.delayed(const Duration(seconds: 3));
-    return true;
-  }
-
   Future<AuthState> _register(Map<String, dynamic> data) async {
     var headers = {'Content-Type': 'application/json'};
     var request =

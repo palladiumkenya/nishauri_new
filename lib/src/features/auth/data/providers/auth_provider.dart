@@ -8,5 +8,6 @@ final authStateProvider =
     StateNotifierProvider<AuthController, AuthState>((ref) {
   final authService = AuthApiService();
   final repository = AuthRepository(authService);
+
   return AuthController(repository);
 });

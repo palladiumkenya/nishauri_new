@@ -28,6 +28,9 @@ class User with _$User {
     String? educationLevel,
     String? primaryLanguage,
     String? occupation,
+    @Default(false) bool profileUpdated,
+    @Default(false) bool accountVerified,
+
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json)=> _$UserFromJson(json);

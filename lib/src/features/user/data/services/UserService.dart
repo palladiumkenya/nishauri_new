@@ -85,6 +85,7 @@ class UserService extends HTTPService {
       throw await getException(response);
     }
   }
+
   //
   // Future<Uint8List> _downloadRemoteImage(String remoteImagePath) async {
   //   final httpClient = HttpClient();
@@ -105,7 +106,7 @@ class UserService extends HTTPService {
       final responseString = await response.stream.bytesToString();
       final userData = json.decode(responseString);
       Map<String, dynamic> data =
-          userData["data"].isEmpty ? {} : userData["data"][0];
+      userData["data"].isEmpty ? {} : userData["data"][0];
       return User.fromJson({
         "id": "",
         "username": data["phone_no"] ?? "",
@@ -123,7 +124,7 @@ class UserService extends HTTPService {
   Future<User> getUser() async {
     var headers = {'x-access-token': _authState.token};
     var request =
-        http.Request('GET', Uri.parse('${Constants.BASE_URL}/auth/profile'));
+    http.Request('GET', Uri.parse('${Constants.BASE_URL}/auth/profile'));
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
 
@@ -151,6 +152,38 @@ class UserService extends HTTPService {
       return response.bodyBytes;
     } else {
       throw Exception('Failed to download remote image');
+    }
+  }
+
+  Future<String> accountVerify(Map<String, dynamic> data) async {
+    var headers = {'x-access-token': _authState.token};
+    var request =
+    http.Request('POST', Uri.parse('${Constants.BASE_URL}/auth/verify'));
+    request.headers.addAll(headers);
+    request.body = json.encode(data);
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+      final userData = json.decode(responseString);
+      return userData["detail"];
+    } else {
+      throw await getException(response);
+    }
+  }
+
+  Future<String> requestVerificationCode() async {
+    var headers = {'x-access-token': _authState.token};
+    var request =
+    http.Request('GET', Uri.parse('${Constants.BASE_URL}/auth/verify'));
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+      final userData = json.decode(responseString);
+      return userData["detail"];
+    } else {
+      throw await getException(response);
     }
   }
 

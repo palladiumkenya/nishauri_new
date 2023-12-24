@@ -21,6 +21,7 @@ class VerificationScreen extends StatefulWidget {
 class _VerificationScreenState extends State<VerificationScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   bool _loading = false;
+  bool _requestLoading = false;
 
   bool _sent = false;
 
@@ -34,8 +35,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
             setState(() {
               _loading = true;
             });
-            final authStateNotifier = ref.read(authStateProvider.notifier);
-            authStateNotifier
+            final userStateNotifier = ref.read(userProvider.notifier);
+            userStateNotifier
                 .verify(_formKey.currentState!.value)
                 .then((value) {
               // Some code that runs when the verification is successful
@@ -142,10 +143,35 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                       placeholder:
                                           "Enter OTP Verification code",
                                       prefixIcon: Icons.account_circle,
-                                      surfixIcon: Text(
-                                        _sent ? "Resend Code" : "Get code",
-                                      ),
+                                      surfixIcon: _requestLoading
+                                          ? const CircularProgressIndicator()
+                                          : Text(
+                                              _sent
+                                                  ? "Resend Code"
+                                                  : "Get code",
+                                            ),
                                       onSurfixIconPressed: () {
+                                        // TODO Handle outcome errors and success
+                                        setState(() {
+                                          _requestLoading = true;
+                                        });
+                                        ref
+                                            .read(userProvider.notifier)
+                                            .getOTPCode()
+                                            .then((value) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(value)));
+                                        }).catchError((err) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content:
+                                                      Text(err.toString())));
+                                        }).whenComplete(() {
+                                          setState(() {
+                                            _requestLoading = false;
+                                          });
+                                        });
                                         setState(() {
                                           _sent = true;
                                           // _formState = _formState.copyWith(values: {..._formState.values,"otp": "1234"});

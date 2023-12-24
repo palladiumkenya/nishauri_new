@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
 import 'package:nishauri/src/features/user/data/models/user.dart';
+import 'package:nishauri/src/features/user/data/respositories/UserRepository.dart';
+import 'package:nishauri/src/features/user/data/services/UserService.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/models/token_pair.dart';
 
@@ -17,10 +19,17 @@ class AuthController extends StateNotifier<AuthState> {
   Future<void> loadAuthState() async {
     TokenPair token = await _repository.getAuthToken();
     String user = await _repository.getUserId();
+    final userRepo = UserRepository(UserService(AuthState.fromResponse(
+      refresh: token.refreshToken,
+      token: token.accessToken,
+    )));
+    final _user = await userRepo.getUser();
     state = state.copyWith(
       token: token.accessToken,
       refresh: token.refreshToken,
       user: user,
+      isAccountVerified: _user.accountVerified,
+      isProfileComplete: _user.profileUpdated
     );
   }
 
@@ -51,14 +60,7 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  Future<void> verify(Map<String, dynamic> data) async {
-    try {
-      final isVerified = await _repository.verifyAccount(data);
-      state = state.copyWith(isAccountVerified: isVerified);
-    } catch (e) {
-      rethrow;
-    }
-  }
+
 
   Future<void> markProfileAsUpdated() async {
     try {

@@ -27,4 +27,19 @@ class UserController extends StateNotifier<AsyncValue<User>> {
       rethrow;
     }
   }
+
+  Future<String> verify(Map<String, dynamic> data) async {
+    try {
+      return await _repository.verifyAccount(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+  Future<String> getOTPCode() async {
+    try {
+      return await _repository.getOTPCode();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

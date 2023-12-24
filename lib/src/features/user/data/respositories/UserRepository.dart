@@ -17,4 +17,14 @@ class UserRepository {
     final user_ = await _service.updateProfile(user);
     return user_;
   }
+
+  Future<String> verifyAccount(Map<String, dynamic> data) async {
+    return await _service.accountVerify(data);
+  }
+
+  Future<String> getOTPCode()async {
+    return await _service.requestVerificationCode();
+  }
+
+
 }
