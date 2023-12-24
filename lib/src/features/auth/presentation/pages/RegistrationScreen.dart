@@ -73,22 +73,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       const SizedBox(height: Constants.SPACING),
                       const SizedBox(height: Constants.SPACING),
                       FormBuilderTextField(
-                        initialValue: "254793889658",
-                        name: "msisdn",
+                        name: "username",
                         decoration: inputDecoration(
-                          placeholder: "e.g 0712345678",
-                          prefixIcon: Icons.account_circle,
-                          label: "Phone number",
+                          placeholder: "e.g john",
+                          prefixIcon: Icons.person,
+                          label: "Username",
                         ),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
-                          FormBuilderValidators.minLength(10),
-                          FormBuilderValidators.maxLength(13),
+                          FormBuilderValidators.minLength(4),
                         ]),
                       ),
                       const SizedBox(height: Constants.SPACING),
                       FormBuilderTextField(
-                        initialValue: "lawiomosh3@gmail.com",
                         name: "email",
                         decoration: inputDecoration(
                           placeholder: "e.g abc@gmail.com",
@@ -101,8 +98,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ]),
                       ),
                       const SizedBox(height: Constants.SPACING),
+
                       FormBuilderTextField(
-                        initialValue: "1234",
+                        name: "phoneNumber",
+                        decoration: inputDecoration(
+                          placeholder: "e.g 0712345678",
+                          prefixIcon: Icons.phone,
+                          label: "Phone number",
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                          FormBuilderValidators.minLength(10),
+                          FormBuilderValidators.maxLength(13),
+                        ]),
+                      ),
+                      const SizedBox(height: Constants.SPACING),
+                      FormBuilderTextField(
                         name: "password",
                         obscureText: _hidePassword,
                         decoration: inputDecoration(
@@ -119,9 +130,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                       const SizedBox(height: Constants.SPACING),
                       FormBuilderTextField(
-                        initialValue: "1234",
                         obscureText: _hidePassword,
-                        name: "re_password",
+                        name: "confirmPassword",
                         decoration: inputDecoration(
                             placeholder: "********",
                             prefixIcon: Icons.lock,
@@ -190,7 +200,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
-                                            content: Text(e.message.toString())),
+                                            content:
+                                                Text(e.message.toString())),
                                       );
                                       break;
                                     default:
