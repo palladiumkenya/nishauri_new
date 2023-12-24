@@ -64,7 +64,7 @@ class PersonalInformation extends StatelessWidget {
               ),
               const SizedBox(height: Constants.SPACING),
               FormBuilderDropdown(
-                initialValue: user.gender,
+                initialValue: user.gender != "U" ? user.gender : null,
                 name: "gender",
                 decoration: inputDecoration(
                   prefixIcon: Icons.accessibility,

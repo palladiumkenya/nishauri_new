@@ -120,6 +120,7 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                   : dateOfBirth
             }))
             .then((value) {
+          //     Update auth state and redirect to home
           return ref.read(authStateProvider.notifier).markProfileAsUpdated();
         }).then((value) {
           ScaffoldMessenger.of(context).showSnackBar(

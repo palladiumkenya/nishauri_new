@@ -139,7 +139,7 @@ class UserService extends HTTPService {
         ...person,
         "name": "${person["firstName"]} ${person["lastName"]}",
         "id": userData["_id"],
-        "image": "${Constants.BASE_URL}${person["image"]}"
+        "image": person["image"]!=null ? "${Constants.BASE_URL}${person["image"]}" : null
       }); // Replace with your User object parsing logic
     } else {
       throw await getException(response);
@@ -156,11 +156,10 @@ class UserService extends HTTPService {
   }
 
   Future<String> accountVerify(Map<String, dynamic> data) async {
-    var headers = {'x-access-token': _authState.token};
-    var request =
-        http.Request('POST', Uri.parse('${Constants.BASE_URL}/auth/verify'));
+    var headers = {'x-access-token': _authState.token, 'Content-Type': 'application/json',};
+    var request = http.Request('POST', Uri.parse('${Constants.BASE_URL}/auth/verify'));
+    request.body = jsonEncode(data);
     request.headers.addAll(headers);
-    request.body = json.encode(data);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       final responseString = await response.stream.bytesToString();
