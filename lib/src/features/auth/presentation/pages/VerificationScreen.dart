@@ -157,7 +157,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                         });
                                         ref
                                             .read(userProvider.notifier)
-                                            .getOTPCode()
+                                            .getOTPCode(_formKey.currentState?.instantValue["mode"])
                                             .then((value) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(

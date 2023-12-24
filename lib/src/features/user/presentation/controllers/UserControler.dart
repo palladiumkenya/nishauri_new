@@ -35,9 +35,9 @@ class UserController extends StateNotifier<AsyncValue<User>> {
       rethrow;
     }
   }
-  Future<String> getOTPCode() async {
+  Future<String> getOTPCode(String mode) async {
     try {
-      return await _repository.getOTPCode();
+      return await _repository.getOTPCode(mode);
     } catch (e) {
       rethrow;
     }

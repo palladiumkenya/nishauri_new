@@ -22,8 +22,8 @@ class UserRepository {
     return await _service.accountVerify(data);
   }
 
-  Future<String> getOTPCode()async {
-    return await _service.requestVerificationCode();
+  Future<String> getOTPCode(String mode)async {
+    return await _service.requestVerificationCode(mode);
   }
 
 
