@@ -92,7 +92,7 @@ void handleResponseError(
         formState,
     err) {
   switch (err) {
-    case ValidationException e:
+    case BadRequestException e:
       for (var err in e.errors.entries) {
         formState[err.key]?.invalidate(err.value);
       }

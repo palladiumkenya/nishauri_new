@@ -180,7 +180,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   );
                                 }).catchError((error) {
                                   switch (error) {
-                                    case ValidationException e:
+                                    case BadRequestException e:
                                       for (var err in e.errors.entries) {
                                         _formKey.currentState!.fields[err.key]
                                             ?.invalidate(err.value);

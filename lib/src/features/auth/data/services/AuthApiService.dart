@@ -40,9 +40,13 @@ class AuthApiService extends HTTPService {
 
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+      final data = jsonDecode(responseString);
       final authState = AuthState.fromResponse(
         token: response.headers["x-access-token"]!,
         refresh: response.headers["x-refresh-token"]!,
+        isAccountVerified: data["user"]["accountVerified"]!,
+        isProfileComplete: data["user"]["profileUpdated"]!
       );
       return authState;
     } else {
