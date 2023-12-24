@@ -69,6 +69,13 @@ class AuthController extends StateNotifier<AuthState> {
       rethrow;
     }
   }
+  Future<void> markProfileAsAccountVerified() async {
+    try {
+      state = state.copyWith(isAccountVerified: true);
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   Future<void> logout() async {
     _repository.deleteToken();

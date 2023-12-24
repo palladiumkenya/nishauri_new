@@ -42,7 +42,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 .verify(_formKey.currentState!.value)
                 .then((value) {
               // reload auth to redirect to profile update
-              authStateNotifier.loadAuthState();
+              authStateNotifier.markProfileAsAccountVerified();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(value)),
               );
