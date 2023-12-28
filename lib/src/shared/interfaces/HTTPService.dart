@@ -14,7 +14,6 @@ abstract class HTTPService {
         final errorData = jsonDecode(responseString);
         return UnauthorizedException(errorData["detail"]);
       case 400:
-
         final responseString = await response.stream.bytesToString();
         final errorData = jsonDecode(responseString);
         return BadRequestException(errorData['errors']);

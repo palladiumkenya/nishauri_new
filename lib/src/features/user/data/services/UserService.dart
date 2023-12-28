@@ -139,7 +139,7 @@ class UserService extends HTTPService {
         ...person,
         "name": "${person["firstName"]} ${person["lastName"]}",
         "id": userData["_id"],
-        "image": person["image"]!=null ? "${Constants.BASE_URL}${person["image"]}" : null
+        "image": person["image"]!=null ? "${Constants.BASE_URL}/files/${person["image"]}" : null
       }); // Replace with your User object parsing logic
     } else {
       throw await getException(response);
