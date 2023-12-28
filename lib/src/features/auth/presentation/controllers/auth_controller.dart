@@ -11,37 +11,43 @@ import 'package:nishauri/src/shared/models/token_pair.dart';
 class AuthController extends StateNotifier<AuthState> {
   /// Act as the view model that hold the state of component or screen
   final AuthRepository _repository;
+  late TokenPair _tokenPair;
 
   AuthController(this._repository) : super(AuthState.defaultState()) {
     loadAuthState();
   }
 
+  TokenPair get token {
+    return _tokenPair;
+  }
+
   Future<void> loadAuthState() async {
-    TokenPair token = await _repository.getAuthToken();
-    String user = await _repository.getUserId();
-    final userRepo = UserRepository(UserService(AuthState.fromResponse(
-      refresh: token.refreshToken,
-      token: token.accessToken,
-    )));
-    final _user = await userRepo.getUser();
-    state = state.copyWith(
-      token: token.accessToken,
-      refresh: token.refreshToken,
-      user: user,
-      isAccountVerified: _user.accountVerified,
-      isProfileComplete: _user.profileUpdated
-    );
+    _tokenPair = await _repository.getAuthToken(); //reads share preference
+    final userRepo = UserRepository(UserService(_tokenPair));
+    try {
+      final _user = await userRepo.getUser();
+      state = state.copyWith(
+          isAccountVerified: _user.accountVerified,
+          isProfileComplete: _user.profileUpdated,
+          isAuthenticated: true);
+    } catch (e) {
+      // TODO Better handle this exception
+      rethrow;
+    }
   }
 
   Future<void> login(Map<String, dynamic> credentials) async {
     try {
-      final authState = await _repository.authenticate(credentials);
+      final authResponse = await _repository.authenticate(credentials);
       await _repository.saveToken(TokenPair(
-        accessToken: authState.token,
-        refreshToken: authState.refresh,
+        accessToken: authResponse.accessToken,
+        refreshToken: authResponse.refreshToken,
       ));
-      await _repository.saveUserId(authState.user);
-      state = authState;
+      state = AuthState(
+        isAccountVerified: authResponse.accountVerified,
+        isProfileComplete: authResponse.profileUpdated,
+        isAuthenticated: authResponse.accessToken.isNotEmpty,
+      );
     } catch (e) {
       rethrow;
     }
@@ -49,18 +55,20 @@ class AuthController extends StateNotifier<AuthState> {
 
   Future<void> register(Map<String, dynamic> data) async {
     try {
-      final authState = await _repository.register(data);
+      final authResponse = await _repository.register(data);
       await _repository.saveToken(TokenPair(
-        accessToken: authState.token,
-        refreshToken: authState.refresh,
+        accessToken: authResponse.accessToken,
+        refreshToken: authResponse.refreshToken,
       ));
-      state = authState;
+      state = AuthState(
+        isAccountVerified: authResponse.accountVerified,
+        isProfileComplete: authResponse.profileUpdated,
+        isAuthenticated: authResponse.accessToken.isNotEmpty,
+      );
     } catch (e) {
       rethrow;
     }
   }
-
-
 
   Future<void> markProfileAsUpdated() async {
     try {
@@ -69,6 +77,7 @@ class AuthController extends StateNotifier<AuthState> {
       rethrow;
     }
   }
+
   Future<void> markProfileAsAccountVerified() async {
     try {
       state = state.copyWith(isAccountVerified: true);
@@ -79,7 +88,6 @@ class AuthController extends StateNotifier<AuthState> {
 
   Future<void> logout() async {
     _repository.deleteToken();
-    _repository.deleteUserId();
-    state = state.copyWith(token: "", user: "");
+    state = state.copyWith(isAuthenticated: false);
   }
 }

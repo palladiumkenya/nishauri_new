@@ -3,63 +3,64 @@ import 'dart:ffi';
 import 'package:nishauri/src/features/user/data/models/user.dart';
 
 class AuthState {
-  final String token;
-  final String refresh;
-  final String user;
+  final bool isAuthenticated;
   final bool isAccountVerified;
   final bool isProfileComplete;
 
   AuthState({
-    required this.token,
-    required this.user,
     required this.isAccountVerified,
     required this.isProfileComplete,
-    required this.refresh,
+    required this.isAuthenticated,
   });
 
   factory AuthState.defaultState() {
     return AuthState(
-      token: "",
-      user: '',
-      isAccountVerified: true,
-      isProfileComplete: true,
-      refresh: ""
+      isAccountVerified: false  ,
+      isProfileComplete: false,
+      isAuthenticated: false
     );
   }
 
   factory AuthState.fromResponse({
-    String token = "",
-    String refresh = "",
-    String user = '',
     bool isAccountVerified = false,
     bool isProfileComplete = false,
+    bool isAuthenticated = false
   }) {
     return AuthState(
-      token: token,
-      refresh: refresh,
-      user: user ,
+      isAuthenticated: isAuthenticated,
       isAccountVerified: isAccountVerified,
       isProfileComplete: isProfileComplete,
     );
   }
 
   AuthState copyWith({
-    String? token,
-    String? refresh,
-    String? user,
+
     bool? isAccountVerified,
+    bool? isAuthenticated,
     bool? isProfileComplete,
   }) =>
       AuthState(
-        token: token ?? this.token,
-        refresh: refresh ?? this.refresh,
-        user: user ?? this.user,
+        isAuthenticated: isAuthenticated ?? this.isAuthenticated,
         isAccountVerified: isAccountVerified ?? this.isAccountVerified,
         isProfileComplete: isProfileComplete ?? this.isProfileComplete,
       );
 
   @override
   String toString() {
-    return "AuthState<userId:$user, token:$token, isAccountVerified: $isAccountVerified, isProfileComplete: $isProfileComplete>";
+    return "AuthState<isAuthenticated: $isAuthenticated, isAccountVerified: $isAccountVerified, isProfileComplete: $isProfileComplete>";
+  }
+}
+
+
+class AuthResponse{
+  final String accessToken;
+  final String refreshToken;
+  final bool accountVerified;
+  final bool profileUpdated;
+
+  AuthResponse({required this.accountVerified, required this.profileUpdated, required this.accessToken, required this.refreshToken});
+  @override
+  String toString() {
+    return "AuthState<accessToken: $accessToken, refreshToken: $refreshToken, accountVerified: $accountVerified, profileUpdated: $profileUpdated>";
   }
 }

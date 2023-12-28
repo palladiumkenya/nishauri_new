@@ -61,17 +61,17 @@ class RouterNotifier extends ChangeNotifier {
     final loginState = _ref.watch(authStateProvider);
     final areWeInOpenRoutes = state.matchedLocation.startsWith("/auth");
     // Is user not logged in and accessing open route then let them be?
-    if (loginState.token.isEmpty && areWeInOpenRoutes) return null;
+    if (!loginState.isAuthenticated && areWeInOpenRoutes) return null;
     // if not logged in and trying to accept secure root then redirect to login
-    if (loginState.token.isEmpty && !areWeInOpenRoutes) return "/auth/login";
+    if (!loginState.isAuthenticated && !areWeInOpenRoutes) return "/auth/login";
     // If user already logged in and moving on open routes then redirect to home
-    if (loginState.token.isNotEmpty == true && areWeInOpenRoutes) return '/';
+    if (loginState.isAuthenticated == true && areWeInOpenRoutes) return '/';
     // If user is logged in bt not verified account the redirect to verification
-    if (loginState.token.isNotEmpty && !loginState.isAccountVerified) {
+    if (loginState.isAuthenticated && !loginState.isAccountVerified) {
       return '/account-verify';
     }
     // If user is logged in bt not completed profile account the redirect to profile update screen
-    if (loginState.token.isNotEmpty && !loginState.isProfileComplete) {
+    if (loginState.isAuthenticated && !loginState.isProfileComplete) {
       return '/profile-edit';
     }
 

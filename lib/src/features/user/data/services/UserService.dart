@@ -2,16 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
+import 'package:nishauri/src/shared/models/token_pair.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 
 class UserService extends HTTPService {
-  final AuthState _authState;
+  final TokenPair _tokenPair;
 
-  UserService(this._authState);
+  UserService(this._tokenPair);
 
   Future<void> uploadImage(File imageFile) async {
     var request = http.MultipartRequest(
@@ -39,7 +39,7 @@ class UserService extends HTTPService {
   }
 
   Future<User> updateProfile(User user) async {
-    var headers = {'x-access-token': _authState.token};
+    var headers = {'x-access-token': _tokenPair.accessToken};
     var request = http.MultipartRequest(
         'POST', Uri.parse('${Constants.BASE_URL}/auth/profile'));
     // Serialize user data to JSON
@@ -86,43 +86,8 @@ class UserService extends HTTPService {
     }
   }
 
-  //
-  // Future<Uint8List> _downloadRemoteImage(String remoteImagePath) async {
-  //   final httpClient = HttpClient();
-  //   final request = await httpClient.getUrl(Uri.parse(remoteImagePath));
-  //   final response = await request.close();
-  //   final bytes = await consolidateHttpClientResponseBytes(response);
-  //   httpClient.close();
-  //   return bytes;
-  // }
-
-  Future<User> _getUser() async {
-    var request = http.Request('GET',
-        Uri.parse('${Constants.BASE_URL}profile?user_id=${_authState.user}'));
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      // Success: Parse and return the User object
-      final responseString = await response.stream.bytesToString();
-      final userData = json.decode(responseString);
-      Map<String, dynamic> data =
-          userData["data"].isEmpty ? {} : userData["data"][0];
-      return User.fromJson({
-        "id": "",
-        "username": data["phone_no"] ?? "",
-        "phoneNumber": data["phone_no"] ?? "",
-        "email": data["email"] ?? "",
-        "name": data["client_name"] ?? "",
-        // "lastName": userData["client_name"].toString().split(" ")[1],
-        "gender": data["gender"] == "Female" ? "F" : "M"
-      });
-    } else {
-      throw await getException(response);
-    }
-  }
-
   Future<User> getUser() async {
-    var headers = {'x-access-token': _authState.token};
+    var headers = {'x-access-token': _tokenPair.accessToken};
     var request =
         http.Request('GET', Uri.parse('${Constants.BASE_URL}/auth/profile'));
     request.headers.addAll(headers);
@@ -156,7 +121,7 @@ class UserService extends HTTPService {
   }
 
   Future<String> accountVerify(Map<String, dynamic> data) async {
-    var headers = {'x-access-token': _authState.token, 'Content-Type': 'application/json',};
+    var headers = {'x-access-token': _tokenPair.accessToken, 'Content-Type': 'application/json',};
     var request = http.Request('POST', Uri.parse('${Constants.BASE_URL}/auth/verify'));
     request.body = jsonEncode(data);
     request.headers.addAll(headers);
@@ -171,7 +136,7 @@ class UserService extends HTTPService {
   }
 
   Future<String> requestVerificationCode(String? mode) async {
-    var headers = {'x-access-token': _authState.token};
+    var headers = {'x-access-token': _tokenPair.accessToken};
     var request = http.Request(
         'GET', Uri.parse('${Constants.BASE_URL}/auth/verify?mode=$mode'));
     request.headers.addAll(headers);

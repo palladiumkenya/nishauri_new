@@ -6,8 +6,8 @@ import 'package:nishauri/src/features/user_programs/data/services/programs_servi
 import 'package:nishauri/src/features/user_programs/presentation/controllers/user_program_controller.dart';
 
 final programProvider = StateNotifierProvider<UserProgramController, AsyncValue<List<UserProgram>>>((ref){
-  final authState = ref.watch(authStateProvider);
-  final service = ProgramService(authState);
+  final authState = ref.read(authStateProvider.notifier);
+  final service = ProgramService(authState.token);
   final repository = ProgramsRepository(service);
   return UserProgramController(repository);
 });
