@@ -1,16 +1,11 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
-import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/user_programs/data/models/program.dart';
 import 'package:nishauri/src/features/user_programs/data/models/user_program.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 import 'package:http/http.dart' as http;
-import 'package:nishauri/src/shared/models/token_pair.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class ProgramService extends HTTPService {
-  final TokenPair _token;
   final List<Program> _programs = [
     const Program(
       programCode: "HIV",
@@ -100,8 +95,6 @@ class ProgramService extends HTTPService {
     // ),
   ];
 
-  ProgramService(this._token);
-
   Future<List<Program>> getPrograms() async {
     await Future.delayed(const Duration(seconds: 3));
     return _programs;
@@ -112,12 +105,13 @@ class ProgramService extends HTTPService {
   }
 
   Future<String> registerProgram(Map<String, dynamic> data) async {
+    final token = await getCachedToken();
     final _data = Map.from(data)
       ..removeWhere((key, value) => key == "program");
     var headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          'Bearer ${_token.accessToken}',
+          'Bearer ${token.accessToken}',
     };
     var request = http.Request(
         'POST', Uri.parse('${Constants.BASE_URL}validate_program'));
@@ -125,12 +119,7 @@ class ProgramService extends HTTPService {
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-      final responseString = await response.stream.bytesToString();
-      final data = jsonDecode(responseString);
-      if (data["success"]) {
-        return "OTP sent to 254793****58";
-      }
-      throw await getExceptionFromString(data["msg"]);
+      return "yes";//TODO Implement proper logic
     } else {
       throw await getException(response);
     }

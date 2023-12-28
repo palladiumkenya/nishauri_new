@@ -6,8 +6,7 @@ import 'package:nishauri/src/features/user/data/services/UserService.dart';
 import 'package:nishauri/src/features/user/presentation/controllers/UserControler.dart';
 
 final userProvider = StateNotifierProvider<UserController, AsyncValue<User>>((ref) {
-  final authState = ref.read(authStateProvider.notifier);
-  final service = UserService(authState.token);
+  final service = UserService();
   final repo = UserRepository(service);
   return UserController(repo);
 });

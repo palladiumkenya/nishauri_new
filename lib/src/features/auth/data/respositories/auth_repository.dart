@@ -18,7 +18,7 @@ class AuthRepository {
     return response;
   }
 
-  Future<TokenPair> getAuthToken() async {
+  Future<TokenPair?> getAuthToken() async {
     final token = await LocalStorage.getToken();
     return token;
   }

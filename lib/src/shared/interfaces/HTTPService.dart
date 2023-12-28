@@ -1,12 +1,12 @@
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:nishauri/src/local_storage/LocalStorage.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/models/token_pair.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 abstract class HTTPService {
+
   Future<Exception> getException(StreamedResponse response) async {
     switch (response.statusCode) {
       case 401:
@@ -25,40 +25,67 @@ abstract class HTTPService {
     }
   }
 
-  Future<TokenPair> handleUnauthorizedError(String refreshToken) async {
+  Future<TokenPair> refreshTokenAndCash(String refreshToken) async {
     final url = Uri.parse("${Constants.BASE_URL}/auth/refresh-token");
     var headers = {'x-refresh-token': refreshToken};
     var request = Request('GET', url);
     request.headers.addAll(headers);
     StreamedResponse refreshResponse = await request.send();
     if (refreshResponse.statusCode == 200) {
-      final authState = TokenPair(
+      final token = TokenPair(
         accessToken: refreshResponse.headers["x-access-token"]!,
         refreshToken: refreshResponse.headers["x-refresh-token"]!,
       );
-      return authState;
-      // final responseString = await response.stream.bytesToString();
-      // final errorData = jsonDecode(responseString);
+      // Save new token so it can be available for future requests
+      await LocalStorage.saveToken(token);
+      return token;
     }
     final responseString = await refreshResponse.stream.bytesToString();
     final errorData = jsonDecode(responseString);
     throw UnauthorizedException(errorData["detail"]);
   }
 
-  Future<Exception> getExceptionFromString(String error) async {
-    return ResourceNotFoundException(error);
+
+  Future<StreamedResponse> request(
+      {required String url,
+      required TokenPair token,
+      required String method,
+      Map<String, String>? requestHeaders,
+      Map<String, String>? data}) async {
+    var headers = {'x-access-token': token.accessToken};
+    var request = Request(method, Uri.parse(url));
+    if (requestHeaders != null) request.headers.addAll((headers));
+    request.headers.addAll(headers);
+    if (data != null) request.body = jsonEncode(data);
+
+    StreamedResponse response = await request.send();
+    if (response.statusCode == 401) {
+      final authResponse = await refreshTokenAndCash(token.refreshToken);
+      headers = {'x-access-token': authResponse.accessToken};
+      request = Request(method, Uri.parse(url));
+      if (requestHeaders != null) request.headers.addAll((headers));
+      request.headers.addAll(headers);
+      if (data != null) request.body = jsonEncode(data);
+      response = await request.send();
+    }
+    if (response.statusCode != 200) {
+      throw await getException(response);
+    }
+    return response;
   }
 
-// Exception getException(http.StreamedResponse response) {
-//   switch (response.statusCode) {
-//     case 401:
-//       return UnauthorizedException();
-//     case 400:
-//       return BadRequestException(response.body);
-//     case 500:
-//       return InternalServerErrorException();
-//     default:
-//       return NetworkException();
-//   }
-// }
+  Future<TokenPair> getCachedToken() async {
+    final token =  await LocalStorage.getToken();
+    if(token != null) return token;
+    throw UnauthorizedException("Please sign in to continue");
+  }
+
+  Future<T> callProtected<T>(
+      Future<T> Function() api) async {
+    try {
+      return await api();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

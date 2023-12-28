@@ -11,19 +11,13 @@ import 'package:nishauri/src/shared/models/token_pair.dart';
 class AuthController extends StateNotifier<AuthState> {
   /// Act as the view model that hold the state of component or screen
   final AuthRepository _repository;
-  late TokenPair _tokenPair;
 
   AuthController(this._repository) : super(AuthState.defaultState()) {
     loadAuthState();
   }
 
-  TokenPair get token {
-    return _tokenPair;
-  }
-
   Future<void> loadAuthState() async {
-    _tokenPair = await _repository.getAuthToken(); //reads share preference
-    final userRepo = UserRepository(UserService(_tokenPair));
+    final userRepo = UserRepository(UserService());
     try {
       final _user = await userRepo.getUser();
       state = state.copyWith(
@@ -32,7 +26,7 @@ class AuthController extends StateNotifier<AuthState> {
           isAuthenticated: true);
     } catch (e) {
       // TODO Better handle this exception
-      rethrow;
+      debugPrint("******************************************$e");
     }
   }
 

@@ -3,13 +3,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorage {
   static Future<void> saveToken(TokenPair token) async {
+    if (token.refreshToken.isEmpty || token.accessToken.isEmpty) return;
     final prefs = await SharedPreferences.getInstance();
+
     await prefs.setString('access_token', token.accessToken);
     await prefs.setString('refresh_token', token.refreshToken);
   }
 
-  static Future<TokenPair> getToken() async {
+  static Future<TokenPair?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('access_token') == null ||
+        prefs.getString('access_token')?.isEmpty == true ||
+        prefs.getString('refresh_token') == null ||
+        prefs.getString('refresh_token')?.isEmpty == true) {
+      await deleteToken();
+      return null;
+    }
     return TokenPair(
         accessToken: prefs.getString('access_token') ?? '',
         refreshToken: prefs.getString('refresh_token') ?? '');
