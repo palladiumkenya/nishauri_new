@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -115,8 +114,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             setState(() {
                               _loading = true;
                             });
-                            ref
-                                .read(authStateProvider.notifier)
+                            final authNotifier =
+                                ref.read(authStateProvider.notifier);
+
+                            authNotifier
                                 .login(_formKey.currentState!.value)
                                 .then((value) {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -124,7 +125,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     content: Text('Login successfully!,')),
                               );
                             }).catchError((error) {
-                              handleResponseError(context, _formKey.currentState!.fields, error);
+                              handleResponseError(context,
+                                  _formKey.currentState!.fields, error, authNotifier.logout);
                             }).whenComplete(
                               () => setState(() {
                                 _loading = false;

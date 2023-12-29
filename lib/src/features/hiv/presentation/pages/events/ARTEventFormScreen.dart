@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_events_provider.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_group_provider.dart';
@@ -171,6 +172,7 @@ class ARTEventFormScreen extends HookWidget {
                                         // If the form is valid, display a snack-bar. In the real world,
                                         // you'd often call a server or save the information in a database.
                                         loading.value = true;
+
                                         ref
                                             .read(art_event_provider.notifier)
                                             .addEvent(
@@ -187,7 +189,7 @@ class ARTEventFormScreen extends HookWidget {
                                           handleResponseError(
                                               context,
                                               formKey.currentState!.fields,
-                                              error);
+                                              error, ref.read(authStateProvider.notifier).logout);
                                         }).whenComplete(
                                           () => loading.value = false,
                                         );

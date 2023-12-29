@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/hiv/data/models/group/art_group.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_group_provider.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
@@ -116,7 +117,7 @@ class ARTGroupFormScreen extends HookWidget {
                               );
                             }).catchError((error) {
                               handleResponseError(
-                                  context, formKey.currentState!.fields, error);
+                                  context, formKey.currentState!.fields, error, ref.read(authStateProvider.notifier).logout);
                             }).whenComplete(
                               () => loading.value = false,
                             );

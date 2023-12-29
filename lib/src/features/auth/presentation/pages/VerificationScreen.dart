@@ -47,7 +47,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 SnackBar(content: Text(value)),
               );
             }).catchError((err) {
-              handleResponseError(context, _formKey.currentState!.fields, err);
+              handleResponseError(context, _formKey.currentState!.fields, err, authStateNotifier.logout);
             }).whenComplete(() {
               // Set the submitting to false whether or not an exception is thrown
               setState(() {

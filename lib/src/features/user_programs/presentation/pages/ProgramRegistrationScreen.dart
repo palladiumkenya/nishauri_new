@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/user_programs/data/models/user_program.dart';
 import 'package:nishauri/src/features/user_programs/data/providers/program_provider.dart';
 import 'package:nishauri/src/features/user_programs/presentation/forms/HIVProgramRegistration.dart';
@@ -137,7 +138,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                   context.goNamed(RouteNames.VERIFY_PROGRAM_OTP, extra: {"message":value, "program": _program});
                                 }).catchError((err){
 
-                                  handleResponseError(context, _formKey.currentState!.fields, err);
+                                  handleResponseError(context, _formKey.currentState!.fields, err, ref.read(authStateProvider.notifier).logout);
                                 }).whenComplete(() => setState(() {
                                   _loading = false;
                                 }));

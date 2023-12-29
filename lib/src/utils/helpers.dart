@@ -90,7 +90,8 @@ void handleResponseError(
     BuildContext context,
     Map<String, FormBuilderFieldState<FormBuilderField<dynamic>, dynamic>>
         formState,
-    err) {
+    err,
+    void Function() onLogout) {
   switch (err) {
     case BadRequestException e:
       for (var err in e.errors.entries) {
@@ -101,6 +102,13 @@ void handleResponseError(
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(err.message.toString())),
       );
+      break;
+    case UnauthorizedException e:
+      onLogout();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(err.message.toString())),
+      );
+      break;
     default:
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(err.toString())),

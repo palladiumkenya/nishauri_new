@@ -128,13 +128,14 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
         }).catchError((e) {
           switch (e) {
             case BadRequestException e:
-              handleResponseError(context, formKey.currentState!.fields, e);
+              handleResponseError(context, formKey.currentState!.fields, e, ref.read(authStateProvider.notifier).logout);
               //   Navigate to 1st step with the error
               final fieldStep = stepFieldsToValidate.indexWhere((fields) =>
                   fields.any((field) => e.errors.containsKey(field)));
               currentStep.value = fieldStep;
               break;
             default:
+              handleResponseError(context, formKey.currentState!.fields, e, ref.read(authStateProvider.notifier).logout);
               debugPrint("[PROFILE-WIZARD]: ${e.toString()}");
           }
         }).whenComplete(() => loading.value = false);
