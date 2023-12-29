@@ -56,6 +56,7 @@ class UserService extends HTTPService {
       throw await getException(response);
     }
   }
+
   Future<http.StreamedResponse> updateProfile_(User user) async {
     final tokenPair = await getCachedToken();
     var headers = {'x-access-token': tokenPair.accessToken};
@@ -98,17 +99,12 @@ class UserService extends HTTPService {
 
     return response;
   }
+
   Future<User> updateProfile(User user) async {
     // Send the request and get the response
     http.StreamedResponse response = await call<User>(updateProfile_, user);
-
     // Check the response status code
-
-    if (response.statusCode == 200) {
-      return user;
-    } else {
-      throw await getException(response);
-    }
+    return user;
   }
 
   Future<User> __getUser() async {
@@ -222,13 +218,10 @@ class UserService extends HTTPService {
 
   Future<String> accountVerify(Map<String, dynamic> data) async {
     http.StreamedResponse response = await call(accountVerify_, data);
-    if (response.statusCode == 200) {
-      final responseString = await response.stream.bytesToString();
-      final userData = json.decode(responseString);
-      return userData["detail"];
-    } else {
-      throw await getException(response);
-    }
+
+    final responseString = await response.stream.bytesToString();
+    final userData = json.decode(responseString);
+    return userData["detail"];
   }
 
   Future<http.StreamedResponse> accountVerify_(
@@ -245,7 +238,7 @@ class UserService extends HTTPService {
     return await request.send();
   }
 
-  Future<String> requestVerificationCode(String? mode) async {
+  Future<String> _requestVerificationCode(String? mode) async {
     final tokenPair = await getCachedToken();
     var headers = {'x-access-token': tokenPair.accessToken};
     var request = http.Request(
@@ -260,5 +253,24 @@ class UserService extends HTTPService {
     } else {
       throw await getException(response);
     }
+  }
+
+  Future<http.StreamedResponse> requestVerificationCode_(String? mode) async {
+    final tokenPair = await getCachedToken();
+    var headers = {'x-access-token': tokenPair.accessToken};
+    var request = http.Request(
+        'GET', Uri.parse('${Constants.BASE_URL}/auth/verify?mode=$mode'));
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    return response;
+  }
+
+  Future<String> requestVerificationCode(String? mode) async {
+    http.StreamedResponse response =
+        await call<String?>(requestVerificationCode_, mode);
+
+    final responseString = await response.stream.bytesToString();
+    final userData = json.decode(responseString);
+    return userData["detail"];
   }
 }
