@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
+import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
@@ -108,23 +109,27 @@ class _LoginScreenState extends State<LoginScreen> {
                         title: "LOGIN",
                         loading: _loading,
                         onPress: () {
-                          if (_formKey.currentState!.saveAndValidate()) {
-                            // If the form is valid, display a snack-bar. In the real world,
-                            // you'd often call a server or save the information in a database.
+                          if (_formKey.currentState != null &&
+                              _formKey.currentState!.saveAndValidate()) {
                             setState(() {
                               _loading = true;
                             });
                             final authNotifier =
                                 ref.read(authStateProvider.notifier);
-
                             authNotifier
                                 .login(_formKey.currentState!.value)
-                                .then((value) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Login successfully!,')),
-                              );
-                            }).catchError((error) {
+                                .then((_) {
+                              //     Update user state
+                              ref.read(userProvider.notifier).getUser();
+                            }).then(
+                              (_) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Login successful!'),
+                                  ),
+                                );
+                              },
+                            ).catchError((error) {
                               handleResponseError(
                                 context,
                                 _formKey.currentState!.fields,
@@ -132,9 +137,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 authNotifier.logout,
                               );
                             }).whenComplete(
-                              () => setState(() {
-                                _loading = false;
-                              }),
+                              () {
+                                if (mounted) {
+                                  setState(() {
+                                    _loading = false;
+                                  });
+                                }
+                              },
                             );
                           }
                         },

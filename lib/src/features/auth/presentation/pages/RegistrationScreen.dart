@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
+import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
@@ -11,6 +12,7 @@ import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -98,7 +100,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ]),
                       ),
                       const SizedBox(height: Constants.SPACING),
-
                       FormBuilderTextField(
                         name: "phoneNumber",
                         decoration: inputDecoration(
@@ -173,15 +174,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             loading: _loading,
                             title: "Register",
                             onPress: () {
-                              if (_formKey.currentState!.saveAndValidate()) {
+                              if (_formKey.currentState != null &&
+                                  _formKey.currentState!.saveAndValidate()) {
                                 final formState = _formKey.currentState!.value;
                                 setState(() {
                                   _loading = true;
                                 });
-                                ref
-                                    .read(authStateProvider.notifier)
-                                    .register(formState)
-                                    .then((value) {
+                                final authNotifier =
+                                    ref.read(authStateProvider.notifier);
+                                authNotifier.register(formState).then((value) {
+                                  //     Update user state
+                                  ref.read(userProvider.notifier).getUser();
+                                }).then((_) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content:
@@ -189,33 +193,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     ),
                                   );
                                 }).catchError((error) {
-                                  switch (error) {
-                                    case BadRequestException e:
-                                      for (var err in e.errors.entries) {
-                                        _formKey.currentState!.fields[err.key]
-                                            ?.invalidate(err.value);
-                                      }
-                                      break;
-                                    case ResourceNotFoundException e:
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                            content:
-                                                Text(e.message.toString())),
-                                      );
-                                      break;
-                                    default:
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                            content: Text(error.toString())),
-                                      );
+                                  handleResponseError(
+                                    context,
+                                    _formKey.currentState!.fields,
+                                    error,
+                                    authNotifier.logout,
+                                  );
+                                }).whenComplete(() {
+                                  if (mounted) {
+                                    setState(() {
+                                      _loading = false;
+                                    });
                                   }
-                                }).whenComplete(
-                                  () => setState(() {
-                                    _loading = false;
-                                  }),
-                                );
+                                });
                               }
                             },
                           );

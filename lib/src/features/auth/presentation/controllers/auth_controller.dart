@@ -1,25 +1,21 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
-import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/features/user/data/respositories/UserRepository.dart';
-import 'package:nishauri/src/features/user/data/services/UserService.dart';
-import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/models/token_pair.dart';
 
 class AuthController extends StateNotifier<AsyncValue<AuthState>> {
   /// Act as the view model that hold the state of component or screen
   final AuthRepository _repository;
+  final UserRepository _userRepository;
 
-  AuthController(this._repository) : super(const AsyncValue.loading()) {
+  AuthController(this._repository, this._userRepository) : super(const AsyncValue.loading()) {
     loadAuthState();
   }
 
   Future<void> loadAuthState() async {
-    final userRepo = UserRepository(UserService());
     try {
-      final user = await userRepo.getUser();
+      final user = await _userRepository.getUser();
       state = AsyncValue.data(AuthState(
         isAccountVerified: user.accountVerified,
         isProfileComplete: user.profileUpdated,
