@@ -47,7 +47,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 SnackBar(content: Text(value)),
               );
             }).catchError((err) {
-              handleResponseError(context, _formKey.currentState!.fields, err, authStateNotifier.logout);
+              handleResponseError(context, _formKey.currentState!.fields, err,
+                  authStateNotifier.logout);
             }).whenComplete(() {
               // Set the submitting to false whether or not an exception is thrown
               setState(() {
@@ -124,16 +125,18 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                         value: "watsapp",
                                         child: ListTile(
                                           title: const Text("WatsApp"),
-                                            subtitle: Text(user.phoneNumber),
-                                            trailing: const Icon(
-                                                Icons.chat_outlined)),
+                                          subtitle: Text(user.phoneNumber),
+                                          trailing:
+                                              const Icon(Icons.chat_outlined),
+                                        ),
                                       ),
                                       FormBuilderFieldOption(
                                         value: "sms",
                                         child: ListTile(
                                           title: const Text("SMS"),
-                                            subtitle: Text(user.phoneNumber),
-                                            trailing: const Icon(Icons.sms)),
+                                          subtitle: Text(user.phoneNumber),
+                                          trailing: const Icon(Icons.sms),
+                                        ),
                                       ),
                                     ],
                                     validator: FormBuilderValidators.compose([
@@ -161,16 +164,25 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                         });
                                         ref
                                             .read(userProvider.notifier)
-                                            .getOTPCode(_formKey.currentState?.instantValue["mode"])
+                                            .getOTPCode(_formKey.currentState
+                                                ?.instantValue["mode"])
                                             .then((value) {
                                           ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  content: Text(value)));
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(value),
+                                            ),
+                                          );
                                         }).catchError((err) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  content:
-                                                      Text(err.toString())));
+                                          handleResponseError(
+                                            context,
+                                            _formKey.currentState!.fields,
+                                            err,
+                                            ref
+                                                .read(
+                                                    authStateProvider.notifier)
+                                                .logout,
+                                          );
                                         }).whenComplete(() {
                                           setState(() {
                                             _requestLoading = false;

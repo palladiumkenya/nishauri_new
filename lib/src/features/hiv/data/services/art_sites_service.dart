@@ -5,7 +5,6 @@ import 'package:nishauri/src/features/hiv/data/models/art_sites/art_site.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 
 class ARTSitesService extends HTTPService {
-  AuthState _authState;
   final List<ARTSite> _sites = [
     const ARTSite(
       mflCode: "MFL-001",
@@ -69,7 +68,7 @@ class ARTSitesService extends HTTPService {
         )),
   ).toList();
 
-  ARTSitesService(this._authState);
+  ARTSitesService();
 
   Future<List<ARTSite>> getSites() async {
     return _sites;

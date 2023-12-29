@@ -1,4 +1,5 @@
 class RouteNames {
+  static const SPLASH_SCREEN = "splash";
   static const WELCOME_SCREEN = "welcome";
   static const PROGRAME_REGISTRATION_SCREEN = "program-registration";
   static const EVENTS_CALENDAR = "my-calendar";

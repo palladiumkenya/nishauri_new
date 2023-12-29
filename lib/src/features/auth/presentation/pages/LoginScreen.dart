@@ -125,8 +125,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                     content: Text('Login successfully!,')),
                               );
                             }).catchError((error) {
-                              handleResponseError(context,
-                                  _formKey.currentState!.fields, error, authNotifier.logout);
+                              handleResponseError(
+                                context,
+                                _formKey.currentState!.fields,
+                                error,
+                                authNotifier.logout,
+                              );
                             }).whenComplete(
                               () => setState(() {
                                 _loading = false;

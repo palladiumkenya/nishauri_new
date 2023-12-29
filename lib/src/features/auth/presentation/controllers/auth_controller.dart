@@ -8,25 +8,25 @@ import 'package:nishauri/src/features/user/data/services/UserService.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/models/token_pair.dart';
 
-class AuthController extends StateNotifier<AuthState> {
+class AuthController extends StateNotifier<AsyncValue<AuthState>> {
   /// Act as the view model that hold the state of component or screen
   final AuthRepository _repository;
 
-  AuthController(this._repository) : super(AuthState.defaultState()) {
+  AuthController(this._repository) : super(const AsyncValue.loading()) {
     loadAuthState();
   }
 
   Future<void> loadAuthState() async {
     final userRepo = UserRepository(UserService());
     try {
-      final _user = await userRepo.getUser();
-      state = state.copyWith(
-          isAccountVerified: _user.accountVerified,
-          isProfileComplete: _user.profileUpdated,
-          isAuthenticated: true);
+      final user = await userRepo.getUser();
+      state = AsyncValue.data(AuthState(
+        isAccountVerified: user.accountVerified,
+        isProfileComplete: user.profileUpdated,
+        isAuthenticated: true,
+      ));
     } catch (e) {
-      // TODO Better handle this exception
-      debugPrint("******************************************$e");
+      state = AsyncValue.error(e, StackTrace.current);
     }
   }
 
@@ -37,10 +37,12 @@ class AuthController extends StateNotifier<AuthState> {
         accessToken: authResponse.accessToken,
         refreshToken: authResponse.refreshToken,
       ));
-      state = AuthState(
-        isAccountVerified: authResponse.accountVerified,
-        isProfileComplete: authResponse.profileUpdated,
-        isAuthenticated: authResponse.accessToken.isNotEmpty,
+      state = AsyncValue.data(
+        AuthState(
+          isAccountVerified: authResponse.accountVerified,
+          isProfileComplete: authResponse.profileUpdated,
+          isAuthenticated: authResponse.accessToken.isNotEmpty,
+        ),
       );
     } catch (e) {
       rethrow;
@@ -54,34 +56,50 @@ class AuthController extends StateNotifier<AuthState> {
         accessToken: authResponse.accessToken,
         refreshToken: authResponse.refreshToken,
       ));
-      state = AuthState(
+      state = AsyncValue.data(AuthState(
         isAccountVerified: authResponse.accountVerified,
         isProfileComplete: authResponse.profileUpdated,
         isAuthenticated: authResponse.accessToken.isNotEmpty,
-      );
+      ));
     } catch (e) {
       rethrow;
     }
   }
 
   Future<void> markProfileAsUpdated() async {
-    try {
-      state = state.copyWith(isProfileComplete: true);
-    } catch (e) {
-      rethrow;
-    }
+    state.when(
+      data: (value) => state = AsyncValue.data(
+        value.copyWith(
+          isProfileComplete: true,
+        ),
+      ),
+      error: (error, stackTrace) => state = AsyncValue.error(error, stackTrace),
+      loading: () => state = const AsyncValue.loading(),
+    );
   }
 
   Future<void> markProfileAsAccountVerified() async {
-    try {
-      state = state.copyWith(isAccountVerified: true);
-    } catch (e) {
-      rethrow;
-    }
+    state.when(
+      data: (value) => state = AsyncValue.data(
+        value.copyWith(
+          isAccountVerified: true,
+        ),
+      ),
+      error: (error, stackTrace) => state = AsyncValue.error(error, stackTrace),
+      loading: () => state = const AsyncValue.loading(),
+    );
   }
 
   Future<void> logout() async {
     _repository.deleteToken();
-    state = state.copyWith(isAuthenticated: false);
+    state.when(
+      data: (value) => state = AsyncValue.data(
+        value.copyWith(
+          isAuthenticated: false,
+        ),
+      ),
+      error: (error, stackTrace) => state = AsyncValue.error(error, stackTrace),
+      loading: () => state = const AsyncValue.loading(),
+    );
   }
 }

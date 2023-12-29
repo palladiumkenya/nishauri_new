@@ -159,9 +159,11 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
               return IconButton(
                 onPressed: () {
                   try {
-                    if (authState.isProfileComplete) {
-                      context.goNamed(RouteNames.PROFILE_SETTINGS);
-                    }
+                    authState.whenData((value){
+                      if (value.isProfileComplete) {
+                        context.goNamed(RouteNames.PROFILE_SETTINGS);
+                      }
+                    });
                   } on GoError catch (e) {
                     debugPrint("[DEBUG-PROFILE-WIZARD]: $e");
                   }

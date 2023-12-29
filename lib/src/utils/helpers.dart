@@ -100,13 +100,13 @@ void handleResponseError(
       break;
     case ResourceNotFoundException e:
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(err.message.toString())),
+        SnackBar(content: Text(e.message.toString())),
       );
       break;
     case UnauthorizedException e:
       onLogout();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(err.message.toString())),
+        SnackBar(content: Text(e.message.toString())),
       );
       break;
     default:

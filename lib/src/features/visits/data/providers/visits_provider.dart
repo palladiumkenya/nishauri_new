@@ -5,8 +5,7 @@ import 'package:nishauri/src/features/visits/data/repositories/visits_repository
 import 'package:nishauri/src/features/visits/data/services/visits_service.dart';
 
 final visitProvider = FutureProvider<List<Visit>>((ref) async {
-  final authState = ref.watch(authStateProvider);
-  VisitService service = VisitService(authState);
+  VisitService service = VisitService();
   VisitsRepository repository = VisitsRepository(service);
   return await repository.getVisits();
 });

@@ -8,9 +8,6 @@ import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 
 class VisitService extends HTTPService {
-  final AuthState _authState;
-
-  VisitService(this._authState);
 
   // Future<void> getVisits() async {
   Future<List<Visit>> getVisits() async {

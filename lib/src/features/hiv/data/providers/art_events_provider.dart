@@ -8,9 +8,7 @@ import 'package:nishauri/src/features/hiv/presentation/controllers/ARTEventsCont
 final art_event_provider =
     StateNotifierProvider<ARTEventController, AsyncValue<List<ARTEvent>>>(
         (ref) {
-  // Retrieve the authentication token from the authStateProvider
-  final authState = ref.watch(authStateProvider);
-  final service = ARTEventsService(authState);
+  final service = ARTEventsService();
   final repository = ARTEventRepository(service);
   return ARTEventController(repository);
 });

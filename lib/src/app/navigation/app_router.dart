@@ -9,6 +9,7 @@ import 'package:nishauri/src/features/auth/presentation/pages/ChangePassword.dar
 import 'package:nishauri/src/features/auth/presentation/pages/LoginScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/RegistrationScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/ResetPasswordScreen.dart';
+import 'package:nishauri/src/features/auth/presentation/pages/SplashScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/VerificationScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
@@ -51,15 +52,23 @@ class RouterNotifier extends ChangeNotifier {
   final Ref _ref;
 
   RouterNotifier(this._ref) {
-    _ref.listen<AuthState>(
+    _ref.listen<AsyncValue<AuthState>>(
       authStateProvider,
       (_, __) => notifyListeners(),
     );
   }
 
   FutureOr<String?> redirectLogic(BuildContext context, GoRouterState state) {
-    final loginState = _ref.watch(authStateProvider);
+    final AsyncValue<AuthState> loginState_ = _ref.watch(authStateProvider);
     final areWeInOpenRoutes = state.matchedLocation.startsWith("/auth");
+    // handle with loading loading
+    if (loginState_.isLoading) return "/splash";
+
+    // Handle with error
+    if (loginState_.hasError && areWeInOpenRoutes) return null;
+    if (loginState_.hasError && !areWeInOpenRoutes) return "/auth/login";
+    // Handle with value
+    final loginState = loginState_.requireValue;
     // Is user not logged in and accessing open route then let them be?
     if (!loginState.isAuthenticated && areWeInOpenRoutes) return null;
     // if not logged in and trying to accept secure root then redirect to login
@@ -84,6 +93,13 @@ class RouterNotifier extends ChangeNotifier {
   }
 
   List<GoRoute> get routes => [
+        GoRoute(
+          name: RouteNames.SPLASH_SCREEN,
+          path: '/splash',
+          builder: (BuildContext context, GoRouterState state) {
+            return const SplashScreen();
+          },
+        ),
         GoRoute(
           name: RouteNames.WELCOME_SCREEN,
           path: '/auth',
@@ -293,7 +309,8 @@ final List<RouteBase> hivProgramRoutes = [
               event: extras,
             );
           },
-        ),GoRoute(
+        ),
+        GoRoute(
           name: RouteNames.HIV_ART_EVENT_DETAILS,
           path: ':id',
           builder: (BuildContext context, GoRouterState state) {

@@ -5,7 +5,6 @@ import 'package:nishauri/src/features/hiv/data/models/group/art_group.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 
 class ARTEventsService extends HTTPService {
-  AuthState _authState;
   final List<ARTEvent> _events = [
     const ARTEvent(
       id: "e-1",
@@ -38,8 +37,6 @@ class ARTEventsService extends HTTPService {
       group: ARTGroup(title: "Kamomo ART Group", lead: "Omosh"),
     ),
   ];
-
-  ARTEventsService(this._authState);
 
   Future<List<ARTEvent>> getUserRelatedEvents() async {
     await Future.delayed(const Duration(seconds: 3));
