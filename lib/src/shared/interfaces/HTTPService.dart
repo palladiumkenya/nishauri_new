@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:nishauri/src/local_storage/LocalStorage.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
@@ -6,7 +7,6 @@ import 'package:nishauri/src/shared/models/token_pair.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 abstract class HTTPService {
-
   Future<Exception> getException(StreamedResponse response) async {
     switch (response.statusCode) {
       case 401:
@@ -45,7 +45,6 @@ abstract class HTTPService {
     throw UnauthorizedException(errorData["detail"]);
   }
 
-
   Future<StreamedResponse> request(
       {required String url,
       required TokenPair token,
@@ -75,17 +74,28 @@ abstract class HTTPService {
   }
 
   Future<TokenPair> getCachedToken() async {
-    final token =  await LocalStorage.getToken();
-    if(token != null) return token;
+    final token = await LocalStorage.getToken();
+    if (token != null) return token;
     throw UnauthorizedException("Please sign in to continue");
   }
 
-  Future<T> callProtected<T>(
-      Future<T> Function() api) async {
-    try {
-      return await api();
-    } catch (e) {
-      rethrow;
+  Future<StreamedResponse> call<T>(
+    Future<StreamedResponse> Function(T args) api,
+    T args,
+  ) async {
+    // call api
+    var response = await api(args);
+    if (response.statusCode == 401) {
+      // if not authenticated refresh and retry
+      var token = await getCachedToken();
+      token = await refreshTokenAndCash(token.refreshToken);
+      response = await api(args);
     }
+    if (response.statusCode != 200) {
+      // if not ok throw exception
+      throw await getException(response);
+    }
+    // if all ok return response
+    return response;
   }
 }

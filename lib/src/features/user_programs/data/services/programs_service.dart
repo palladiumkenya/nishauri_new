@@ -106,7 +106,7 @@ class ProgramService extends HTTPService {
 
   Future<String> registerProgram(Map<String, dynamic> data) async {
     final token = await getCachedToken();
-    final _data = Map.from(data)
+    final data_ = Map.from(data)
       ..removeWhere((key, value) => key == "program");
     var headers = {
       'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ class ProgramService extends HTTPService {
     };
     var request = http.Request(
         'POST', Uri.parse('${Constants.BASE_URL}validate_program'));
-    request.body = json.encode(_data);
+    request.body = json.encode(data_);
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
