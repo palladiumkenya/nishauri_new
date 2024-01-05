@@ -9,9 +9,7 @@ class UserProgram with _$UserProgram {
   const factory UserProgram({
     String? id,
     required Program program,
-    String? description,
     @Default(false) bool isActive,
-    required String user,
     required String createdAt,
 
   }) = _UserProgram;

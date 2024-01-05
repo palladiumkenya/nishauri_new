@@ -2,6 +2,9 @@ import 'package:nishauri/src/features/user_programs/data/models/program.dart';
 import 'package:nishauri/src/features/user_programs/data/models/user_program.dart';
 import 'package:nishauri/src/features/user_programs/data/services/programs_service.dart';
 
+import '../models/program_verification_detail.dart';
+import '../models/program_verificaton_contact.dart';
+
 
 class ProgramsRepository {
   final ProgramService _service;
@@ -16,7 +19,7 @@ class ProgramsRepository {
     return await _service.getUserPrograms();
   }
 
-  Future<String> registerProgram(Map<String, dynamic> program)async{
+  Future<ProgramVerificationDetail> registerProgram(Map<String, dynamic> program)async{
     return await _service.registerProgram(program);
   }
   Future<UserProgram> verifyProgramOTP(Map<String, dynamic> data)async{

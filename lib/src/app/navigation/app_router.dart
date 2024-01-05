@@ -32,6 +32,7 @@ import 'package:nishauri/src/features/user/presentation/pages/ProfileScreen.dart
 import 'package:nishauri/src/features/user/presentation/pages/ProfileWizardFormScreen.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PrivacySettingsScreen.dart';
+import 'package:nishauri/src/features/user_programs/data/models/program_verification_detail.dart';
 import 'package:nishauri/src/features/user_programs/presentation/pages/ProgramRegistrationScreen.dart';
 import 'package:nishauri/src/features/user_programs/presentation/pages/ProgramVerificationScreen.dart';
 import 'package:nishauri/src/features/visits/presentations/pages/FacilityVisitDetailScreen.dart';
@@ -193,7 +194,8 @@ final List<RouteBase> secureRoutes = [
         name: RouteNames.VERIFY_PROGRAM_OTP,
         path: 'verify',
         builder: (BuildContext context, GoRouterState state) {
-          return ProgramVerificationScreen(extra: state.extra);
+          ProgramVerificationDetail extra = state.extra! as ProgramVerificationDetail;
+          return ProgramVerificationScreen(verificationDetail: extra);
         },
       ),
     ],

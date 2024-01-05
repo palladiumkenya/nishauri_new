@@ -13,6 +13,10 @@ abstract class HTTPService {
         final responseString = await response.stream.bytesToString();
         final errorData = jsonDecode(responseString);
         return UnauthorizedException(errorData["detail"]);
+      case 403:
+        final responseString = await response.stream.bytesToString();
+        final errorData = jsonDecode(responseString);
+        return ForbiddenException(errorData["detail"]);
       case 400:
         final responseString = await response.stream.bytesToString();
         final errorData = jsonDecode(responseString);

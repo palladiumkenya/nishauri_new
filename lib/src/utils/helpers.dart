@@ -103,8 +103,18 @@ void handleResponseError(
         SnackBar(content: Text(e.message.toString())),
       );
       break;
+    case ForbiddenException e:
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message.toString())),
+      );
+      break;
     case UnauthorizedException e:
       onLogout();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message.toString())),
+      );
+      break;
+    case InternalServerErrorException e:
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.message.toString())),
       );

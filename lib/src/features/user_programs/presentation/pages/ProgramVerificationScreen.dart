@@ -8,10 +8,13 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 import 'package:pinput/pinput.dart';
 
-class ProgramVerificationScreen extends HookConsumerWidget {
-  final dynamic extra;
+import '../../data/models/program_verification_detail.dart';
+import '../../data/models/program_verificaton_contact.dart';
 
-  const ProgramVerificationScreen({super.key, required this.extra});
+class ProgramVerificationScreen extends HookConsumerWidget {
+  final ProgramVerificationDetail verificationDetail;
+
+  const ProgramVerificationScreen({super.key, required this.verificationDetail});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -50,7 +53,7 @@ class ProgramVerificationScreen extends HookConsumerWidget {
             FractionallySizedBox(
               widthFactor: 0.8,
               child: Text(
-                extra["message"],
+                verificationDetail.message,
                 style: theme.textTheme.headlineLarge,
                 textAlign: TextAlign.center,
               ),
@@ -74,20 +77,23 @@ class ProgramVerificationScreen extends HookConsumerWidget {
                   // },
                   hapticFeedbackType: HapticFeedbackType.lightImpact,
                   onCompleted: (pin) {
-                    loading.value=true;
+                    loading.value = true;
                     final programNotifier = ref.watch(programProvider.notifier);
-                    programNotifier.verifyProgramOTP({"otp" :pinController.text, "program": extra["program"]}).then((value){
+                    programNotifier.verifyProgramOTP({
+                      "otp": pinController.text,
+                      "program": verificationDetail.programCode
+                    }).then((value) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                              "${ProgramCodeNames.getProgramNameByCode(extra["program"])} Program Registered successfully"),
+                              "${ProgramCodeNames.getProgramNameByCode(verificationDetail.programCode)} Program Registered successfully"),
                         ),
                       );
                       context.go("/");
-                    }).catchError((err){
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Invalid OTP")));
+                    }).catchError((err) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Invalid OTP")));
                     }).whenComplete(() => loading.value = false);
-
                   },
                   onChanged: (value) {
                     debugPrint('onChanged: $value');
@@ -121,8 +127,7 @@ class ProgramVerificationScreen extends HookConsumerWidget {
                   ),
                 ),
               ),
-            if(loading.value)
-              const CircularProgressIndicator(),
+            if (loading.value) const CircularProgressIndicator(),
             TextButton(
               onPressed: () {
                 pinController.clear();

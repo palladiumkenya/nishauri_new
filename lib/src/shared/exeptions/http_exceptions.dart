@@ -16,6 +16,12 @@ class UnauthorizedException implements Exception {
   UnauthorizedException(this.message);
 }
 
+class ForbiddenException implements Exception {
+  final String message;
+
+  ForbiddenException(this.message);
+}
+
 class NetworkException implements Exception {
   final String message;
 

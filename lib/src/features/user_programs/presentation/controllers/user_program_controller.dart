@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/features/user_programs/data/models/user_program.dart';
 import 'package:nishauri/src/features/user_programs/data/repositories/programs_repository.dart';
 
+import '../../data/models/program_verification_detail.dart';
+import '../../data/models/program_verificaton_contact.dart';
+
 class UserProgramController
     extends StateNotifier<AsyncValue<List<UserProgram>>> {
   final ProgramsRepository _repository;
@@ -17,7 +20,7 @@ class UserProgramController
         .then((value) => state = AsyncValue.data(value));
   }
 
-  Future<String> registerProgram(Map<String, dynamic> data) async {
+  Future<ProgramVerificationDetail> registerProgram(Map<String, dynamic> data) async {
     try {
       return await _repository.registerProgram(data);
     } catch (e) {

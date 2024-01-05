@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:nishauri/src/features/user_programs/data/models/program.dart';
+import 'package:nishauri/src/features/user_programs/data/models/program_verification_detail.dart';
+import 'package:nishauri/src/features/user_programs/data/models/program_verificaton_contact.dart';
 import 'package:nishauri/src/features/user_programs/data/models/user_program.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 import 'package:http/http.dart' as http;
@@ -104,25 +107,24 @@ class ProgramService extends HTTPService {
     return _userPrograms;
   }
 
-  Future<String> registerProgram(Map<String, dynamic> data) async {
-    final token = await getCachedToken();
+  Future<ProgramVerificationDetail> registerProgram(Map<String, dynamic> data) async {
+    http.StreamedResponse response = await call<Map<String, dynamic>>(registerProgram_, data);
+    final responseString = await response.stream.bytesToString();
+    final responseData = jsonDecode(responseString);
+    return ProgramVerificationDetail.fromJson(responseData);
+
+  }
+  Future<http.StreamedResponse> registerProgram_(Map<String, dynamic> data) async {
+    final tokenPair = await getCachedToken();
+    var headers = {'x-access-token': tokenPair.accessToken, 'Content-Type': 'application/json',};
     final data_ = Map.from(data)
       ..removeWhere((key, value) => key == "program");
-    var headers = {
-      'Content-Type': 'application/json',
-      'Authorization':
-          'Bearer ${token.accessToken}',
-    };
     var request = http.Request(
-        'POST', Uri.parse('${Constants.BASE_URL}validate_program'));
+        'POST', Uri.parse('${Constants.BASE_URL}/patients/programs/register/'));
     request.body = json.encode(data_);
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
-    if (response.statusCode == 200) {
-      return "yes";//TODO Implement proper logic
-    } else {
-      throw await getException(response);
-    }
+    return response;
   }
 
   Future<UserProgram> verifyProgramOTP(Map<String, dynamic> data) async {
@@ -131,7 +133,6 @@ class ProgramService extends HTTPService {
         program: _programs
             .where((element) => element.programCode == data["program"])
             .first,
-        user: "u-1",
         createdAt: "25th Aug 2023");
     _userPrograms.add(userProgram);
     return userProgram;
