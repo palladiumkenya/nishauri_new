@@ -8,6 +8,7 @@ class AuthRepository {
 
   AuthRepository(this._service);
 
+
   Future<AuthResponse> authenticate(Map<String, dynamic> credentials) async {
     final response = await _service.authenticate(credentials);
     return response;

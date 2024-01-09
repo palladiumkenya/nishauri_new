@@ -7,8 +7,16 @@ import 'package:nishauri/src/shared/models/token_pair.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 abstract class HTTPService {
+  String getQueryParams(Map<String, dynamic> query){
+    var q=query.entries.map((e) => "${e.key}=${e.value}");
+    return q.isNotEmpty ? "?${q.join("&")}": "";
+  }
   Future<Exception> getException(StreamedResponse response) async {
     switch (response.statusCode) {
+      case 400:
+        final responseString = await response.stream.bytesToString();
+        final errorData = jsonDecode(responseString);
+        return BadRequestException(errorData['errors']);
       case 401:
         final responseString = await response.stream.bytesToString();
         final errorData = jsonDecode(responseString);
@@ -17,10 +25,10 @@ abstract class HTTPService {
         final responseString = await response.stream.bytesToString();
         final errorData = jsonDecode(responseString);
         return ForbiddenException(errorData["detail"]);
-      case 400:
+      case 404:
         final responseString = await response.stream.bytesToString();
         final errorData = jsonDecode(responseString);
-        return BadRequestException(errorData['errors']);
+        return ResourceNotFoundException(errorData["detail"]);
       case 500:
         return InternalServerErrorException("Unknown error occurred!");
       default:

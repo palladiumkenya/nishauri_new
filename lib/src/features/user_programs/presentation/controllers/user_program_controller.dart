@@ -27,11 +27,19 @@ class UserProgramController
       rethrow;
     }
   }
-
-  Future<void> verifyProgramOTP(Map<String, dynamic> data) async {
+  Future<String> getVerificationCode(Map<String, dynamic> data) async {
     try {
-      await _repository.verifyProgramOTP(data);
+      return await _repository.getVerificationCode(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<String> verifyProgramOTP(Map<String, dynamic> data) async {
+    try {
+      final message =  await _repository.verifyProgramOTP(data);
       _getUserPrograms();
+      return message;
     } catch (e) {
       rethrow;
     }

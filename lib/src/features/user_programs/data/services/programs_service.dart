@@ -107,18 +107,23 @@ class ProgramService extends HTTPService {
     return _userPrograms;
   }
 
-  Future<ProgramVerificationDetail> registerProgram(Map<String, dynamic> data) async {
-    http.StreamedResponse response = await call<Map<String, dynamic>>(registerProgram_, data);
+  Future<ProgramVerificationDetail> registerProgram(
+      Map<String, dynamic> data) async {
+    http.StreamedResponse response =
+        await call<Map<String, dynamic>>(registerProgram_, data);
     final responseString = await response.stream.bytesToString();
     final responseData = jsonDecode(responseString);
     return ProgramVerificationDetail.fromJson(responseData);
-
   }
-  Future<http.StreamedResponse> registerProgram_(Map<String, dynamic> data) async {
+
+  Future<http.StreamedResponse> registerProgram_(
+      Map<String, dynamic> data) async {
     final tokenPair = await getCachedToken();
-    var headers = {'x-access-token': tokenPair.accessToken, 'Content-Type': 'application/json',};
-    final data_ = Map.from(data)
-      ..removeWhere((key, value) => key == "program");
+    var headers = {
+      'x-access-token': tokenPair.accessToken,
+      'Content-Type': 'application/json',
+    };
+    final data_ = Map.from(data)..removeWhere((key, value) => key == "program");
     var request = http.Request(
         'POST', Uri.parse('${Constants.BASE_URL}/patients/programs/register/'));
     request.body = json.encode(data_);
@@ -127,14 +132,53 @@ class ProgramService extends HTTPService {
     return response;
   }
 
-  Future<UserProgram> verifyProgramOTP(Map<String, dynamic> data) async {
-    await Future.delayed(const Duration(seconds: 3));
-    final userProgram = UserProgram(
-        program: _programs
-            .where((element) => element.programCode == data["program"])
-            .first,
-        createdAt: "25th Aug 2023");
-    _userPrograms.add(userProgram);
-    return userProgram;
+  Future<String> verifyProgramOTP(Map<String, dynamic> data) async {
+    http.StreamedResponse response =
+    await call<Map<String, dynamic>>(verifyProgramOTP_, data);
+    final responseString = await response.stream.bytesToString();
+    final responseData = jsonDecode(responseString);
+    return responseData["detail"];
+  }
+
+  Future<http.StreamedResponse> verifyProgramOTP_(
+      Map<String, dynamic> data) async {
+    final tokenPair = await getCachedToken();
+    var headers = {
+      'x-access-token': tokenPair.accessToken,
+      'Content-Type': 'application/json',
+    };
+    var request = http.Request(
+      'POST',
+      Uri.parse('${Constants.BASE_URL}/patients/programs/verify/'),
+    );
+    request.body = jsonEncode(data);
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    return response;
+  }
+
+  Future<String> requestVerificationCode(Map<String, dynamic> data) async {
+    http.StreamedResponse response =
+        await call<Map<String, dynamic>>(requestVerificationCode_, data);
+    final responseString = await response.stream.bytesToString();
+    final responseData = jsonDecode(responseString);
+    return responseData["detail"];
+  }
+
+  Future<http.StreamedResponse> requestVerificationCode_(
+      Map<String, dynamic> data) async {
+    final tokenPair = await getCachedToken();
+    var headers = {
+      'x-access-token': tokenPair.accessToken,
+      'Content-Type': 'application/json',
+    };
+    var request = http.Request(
+      'GET',
+      Uri.parse(
+          '${Constants.BASE_URL}/patients/programs/verify/${getQueryParams(data)}'),
+    );
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    return response;
   }
 }

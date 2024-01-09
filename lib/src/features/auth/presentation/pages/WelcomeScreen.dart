@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
@@ -99,7 +100,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     child: IconButton(
                       onPressed: () {},
-                      icon: const Icon(Icons.facebook),
+                      icon: SvgPicture.asset("assets/images/google.svg", width: 20,height: 20,),
                     ),
                   ),
                   const SizedBox(width: Constants.SPACING),
@@ -111,7 +112,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     child: IconButton(
                       onPressed: () {},
-                      icon: const Icon(Icons.apple),
+                      icon: const Icon(Icons.apple, size: 30),
                     ),
                   ),
                 ],

@@ -22,7 +22,11 @@ class ProgramsRepository {
   Future<ProgramVerificationDetail> registerProgram(Map<String, dynamic> program)async{
     return await _service.registerProgram(program);
   }
-  Future<UserProgram> verifyProgramOTP(Map<String, dynamic> data)async{
+  Future<String> verifyProgramOTP(Map<String, dynamic> data)async{
     return await _service.verifyProgramOTP(data);
+  }
+
+  Future<String> getVerificationCode(Map<String, dynamic> data) async{
+    return await _service.requestVerificationCode(data);
   }
 }

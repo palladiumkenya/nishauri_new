@@ -167,11 +167,6 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                                 RouteNames.VERIFY_PROGRAM_OTP,
                                                 extra: value);
                                           }).catchError((err) {
-                                            if (err is BadRequestException) {
-                                              debugPrint(
-                                                  "***********************************${err
-                                                      .errors}");
-                                            }
                                             handleResponseError(
                                                 context,
                                                 _formKey.currentState!.fields,
