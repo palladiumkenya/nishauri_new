@@ -54,6 +54,7 @@ class ProgramVerificationScreen extends HookConsumerWidget {
     handleRequestOTP() {
       if (formKey.currentState != null &&
           formKey.currentState!.fields["mode"]!.validate()) {
+        sent.value = true;
         submittingRequest.value = true;
         programNotifier.getVerificationCode(formKey.currentState!.instantValue).then(
           (message) {
@@ -76,7 +77,7 @@ class ProgramVerificationScreen extends HookConsumerWidget {
           },
         );
       }
-      sent.value = true;
+
     }
 
     return Scaffold(

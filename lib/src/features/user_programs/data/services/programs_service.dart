@@ -41,7 +41,8 @@ class ProgramService extends HTTPService {
       createdAt: "20th Oct 2023",
     ),
   ];
-  final List<UserProgram> _userPrograms = [
+
+  /*final List<UserProgram> _userPrograms = [
     // const UserProgram(
     //   program: Program(
     //     programCode: "HIV",
@@ -97,14 +98,34 @@ class ProgramService extends HTTPService {
     //   createdAt: "20th Oct 2023",
     // ),
   ];
-
+*/
   Future<List<Program>> getPrograms() async {
     await Future.delayed(const Duration(seconds: 3));
     return _programs;
   }
 
   Future<List<UserProgram>> getUserPrograms() async {
-    return _userPrograms;
+    final response = await call(getUserPrograms_, null);
+    final responseString = await response.stream.bytesToString();
+    final Map<String, dynamic> programData = json.decode(responseString);
+    final programs = (programData["results"] as List<dynamic>)
+        .map((e) => UserProgram.fromJson({
+              ...e,
+              "id": e["_id"],
+              "program": Map<String, dynamic>.from(
+                  {...e["program"][0], "id": e["program"][0]["_id"]})
+            }))
+        .toList();
+    return programs;
+  }
+
+  Future<http.StreamedResponse> getUserPrograms_(dynamic args) async {
+    final tokenPair = await getCachedToken();
+    var headers = {'x-access-token': tokenPair.accessToken};
+    var request = http.Request('GET',
+        Uri.parse('${Constants.BASE_URL}/patients/programs/patient-programs'));
+    request.headers.addAll(headers);
+    return await request.send();
   }
 
   Future<ProgramVerificationDetail> registerProgram(
@@ -134,7 +155,7 @@ class ProgramService extends HTTPService {
 
   Future<String> verifyProgramOTP(Map<String, dynamic> data) async {
     http.StreamedResponse response =
-    await call<Map<String, dynamic>>(verifyProgramOTP_, data);
+        await call<Map<String, dynamic>>(verifyProgramOTP_, data);
     final responseString = await response.stream.bytesToString();
     final responseData = jsonDecode(responseString);
     return responseData["detail"];

@@ -15,18 +15,24 @@ class UserProgramController
   }
 
   Future<void> _getUserPrograms() async {
-    _repository
-        .getUserPrograms()
-        .then((value) => state = AsyncValue.data(value));
+    try {
+      final programs = await _repository
+          .getUserPrograms();
+      state = AsyncValue.data(programs);
+    }catch(err){
+      state = const AsyncValue.data([]);
+    }
   }
 
-  Future<ProgramVerificationDetail> registerProgram(Map<String, dynamic> data) async {
+  Future<ProgramVerificationDetail> registerProgram(
+      Map<String, dynamic> data) async {
     try {
       return await _repository.registerProgram(data);
     } catch (e) {
       rethrow;
     }
   }
+
   Future<String> getVerificationCode(Map<String, dynamic> data) async {
     try {
       return await _repository.getVerificationCode(data);
@@ -37,7 +43,7 @@ class UserProgramController
 
   Future<String> verifyProgramOTP(Map<String, dynamic> data) async {
     try {
-      final message =  await _repository.verifyProgramOTP(data);
+      final message = await _repository.verifyProgramOTP(data);
       _getUserPrograms();
       return message;
     } catch (e) {
