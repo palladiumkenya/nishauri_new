@@ -8,7 +8,6 @@ import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class AuthApiService extends HTTPService {
-  var headers = {'Content-Type': 'application/json'};
 
   Future<AuthResponse> authenticate(Map<String, dynamic> credentials) async {
     var headers = {'Content-Type': 'application/json'};
@@ -56,4 +55,13 @@ class AuthApiService extends HTTPService {
       throw await getException(response);
     }
   }
+
+  // Future<http.StreamedResponse> signInWithGoogle_() async {
+  //   var request =
+  //   http.Request('GET', Uri.parse('${Constants.BASE_URL}/auth/google'));
+  //   return await request.send();
+  // }
+  // Future<User> signInWithGoogle() async {
+  //
+  // }
 }

@@ -6,6 +6,8 @@ import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
+import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
+
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -99,7 +101,11 @@ class WelcomeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
                     ),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final uri = Uri.parse("${Constants.BASE_URL}/auth/google");
+                        final result = await FlutterWebAuth2.authenticate(url: uri.toString(),callbackUrlScheme: "http");
+                        debugPrint("**********************$result");
+                      },
                       icon: SvgPicture.asset("assets/images/google.svg", width: 20,height: 20,),
                     ),
                   ),
