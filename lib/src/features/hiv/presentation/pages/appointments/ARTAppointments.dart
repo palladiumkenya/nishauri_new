@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
@@ -7,6 +8,7 @@ import 'package:nishauri/src/features/hiv/data/providers/art_appointmen_provider
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/display/AppSearch.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class ARTAppointmentsScreen extends HookConsumerWidget {
   const ARTAppointmentsScreen({super.key});
@@ -92,6 +94,12 @@ class ARTAppointmentsScreen extends HookConsumerWidget {
                         ),
                       ),
                       trailing: const Icon(Icons.chevron_right),
+                      onTap: () {
+                        context.goNamed(
+                          RouteNames.HIV_ART_APPOINTMENT_DETAILS,
+                          extra: artAppointments[currIndex],
+                        );
+                      },
                     ),
                   ],
                 ),

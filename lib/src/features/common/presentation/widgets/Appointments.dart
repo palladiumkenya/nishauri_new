@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
+import 'package:nishauri/src/utils/routes.dart';
 import '../../../../utils/constants.dart';
 import '../../../hiv/data/providers/art_appointmen_provider.dart';
 
@@ -44,6 +46,12 @@ class Appointments extends HookConsumerWidget {
                 return Builder(
                   builder: (BuildContext context) {
                     return AppCard(
+                      onTap: (){
+                        context.goNamed(
+                          RouteNames.HIV_ART_APPOINTMENT_DETAILS,
+                          extra: artAppointment,
+                        );
+                      },
                       color: theme.colorScheme.onPrimary,
                       variant: CardVariant.ELEVETED,
                       child: ListTile(

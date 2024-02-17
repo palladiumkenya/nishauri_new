@@ -12,7 +12,7 @@ _$ARTAppointmentImpl _$$ARTAppointmentImplFromJson(Map<String, dynamic> json) =>
       cccNumber: json['cccNumber'] as String,
       appointmentType: json['appointmentType'] as String,
       appointmentDate: json['appointmentDate'] as String,
-      nextARTAppointmentDate: json['nextARTAppointmentDate'] as String?,
+      nextAppointmentDate: json['nextAppointmentDate'] as String?,
     );
 
 Map<String, dynamic> _$$ARTAppointmentImplToJson(
@@ -22,5 +22,5 @@ Map<String, dynamic> _$$ARTAppointmentImplToJson(
       'cccNumber': instance.cccNumber,
       'appointmentType': instance.appointmentType,
       'appointmentDate': instance.appointmentDate,
-      'nextARTAppointmentDate': instance.nextARTAppointmentDate,
+      'nextAppointmentDate': instance.nextAppointmentDate,
     };

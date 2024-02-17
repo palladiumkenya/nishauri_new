@@ -10,7 +10,7 @@ class ARTAppointment with _$ARTAppointment {
     required String cccNumber,
     required String appointmentType,
     required String appointmentDate,
-    String? nextARTAppointmentDate,
+    String? nextAppointmentDate,
   }) = _ARTAppointment;
 
   factory ARTAppointment.fromJson(Map<String, dynamic> json)=> _$ARTAppointmentFromJson(json);

@@ -24,7 +24,7 @@ mixin _$ARTAppointment {
   String get cccNumber => throw _privateConstructorUsedError;
   String get appointmentType => throw _privateConstructorUsedError;
   String get appointmentDate => throw _privateConstructorUsedError;
-  String? get nextARTAppointmentDate => throw _privateConstructorUsedError;
+  String? get nextAppointmentDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +43,7 @@ abstract class $ARTAppointmentCopyWith<$Res> {
       String cccNumber,
       String appointmentType,
       String appointmentDate,
-      String? nextARTAppointmentDate});
+      String? nextAppointmentDate});
 }
 
 /// @nodoc
@@ -63,7 +63,7 @@ class _$ARTAppointmentCopyWithImpl<$Res, $Val extends ARTAppointment>
     Object? cccNumber = null,
     Object? appointmentType = null,
     Object? appointmentDate = null,
-    Object? nextARTAppointmentDate = freezed,
+    Object? nextAppointmentDate = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -82,9 +82,9 @@ class _$ARTAppointmentCopyWithImpl<$Res, $Val extends ARTAppointment>
           ? _value.appointmentDate
           : appointmentDate // ignore: cast_nullable_to_non_nullable
               as String,
-      nextARTAppointmentDate: freezed == nextARTAppointmentDate
-          ? _value.nextARTAppointmentDate
-          : nextARTAppointmentDate // ignore: cast_nullable_to_non_nullable
+      nextAppointmentDate: freezed == nextAppointmentDate
+          ? _value.nextAppointmentDate
+          : nextAppointmentDate // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -103,7 +103,7 @@ abstract class _$$ARTAppointmentImplCopyWith<$Res>
       String cccNumber,
       String appointmentType,
       String appointmentDate,
-      String? nextARTAppointmentDate});
+      String? nextAppointmentDate});
 }
 
 /// @nodoc
@@ -121,7 +121,7 @@ class __$$ARTAppointmentImplCopyWithImpl<$Res>
     Object? cccNumber = null,
     Object? appointmentType = null,
     Object? appointmentDate = null,
-    Object? nextARTAppointmentDate = freezed,
+    Object? nextAppointmentDate = freezed,
   }) {
     return _then(_$ARTAppointmentImpl(
       id: freezed == id
@@ -140,9 +140,9 @@ class __$$ARTAppointmentImplCopyWithImpl<$Res>
           ? _value.appointmentDate
           : appointmentDate // ignore: cast_nullable_to_non_nullable
               as String,
-      nextARTAppointmentDate: freezed == nextARTAppointmentDate
-          ? _value.nextARTAppointmentDate
-          : nextARTAppointmentDate // ignore: cast_nullable_to_non_nullable
+      nextAppointmentDate: freezed == nextAppointmentDate
+          ? _value.nextAppointmentDate
+          : nextAppointmentDate // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -158,7 +158,7 @@ class _$ARTAppointmentImpl
       required this.cccNumber,
       required this.appointmentType,
       required this.appointmentDate,
-      this.nextARTAppointmentDate});
+      this.nextAppointmentDate});
 
   factory _$ARTAppointmentImpl.fromJson(Map<String, dynamic> json) =>
       _$$ARTAppointmentImplFromJson(json);
@@ -172,11 +172,11 @@ class _$ARTAppointmentImpl
   @override
   final String appointmentDate;
   @override
-  final String? nextARTAppointmentDate;
+  final String? nextAppointmentDate;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ARTAppointment(id: $id, cccNumber: $cccNumber, appointmentType: $appointmentType, appointmentDate: $appointmentDate, nextARTAppointmentDate: $nextARTAppointmentDate)';
+    return 'ARTAppointment(id: $id, cccNumber: $cccNumber, appointmentType: $appointmentType, appointmentDate: $appointmentDate, nextAppointmentDate: $nextAppointmentDate)';
   }
 
   @override
@@ -188,8 +188,7 @@ class _$ARTAppointmentImpl
       ..add(DiagnosticsProperty('cccNumber', cccNumber))
       ..add(DiagnosticsProperty('appointmentType', appointmentType))
       ..add(DiagnosticsProperty('appointmentDate', appointmentDate))
-      ..add(DiagnosticsProperty(
-          'nextARTAppointmentDate', nextARTAppointmentDate));
+      ..add(DiagnosticsProperty('nextAppointmentDate', nextAppointmentDate));
   }
 
   @override
@@ -204,14 +203,14 @@ class _$ARTAppointmentImpl
                 other.appointmentType == appointmentType) &&
             (identical(other.appointmentDate, appointmentDate) ||
                 other.appointmentDate == appointmentDate) &&
-            (identical(other.nextARTAppointmentDate, nextARTAppointmentDate) ||
-                other.nextARTAppointmentDate == nextARTAppointmentDate));
+            (identical(other.nextAppointmentDate, nextAppointmentDate) ||
+                other.nextAppointmentDate == nextAppointmentDate));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, cccNumber, appointmentType,
-      appointmentDate, nextARTAppointmentDate);
+      appointmentDate, nextAppointmentDate);
 
   @JsonKey(ignore: true)
   @override
@@ -234,7 +233,7 @@ abstract class _ARTAppointment implements ARTAppointment {
       required final String cccNumber,
       required final String appointmentType,
       required final String appointmentDate,
-      final String? nextARTAppointmentDate}) = _$ARTAppointmentImpl;
+      final String? nextAppointmentDate}) = _$ARTAppointmentImpl;
 
   factory _ARTAppointment.fromJson(Map<String, dynamic> json) =
       _$ARTAppointmentImpl.fromJson;
@@ -248,7 +247,7 @@ abstract class _ARTAppointment implements ARTAppointment {
   @override
   String get appointmentDate;
   @override
-  String? get nextARTAppointmentDate;
+  String? get nextAppointmentDate;
   @override
   @JsonKey(ignore: true)
   _$$ARTAppointmentImplCopyWith<_$ARTAppointmentImpl> get copyWith =>
