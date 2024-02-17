@@ -30,6 +30,7 @@ import 'package:nishauri/src/features/hiv/presentation/pages/events/ARTEvents.da
 import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroupDetail.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroupFormScreen.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroups.dart';
+import 'package:nishauri/src/features/hiv/presentation/pages/orders/DrugOrderFormScreen.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/orders/HIVDrugOrders.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileScreen.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileWizardFormScreen.dart';
@@ -343,5 +344,17 @@ final List<RouteBase> hivProgramRoutes = [
         artAppointment: extras,
       );
     },
-  )
+  ),
+  GoRoute(
+    name: RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
+    path: "art-drug-request-form",
+    builder: (BuildContext context, GoRouterState state) {
+      final artAppointment = state.extra as ARTAppointment?;
+      final artEvent = state.extra as ARTEvent?;
+      return DrugOrderFormScreen(
+        artAppointment: artAppointment,
+        artEvent: artEvent,
+      );
+    },
+  ),
 ];
