@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
@@ -7,6 +8,8 @@ import '../../../../utils/constants.dart';
 
 class ARTAppointmentService extends HTTPService {
   Future<List<ARTAppointment>> getAppointments() async{
+    await Future.delayed(Duration(seconds: 5));
+
     final response = await call(getAppointments_, null);
     final responseString = await response.stream.bytesToString();
     final Map<String, dynamic> appointmentsData = json.decode(responseString);

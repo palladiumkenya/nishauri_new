@@ -5,7 +5,9 @@ import 'package:nishauri/src/features/hiv/data/repositories/art_appointment_repo
 class ARTAppointmentController extends StateNotifier<AsyncValue<List<ARTAppointment>>> {
   final ARTAppointmentRepository _repository;
 
-  ARTAppointmentController(this._repository):super(const AsyncValue.loading());
+  ARTAppointmentController(this._repository):super(const AsyncValue.loading()){
+    getAppointments();
+  }
 
   Future<void> getAppointments()async{
     state = const AsyncValue.loading();
