@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 class AppSearch extends StatefulWidget {
-
-  const AppSearch({super.key});
+  final void Function()? onFilterPressed;
+  const AppSearch({super.key, this.onFilterPressed});
 
   @override
   State<AppSearch> createState() => _AppSearchState();
 }
 
 class _AppSearchState extends State<AppSearch> {
+
   @override
   Widget build(BuildContext context) {
     return SearchAnchor(
@@ -29,7 +30,7 @@ class _AppSearchState extends State<AppSearch> {
             message: 'Filter',
             child: IconButton(
               icon: const Icon(Icons.tune),
-              onPressed: () {},
+              onPressed: widget.onFilterPressed,
             ),
           )
         ],
@@ -48,6 +49,7 @@ class _AppSearchState extends State<AppSearch> {
           );
         });
       },
+
     );
   }
 }
