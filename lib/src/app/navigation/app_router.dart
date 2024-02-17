@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/appointments/presentation/pages/Appointments.dart';
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/ChangePassword.dart';
@@ -194,7 +195,8 @@ final List<RouteBase> secureRoutes = [
         name: RouteNames.VERIFY_PROGRAM_OTP,
         path: 'verify',
         builder: (BuildContext context, GoRouterState state) {
-          ProgramVerificationDetail extra = state.extra! as ProgramVerificationDetail;
+          ProgramVerificationDetail extra =
+              state.extra! as ProgramVerificationDetail;
           return ProgramVerificationScreen(verificationDetail: extra);
         },
       ),
@@ -205,6 +207,13 @@ final List<RouteBase> secureRoutes = [
     path: 'dashboard',
     builder: (BuildContext context, GoRouterState state) {
       return const Dashboard();
+    },
+  ),
+  GoRoute(
+    name: RouteNames.APPOINTMENTS,
+    path: 'appointments',
+    builder: (BuildContext context, GoRouterState state) {
+      return const Appointments();
     },
   ),
   GoRoute(

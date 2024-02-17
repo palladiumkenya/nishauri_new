@@ -66,6 +66,11 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
       onPressed: () => context.goNamed(RouteNames.DASHBOARD),
     ),
     MenuItem(
+      icon: Icons.calendar_month,
+      title: MenuItemNames.APPOINTMENTS,
+      onPressed: () => context.goNamed(RouteNames.APPOINTMENTS),
+    ),
+    MenuItem(
       icon: Icons.event_note,
       title: MenuItemNames.MENSTRUAL_CIRCLE,
       onPressed: () => "",

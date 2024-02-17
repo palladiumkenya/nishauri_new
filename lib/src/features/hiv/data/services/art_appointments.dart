@@ -8,8 +8,6 @@ import '../../../../utils/constants.dart';
 
 class ARTAppointmentService extends HTTPService {
   Future<List<ARTAppointment>> getAppointments() async{
-    await Future.delayed(Duration(seconds: 5));
-
     final response = await call(getAppointments_, null);
     final responseString = await response.stream.bytesToString();
     final Map<String, dynamic> appointmentsData = json.decode(responseString);

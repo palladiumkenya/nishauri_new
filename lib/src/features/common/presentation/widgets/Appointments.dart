@@ -39,60 +39,63 @@ class Appointments extends HookConsumerWidget {
                         .difference(DateTime.now())
                         .inDays >=
                     0)
-                .map((artAppointment) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return AppCard(
-                    color: theme.colorScheme.onPrimary,
-                    variant: CardVariant.ELEVETED,
-                    child: ListTile(
-                      leading: Container(
-                        padding: const EdgeInsets.all(
-                          Constants.SPACING,
-                        ),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.background,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(
-                              Constants.ROUNDNESS,
+                .map(
+              (artAppointment) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return AppCard(
+                      color: theme.colorScheme.onPrimary,
+                      variant: CardVariant.ELEVETED,
+                      child: ListTile(
+                        leading: Container(
+                          padding: const EdgeInsets.all(
+                            Constants.SPACING,
+                          ),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.background,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(
+                                Constants.ROUNDNESS,
+                              ),
                             ),
                           ),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.calendar_month),
+                            ],
+                          ),
                         ),
-                        child: const Column(
+                        title:
+                            Text(artAppointment.appointmentType, maxLines: 1),
+                        titleTextStyle: theme.textTheme.titleSmall
+                            ?.copyWith(overflow: TextOverflow.ellipsis),
+                        subtitle: Text(
+                            "${DateTime.parse(artAppointment.appointmentDate).difference(DateTime.now()).inDays} days Remaining"),
+                        subtitleTextStyle: theme.textTheme.bodySmall,
+                        trailing: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.calendar_month),
+                            Text(
+                              DateFormat("d").format(DateTime.parse(
+                                  artAppointment.appointmentDate)),
+                              style: theme.textTheme.bodySmall
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              DateFormat("MMM").format(DateTime.parse(
+                                  artAppointment.appointmentDate)),
+                              style: theme.textTheme.bodySmall
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
                           ],
                         ),
                       ),
-                      title: Text(artAppointment.appointmentType, maxLines: 1),
-                      titleTextStyle: theme.textTheme.titleSmall
-                          ?.copyWith(overflow: TextOverflow.ellipsis),
-                      subtitle: Text(
-                          "${DateTime.parse(artAppointment.appointmentDate).difference(DateTime.now()).inDays} days Remaining"),
-                      subtitleTextStyle: theme.textTheme.bodySmall,
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            DateFormat("d").format(
-                                DateTime.parse(artAppointment.appointmentDate)),
-                            style: theme.textTheme.bodySmall
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            DateFormat("MMM").format(
-                                DateTime.parse(artAppointment.appointmentDate)),
-                            style: theme.textTheme.bodySmall
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            }).toList(),
+                    );
+                  },
+                );
+              },
+            ).toList(),
           ),
         ],
       ),
