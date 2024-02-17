@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/hiv/presentation/widgets/orders/AllOrders.dart';
 import 'package:nishauri/src/features/hiv/presentation/widgets/orders/FulfilledOrders.dart';
 import 'package:nishauri/src/features/hiv/presentation/widgets/orders/PendingOrders.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class HIVDrugOrdersScreen extends StatelessWidget {
   const HIVDrugOrdersScreen({super.key});
@@ -30,7 +31,9 @@ class HIVDrugOrdersScreen extends StatelessWidget {
           ], labelColor: theme.colorScheme.onPrimary,),
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {},
+          onPressed: () {
+            context.goNamed(RouteNames.HIV_ART_DELIVERY_REQUEST_FORM);
+          },
           label: const Text("Order now"),
           icon: const Icon(Icons.add),
         ),

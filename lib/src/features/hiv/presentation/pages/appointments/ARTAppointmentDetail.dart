@@ -75,7 +75,7 @@ class ARTAppointmentDetailScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(Constants.SPACING),
             child: Button(
-              onPress: () {context.goNamed(RouteNames.HIV_ART_DELIVERY_REQUEST_FORM, extra: artAppointment);},
+              onPress: () {context.goNamed(RouteNames.HIV_ART_DELIVERY_REQUEST_FORM, extra: {"payload":artAppointment, "type":"self"});},
               title: "Request Home delivery",
             ),
           )
