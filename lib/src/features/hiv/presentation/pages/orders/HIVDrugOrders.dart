@@ -10,6 +10,7 @@ class HIVDrugOrdersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -19,12 +20,19 @@ class HIVDrugOrdersScreen extends StatelessWidget {
             icon: const Icon(Icons.chevron_left),
           ),
           title: const Text("ARV Drug Orders"),
-          backgroundColor: Theme.of(context).primaryColor,
-          bottom: const TabBar(tabs: [
+          backgroundColor: Theme
+              .of(context)
+              .primaryColor,
+          bottom: TabBar(tabs: const [
             Tab(icon: Icon(Icons.all_inbox), text: "All"),
             Tab(icon: Icon(Icons.pending), text: "Pending"),
             Tab(icon: Icon(Icons.done_all), text: "FullField"),
-          ]),
+          ], labelColor: theme.colorScheme.onPrimary,),
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {},
+          label: const Text("Order now"),
+          icon: const Icon(Icons.add),
         ),
         body: const FractionallySizedBox(
           heightFactor: 1,
