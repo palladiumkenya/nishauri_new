@@ -21,13 +21,13 @@ class DeliveryPreference extends HookConsumerWidget {
       data: (user) => Column(
         children: [
           FormBuilderRadioGroup<String>(
-              name: 'method',
+              name: 'deliveryMethod',
               onChanged: (method_) {
                 orderDeliveryMethod.value = method_;
               },
               decoration: const InputDecoration(
                 border: InputBorder.none,
-                labelText: "Request based on",
+                labelText: "Preferred delivery method",
               ),
               options: [
                 FormBuilderFieldOption(
@@ -57,7 +57,7 @@ class DeliveryPreference extends HookConsumerWidget {
           const SizedBox(height: Constants.SPACING),
           if(orderDeliveryMethod.value == "in-parcel")
             FormBuilderDropdown(
-              name: "appointment",
+              name: "courierService",
               decoration: inputDecoration(
                 prefixIcon: Icons.delivery_dining,
                 label: "Courier",
@@ -66,7 +66,7 @@ class DeliveryPreference extends HookConsumerWidget {
             ),
             if (orderDeliveryMethod.value == "in-person")
             FormBuilderTextField(
-              name: "name",
+              name: "deliveryPersonFullName",
               decoration: inputDecoration(
                 placeholder: "e.g John Doe",
                 prefixIcon: Icons.account_circle_outlined,
@@ -80,7 +80,7 @@ class DeliveryPreference extends HookConsumerWidget {
             const SizedBox(height: Constants.SPACING),
           if(orderDeliveryMethod.value == "in-person")
             FormBuilderTextField(
-            name: "nationalId",
+            name: "deliveryPersonNationalId",
             decoration: inputDecoration(
               placeholder: "e.g 12345678",
               prefixIcon: Icons.perm_identity,
@@ -94,7 +94,8 @@ class DeliveryPreference extends HookConsumerWidget {
             const SizedBox(height: Constants.SPACING),
           if (orderDeliveryMethod.value == "in-person")
             FormBuilderTextField(
-              name: "phoneNumber",
+              name: "deliveryPersonPhoneNumber",
+              keyboardType: TextInputType.phone,
               decoration: inputDecoration(
                 placeholder: "e.g 0712345678",
                 prefixIcon: Icons.phone,
