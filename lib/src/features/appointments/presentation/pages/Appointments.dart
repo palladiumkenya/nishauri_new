@@ -18,7 +18,7 @@ class Appointments extends ConsumerWidget {
         final programsWithAppointments = data
             .where(_hasAppointData);
         return DefaultTabController(
-          length: programsWithAppointments.length,
+          length: programsWithAppointments.length + 2,
           child: Scaffold(
             appBar: AppBar(
               leading: IconButton(
@@ -28,6 +28,8 @@ class Appointments extends ConsumerWidget {
               title: const Text("Appointments"),
               bottom: TabBar(
                 tabs: [
+                  const Tab(text: "TB",),
+                  const Tab(text: "MNCH",),
                   ...programsWithAppointments
                       .map(_getProgramTabBar)
                       .toList(),
@@ -36,9 +38,12 @@ class Appointments extends ConsumerWidget {
             ),
             body: TabBarView(
               children: [
+                const Center(child: Text("TB Appointment")),
+                const Center(child: Text("MNCH Appointments")),
                 ...programsWithAppointments
                     .map(_getProgramAppointments)
                     .toList(),
+
               ],
             ),
           ),

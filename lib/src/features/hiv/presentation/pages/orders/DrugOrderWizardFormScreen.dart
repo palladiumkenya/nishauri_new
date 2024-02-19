@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
+import 'package:nishauri/src/features/hiv/presentation/pages/orders/forms/DeliveryPreference.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/orders/forms/GettingStated.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/orders/forms/ReviewAndSubmit.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
@@ -41,6 +42,14 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
         isActive: currentStep.value == 0,
       ),
       Step(
+        title: const Text("Delivery preference"),
+        subtitle: const Text(
+          "How do you want your drugs delivered?",
+        ),
+        content: const DeliveryPreference(),
+        isActive: currentStep.value == 1,
+      ),
+      Step(
         title: const Text("Review and Submit"),
         content: AppCard(
           child: Padding(
@@ -64,7 +73,7 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
             ),
           ),
         ),
-        isActive: currentStep.value == 1,
+        isActive: currentStep.value == 2,
       ),
     ];
 
