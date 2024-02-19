@@ -21,7 +21,7 @@ InputDecoration inputDecoration({
         onPressed: onPrefixIconPressed,
       ),
       hintText: placeholder,
-      label: label != null ? Text(label) : null,
+      labelText: label,
       suffixIcon: surfixIcon != null
           ? IconButton(onPressed: onSurfixIconPressed, icon: Icon(surfixIcon))
           : null);

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -32,7 +34,7 @@ class HIVDrugOrdersScreen extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            context.goNamed(RouteNames.HIV_ART_DELIVERY_REQUEST_FORM);
+            context.goNamed(RouteNames.HIV_ART_DELIVERY_REQUEST_FORM, extra: {"payload":null, "type":null});
           },
           label: const Text("Order now"),
           icon: const Icon(Icons.add),
