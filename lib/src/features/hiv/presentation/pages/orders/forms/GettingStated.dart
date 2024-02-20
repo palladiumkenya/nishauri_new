@@ -7,6 +7,7 @@ import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointmen
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_appointmen_provider.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_events_provider.dart';
+import 'package:nishauri/src/features/hiv/data/providers/art_treatment_Support_provider.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
@@ -22,6 +23,7 @@ class GettingStarted extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncARTAppointments = ref.watch(artAppointmentProvider);
     final asyncARTEvents = ref.watch(art_event_provider);
+    final asyncARTTreatmentSupport = ref.watch(artTreatmentSupportProvider);
     final orderType = useState<String?>(type);
     final orderMode = useState<String?>(artEvent != null
         ? "event"
@@ -141,13 +143,30 @@ class GettingStarted extends HookConsumerWidget {
         if (orderType.value == "other")
           const SizedBox(height: Constants.SPACING),
         if (orderType.value == "other")
-          FormBuilderDropdown(
-            name: "careReceiver",
-            decoration: inputDecoration(
-              prefixIcon: Icons.person,
-              label: "Care receiver",
+          asyncARTTreatmentSupport.when(
+            data: (supports) => FormBuilderDropdown(
+              name: "careReceiver",
+              decoration: inputDecoration(
+                prefixIcon: Icons.person,
+                label: "Care receiver",
+              ),
+              items: supports
+                  // TODO Filter only where curr user is care giver
+                  .where((element) => true)
+                  .map(
+                    (e) => DropdownMenuItem(
+                      value: e.id,
+                      child: Text(
+                        "${e.careReceiver.name}(${e.careReceiver.cccNumber})",
+                      ),
+                    ),
+                  )
+                  .toList(),
             ),
-            items: [],
+            error: (error, _) => Center(child: Text(error.toString())),
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
+            ),
           ),
         const SizedBox(height: Constants.SPACING),
       ],

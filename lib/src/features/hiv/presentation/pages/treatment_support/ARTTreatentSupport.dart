@@ -93,7 +93,7 @@ class ARTTreatmentSupportersScreen extends HookConsumerWidget {
                       children: [
                         const Divider(),
                         ListTile(
-                          leading: const Icon(Icons.calendar_month_sharp),
+                          leading: const Icon(Icons.person),
                           title: Text(isCareGiver
                               ? artTreatmentSupporter.careGiver.name
                               : artTreatmentSupporter.careReceiver.name),
@@ -104,13 +104,8 @@ class ARTTreatmentSupportersScreen extends HookConsumerWidget {
                               ),
                             ),
                           ),
-                          trailing: const Icon(Icons.chevron_right),
-                          onTap: () {
-                            context.goNamed(
-                              RouteNames.HIV_ART_APPOINTMENT_DETAILS,
-                              extra: artTreatmentSupporters[currIndex],
-                            );
-                          },
+                          trailing: Text(
+                              isCareGiver ? "Care giver" : "Care Receiver"),
                         ),
                       ],
                     );
