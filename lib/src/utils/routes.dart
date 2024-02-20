@@ -20,6 +20,7 @@ class RouteNames {
   static const HIV_ART_SITES = "art-sites";
   static const DASHBOARD = "dashboard";
   static const APPOINTMENTS = "appointments";
+  static const TREATMENT_SUPPORT = "treatment-support";
   static const HIV_REGIMEN = "regimen-history";
   static const HIV_ART_GROUPS = "hiv-art-groups";
   static const HIV_ART_GROUP_DETAIL = "hiv-art-groups-detail";
@@ -38,6 +39,7 @@ class MenuItemNames {
   static const MY_CALENDAR = "My calendar";
   static const DASHBOARD = "Dashboard";
   static const APPOINTMENTS = "Appointments";
+  static const TREATMENT_SUPPORT = "Treatment Supporters";
   static const MENSTRUAL_CIRCLE = "Menstrual Circle";
   static const BMI_CALCULATOR = "BMI Calculator";
   static const HIV_PROGRAM_MENU = "ART Program";

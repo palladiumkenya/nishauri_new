@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_appointmen_provider.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_events_provider.dart';
-import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
-import 'package:nishauri/src/shared/input/ImagePicker.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 
 class GettingStarted extends HookConsumerWidget {
   final ARTAppointment? artAppointment;

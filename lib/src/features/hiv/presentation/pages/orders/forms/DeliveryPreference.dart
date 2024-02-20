@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:nishauri/src/features/orders/data/providers/courier_provider.dart';
 
 import '../../../../../../shared/styles/input_styles.dart';
 import '../../../../../../utils/constants.dart';
@@ -16,6 +17,7 @@ class DeliveryPreference extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final orderDeliveryMethod = useState<String?>(null);
     final asyncUser = ref.watch(userProvider);
+    final asyncCourierServices = ref.watch(courierProvider);
     final theme = Theme.of(context);
     return asyncUser.when(
       data: (user) => Column(
@@ -55,16 +57,31 @@ class DeliveryPreference extends HookConsumerWidget {
                 ),
               ]),
           const SizedBox(height: Constants.SPACING),
-          if(orderDeliveryMethod.value == "in-parcel")
-            FormBuilderDropdown(
-              name: "courierService",
-              decoration: inputDecoration(
-                prefixIcon: Icons.delivery_dining,
-                label: "Courier",
+          if (orderDeliveryMethod.value == "in-parcel")
+            asyncCourierServices.when(
+              data: (courierService) => FormBuilderDropdown(
+                name: "courierService",
+                decoration: inputDecoration(
+                  prefixIcon: Icons.delivery_dining,
+                  label: "Courier",
+                ),
+                items: courierService
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e.id,
+                        child: Text(
+                          e.name,
+                        ),
+                      ),
+                    )
+                    .toList(),
               ),
-              items: [],
+              error: (error, _) => Center(child: Text(error.toString())),
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
-            if (orderDeliveryMethod.value == "in-person")
+          if (orderDeliveryMethod.value == "in-person")
             FormBuilderTextField(
               name: "deliveryPersonFullName",
               decoration: inputDecoration(
@@ -78,18 +95,18 @@ class DeliveryPreference extends HookConsumerWidget {
             ),
           if (orderDeliveryMethod.value == "in-person")
             const SizedBox(height: Constants.SPACING),
-          if(orderDeliveryMethod.value == "in-person")
+          if (orderDeliveryMethod.value == "in-person")
             FormBuilderTextField(
-            name: "deliveryPersonNationalId",
-            decoration: inputDecoration(
-              placeholder: "e.g 12345678",
-              prefixIcon: Icons.perm_identity,
-              label: "National Id",
+              name: "deliveryPersonNationalId",
+              decoration: inputDecoration(
+                placeholder: "e.g 12345678",
+                prefixIcon: Icons.perm_identity,
+                label: "National Id",
+              ),
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(),
+              ]),
             ),
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(),
-            ]),
-          ),
           if (orderDeliveryMethod.value == "in-person")
             const SizedBox(height: Constants.SPACING),
           if (orderDeliveryMethod.value == "in-person")

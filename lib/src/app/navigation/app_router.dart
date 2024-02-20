@@ -32,6 +32,7 @@ import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroupForm
 import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroups.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/orders/DrugOrderWizardFormScreen.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/orders/HIVDrugOrders.dart';
+import 'package:nishauri/src/features/treatment_support/presentation/pages/TreatmentSupport.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileScreen.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileWizardFormScreen.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
@@ -220,6 +221,13 @@ final List<RouteBase> secureRoutes = [
     },
   ),
   GoRoute(
+    name: RouteNames.TREATMENT_SUPPORT,
+    path: 'treatment-support',
+    builder: (BuildContext context, GoRouterState state) {
+      return const TreatmentSupport();
+    },
+  ),
+  GoRoute(
       name: RouteNames.FACILITY_VISITS,
       path: 'facility-visits',
       builder: (BuildContext context, GoRouterState state) {
@@ -353,10 +361,7 @@ final List<RouteBase> hivProgramRoutes = [
       final payload = extra["payload"];
       final type = extra["type"] as String?;
       if (payload is ARTAppointment) {
-        return DrugOrderWizardFormScreen(
-            artAppointment: payload,
-            type: type
-        );
+        return DrugOrderWizardFormScreen(artAppointment: payload, type: type);
       }
       if (payload is ARTEvent) {
         return DrugOrderWizardFormScreen(artEvent: payload, type: type);

@@ -5,8 +5,8 @@ class CourierService extends HTTPService {
   final _couriers = [
     const Courier(id: "1", name: "Boda boda"),
     const Courier(id: "2", name: "boat service"),
-    const Courier(id: "2", name: "air service"),
-    const Courier(id: "2", name: "Glovo"),
+    const Courier(id: "3", name: "air service"),
+    const Courier(id: "4", name: "Glovo"),
   ];
 
   Future<List<Courier>> getCourierServices () async {

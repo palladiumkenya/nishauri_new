@@ -71,6 +71,11 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
       onPressed: () => context.goNamed(RouteNames.APPOINTMENTS),
     ),
     MenuItem(
+      icon: Icons.group,
+      title: MenuItemNames.TREATMENT_SUPPORT,
+      onPressed: () => context.goNamed(RouteNames.TREATMENT_SUPPORT),
+    ),
+    MenuItem(
       icon: Icons.event_note,
       title: MenuItemNames.MENSTRUAL_CIRCLE,
       onPressed: () => "",
