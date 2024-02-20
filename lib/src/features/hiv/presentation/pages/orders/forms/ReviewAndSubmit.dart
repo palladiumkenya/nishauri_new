@@ -1,38 +1,163 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:nishauri/src/shared/display/AppAvatar.dart';
-import 'package:nishauri/src/utils/helpers.dart';
 
-class ReviewAndSubmit extends StatelessWidget {
+import '../../../../../orders/data/providers/courier_provider.dart';
+import '../../../../data/providers/art_appointmen_provider.dart';
+import '../../../../data/providers/art_events_provider.dart';
+import '../../../../data/providers/art_treatment_Support_provider.dart';
+
+class ReviewAndSubmit extends ConsumerWidget {
   final Map<String, dynamic> formState;
+
   const ReviewAndSubmit({super.key, required this.formState});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final asyncARTAppointments = ref.watch(artAppointmentProvider);
+    final asyncARTEvents = ref.watch(art_event_provider);
+    final asyncARTTreatmentSupport = ref.watch(artTreatmentSupportProvider);
+    final asyncCourierServices = ref.watch(courierProvider);
     final theme = Theme.of(context);
-    // return Placeholder();
-    return const Wrap(children: [
-      Divider(),
+    return Wrap(children: [
+      ListTile(
+        subtitle: Text("${formState["mode"]}"),
+        title: const Text("Mode"),
+        leading: const Icon(Icons.check),
+      ),
+      ListTile(
+        subtitle: Text("${formState["type"]}"),
+        title: const Text("Type"),
+        leading: const Icon(Icons.check),
+      ),
+      if (formState["mode"] == "appointment")
+        asyncARTAppointments.when(
+          data: (data) {
+            final apt = data.indexWhere(
+                    (element) => element.id == formState["appointment"]);
+            return ListTile(
+              subtitle: Text(
+                apt == -1
+                    ? "None"
+                    : "${data[apt].appointmentType}(${DateFormat("dd MMM yyy")
+                    .format(DateTime.parse(data[apt].appointmentDate))}})",
+              ),
+              title: const Text("Appointment"),
+              leading: const Icon(Icons.check),
+            );
+          },
+          error: (error, _) => Center(child: Text(error.toString())),
+          loading: () =>
+          const Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      if (formState["mode"] == "event")
+        asyncARTEvents.when(
+          data: (data) {
+            final event = data.indexWhere(
+                    (element) => element.id == formState["event"]);
 
-      Divider(),
-
-      Divider(),
-
-      Divider(),
-
-      Divider(),
-
-      Divider(),
-
-      Divider(),
-
-      Divider(),
-
-      Divider(),
-
+            return ListTile(
+              subtitle: Text(
+                event == -1
+                    ? "None"
+                    : "${data[event].title}(${DateFormat("dd MMM yyy").format(
+                    DateTime.parse(data[event].distributionTime))}})",
+              ),
+              title: const Text("Event"),
+              leading: const Icon(Icons.check),
+            );
+          },
+          error: (error, _) => Center(child: Text(error.toString())),
+          loading: () =>
+          const Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      if (formState["type"] == "other")
+        asyncARTTreatmentSupport.when(
+          data: (data) {
+            final careReceiver = data.indexWhere(
+                    (element) => element.id == formState["careReceiver"]);
+            return ListTile(
+              subtitle: Text(
+                careReceiver == -1
+                    ? "None"
+                    : data[careReceiver].careReceiver.name,
+              ), title: const Text("Care receiver"),
+              leading: const Icon(Icons.check),
+            );
+          },
+          error: (error, _) => Center(child: Text(error.toString())),
+          loading: () =>
+          const Center(
+            child: CircularProgressIndicator(),
+          ),
+        )
+      ,
+      if (formState["deliveryMethod"] == "in-parcel")
+        asyncCourierServices.when(
+          data: (data) {
+            final courier = data.indexWhere(
+                    (element) => element.id == formState["courierService"]);
+            return ListTile(
+              subtitle: Text(
+                courier == -1
+                    ? "None"
+                    : data[courier].name,
+              ),
+              title: const Text("Courier service"),
+              leading: const Icon(Icons.check),
+            );
+          },
+          error: (error, _) => Center(child: Text(error.toString())),
+          loading: () =>
+          const Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      ListTile(
+        subtitle: Text("${formState["deliveryMethod"]}"),
+        title: const Text("Delivery preference"),
+        leading: const Icon(Icons.check),
+      ),
+      if (formState["deliveryMethod"] == "in-person")
+        ExpansionTile(
+          title: const Text("Delivery Person"),
+          leading: const Icon(Icons.check),
+          subtitle: Text("${formState["deliveryPersonFullName"]}"),
+          children: [
+            ListTile(
+              subtitle: Text("${formState["deliveryPersonNationalId"]}"),
+              title: const Text("National Id"),
+              leading: const Icon(Icons.subdirectory_arrow_right),
+            ),
+            ListTile(
+              subtitle: Text("${formState["deliveryPersonPhoneNumber"]}"),
+              title: const Text("contact"),
+              leading: const Icon(Icons.subdirectory_arrow_right),
+            ),
+            ListTile(
+              subtitle: Text(DateFormat("dd MMM yyy HH:mm a")
+                  .format(DateTime.parse(formState["pickupTime"]))),
+              title: const Text("Pickup time"),
+              leading: const Icon(Icons.subdirectory_arrow_right),
+            ),
+          ],
+        ),
+      ListTile(
+        subtitle: Text("${formState["phoneNumber"]}"),
+        title: const Text("Phone number"),
+        leading: const Icon(Icons.check),
+      ),
+      ListTile(
+        subtitle: Text("${formState["deliveryLocation"]["address"]}"),
+        title: const Text("Delivery location"),
+        leading: const Icon(Icons.check),
+      ),
     ]);
   }
 }
