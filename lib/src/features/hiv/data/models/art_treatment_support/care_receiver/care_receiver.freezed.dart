@@ -22,6 +22,7 @@ CareReceiver _$CareReceiverFromJson(Map<String, dynamic> json) {
 mixin _$CareReceiver {
   String get cccNumber => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String? get phoneNumber => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,7 @@ abstract class $CareReceiverCopyWith<$Res> {
           CareReceiver value, $Res Function(CareReceiver) then) =
       _$CareReceiverCopyWithImpl<$Res, CareReceiver>;
   @useResult
-  $Res call({String cccNumber, String name});
+  $Res call({String cccNumber, String name, String? phoneNumber});
 }
 
 /// @nodoc
@@ -53,6 +54,7 @@ class _$CareReceiverCopyWithImpl<$Res, $Val extends CareReceiver>
   $Res call({
     Object? cccNumber = null,
     Object? name = null,
+    Object? phoneNumber = freezed,
   }) {
     return _then(_value.copyWith(
       cccNumber: null == cccNumber
@@ -63,6 +65,10 @@ class _$CareReceiverCopyWithImpl<$Res, $Val extends CareReceiver>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      phoneNumber: freezed == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -75,7 +81,7 @@ abstract class _$$CareReceiverImplCopyWith<$Res>
       __$$CareReceiverImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String cccNumber, String name});
+  $Res call({String cccNumber, String name, String? phoneNumber});
 }
 
 /// @nodoc
@@ -91,6 +97,7 @@ class __$$CareReceiverImplCopyWithImpl<$Res>
   $Res call({
     Object? cccNumber = null,
     Object? name = null,
+    Object? phoneNumber = freezed,
   }) {
     return _then(_$CareReceiverImpl(
       cccNumber: null == cccNumber
@@ -101,6 +108,10 @@ class __$$CareReceiverImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      phoneNumber: freezed == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -108,7 +119,8 @@ class __$$CareReceiverImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$CareReceiverImpl implements _CareReceiver {
-  const _$CareReceiverImpl({required this.cccNumber, required this.name});
+  const _$CareReceiverImpl(
+      {required this.cccNumber, required this.name, this.phoneNumber});
 
   factory _$CareReceiverImpl.fromJson(Map<String, dynamic> json) =>
       _$$CareReceiverImplFromJson(json);
@@ -117,10 +129,12 @@ class _$CareReceiverImpl implements _CareReceiver {
   final String cccNumber;
   @override
   final String name;
+  @override
+  final String? phoneNumber;
 
   @override
   String toString() {
-    return 'CareReceiver(cccNumber: $cccNumber, name: $name)';
+    return 'CareReceiver(cccNumber: $cccNumber, name: $name, phoneNumber: $phoneNumber)';
   }
 
   @override
@@ -130,12 +144,14 @@ class _$CareReceiverImpl implements _CareReceiver {
             other is _$CareReceiverImpl &&
             (identical(other.cccNumber, cccNumber) ||
                 other.cccNumber == cccNumber) &&
-            (identical(other.name, name) || other.name == name));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, cccNumber, name);
+  int get hashCode => Object.hash(runtimeType, cccNumber, name, phoneNumber);
 
   @JsonKey(ignore: true)
   @override
@@ -154,7 +170,8 @@ class _$CareReceiverImpl implements _CareReceiver {
 abstract class _CareReceiver implements CareReceiver {
   const factory _CareReceiver(
       {required final String cccNumber,
-      required final String name}) = _$CareReceiverImpl;
+      required final String name,
+      final String? phoneNumber}) = _$CareReceiverImpl;
 
   factory _CareReceiver.fromJson(Map<String, dynamic> json) =
       _$CareReceiverImpl.fromJson;
@@ -163,6 +180,8 @@ abstract class _CareReceiver implements CareReceiver {
   String get cccNumber;
   @override
   String get name;
+  @override
+  String? get phoneNumber;
   @override
   @JsonKey(ignore: true)
   _$$CareReceiverImplCopyWith<_$CareReceiverImpl> get copyWith =>

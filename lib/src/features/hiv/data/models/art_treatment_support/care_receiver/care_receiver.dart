@@ -7,6 +7,8 @@ class CareReceiver with _$CareReceiver {
   const factory CareReceiver({
     required String cccNumber,
     required String name,
+    String? phoneNumber,
+
   }) = _CareReceiver;
 
   factory CareReceiver.fromJson(Map<String, dynamic> json)=> _$CareReceiverFromJson(json);

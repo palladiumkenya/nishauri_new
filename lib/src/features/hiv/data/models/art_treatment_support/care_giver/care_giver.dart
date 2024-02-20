@@ -6,6 +6,8 @@ part 'care_giver.g.dart';
 class CareGiver with _$CareGiver {
   const factory CareGiver({
     required String name,
+    String? phoneNumber,
+
   }) = _CareGiver;
 
   factory CareGiver.fromJson(Map<String, dynamic> json)=> _$CareGiverFromJson(json);

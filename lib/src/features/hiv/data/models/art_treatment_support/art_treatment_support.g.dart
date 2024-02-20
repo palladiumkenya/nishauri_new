@@ -13,6 +13,7 @@ _$ARTTreatmentSupportImpl _$$ARTTreatmentSupportImplFromJson(
       careReceiver:
           CareReceiver.fromJson(json['careReceiver'] as Map<String, dynamic>),
       careGiver: CareGiver.fromJson(json['careGiver'] as Map<String, dynamic>),
+      createdAt: json['createdAt'] as String,
     );
 
 Map<String, dynamic> _$$ARTTreatmentSupportImplToJson(
@@ -21,4 +22,5 @@ Map<String, dynamic> _$$ARTTreatmentSupportImplToJson(
       'id': instance.id,
       'careReceiver': instance.careReceiver,
       'careGiver': instance.careGiver,
+      'createdAt': instance.createdAt,
     };

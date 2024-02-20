@@ -21,6 +21,7 @@ CareGiver _$CareGiverFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$CareGiver {
   String get name => throw _privateConstructorUsedError;
+  String? get phoneNumber => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -33,7 +34,7 @@ abstract class $CareGiverCopyWith<$Res> {
   factory $CareGiverCopyWith(CareGiver value, $Res Function(CareGiver) then) =
       _$CareGiverCopyWithImpl<$Res, CareGiver>;
   @useResult
-  $Res call({String name});
+  $Res call({String name, String? phoneNumber});
 }
 
 /// @nodoc
@@ -50,12 +51,17 @@ class _$CareGiverCopyWithImpl<$Res, $Val extends CareGiver>
   @override
   $Res call({
     Object? name = null,
+    Object? phoneNumber = freezed,
   }) {
     return _then(_value.copyWith(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      phoneNumber: freezed == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -68,7 +74,7 @@ abstract class _$$CareGiverImplCopyWith<$Res>
       __$$CareGiverImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name});
+  $Res call({String name, String? phoneNumber});
 }
 
 /// @nodoc
@@ -83,12 +89,17 @@ class __$$CareGiverImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = null,
+    Object? phoneNumber = freezed,
   }) {
     return _then(_$CareGiverImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      phoneNumber: freezed == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -96,17 +107,19 @@ class __$$CareGiverImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$CareGiverImpl implements _CareGiver {
-  const _$CareGiverImpl({required this.name});
+  const _$CareGiverImpl({required this.name, this.phoneNumber});
 
   factory _$CareGiverImpl.fromJson(Map<String, dynamic> json) =>
       _$$CareGiverImplFromJson(json);
 
   @override
   final String name;
+  @override
+  final String? phoneNumber;
 
   @override
   String toString() {
-    return 'CareGiver(name: $name)';
+    return 'CareGiver(name: $name, phoneNumber: $phoneNumber)';
   }
 
   @override
@@ -114,12 +127,14 @@ class _$CareGiverImpl implements _CareGiver {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CareGiverImpl &&
-            (identical(other.name, name) || other.name == name));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name);
+  int get hashCode => Object.hash(runtimeType, name, phoneNumber);
 
   @JsonKey(ignore: true)
   @override
@@ -136,13 +151,17 @@ class _$CareGiverImpl implements _CareGiver {
 }
 
 abstract class _CareGiver implements CareGiver {
-  const factory _CareGiver({required final String name}) = _$CareGiverImpl;
+  const factory _CareGiver(
+      {required final String name,
+      final String? phoneNumber}) = _$CareGiverImpl;
 
   factory _CareGiver.fromJson(Map<String, dynamic> json) =
       _$CareGiverImpl.fromJson;
 
   @override
   String get name;
+  @override
+  String? get phoneNumber;
   @override
   @JsonKey(ignore: true)
   _$$CareGiverImplCopyWith<_$CareGiverImpl> get copyWith =>

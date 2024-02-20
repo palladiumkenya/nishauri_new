@@ -23,6 +23,7 @@ mixin _$ARTTreatmentSupport {
   String? get id => throw _privateConstructorUsedError;
   CareReceiver get careReceiver => throw _privateConstructorUsedError;
   CareGiver get careGiver => throw _privateConstructorUsedError;
+  String get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +37,11 @@ abstract class $ARTTreatmentSupportCopyWith<$Res> {
           ARTTreatmentSupport value, $Res Function(ARTTreatmentSupport) then) =
       _$ARTTreatmentSupportCopyWithImpl<$Res, ARTTreatmentSupport>;
   @useResult
-  $Res call({String? id, CareReceiver careReceiver, CareGiver careGiver});
+  $Res call(
+      {String? id,
+      CareReceiver careReceiver,
+      CareGiver careGiver,
+      String createdAt});
 
   $CareReceiverCopyWith<$Res> get careReceiver;
   $CareGiverCopyWith<$Res> get careGiver;
@@ -58,6 +63,7 @@ class _$ARTTreatmentSupportCopyWithImpl<$Res, $Val extends ARTTreatmentSupport>
     Object? id = freezed,
     Object? careReceiver = null,
     Object? careGiver = null,
+    Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -72,6 +78,10 @@ class _$ARTTreatmentSupportCopyWithImpl<$Res, $Val extends ARTTreatmentSupport>
           ? _value.careGiver
           : careGiver // ignore: cast_nullable_to_non_nullable
               as CareGiver,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 
@@ -100,7 +110,11 @@ abstract class _$$ARTTreatmentSupportImplCopyWith<$Res>
       __$$ARTTreatmentSupportImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? id, CareReceiver careReceiver, CareGiver careGiver});
+  $Res call(
+      {String? id,
+      CareReceiver careReceiver,
+      CareGiver careGiver,
+      String createdAt});
 
   @override
   $CareReceiverCopyWith<$Res> get careReceiver;
@@ -122,6 +136,7 @@ class __$$ARTTreatmentSupportImplCopyWithImpl<$Res>
     Object? id = freezed,
     Object? careReceiver = null,
     Object? careGiver = null,
+    Object? createdAt = null,
   }) {
     return _then(_$ARTTreatmentSupportImpl(
       id: freezed == id
@@ -136,6 +151,10 @@ class __$$ARTTreatmentSupportImplCopyWithImpl<$Res>
           ? _value.careGiver
           : careGiver // ignore: cast_nullable_to_non_nullable
               as CareGiver,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -146,7 +165,10 @@ class _$ARTTreatmentSupportImpl
     with DiagnosticableTreeMixin
     implements _ARTTreatmentSupport {
   const _$ARTTreatmentSupportImpl(
-      {this.id, required this.careReceiver, required this.careGiver});
+      {this.id,
+      required this.careReceiver,
+      required this.careGiver,
+      required this.createdAt});
 
   factory _$ARTTreatmentSupportImpl.fromJson(Map<String, dynamic> json) =>
       _$$ARTTreatmentSupportImplFromJson(json);
@@ -157,10 +179,12 @@ class _$ARTTreatmentSupportImpl
   final CareReceiver careReceiver;
   @override
   final CareGiver careGiver;
+  @override
+  final String createdAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ARTTreatmentSupport(id: $id, careReceiver: $careReceiver, careGiver: $careGiver)';
+    return 'ARTTreatmentSupport(id: $id, careReceiver: $careReceiver, careGiver: $careGiver, createdAt: $createdAt)';
   }
 
   @override
@@ -170,7 +194,8 @@ class _$ARTTreatmentSupportImpl
       ..add(DiagnosticsProperty('type', 'ARTTreatmentSupport'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('careReceiver', careReceiver))
-      ..add(DiagnosticsProperty('careGiver', careGiver));
+      ..add(DiagnosticsProperty('careGiver', careGiver))
+      ..add(DiagnosticsProperty('createdAt', createdAt));
   }
 
   @override
@@ -182,12 +207,15 @@ class _$ARTTreatmentSupportImpl
             (identical(other.careReceiver, careReceiver) ||
                 other.careReceiver == careReceiver) &&
             (identical(other.careGiver, careGiver) ||
-                other.careGiver == careGiver));
+                other.careGiver == careGiver) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, careReceiver, careGiver);
+  int get hashCode =>
+      Object.hash(runtimeType, id, careReceiver, careGiver, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -208,7 +236,8 @@ abstract class _ARTTreatmentSupport implements ARTTreatmentSupport {
   const factory _ARTTreatmentSupport(
       {final String? id,
       required final CareReceiver careReceiver,
-      required final CareGiver careGiver}) = _$ARTTreatmentSupportImpl;
+      required final CareGiver careGiver,
+      required final String createdAt}) = _$ARTTreatmentSupportImpl;
 
   factory _ARTTreatmentSupport.fromJson(Map<String, dynamic> json) =
       _$ARTTreatmentSupportImpl.fromJson;
@@ -219,6 +248,8 @@ abstract class _ARTTreatmentSupport implements ARTTreatmentSupport {
   CareReceiver get careReceiver;
   @override
   CareGiver get careGiver;
+  @override
+  String get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$ARTTreatmentSupportImplCopyWith<_$ARTTreatmentSupportImpl> get copyWith =>

@@ -12,7 +12,7 @@ class ARTTreatmentSupport with _$ARTTreatmentSupport {
     String? id,
     required CareReceiver careReceiver,
     required CareGiver careGiver,
-
+    required String createdAt
   }) = _ARTTreatmentSupport;
 
   factory ARTTreatmentSupport.fromJson(Map<String, dynamic> json)=> _$ARTTreatmentSupportFromJson(json);

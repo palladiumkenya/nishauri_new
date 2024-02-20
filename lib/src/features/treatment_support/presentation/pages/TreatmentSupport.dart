@@ -83,7 +83,7 @@ Tab _getProgramTabBar(UserProgram program) {
 Widget _getProgramAppointments(UserProgram program) {
   final programCode = program.program.programCode;
   if (programCode == ProgramCodeNames.HIV) {
-    return const ARTTreatmentSupporters();
+    return const ARTTreatmentSupportersScreen();
   }
   return Center(child: Text(program.program.name));
 }
