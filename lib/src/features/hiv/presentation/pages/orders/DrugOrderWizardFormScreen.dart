@@ -29,6 +29,19 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
     final theme = Theme.of(context);
     final loading = useState<bool>(false);
 
+    final stepFieldsToValidate = [
+      ["mode", "type", "event", "appointment", "careReceiver"],
+      [
+        "deliveryMethod",
+        "courierService",
+        "deliveryPersonFullName",
+        "deliveryPersonNationalId",
+        "deliveryPersonPhoneNumber",
+        'pickupTime'
+      ],
+      ["phoneNumber", "deliveryLocation"],
+    ];
+
     List<Step> steps = [
       Step(
         title: const Text("Getting Started"),
@@ -106,13 +119,13 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
             bool isLastStep = (currentStep.value == steps.length - 1);
             // 1.validate current step fields and prevent continue encase of any error in current step
             if (!isLastStep) {
-              // final currentStepFields =
-              // stepFieldsToValidate[currentStep.value];
+              final currentStepFields =
+              stepFieldsToValidate[currentStep.value];
 
-              // if (currentStepFields.any((field) =>
-              // !formKey.currentState!.fields[field]!.validate())) {
-              //   return; //Don't move to next step if current step not valid
-              // }
+              if (currentStepFields.any((field) =>
+              formKey.currentState!.fields[field]?.validate() == false)) {
+                return; //Don't move to next step if current step not valid
+              }
             }
             if (isLastStep) {
               // Submit form

@@ -27,6 +27,9 @@ class DeliveryPreference extends HookConsumerWidget {
               onChanged: (method_) {
                 orderDeliveryMethod.value = method_;
               },
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(errorText: "Required"),
+              ]),
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 labelText: "Preferred delivery method",
@@ -65,6 +68,10 @@ class DeliveryPreference extends HookConsumerWidget {
                   prefixIcon: Icons.delivery_dining,
                   label: "Courier",
                 ),
+                validator: FormBuilderValidators.compose([
+                  if (orderDeliveryMethod.value == "in-parcel")
+                    FormBuilderValidators.required(errorText: "Required"),
+                ]),
                 items: courierService
                     .map(
                       (e) => DropdownMenuItem(
@@ -90,7 +97,8 @@ class DeliveryPreference extends HookConsumerWidget {
                 label: "Full name",
               ),
               validator: FormBuilderValidators.compose([
-                FormBuilderValidators.required(),
+                if (orderDeliveryMethod.value == "in-person")
+                  FormBuilderValidators.required(errorText: "Required"),
               ]),
             ),
           if (orderDeliveryMethod.value == "in-person")
@@ -104,7 +112,8 @@ class DeliveryPreference extends HookConsumerWidget {
                 label: "National Id",
               ),
               validator: FormBuilderValidators.compose([
-                FormBuilderValidators.required(),
+                if (orderDeliveryMethod.value == "in-person")
+                  FormBuilderValidators.required(errorText: "Required"),
               ]),
             ),
           if (orderDeliveryMethod.value == "in-person")
@@ -119,7 +128,8 @@ class DeliveryPreference extends HookConsumerWidget {
                 label: "Phone number",
               ),
               validator: FormBuilderValidators.compose([
-                FormBuilderValidators.required(),
+                if (orderDeliveryMethod.value == "in-person")
+                  FormBuilderValidators.required(errorText: "Required"),
               ]),
             ),
           if (orderDeliveryMethod.value == "in-person")
@@ -137,7 +147,8 @@ class DeliveryPreference extends HookConsumerWidget {
                 label: "Pickup time",
               ),
               validator: FormBuilderValidators.compose([
-                FormBuilderValidators.required(),
+                if (orderDeliveryMethod.value == "in-person")
+                  FormBuilderValidators.required(errorText: "Required"),
               ]),
               valueTransformer: (date) => date?.toIso8601String(),
             ),

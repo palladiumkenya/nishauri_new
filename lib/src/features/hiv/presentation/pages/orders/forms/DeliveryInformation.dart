@@ -33,13 +33,16 @@ class DeliveryInformation extends HookConsumerWidget {
                   prefixIcon: Icons.phone,
                   label: "Phone number",
                 ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                  validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(errorText: "Required"),
+                  ]),
               ),
               const SizedBox(height: Constants.SPACING),
               // TODO Replace with https://pub.dev/packages/map_location_picker
               FormBuilderField<Map<String, dynamic>>(
+                validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(errorText: "Required"),
+                ]),
                 builder: (state) {
                   final controller = TextEditingController(text: state.value?["address"]);
                   return TextField(
@@ -49,7 +52,7 @@ class DeliveryInformation extends HookConsumerWidget {
                       placeholder: "Search location ...",
                       prefixIcon: Icons.map,
                       label: "Delivery Location",
-                    ),
+                    ).copyWith(errorText: state.errorText),
                     onTap: () {
                       showModalBottomSheet(
                           isScrollControlled: true,
@@ -73,9 +76,6 @@ class DeliveryInformation extends HookConsumerWidget {
                   );
                 },
                 name: "deliveryLocation",
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
               ),
               const SizedBox(height: Constants.SPACING),
             ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
@@ -46,6 +47,9 @@ class GettingStarted extends HookConsumerWidget {
               border: InputBorder.none,
               labelText: "Request based on",
             ),
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: "Required"),
+            ]),
             options: const [
               FormBuilderFieldOption(
                 value: "event",
@@ -70,6 +74,9 @@ class GettingStarted extends HookConsumerWidget {
               border: InputBorder.none,
               labelText: "Who are you requesting for?",
             ),
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: "Required"),
+            ]),
             options: const [
               FormBuilderFieldOption(
                 value: "self",
@@ -93,6 +100,10 @@ class GettingStarted extends HookConsumerWidget {
                 label: "Appointment",
               ),
               initialValue: artAppointment?.id,
+              validator: FormBuilderValidators.compose([
+                if (orderMode.value == "appointment")
+                  FormBuilderValidators.required(errorText: "Required"),
+              ]),
               items: appointment
                   .where((element) =>
                       element.appointmentType == "Re-Fill" &&
@@ -124,6 +135,10 @@ class GettingStarted extends HookConsumerWidget {
                 prefixIcon: Icons.calendar_today,
                 label: "Event",
               ),
+              validator: FormBuilderValidators.compose([
+                if (orderMode.value == "event")
+                  FormBuilderValidators.required(errorText: "Required"),
+              ]),
               items: events
                   .map(
                     (e) => DropdownMenuItem(
@@ -150,6 +165,10 @@ class GettingStarted extends HookConsumerWidget {
                 prefixIcon: Icons.person,
                 label: "Care receiver",
               ),
+              validator: FormBuilderValidators.compose([
+                if (orderType.value == "other")
+                  FormBuilderValidators.required(errorText: "Required"),
+              ]),
               items: supports
                   // TODO Filter only where curr user is care giver
                   .where((element) => true)
