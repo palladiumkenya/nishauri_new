@@ -141,7 +141,7 @@ class ReviewAndSubmit extends ConsumerWidget {
               leading: const Icon(Icons.subdirectory_arrow_right),
             ),
             ListTile(
-              subtitle: Text(DateFormat("dd MMM yyy HH:mm a")
+              subtitle: Text(formState["pickupTime"] == null ? "None":  DateFormat("dd MMM yyy HH:mm a")
                   .format(DateTime.parse(formState["pickupTime"]))),
               title: const Text("Pickup time"),
               leading: const Icon(Icons.subdirectory_arrow_right),

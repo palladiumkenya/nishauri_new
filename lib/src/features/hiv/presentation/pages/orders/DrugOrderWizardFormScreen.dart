@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
+import 'package:nishauri/src/features/hiv/data/providers/art_drug_order_provider.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/orders/forms/DeliveryInformation.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/orders/forms/DeliveryPreference.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/orders/forms/GettingStated.dart';
@@ -104,41 +105,41 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
     ];
 
     void handleSubmit() {
+        debugPrint("=====================>${formKey.currentState?.fields}");
       if (formKey.currentState!.validate()) {
+        debugPrint("=====================>${formKey.currentState?.instantValue}");
         loading.value = true;
-        final dateOfBirth = formKey.currentState!.instantValue["dateOfBirth"];
-        ref
-            .read(userProvider.notifier)
-            .updateUser(User.fromJson({
+        final pickupTime = formKey.currentState!.instantValue["pickupTime"];
+        ref.read(artDrugOrderProvider.notifier).createOrder({
           ...formKey.currentState!.instantValue,
-          "dateOfBirth": dateOfBirth is DateTime
-              ? dateOfBirth.toIso8601String()
-              : dateOfBirth
+          "pickupTime":
+              pickupTime is DateTime ? pickupTime.toIso8601String() : pickupTime
         }).then((value) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Profile updated successfully!")));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Drug delivery request was a success!")));
         }).catchError((e) {
           switch (e) {
             case BadRequestException e:
-              handleResponseError(context, formKey.currentState!.fields, e, ref.read(authStateProvider.notifier).logout);
+              handleResponseError(context, formKey.currentState!.fields, e,
+                  ref.read(authStateProvider.notifier).logout);
               //   Navigate to 1st step with the error
               final fieldStep = stepFieldsToValidate.indexWhere((fields) =>
                   fields.any((field) => e.errors.containsKey(field)));
               currentStep.value = fieldStep;
               break;
             default:
-              handleResponseError(context, formKey.currentState!.fields, e, ref.read(authStateProvider.notifier).logout);
-              debugPrint("[PROFILE-WIZARD]: ${e.toString()}");
+              handleResponseError(context, formKey.currentState!.fields, e,
+                  ref.read(authStateProvider.notifier).logout);
+              debugPrint("[DRUG-ORDER-WIZARD]: ${e.toString()}");
           }
-        }).whenComplete(() => loading.value = false));
+        }).whenComplete(() => loading.value = false);
       } else {
         //   if invalid then navigate to the 1st step with errors
         final fieldStep = stepFieldsToValidate.indexWhere((fields) => fields
-            .any((field) => formKey.currentState!.fields[field]!.hasError));
+            .any((field) => formKey.currentState!.fields[field]?.hasError == true));
         currentStep.value = fieldStep;
       }
     }
-
 
     return Scaffold(
       appBar: AppBar(
@@ -160,17 +161,16 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
             bool isLastStep = (currentStep.value == steps.length - 1);
             // 1.validate current step fields and prevent continue encase of any error in current step
             if (!isLastStep) {
-              final currentStepFields =
-              stepFieldsToValidate[currentStep.value];
+              final currentStepFields = stepFieldsToValidate[currentStep.value];
 
               if (currentStepFields.any((field) =>
-              formKey.currentState!.fields[field]?.validate() == false)) {
+                  formKey.currentState!.fields[field]?.validate() == false)) {
                 return; //Don't move to next step if current step not valid
               }
             }
             if (isLastStep) {
               // Submit form
-              // handleSubmit();
+              handleSubmit();
             } else {
               currentStep.value += 1;
             }
