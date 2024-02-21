@@ -14,6 +14,10 @@ import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
+import '../../../../../shared/exeptions/http_exceptions.dart';
+import '../../../../../utils/helpers.dart';
+import '../../../../auth/data/providers/auth_provider.dart';
+
 class DrugOrderWizardFormScreen extends HookConsumerWidget {
   final ARTAppointment? artAppointment;
   final ARTEvent? artEvent;
@@ -98,6 +102,43 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
         isActive: currentStep.value == 3,
       ),
     ];
+
+    void handleSubmit() {
+      if (formKey.currentState!.validate()) {
+        loading.value = true;
+        final dateOfBirth = formKey.currentState!.instantValue["dateOfBirth"];
+        ref
+            .read(userProvider.notifier)
+            .updateUser(User.fromJson({
+          ...formKey.currentState!.instantValue,
+          "dateOfBirth": dateOfBirth is DateTime
+              ? dateOfBirth.toIso8601String()
+              : dateOfBirth
+        }).then((value) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Profile updated successfully!")));
+        }).catchError((e) {
+          switch (e) {
+            case BadRequestException e:
+              handleResponseError(context, formKey.currentState!.fields, e, ref.read(authStateProvider.notifier).logout);
+              //   Navigate to 1st step with the error
+              final fieldStep = stepFieldsToValidate.indexWhere((fields) =>
+                  fields.any((field) => e.errors.containsKey(field)));
+              currentStep.value = fieldStep;
+              break;
+            default:
+              handleResponseError(context, formKey.currentState!.fields, e, ref.read(authStateProvider.notifier).logout);
+              debugPrint("[PROFILE-WIZARD]: ${e.toString()}");
+          }
+        }).whenComplete(() => loading.value = false));
+      } else {
+        //   if invalid then navigate to the 1st step with errors
+        final fieldStep = stepFieldsToValidate.indexWhere((fields) => fields
+            .any((field) => formKey.currentState!.fields[field]!.hasError));
+        currentStep.value = fieldStep;
+      }
+    }
+
 
     return Scaffold(
       appBar: AppBar(
