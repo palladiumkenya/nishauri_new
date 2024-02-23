@@ -60,7 +60,7 @@ class DeliveryPreference extends HookConsumerWidget {
                 ),
               ]),
           const SizedBox(height: Constants.SPACING),
-          if (orderDeliveryMethod.value == "in-parcel")
+          if (orderDeliveryMethod.value == "in_parcel")
             asyncCourierServices.when(
               data: (courierService) => FormBuilderDropdown(
                 name: "courierService",
@@ -69,7 +69,7 @@ class DeliveryPreference extends HookConsumerWidget {
                   label: "Courier",
                 ),
                 validator: FormBuilderValidators.compose([
-                  if (orderDeliveryMethod.value == "in-parcel")
+                  if (orderDeliveryMethod.value == "in_parcel")
                     FormBuilderValidators.required(errorText: "Required"),
                 ]),
                 items: courierService
@@ -88,7 +88,7 @@ class DeliveryPreference extends HookConsumerWidget {
                 child: CircularProgressIndicator(),
               ),
             ),
-          if (orderDeliveryMethod.value == "in-person")
+          if (orderDeliveryMethod.value == "in_person")
             FormBuilderTextField(
               name: "deliveryPersonFullName",
               decoration: inputDecoration(
@@ -97,13 +97,13 @@ class DeliveryPreference extends HookConsumerWidget {
                 label: "Full name",
               ),
               validator: FormBuilderValidators.compose([
-                if (orderDeliveryMethod.value == "in-person")
+                if (orderDeliveryMethod.value == "in_person")
                   FormBuilderValidators.required(errorText: "Required"),
               ]),
             ),
-          if (orderDeliveryMethod.value == "in-person")
+          if (orderDeliveryMethod.value == "in_person")
             const SizedBox(height: Constants.SPACING),
-          if (orderDeliveryMethod.value == "in-person")
+          if (orderDeliveryMethod.value == "in_person")
             FormBuilderTextField(
               name: "deliveryPersonNationalId",
               decoration: inputDecoration(
@@ -112,13 +112,13 @@ class DeliveryPreference extends HookConsumerWidget {
                 label: "National Id",
               ),
               validator: FormBuilderValidators.compose([
-                if (orderDeliveryMethod.value == "in-person")
+                if (orderDeliveryMethod.value == "in_person")
                   FormBuilderValidators.required(errorText: "Required"),
               ]),
             ),
-          if (orderDeliveryMethod.value == "in-person")
+          if (orderDeliveryMethod.value == "in_person")
             const SizedBox(height: Constants.SPACING),
-          if (orderDeliveryMethod.value == "in-person")
+          if (orderDeliveryMethod.value == "in_person")
             FormBuilderTextField(
               name: "deliveryPersonPhoneNumber",
               keyboardType: TextInputType.phone,
@@ -128,13 +128,13 @@ class DeliveryPreference extends HookConsumerWidget {
                 label: "Phone number",
               ),
               validator: FormBuilderValidators.compose([
-                if (orderDeliveryMethod.value == "in-person")
+                if (orderDeliveryMethod.value == "in_person")
                   FormBuilderValidators.required(errorText: "Required"),
               ]),
             ),
-          if (orderDeliveryMethod.value == "in-person")
+          if (orderDeliveryMethod.value == "in_person")
             const SizedBox(height: Constants.SPACING),
-          if (orderDeliveryMethod.value == "in-person")
+          if (orderDeliveryMethod.value == "in_person")
             FormBuilderDateTimePicker(
               firstDate: DateTime(1950),
               lastDate: DateTime(2100),
@@ -147,7 +147,7 @@ class DeliveryPreference extends HookConsumerWidget {
                 label: "Pickup time",
               ),
               validator: FormBuilderValidators.compose([
-                if (orderDeliveryMethod.value == "in-person")
+                if (orderDeliveryMethod.value == "in_person")
                   FormBuilderValidators.required(errorText: "Required"),
               ]),
               valueTransformer: (date) => date?.toIso8601String(),
