@@ -75,7 +75,7 @@ class DeliveryInformation extends HookConsumerWidget {
                     },
                   );
                 },
-                name: "deliveryLocation",
+                name: "deliveryAddress",
               ),
               const SizedBox(height: Constants.SPACING),
             ],

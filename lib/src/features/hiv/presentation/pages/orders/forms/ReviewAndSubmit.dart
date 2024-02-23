@@ -23,12 +23,12 @@ class ReviewAndSubmit extends ConsumerWidget {
     final theme = Theme.of(context);
     return Wrap(children: [
       ListTile(
-        subtitle: Text("${formState["mode"]}"),
+        subtitle: Text(formState["mode"] ?? "None"),
         title: const Text("Mode"),
         leading: const Icon(Icons.check),
       ),
       ListTile(
-        subtitle: Text("${formState["type"]}"),
+        subtitle: Text(formState["type"] ?? "None"),
         title: const Text("Type"),
         leading: const Icon(Icons.check),
       ),
@@ -65,7 +65,7 @@ class ReviewAndSubmit extends ConsumerWidget {
                 event == -1
                     ? "None"
                     : "${data[event].title}(${DateFormat("dd MMM yyy").format(
-                    DateTime.parse(data[event].distributionTime))}})",
+                    DateTime.parse(data[event].distributionTime))})",
               ),
               title: const Text("Event"),
               leading: const Icon(Icons.check),
@@ -81,12 +81,12 @@ class ReviewAndSubmit extends ConsumerWidget {
         asyncARTTreatmentSupport.when(
           data: (data) {
             final careReceiver = data.indexWhere(
-                    (element) => element.id == formState["careReceiver"]);
+                    (element) => element.careReceiver.cccNumber == formState["careReceiver"]);
             return ListTile(
               subtitle: Text(
                 careReceiver == -1
                     ? "None"
-                    : data[careReceiver].careReceiver.name,
+                    : "${data[careReceiver].careReceiver.name}(${data[careReceiver].careReceiver.cccNumber})",
               ), title: const Text("Care receiver"),
               leading: const Icon(Icons.check),
             );
@@ -120,7 +120,7 @@ class ReviewAndSubmit extends ConsumerWidget {
           ),
         ),
       ListTile(
-        subtitle: Text("${formState["deliveryMethod"]}"),
+        subtitle: Text(formState["deliveryMethod"] ?? "None"),
         title: const Text("Delivery preference"),
         leading: const Icon(Icons.check),
       ),
@@ -128,15 +128,15 @@ class ReviewAndSubmit extends ConsumerWidget {
         ExpansionTile(
           title: const Text("Delivery Person"),
           leading: const Icon(Icons.check),
-          subtitle: Text("${formState["deliveryPersonFullName"]}"),
+          subtitle: Text(formState["deliveryPersonFullName"] ?? "None"),
           children: [
             ListTile(
-              subtitle: Text("${formState["deliveryPersonNationalId"]}"),
+              subtitle: Text(formState["deliveryPersonNationalId"] ?? "None"),
               title: const Text("National Id"),
               leading: const Icon(Icons.subdirectory_arrow_right),
             ),
             ListTile(
-              subtitle: Text("${formState["deliveryPersonPhoneNumber"]}"),
+              subtitle: Text(formState["deliveryPersonPhoneNumber"] ?? "None"),
               title: const Text("contact"),
               leading: const Icon(Icons.subdirectory_arrow_right),
             ),
@@ -149,12 +149,12 @@ class ReviewAndSubmit extends ConsumerWidget {
           ],
         ),
       ListTile(
-        subtitle: Text("${formState["phoneNumber"]}"),
+        subtitle: Text(formState["phoneNumber"] ?? "None"),
         title: const Text("Phone number"),
         leading: const Icon(Icons.check),
       ),
       ListTile(
-        subtitle: Text("${formState["deliveryLocation"]["address"]}"),
+        subtitle: Text(formState["deliveryLocation"]?["address"] ?? "None"),
         title: const Text("Delivery location"),
         leading: const Icon(Icons.check),
       ),

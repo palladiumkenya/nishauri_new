@@ -174,7 +174,7 @@ class GettingStarted extends HookConsumerWidget {
                   .where((element) => true)
                   .map(
                     (e) => DropdownMenuItem(
-                      value: e.id,
+                      value: e.careReceiver.cccNumber,
                       child: Text(
                         "${e.careReceiver.name}(${e.careReceiver.cccNumber})",
                       ),

@@ -44,7 +44,7 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
         "deliveryPersonPhoneNumber",
         'pickupTime'
       ],
-      ["phoneNumber", "deliveryLocation"],
+      ["phoneNumber", "deliveryAddress"],
     ];
 
     List<Step> steps = [

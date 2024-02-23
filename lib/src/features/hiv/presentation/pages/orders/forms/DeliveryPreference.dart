@@ -36,7 +36,7 @@ class DeliveryPreference extends HookConsumerWidget {
               ),
               options: [
                 FormBuilderFieldOption(
-                  value: "in-person",
+                  value: "in_person",
                   child: ListTile(
                     trailing: const Icon(Icons.person),
                     title: const Text("In person"),
@@ -48,7 +48,7 @@ class DeliveryPreference extends HookConsumerWidget {
                   ),
                 ),
                 FormBuilderFieldOption(
-                  value: "in-parcel",
+                  value: "in_parcel",
                   child: ListTile(
                     trailing: const Icon(Icons.card_giftcard),
                     title: const Text("In parcel"),
