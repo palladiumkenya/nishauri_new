@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/features/hiv/data/models/group/art_group.dart';
 import 'package:nishauri/src/features/hiv/data/models/group/art_group_subscription.dart';
@@ -23,7 +24,7 @@ class ARTGroupController
 
   Future<void> addARTGroup(Map<String, dynamic> data) async {
     try {
-      final group = ARTGroup.fromJson({...data, "lead":"Omosh"});
+      final group = ARTGroup.fromJson(data);
       await _repository.addGroup(group);
       await getUserGroupSubscriptions();
     } catch (e) {

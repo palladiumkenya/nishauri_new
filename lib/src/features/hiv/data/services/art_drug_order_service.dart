@@ -29,10 +29,13 @@ class ARTDrugOrderService extends HTTPService {
 
   Future<StreamedResponse> createOrder_(Map<String, dynamic> data) async {
     final tokenPair = await getCachedToken();
-    var headers = {'x-access-token': tokenPair.accessToken};
+    var headers = {
+      'x-access-token': tokenPair.accessToken,
+      'Content-Type': 'application/json'
+    };
     var request = Request(
       'POST',
-      Uri.parse('${Constants.BASE_URL}/patients/programs/patient-programs'),
+      Uri.parse('${Constants.BASE_URL}/hiv-program/orders'),
     );
     request.body = json.encode(data);
     request.headers.addAll(headers);

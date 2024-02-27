@@ -90,7 +90,7 @@ class ARTGroupFormScreen extends HookWidget {
                       prefixIcon: Icons.info_outline,
                       label: "Description",
                       placeholder: "Enter group description",
-                    ),
+                    ).copyWith(prefixIcon: null),
                     minLines: 3, // Set this
                     maxLines: 6, // and this
                     keyboardType: TextInputType.multiline,

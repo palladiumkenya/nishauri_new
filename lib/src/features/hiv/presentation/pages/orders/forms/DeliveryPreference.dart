@@ -136,8 +136,8 @@ class DeliveryPreference extends HookConsumerWidget {
             const SizedBox(height: Constants.SPACING),
           if (orderDeliveryMethod.value == "in_person")
             FormBuilderDateTimePicker(
-              firstDate: DateTime(1950),
-              lastDate: DateTime(2100),
+              firstDate: DateTime.now(),
+              lastDate: DateTime.now().add(const Duration(days: 7)),
               name: "pickupTime",
               format: DateFormat('dd MMM yyy HH:mm a'),
               inputType: InputType.both,

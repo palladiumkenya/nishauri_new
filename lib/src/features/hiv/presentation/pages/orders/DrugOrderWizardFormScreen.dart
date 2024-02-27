@@ -113,7 +113,13 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
         ref.read(artDrugOrderProvider.notifier).createOrder({
           ...formKey.currentState!.instantValue,
           "pickupTime":
-              pickupTime is DateTime ? pickupTime.toIso8601String() : pickupTime
+              pickupTime is DateTime ? pickupTime.toIso8601String() : pickupTime,
+          ...(formKey.currentState?.instantValue["deliveryMethod"] == "in_person" ? {"deliveryPerson": {
+            "fullName": formKey.currentState!.instantValue["deliveryPersonFullName"],
+            "nationalId": formKey.currentState!.instantValue["deliveryPersonNationalId"],
+            "phoneNumber": formKey.currentState!.instantValue["deliveryPersonPhoneNumber"],
+            "pickupTime": formKey.currentState!.instantValue["pickupTime"],
+          }} : {})
         }).then((value) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("Drug delivery request was a success!")));
@@ -140,7 +146,7 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
         currentStep.value = fieldStep;
       }
     }
-
+  debugPrint("${currentStep.value}");
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
