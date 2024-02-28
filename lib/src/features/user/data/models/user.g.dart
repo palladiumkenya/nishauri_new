@@ -12,11 +12,12 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       username: json['username'] as String,
       firstName: json['firstName'] as String?,
       lastName: json['lastName'] as String?,
+      name: json['name'] as String?,
       dateOfBirth: json['dateOfBirth'] as String?,
       gender: json['gender'] as String?,
       email: json['email'] as String,
       phoneNumber: json['phoneNumber'] as String,
-      country: json['country'] as String?,
+      county: json['county'] as String?,
       constituency: json['constituency'] as String?,
       bloodGroup: json['bloodGroup'] as String?,
       allergies: (json['allergies'] as List<dynamic>?)
@@ -37,6 +38,8 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       educationLevel: json['educationLevel'] as String?,
       primaryLanguage: json['primaryLanguage'] as String?,
       occupation: json['occupation'] as String?,
+      profileUpdated: json['profileUpdated'] as bool? ?? false,
+      accountVerified: json['accountVerified'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
@@ -46,11 +49,12 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'username': instance.username,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
+      'name': instance.name,
       'dateOfBirth': instance.dateOfBirth,
       'gender': instance.gender,
       'email': instance.email,
       'phoneNumber': instance.phoneNumber,
-      'country': instance.country,
+      'county': instance.county,
       'constituency': instance.constituency,
       'bloodGroup': instance.bloodGroup,
       'allergies': instance.allergies,
@@ -62,4 +66,6 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'educationLevel': instance.educationLevel,
       'primaryLanguage': instance.primaryLanguage,
       'occupation': instance.occupation,
+      'profileUpdated': instance.profileUpdated,
+      'accountVerified': instance.accountVerified,
     };

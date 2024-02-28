@@ -5,12 +5,11 @@ import 'package:nishauri/src/features/user/data/services/UserService.dart';
 
 class UserRepository {
   final UserService _service;
-  final String _userToken;
 
-  UserRepository(this._service, this._userToken);
+  UserRepository(this._service);
 
   Future<User> getUser() async {
-    final user = await _service.getUser(_userToken);
+    final user = await _service.getUser();
     return user;
   }
 
@@ -18,4 +17,14 @@ class UserRepository {
     final user_ = await _service.updateProfile(user);
     return user_;
   }
+
+  Future<String> verifyAccount(Map<String, dynamic> data) async {
+    return await _service.accountVerify(data);
+  }
+
+  Future<String> getOTPCode(String mode)async {
+    return await _service.requestVerificationCode(mode);
+  }
+
+
 }

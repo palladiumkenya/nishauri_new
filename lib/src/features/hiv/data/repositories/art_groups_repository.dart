@@ -15,7 +15,11 @@ class ARTGroupRepository {
     return await _service.getUserARTGroups();
   }
 
-  Future<ARTGroup> addGroup(ARTGroup group) async {
+  Future<void> addGroup(Map<String, dynamic> group) async {
+    return await _service.addARTGroup(group);
+  }
+
+  Future<void> updateGroup(Map<String, dynamic> group)async {
     return await _service.addARTGroup(group);
   }
 }

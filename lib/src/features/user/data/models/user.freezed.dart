@@ -25,11 +25,12 @@ mixin _$User {
   String get username => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
   String? get lastName => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
   String? get dateOfBirth => throw _privateConstructorUsedError;
   String? get gender => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get phoneNumber => throw _privateConstructorUsedError;
-  String? get country => throw _privateConstructorUsedError;
+  String? get county => throw _privateConstructorUsedError;
   String? get constituency => throw _privateConstructorUsedError;
   String? get bloodGroup => throw _privateConstructorUsedError;
   List<String> get allergies => throw _privateConstructorUsedError;
@@ -41,6 +42,8 @@ mixin _$User {
   String? get educationLevel => throw _privateConstructorUsedError;
   String? get primaryLanguage => throw _privateConstructorUsedError;
   String? get occupation => throw _privateConstructorUsedError;
+  bool get profileUpdated => throw _privateConstructorUsedError;
+  bool get accountVerified => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -58,11 +61,12 @@ abstract class $UserCopyWith<$Res> {
       String username,
       String? firstName,
       String? lastName,
+      String? name,
       String? dateOfBirth,
       String? gender,
       String email,
       String phoneNumber,
-      String? country,
+      String? county,
       String? constituency,
       String? bloodGroup,
       List<String> allergies,
@@ -73,7 +77,9 @@ abstract class $UserCopyWith<$Res> {
       String? maritalStatus,
       String? educationLevel,
       String? primaryLanguage,
-      String? occupation});
+      String? occupation,
+      bool profileUpdated,
+      bool accountVerified});
 }
 
 /// @nodoc
@@ -94,11 +100,12 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? username = null,
     Object? firstName = freezed,
     Object? lastName = freezed,
+    Object? name = freezed,
     Object? dateOfBirth = freezed,
     Object? gender = freezed,
     Object? email = null,
     Object? phoneNumber = null,
-    Object? country = freezed,
+    Object? county = freezed,
     Object? constituency = freezed,
     Object? bloodGroup = freezed,
     Object? allergies = null,
@@ -110,6 +117,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? educationLevel = freezed,
     Object? primaryLanguage = freezed,
     Object? occupation = freezed,
+    Object? profileUpdated = null,
+    Object? accountVerified = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -132,6 +141,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
       dateOfBirth: freezed == dateOfBirth
           ? _value.dateOfBirth
           : dateOfBirth // ignore: cast_nullable_to_non_nullable
@@ -148,9 +161,9 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      country: freezed == country
-          ? _value.country
-          : country // ignore: cast_nullable_to_non_nullable
+      county: freezed == county
+          ? _value.county
+          : county // ignore: cast_nullable_to_non_nullable
               as String?,
       constituency: freezed == constituency
           ? _value.constituency
@@ -196,6 +209,14 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.occupation
           : occupation // ignore: cast_nullable_to_non_nullable
               as String?,
+      profileUpdated: null == profileUpdated
+          ? _value.profileUpdated
+          : profileUpdated // ignore: cast_nullable_to_non_nullable
+              as bool,
+      accountVerified: null == accountVerified
+          ? _value.accountVerified
+          : accountVerified // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -213,11 +234,12 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String username,
       String? firstName,
       String? lastName,
+      String? name,
       String? dateOfBirth,
       String? gender,
       String email,
       String phoneNumber,
-      String? country,
+      String? county,
       String? constituency,
       String? bloodGroup,
       List<String> allergies,
@@ -228,7 +250,9 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String? maritalStatus,
       String? educationLevel,
       String? primaryLanguage,
-      String? occupation});
+      String? occupation,
+      bool profileUpdated,
+      bool accountVerified});
 }
 
 /// @nodoc
@@ -246,11 +270,12 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? username = null,
     Object? firstName = freezed,
     Object? lastName = freezed,
+    Object? name = freezed,
     Object? dateOfBirth = freezed,
     Object? gender = freezed,
     Object? email = null,
     Object? phoneNumber = null,
-    Object? country = freezed,
+    Object? county = freezed,
     Object? constituency = freezed,
     Object? bloodGroup = freezed,
     Object? allergies = null,
@@ -262,6 +287,8 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? educationLevel = freezed,
     Object? primaryLanguage = freezed,
     Object? occupation = freezed,
+    Object? profileUpdated = null,
+    Object? accountVerified = null,
   }) {
     return _then(_$UserImpl(
       id: freezed == id
@@ -284,6 +311,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
       dateOfBirth: freezed == dateOfBirth
           ? _value.dateOfBirth
           : dateOfBirth // ignore: cast_nullable_to_non_nullable
@@ -300,9 +331,9 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      country: freezed == country
-          ? _value.country
-          : country // ignore: cast_nullable_to_non_nullable
+      county: freezed == county
+          ? _value.county
+          : county // ignore: cast_nullable_to_non_nullable
               as String?,
       constituency: freezed == constituency
           ? _value.constituency
@@ -348,6 +379,14 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.occupation
           : occupation // ignore: cast_nullable_to_non_nullable
               as String?,
+      profileUpdated: null == profileUpdated
+          ? _value.profileUpdated
+          : profileUpdated // ignore: cast_nullable_to_non_nullable
+              as bool,
+      accountVerified: null == accountVerified
+          ? _value.accountVerified
+          : accountVerified // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -361,11 +400,12 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       required this.username,
       this.firstName,
       this.lastName,
+      this.name,
       this.dateOfBirth,
       this.gender,
       required this.email,
       required this.phoneNumber,
-      this.country,
+      this.county,
       this.constituency,
       this.bloodGroup,
       final List<String> allergies = const [],
@@ -376,7 +416,9 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       this.maritalStatus,
       this.educationLevel,
       this.primaryLanguage,
-      this.occupation})
+      this.occupation,
+      this.profileUpdated = false,
+      this.accountVerified = false})
       : _allergies = allergies,
         _disabilities = disabilities,
         _chronics = chronics;
@@ -395,6 +437,8 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   @override
   final String? lastName;
   @override
+  final String? name;
+  @override
   final String? dateOfBirth;
   @override
   final String? gender;
@@ -403,7 +447,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   @override
   final String phoneNumber;
   @override
-  final String? country;
+  final String? county;
   @override
   final String? constituency;
   @override
@@ -447,10 +491,16 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   final String? primaryLanguage;
   @override
   final String? occupation;
+  @override
+  @JsonKey()
+  final bool profileUpdated;
+  @override
+  @JsonKey()
+  final bool accountVerified;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'User(id: $id, image: $image, username: $username, firstName: $firstName, lastName: $lastName, dateOfBirth: $dateOfBirth, gender: $gender, email: $email, phoneNumber: $phoneNumber, country: $country, constituency: $constituency, bloodGroup: $bloodGroup, allergies: $allergies, disabilities: $disabilities, chronics: $chronics, weight: $weight, height: $height, maritalStatus: $maritalStatus, educationLevel: $educationLevel, primaryLanguage: $primaryLanguage, occupation: $occupation)';
+    return 'User(id: $id, image: $image, username: $username, firstName: $firstName, lastName: $lastName, name: $name, dateOfBirth: $dateOfBirth, gender: $gender, email: $email, phoneNumber: $phoneNumber, county: $county, constituency: $constituency, bloodGroup: $bloodGroup, allergies: $allergies, disabilities: $disabilities, chronics: $chronics, weight: $weight, height: $height, maritalStatus: $maritalStatus, educationLevel: $educationLevel, primaryLanguage: $primaryLanguage, occupation: $occupation, profileUpdated: $profileUpdated, accountVerified: $accountVerified)';
   }
 
   @override
@@ -463,11 +513,12 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       ..add(DiagnosticsProperty('username', username))
       ..add(DiagnosticsProperty('firstName', firstName))
       ..add(DiagnosticsProperty('lastName', lastName))
+      ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('dateOfBirth', dateOfBirth))
       ..add(DiagnosticsProperty('gender', gender))
       ..add(DiagnosticsProperty('email', email))
       ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
-      ..add(DiagnosticsProperty('country', country))
+      ..add(DiagnosticsProperty('county', county))
       ..add(DiagnosticsProperty('constituency', constituency))
       ..add(DiagnosticsProperty('bloodGroup', bloodGroup))
       ..add(DiagnosticsProperty('allergies', allergies))
@@ -478,7 +529,9 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       ..add(DiagnosticsProperty('maritalStatus', maritalStatus))
       ..add(DiagnosticsProperty('educationLevel', educationLevel))
       ..add(DiagnosticsProperty('primaryLanguage', primaryLanguage))
-      ..add(DiagnosticsProperty('occupation', occupation));
+      ..add(DiagnosticsProperty('occupation', occupation))
+      ..add(DiagnosticsProperty('profileUpdated', profileUpdated))
+      ..add(DiagnosticsProperty('accountVerified', accountVerified));
   }
 
   @override
@@ -494,13 +547,14 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
                 other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
                 other.lastName == lastName) &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.dateOfBirth, dateOfBirth) ||
                 other.dateOfBirth == dateOfBirth) &&
             (identical(other.gender, gender) || other.gender == gender) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.phoneNumber, phoneNumber) ||
                 other.phoneNumber == phoneNumber) &&
-            (identical(other.country, country) || other.country == country) &&
+            (identical(other.county, county) || other.county == county) &&
             (identical(other.constituency, constituency) ||
                 other.constituency == constituency) &&
             (identical(other.bloodGroup, bloodGroup) ||
@@ -519,7 +573,11 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
             (identical(other.primaryLanguage, primaryLanguage) ||
                 other.primaryLanguage == primaryLanguage) &&
             (identical(other.occupation, occupation) ||
-                other.occupation == occupation));
+                other.occupation == occupation) &&
+            (identical(other.profileUpdated, profileUpdated) ||
+                other.profileUpdated == profileUpdated) &&
+            (identical(other.accountVerified, accountVerified) ||
+                other.accountVerified == accountVerified));
   }
 
   @JsonKey(ignore: true)
@@ -531,11 +589,12 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
         username,
         firstName,
         lastName,
+        name,
         dateOfBirth,
         gender,
         email,
         phoneNumber,
-        country,
+        county,
         constituency,
         bloodGroup,
         const DeepCollectionEquality().hash(_allergies),
@@ -546,7 +605,9 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
         maritalStatus,
         educationLevel,
         primaryLanguage,
-        occupation
+        occupation,
+        profileUpdated,
+        accountVerified
       ]);
 
   @JsonKey(ignore: true)
@@ -570,11 +631,12 @@ abstract class _User implements User {
       required final String username,
       final String? firstName,
       final String? lastName,
+      final String? name,
       final String? dateOfBirth,
       final String? gender,
       required final String email,
       required final String phoneNumber,
-      final String? country,
+      final String? county,
       final String? constituency,
       final String? bloodGroup,
       final List<String> allergies,
@@ -585,7 +647,9 @@ abstract class _User implements User {
       final String? maritalStatus,
       final String? educationLevel,
       final String? primaryLanguage,
-      final String? occupation}) = _$UserImpl;
+      final String? occupation,
+      final bool profileUpdated,
+      final bool accountVerified}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -600,6 +664,8 @@ abstract class _User implements User {
   @override
   String? get lastName;
   @override
+  String? get name;
+  @override
   String? get dateOfBirth;
   @override
   String? get gender;
@@ -608,7 +674,7 @@ abstract class _User implements User {
   @override
   String get phoneNumber;
   @override
-  String? get country;
+  String? get county;
   @override
   String? get constituency;
   @override
@@ -631,6 +697,10 @@ abstract class _User implements User {
   String? get primaryLanguage;
   @override
   String? get occupation;
+  @override
+  bool get profileUpdated;
+  @override
+  bool get accountVerified;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

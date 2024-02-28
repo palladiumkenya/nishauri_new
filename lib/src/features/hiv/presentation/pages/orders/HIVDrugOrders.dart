@@ -1,68 +1,53 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/features/hiv/presentation/widgets/orders/AllOrders.dart';
+import 'package:nishauri/src/features/hiv/presentation/widgets/orders/FulfilledOrders.dart';
+import 'package:nishauri/src/features/hiv/presentation/widgets/orders/PendingOrders.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class HIVDrugOrdersScreen extends StatelessWidget {
   const HIVDrugOrdersScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: const Icon(Icons.chevron_left),
+    final theme = Theme.of(context);
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () => context.pop(),
+            icon: const Icon(Icons.chevron_left),
+          ),
+          title: const Text("ARV Drug Orders"),
+          backgroundColor: Theme
+              .of(context)
+              .primaryColor,
+          bottom: TabBar(tabs: const [
+            Tab(icon: Icon(Icons.all_inbox), text: "All"),
+            Tab(icon: Icon(Icons.pending), text: "Pending"),
+            Tab(icon: Icon(Icons.done_all), text: "FullField"),
+          ], labelColor: theme.colorScheme.onPrimary,),
         ),
-        title: const Text("ARV Drug Orders"),
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
-      body: FractionallySizedBox(
-        heightFactor: 1,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(Constants.SPACING),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                          suffixIcon: Icon(Icons.search),
-                          border: OutlineInputBorder()),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: Constants.SPACING * 2,
-                  ),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1),
-                      color: Theme.of(context).colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
-                    ),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.filter_list_alt, size: 45,),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (BuildContext context, int currIndex) => Card(
-                  child: ListTile(
-                    leading: const Icon(Icons.shopping_cart),
-                    title: Text("Order $currIndex name here"),
-                    subtitle: Text("$currIndex October 2023"),
-                    trailing: const Icon(Icons.chevron_right),
-                  ),
-                ),
-              ),
-            ),
-          ],
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            context.goNamed(RouteNames.HIV_ART_DELIVERY_REQUEST_FORM, extra: {"payload":null, "type":null});
+          },
+          label: const Text("Order now"),
+          icon: const Icon(Icons.add),
+        ),
+        body: const FractionallySizedBox(
+          heightFactor: 1,
+          child: TabBarView(
+            children: [
+              AllOrders(),
+              PendingOrders(),
+              FulfilledOrders(),
+            ],
+          ),
         ),
       ),
     );

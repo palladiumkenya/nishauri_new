@@ -14,7 +14,7 @@ class HIVProgramRegistration extends StatelessWidget {
       children: [
         FormBuilderTextField(
           initialValue: '1234567890',
-          name: "cccNumber",
+          name: "uniquePatientProgramId",
           decoration: inputDecoration(
             placeholder: "e.g 1234567890",
             prefixIcon: Icons.verified_user,

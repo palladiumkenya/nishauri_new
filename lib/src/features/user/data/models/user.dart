@@ -11,11 +11,12 @@ class User with _$User {
     required String username,
     String? firstName,
     String? lastName,
+    String? name,
     String? dateOfBirth,
     String? gender,
     required String email,
     required String phoneNumber,
-    String? country,
+    String? county,
     String? constituency,
     String? bloodGroup,
     @Default([]) List<String> allergies,
@@ -27,6 +28,9 @@ class User with _$User {
     String? educationLevel,
     String? primaryLanguage,
     String? occupation,
+    @Default(false) bool profileUpdated,
+    @Default(false) bool accountVerified,
+
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json)=> _$UserFromJson(json);

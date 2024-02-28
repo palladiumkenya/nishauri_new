@@ -133,7 +133,7 @@ _showDialog(BuildContext context) {
         "Select Shortcut MenuOptions",
         style: theme.textTheme.titleMedium,
       ),
-      content: Container(
+      content: SizedBox(
         width: double.maxFinite,
         height: MediaQuery.of(context).size.height * 0.5,
         child: Consumer(

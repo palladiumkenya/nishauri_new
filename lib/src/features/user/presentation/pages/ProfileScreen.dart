@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/AppAvatar.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
+import 'package:nishauri/src/shared/display/ProfileCard.dart';
 import 'package:nishauri/src/shared/extensions/extensions.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
@@ -35,65 +36,62 @@ class ProfileScreen extends StatelessWidget {
         builder: (context, ref, child) {
           final userAsync = ref.watch(userProvider);
           return userAsync.when(
-            data: (user) => Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: Constants.SPACING),
-              child: ListView(
-                children: [
-                  AppAvatar(
-                    radius: 70,
-                    image: user.image,
-                    alt: Text("${user.firstName} ${user.lastName}".abbreviation),
+            data: (user) => ProfileCard(
+              height: MediaQuery.of(context).size.height,
+              header: Text((user.name ?? "").titleCase),
+              image: user.image,
+              icon: Icons.person,
+              buildItem: (context, item) => item,
+              items: [
+                const Divider(),
+                ListTile(
+                  leading: const Icon(Icons.perm_identity),
+                  title: const Text("Username"),
+                  subtitle: Text(user.username),
+                ),
+                const Divider(),
+                ListTile(
+                  leading: const Icon(Icons.email),
+                  title: const Text("Email"),
+                  subtitle: Text(user.email),
+                ),
+                const Divider(),
+                ListTile(
+                  leading: const Icon(Icons.phone),
+                  title: const Text("Phone number"),
+                  subtitle: Text(user.phoneNumber),
+                ),
+                const Divider(),
+                ListTile(
+                  leading: const Icon(Icons.account_circle_outlined),
+                  title: const Text("Gender"),
+                  subtitle: Text(user.gender == "M" ? "Male" : "Female"),
+                ),
+                const Divider(),
+                ListTile(
+                  leading: const Icon(Icons.calendar_month),
+                  title: const Text("Date of birth"),
+                  subtitle: Text(
+                    DateTime.tryParse(user.dateOfBirth ?? "") != null
+                        ? DateFormat("dd MM yyyy")
+                            .format(DateTime.parse(user.dateOfBirth!))
+                        : "None",
                   ),
-                  AppCard(
-                    child: ListTile(
-                      leading: const Icon(Icons.perm_identity),
-                      title: const Text("Username"),
-                      subtitle: Text(user.username),
-                    ),
+                ),
+                const Divider(),
+                ListTile(
+                  leading: const Icon(Icons.calendar_month),
+                  title: const Text("Date of birth"),
+                  subtitle: Text(
+                    DateTime.tryParse(user.dateOfBirth ?? "") != null
+                        ? DateFormat("dd MM yyyy")
+                            .format(DateTime.parse(user.dateOfBirth!))
+                        : "None",
                   ),
-                  AppCard(
-                    child: ListTile(
-                      leading: const Icon(Icons.account_circle_outlined),
-                      title: const Text("Name"),
-                      subtitle: Text("${user.firstName} ${user.lastName}".titleCase),
-                    ),
-                  ),
-                  AppCard(
-                    child: ListTile(
-                      leading: const Icon(Icons.email),
-                      title: const Text("Email"),
-                      subtitle: Text(user.email),
-                    ),
-                  ),
-                  AppCard(
-                    child: ListTile(
-                      leading: const Icon(Icons.phone),
-                      title: const Text("Phone number"),
-                      subtitle: Text(user.phoneNumber),
-                    ),
-                  ),
-                  AppCard(
-                    child: ListTile(
-                      leading: const Icon(Icons.account_circle_outlined),
-                      title: const Text("Gender"),
-                      subtitle: Text(user.gender == "M" ? "Male" : "Female"),
-                    ),
-                  ),
-                  AppCard(
-                    child: ListTile(
-                      leading: const Icon(Icons.calendar_month),
-                      title: const Text("Date of birth"),
-                      subtitle: Text(
-                        DateTime.tryParse(user.dateOfBirth ?? "") != null
-                            ? DateFormat("dd MM yyyy")
-                                .format(DateTime.parse(user.dateOfBirth!))
-                            : "None",
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                const Divider(),
+
+              ],
             ),
             error: (error, _) => Center(child: Text(error.toString())),
             loading: () => const Center(
@@ -105,4 +103,3 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
-

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/user_programs/data/models/user_program.dart';
 import 'package:nishauri/src/features/user_programs/data/providers/program_provider.dart';
 import 'package:nishauri/src/features/user_programs/presentation/forms/HIVProgramRegistration.dart';
@@ -41,118 +42,162 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
         title: const Text("Register to a program"),
       ),
       body: ResponsiveWidgetFormLayout(
-        buildPageContent: (context, color) => SafeArea(
-          child: Container(
-            padding: const EdgeInsets.all(Constants.SPACING * 2),
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
-            ),
-            child: FormBuilder(
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding:
+        buildPageContent: (context, color) =>
+            SafeArea(
+              child: Container(
+                padding: const EdgeInsets.all(Constants.SPACING * 2),
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
+                ),
+                child: FormBuilder(
+                  key: _formKey,
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: Constants.SPACING),
-                      DecoratedBox(
-                        decoration: const BoxDecoration(),
-                        child: SvgPicture.asset(
-                          "assets/images/patient.svg",
-                          semanticsLabel: "Doctors",
-                          fit: BoxFit.contain,
-                          height: 150,
-                        ),
-                      ),
-                      const SizedBox(height: Constants.SPACING),
-                      const Text(
-                        "Add program",
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: Constants.SPACING),
-                      Text(
-                        "Kindly provide program details bellow to verify yourself.",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color:
-                              Theme.of(context).colorScheme.onTertiaryContainer,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: Constants.SPACING),
-                      const SizedBox(height: Constants.SPACING),
-                      Consumer(
+                      child: Consumer(
                         builder: (context, ref, child) {
                           final asyncUserPrograms = ref.watch(programProvider);
                           return asyncUserPrograms.when(
-                            data: (userPrograms) => FormBuilderDropdown<String>(
-                              name: "program",
-                              decoration: inputDecoration(
-                                prefixIcon: Icons.read_more_outlined,
-                                label: "Program",
-                              ),
-                              items: _getUnregisteredPrograms(userPrograms),
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(),
-                              ]),
-                              onChanged: (value) {
-                                setState(() {
-                                  _program = value;
-                                });
-                              },
-                            ),
-                            error: (error, _) => Text(error.toString()),
-                            loading: () => const Center(
+                            data: (userPrograms) =>
+                                Column(
+                                  children: [
+                                    const SizedBox(height: Constants.SPACING),
+                                    DecoratedBox(
+                                      decoration: const BoxDecoration(),
+                                      child: SvgPicture.asset(
+                                        "assets/images/patient.svg",
+                                        semanticsLabel: "Doctors",
+                                        fit: BoxFit.contain,
+                                        height: 150,
+                                      ),
+                                    ),
+                                    const SizedBox(height: Constants.SPACING),
+                                    const Text(
+                                      "Add program",
+                                      style: TextStyle(
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: Constants.SPACING),
+                                    Text(
+                                      "Kindly provide program details bellow to verify yourself.",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme
+                                            .of(context)
+                                            .colorScheme
+                                            .onTertiaryContainer,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: Constants.SPACING),
+                                    const SizedBox(height: Constants.SPACING),
+                                    FormBuilderDropdown<String>(
+                                      name: "programCode",
+                                      decoration: inputDecoration(
+                                        prefixIcon: Icons.read_more_outlined,
+                                        label: "Program",
+                                      ),
+                                      items: _getUnregisteredPrograms(
+                                          userPrograms),
+                                      validator: FormBuilderValidators.compose([
+                                        FormBuilderValidators.required(),
+                                      ]),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _program = value;
+                                        });
+                                      },
+                                    ),
+                                    const SizedBox(height: Constants.SPACING),
+                                    FormBuilderTextField(
+                                      name: "mflCode",
+                                      decoration: inputDecoration(
+                                        prefixIcon: Icons.local_hospital,
+                                        label: "Facility code",
+                                      ),
+                                      validator: FormBuilderValidators.compose([
+                                        FormBuilderValidators.required(),
+                                      ]),
+                                    ),
+                                    const SizedBox(height: Constants.SPACING),
+                                    FormBuilderTextField(
+                                      name: "uniquePatientProgramId",
+                                      decoration: inputDecoration(
+                                        placeholder: "e.g 1234567890",
+                                        prefixIcon: Icons.verified_user,
+                                        label: _getProgramId(_program),
+                                      ),
+                                      validator: FormBuilderValidators.compose([
+                                        FormBuilderValidators.required()
+                                      ]),
+                                    ),
+                                    const SizedBox(height: Constants.SPACING),
+                                    FormBuilderTextField(
+                                      name: "firstName",
+                                      decoration: inputDecoration(
+                                        placeholder: "e.g John",
+                                        prefixIcon: Icons.person,
+                                        label: "First Name",
+                                      ),
+                                      validator: FormBuilderValidators.compose([
+                                        FormBuilderValidators.required(),
+                                      ]),
+                                    ),
+                                    const SizedBox(height: Constants.SPACING),
+                                    Button(
+                                      title: "Register",
+                                      loading: _loading,
+                                      onPress: () {
+                                        final programsNotifier =
+                                        ref.read(programProvider.notifier);
+                                        if (_formKey.currentState!
+                                            .saveAndValidate()) {
+                                          setState(() {
+                                            _loading = true;
+                                          });
+                                          programsNotifier
+                                              .registerProgram(
+                                              _formKey.currentState!.value)
+                                              .then((value) {
+                                            context.goNamed(
+                                                RouteNames.VERIFY_PROGRAM_OTP,
+                                                extra: value);
+                                          }).catchError((err) {
+                                            handleResponseError(
+                                                context,
+                                                _formKey.currentState!.fields,
+                                                err,
+                                                ref
+                                                    .read(
+                                                    authStateProvider.notifier)
+                                                    .logout);
+                                          }).whenComplete(() =>
+                                              setState(() {
+                                                _loading = false;
+                                              }));
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                ),
+                            error: (error, _) =>
+                                Center(child: Text(error.toString())),
+                            loading: () =>
+                            const Center(
                               child: CircularProgressIndicator(),
                             ),
                           );
                         },
                       ),
-                      const SizedBox(height: Constants.SPACING),
-                      if (_program != null)
-                        _getProgramRegistrationForm(
-                            _program),
-                      if (_program != null)
-                      Consumer(
-                        builder: (context, ref, child) {
-                          final programsNotifier =
-                              ref.read(programProvider.notifier);
-                          return Button(
-                            title: "Register",
-                            loading: _loading,
-                            onPress: () {
-                              if (_formKey.currentState!.saveAndValidate()) {
-                                setState(() {
-                                  _loading = true;
-                                });
-                                programsNotifier
-                                    .registerProgram(
-                                        _formKey.currentState!.value)
-                                    .then((value) {
-                                  context.goNamed(RouteNames.VERIFY_PROGRAM_OTP, extra: {"message":value, "program": _program});
-                                }).catchError((err){
-
-                                  handleResponseError(context, _formKey.currentState!.fields, err);
-                                }).whenComplete(() => setState(() {
-                                  _loading = false;
-                                }));
-                              }
-                            },
-                          );
-                        },
-                      )
-                    ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ),
       ),
     );
   }
@@ -162,20 +207,20 @@ List<DropdownMenuItem<String>> _getUnregisteredPrograms(
     List<UserProgram> programs) {
   return ProgramCodeNames.SUPPOTED_PROGRAM_CODES
       .where((code) =>
-          !programs.any((program) => program.program.programCode == code))
-      .map((e) => DropdownMenuItem(
+  !programs.any((program) => program.program.programCode == code))
+      .map((e) =>
+      DropdownMenuItem(
           value: e,
           child: Text(
               ProgramCodeNames.getProgramNameByCode(e) ?? "Not Supported")))
       .toList();
 }
 
-Widget _getProgramRegistrationForm(program) {
-  if (program == ProgramCodeNames.HIV) {
-    return const HIVProgramRegistration();
+String _getProgramId(program) {
+  switch (program) {
+    case ProgramCodeNames.HIV:
+      return "CCC Number";
+    default:
+      return "Unique Program Identifier";
   }
-  return Padding(
-    padding: const EdgeInsets.all(Constants.SPACING),
-    child: Text("${ProgramCodeNames.getProgramNameByCode(program)} form here"),
-  );
 }

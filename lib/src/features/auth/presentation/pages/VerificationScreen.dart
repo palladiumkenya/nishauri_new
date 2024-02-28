@@ -10,6 +10,7 @@ import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/helpers.dart';
 
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({super.key});
@@ -21,6 +22,7 @@ class VerificationScreen extends StatefulWidget {
 class _VerificationScreenState extends State<VerificationScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   bool _loading = false;
+  bool _requestLoading = false;
 
   bool _sent = false;
 
@@ -34,18 +36,19 @@ class _VerificationScreenState extends State<VerificationScreen> {
             setState(() {
               _loading = true;
             });
+            final userStateNotifier = ref.read(userProvider.notifier);
             final authStateNotifier = ref.read(authStateProvider.notifier);
-            authStateNotifier
+            userStateNotifier
                 .verify(_formKey.currentState!.value)
                 .then((value) {
-              // Some code that runs when the verification is successful
+              // reload auth to redirect to profile update
+              authStateNotifier.markProfileAsAccountVerified();
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Verification successfully!,')),
+                SnackBar(content: Text(value)),
               );
-            }).catchError((onError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(onError.toString())),
-              );
+            }).catchError((err) {
+              handleResponseError(context, _formKey.currentState!.fields, err,
+                  authStateNotifier.logout);
             }).whenComplete(() {
               // Set the submitting to false whether or not an exception is thrown
               setState(() {
@@ -106,19 +109,34 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                   const SizedBox(height: Constants.SPACING),
                                   FormBuilderRadioGroup(
                                     name: "mode",
-                                    decoration: const InputDecoration(label: Text("Want to receive OTP code through?")),
+                                    initialValue: "sms",
+                                    decoration: const InputDecoration(
+                                        label: Text(
+                                            "Want to receive OTP code through?")),
                                     options: [
                                       FormBuilderFieldOption(
                                         value: "email",
                                         child: ListTile(
-                                            title: Text(user.email),
+                                            title: const Text('Email'),
+                                            subtitle: Text(user.email),
                                             trailing: const Icon(Icons.email)),
                                       ),
                                       FormBuilderFieldOption(
-                                        value: "phone",
+                                        value: "watsapp",
                                         child: ListTile(
-                                            title: Text(user.phoneNumber),
-                                            trailing: const Icon(Icons.phone)),
+                                          title: const Text("WatsApp"),
+                                          subtitle: Text(user.phoneNumber),
+                                          trailing:
+                                              const Icon(Icons.chat_outlined),
+                                        ),
+                                      ),
+                                      FormBuilderFieldOption(
+                                        value: "sms",
+                                        child: ListTile(
+                                          title: const Text("SMS"),
+                                          subtitle: Text(user.phoneNumber),
+                                          trailing: const Icon(Icons.sms),
+                                        ),
                                       ),
                                     ],
                                     validator: FormBuilderValidators.compose([
@@ -132,10 +150,44 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                       placeholder:
                                           "Enter OTP Verification code",
                                       prefixIcon: Icons.account_circle,
-                                      surfixIcon: Text(
-                                        _sent ? "Resend Code" : "Get code",
-                                      ),
+                                      surfixIcon: _requestLoading
+                                          ? const CircularProgressIndicator()
+                                          : Text(
+                                              _sent
+                                                  ? "Resend Code"
+                                                  : "Get code",
+                                            ),
                                       onSurfixIconPressed: () {
+                                        // TODO Handle outcome errors and success
+                                        setState(() {
+                                          _requestLoading = true;
+                                        });
+                                        ref
+                                            .read(userProvider.notifier)
+                                            .getOTPCode(_formKey.currentState
+                                                ?.instantValue["mode"])
+                                            .then((value) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(value),
+                                            ),
+                                          );
+                                        }).catchError((err) {
+                                          handleResponseError(
+                                            context,
+                                            _formKey.currentState!.fields,
+                                            err,
+                                            ref
+                                                .read(
+                                                    authStateProvider.notifier)
+                                                .logout,
+                                          );
+                                        }).whenComplete(() {
+                                          setState(() {
+                                            _requestLoading = false;
+                                          });
+                                        });
                                         setState(() {
                                           _sent = true;
                                           // _formState = _formState.copyWith(values: {..._formState.values,"otp": "1234"});
@@ -152,7 +204,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                   const SizedBox(height: Constants.SPACING),
                                   Button(
                                     title: "Verify",
-                                    onPress:handleSubmit,
+                                    onPress: handleSubmit,
                                     loading: _loading,
                                   ),
                                   const SizedBox(

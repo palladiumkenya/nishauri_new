@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
+import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
@@ -11,6 +12,7 @@ import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -71,34 +73,21 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             fontSize: 40, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: Constants.SPACING),
+                      const SizedBox(height: Constants.SPACING),
                       FormBuilderTextField(
-                        initialValue: "omosh",
                         name: "username",
                         decoration: inputDecoration(
-                          placeholder: "Enter username or email",
-                          prefixIcon: Icons.account_circle,
+                          placeholder: "e.g john",
+                          prefixIcon: Icons.person,
                           label: "Username",
                         ),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
+                          FormBuilderValidators.minLength(4),
                         ]),
                       ),
                       const SizedBox(height: Constants.SPACING),
                       FormBuilderTextField(
-                        initialValue: "254793889658",
-                        name: "phoneNumber",
-                        decoration: inputDecoration(
-                          placeholder: "e.g 0712345678",
-                          prefixIcon: Icons.phone,
-                          label: "Phone number",
-                        ),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                        ]),
-                      ),
-                      const SizedBox(height: Constants.SPACING),
-                      FormBuilderTextField(
-                        initialValue: "lawiomosh3@gmail.com",
                         name: "email",
                         decoration: inputDecoration(
                           placeholder: "e.g abc@gmail.com",
@@ -107,11 +96,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
+                          FormBuilderValidators.email(),
                         ]),
                       ),
                       const SizedBox(height: Constants.SPACING),
                       FormBuilderTextField(
-                        initialValue: "1234",
+                        name: "phoneNumber",
+                        decoration: inputDecoration(
+                          placeholder: "e.g 0712345678",
+                          prefixIcon: Icons.phone,
+                          label: "Phone number",
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                          FormBuilderValidators.minLength(10),
+                          FormBuilderValidators.maxLength(13),
+                        ]),
+                      ),
+                      const SizedBox(height: Constants.SPACING),
+                      FormBuilderTextField(
                         name: "password",
                         obscureText: _hidePassword,
                         decoration: inputDecoration(
@@ -128,7 +131,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                       const SizedBox(height: Constants.SPACING),
                       FormBuilderTextField(
-                        initialValue: "1234",
                         obscureText: _hidePassword,
                         name: "confirmPassword",
                         decoration: inputDecoration(
@@ -141,8 +143,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             onSurfixIconPressed: _toggleShowPassword),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
-                          (value)=>_formKey.currentState!.value["password"] != value ? "Password didn't match" : null
+                          (value) =>
+                              _formKey.currentState!.value["password"] != value
+                                  ? "Password didn't match"
+                                  : null
                         ]),
+                      ),
+                      FormBuilderCheckbox(
+                        initialValue: false,
+                        name: "termsAccepted",
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                          (value) => value == false
+                              ? "You must accept terms and conditions"
+                              : null
+                        ]),
+                        title: const Text("Accept terms and conditions"),
                       ),
                       const SizedBox(height: Constants.SPACING),
                       LinkedRichText(
@@ -158,37 +174,38 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             loading: _loading,
                             title: "Register",
                             onPress: () {
-                              if (_formKey.currentState!.saveAndValidate()) {
+                              if (_formKey.currentState != null &&
+                                  _formKey.currentState!.saveAndValidate()) {
                                 final formState = _formKey.currentState!.value;
                                 setState(() {
                                   _loading = true;
                                 });
-                                ref
-                                    .read(authStateProvider.notifier)
-                                    .register(formState)
-                                    .then((value) {
+                                final authNotifier =
+                                    ref.read(authStateProvider.notifier);
+                                authNotifier.register(formState).then((value) {
+                                  //     Update user state
+                                  ref.read(userProvider.notifier).getUser();
+                                }).then((_) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                        content:
-                                            Text('Registration successful!,')),
+                                      content:
+                                          Text('Registration successful!,'),
+                                    ),
                                   );
                                 }).catchError((error) {
-                                  switch (error) {
-                                    case ValidationException e:
-                                      for (var err in e.errors.entries) {
-                                        _formKey.currentState!.fields[err.key]?.invalidate(err.value);
-                                      }
-                                      break;
-                                    default:
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                            content: Text(error.toString())),
-                                      );
+                                  handleResponseError(
+                                    context,
+                                    _formKey.currentState!.fields,
+                                    error,
+                                    authNotifier.logout,
+                                  );
+                                }).whenComplete(() {
+                                  if (mounted) {
+                                    setState(() {
+                                      _loading = false;
+                                    });
                                   }
-                                }).whenComplete(() => setState(() {
-                                          _loading = false;
-                                        }));
+                                });
                               }
                             },
                           );

@@ -23,7 +23,10 @@ mixin _$ARTGroup {
   String? get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
-  String get lead => throw _privateConstructorUsedError;
+  List<ARTGroupExtraSubscriber> get extraSubscribers =>
+      throw _privateConstructorUsedError;
+  String get createdAt => throw _privateConstructorUsedError;
+  String get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +39,13 @@ abstract class $ARTGroupCopyWith<$Res> {
   factory $ARTGroupCopyWith(ARTGroup value, $Res Function(ARTGroup) then) =
       _$ARTGroupCopyWithImpl<$Res, ARTGroup>;
   @useResult
-  $Res call({String? id, String title, String? description, String lead});
+  $Res call(
+      {String? id,
+      String title,
+      String? description,
+      List<ARTGroupExtraSubscriber> extraSubscribers,
+      String createdAt,
+      String updatedAt});
 }
 
 /// @nodoc
@@ -55,7 +64,9 @@ class _$ARTGroupCopyWithImpl<$Res, $Val extends ARTGroup>
     Object? id = freezed,
     Object? title = null,
     Object? description = freezed,
-    Object? lead = null,
+    Object? extraSubscribers = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -70,9 +81,17 @@ class _$ARTGroupCopyWithImpl<$Res, $Val extends ARTGroup>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      lead: null == lead
-          ? _value.lead
-          : lead // ignore: cast_nullable_to_non_nullable
+      extraSubscribers: null == extraSubscribers
+          ? _value.extraSubscribers
+          : extraSubscribers // ignore: cast_nullable_to_non_nullable
+              as List<ARTGroupExtraSubscriber>,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -86,7 +105,13 @@ abstract class _$$ARTGroupImplCopyWith<$Res>
       __$$ARTGroupImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? id, String title, String? description, String lead});
+  $Res call(
+      {String? id,
+      String title,
+      String? description,
+      List<ARTGroupExtraSubscriber> extraSubscribers,
+      String createdAt,
+      String updatedAt});
 }
 
 /// @nodoc
@@ -103,7 +128,9 @@ class __$$ARTGroupImplCopyWithImpl<$Res>
     Object? id = freezed,
     Object? title = null,
     Object? description = freezed,
-    Object? lead = null,
+    Object? extraSubscribers = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
   }) {
     return _then(_$ARTGroupImpl(
       id: freezed == id
@@ -118,9 +145,17 @@ class __$$ARTGroupImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      lead: null == lead
-          ? _value.lead
-          : lead // ignore: cast_nullable_to_non_nullable
+      extraSubscribers: null == extraSubscribers
+          ? _value._extraSubscribers
+          : extraSubscribers // ignore: cast_nullable_to_non_nullable
+              as List<ARTGroupExtraSubscriber>,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -130,7 +165,13 @@ class __$$ARTGroupImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ARTGroupImpl with DiagnosticableTreeMixin implements _ARTGroup {
   const _$ARTGroupImpl(
-      {this.id, required this.title, this.description, required this.lead});
+      {this.id,
+      required this.title,
+      this.description,
+      final List<ARTGroupExtraSubscriber> extraSubscribers = const [],
+      required this.createdAt,
+      required this.updatedAt})
+      : _extraSubscribers = extraSubscribers;
 
   factory _$ARTGroupImpl.fromJson(Map<String, dynamic> json) =>
       _$$ARTGroupImplFromJson(json);
@@ -141,12 +182,24 @@ class _$ARTGroupImpl with DiagnosticableTreeMixin implements _ARTGroup {
   final String title;
   @override
   final String? description;
+  final List<ARTGroupExtraSubscriber> _extraSubscribers;
   @override
-  final String lead;
+  @JsonKey()
+  List<ARTGroupExtraSubscriber> get extraSubscribers {
+    if (_extraSubscribers is EqualUnmodifiableListView)
+      return _extraSubscribers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_extraSubscribers);
+  }
+
+  @override
+  final String createdAt;
+  @override
+  final String updatedAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ARTGroup(id: $id, title: $title, description: $description, lead: $lead)';
+    return 'ARTGroup(id: $id, title: $title, description: $description, extraSubscribers: $extraSubscribers, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -157,7 +210,9 @@ class _$ARTGroupImpl with DiagnosticableTreeMixin implements _ARTGroup {
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('description', description))
-      ..add(DiagnosticsProperty('lead', lead));
+      ..add(DiagnosticsProperty('extraSubscribers', extraSubscribers))
+      ..add(DiagnosticsProperty('createdAt', createdAt))
+      ..add(DiagnosticsProperty('updatedAt', updatedAt));
   }
 
   @override
@@ -169,12 +224,24 @@ class _$ARTGroupImpl with DiagnosticableTreeMixin implements _ARTGroup {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.lead, lead) || other.lead == lead));
+            const DeepCollectionEquality()
+                .equals(other._extraSubscribers, _extraSubscribers) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, description, lead);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      title,
+      description,
+      const DeepCollectionEquality().hash(_extraSubscribers),
+      createdAt,
+      updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -195,7 +262,9 @@ abstract class _ARTGroup implements ARTGroup {
       {final String? id,
       required final String title,
       final String? description,
-      required final String lead}) = _$ARTGroupImpl;
+      final List<ARTGroupExtraSubscriber> extraSubscribers,
+      required final String createdAt,
+      required final String updatedAt}) = _$ARTGroupImpl;
 
   factory _ARTGroup.fromJson(Map<String, dynamic> json) =
       _$ARTGroupImpl.fromJson;
@@ -207,7 +276,11 @@ abstract class _ARTGroup implements ARTGroup {
   @override
   String? get description;
   @override
-  String get lead;
+  List<ARTGroupExtraSubscriber> get extraSubscribers;
+  @override
+  String get createdAt;
+  @override
+  String get updatedAt;
   @override
   @JsonKey(ignore: true)
   _$$ARTGroupImplCopyWith<_$ARTGroupImpl> get copyWith =>

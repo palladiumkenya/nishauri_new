@@ -6,8 +6,19 @@ class ARTEventController extends StateNotifier<AsyncValue<List<ARTEvent>>> {
   final ARTEventRepository _repository;
 
   ARTEventController(this._repository) : super(const AsyncValue.loading()) {
-    _repository
-        .getUserRelatedEvents()
-        .then((value) => state = AsyncValue.data(value));
+    getUserEvents();
+  }
+
+  Future<void> getUserEvents()async{
+    state = const AsyncValue.loading();
+    try{
+      final events = await _repository.getUserRelatedEvents();
+      state = AsyncValue.data(events);
+    }catch(e){
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
+  Future<void> addEvent(Map<String, dynamic> data)async{
+
   }
 }

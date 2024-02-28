@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/visits/data/providers/visits_provider.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
+import 'package:nishauri/src/shared/display/AppSearch.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
@@ -25,22 +26,35 @@ class FacilityVisitsScreen extends StatelessWidget {
         builder: (context, ref, child) {
           final visitsAsync = ref.watch(visitProvider);
           return visitsAsync.when(
-            data: (data) => ListView.builder(
-              itemCount: data.length,
-              itemBuilder: (BuildContext context, int index) => AppCard(
-                onTap: () => context.goNamed(
-                  RouteNames.FACILITY_VISIT_DETAIL,
-                  pathParameters: {"visitId": data[index].uuid},
+            data: (data) => Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(Constants.SPACING),
+                  child: AppSearch(),
                 ),
-                child: ListTile(
-                    leading: const Icon(
-                      Icons.move_down,
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (BuildContext context, int index) => Column(
+                      children: [
+                        const Divider(),
+                        ListTile(
+                            onTap: () => context.goNamed(
+                                  RouteNames.FACILITY_VISIT_DETAIL,
+                                  pathParameters: {"visitId": data[index].uuid},
+                                ),
+                            leading: const Icon(
+                              Icons.move_down,
+                            ),
+                            title: const Text("Mbagathi Referal Hospital"),
+                            subtitle: Text(
+                                "Visit Date: ${DateFormat("yyyy MMM dd").format(DateTime.parse(data[index].visitDate))}"),
+                            trailing: const Icon(Icons.chevron_right)),
+                      ],
                     ),
-                    title: const Text("Mbagathi Referal Hospital"),
-                    subtitle: Text(
-                        "Visit Date: ${DateFormat("yyyy MMM dd").format(DateTime.parse(data[index].visitDate))}"),
-                    trailing: const Icon(Icons.chevron_right)),
-              ),
+                  ),
+                ),
+              ],
             ),
             error: (error, _) => Center(child: Text(error.toString())),
             loading: () => Center(

@@ -1,113 +1,75 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart';
+import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
+import 'package:nishauri/src/features/hiv/data/models/group/art_group_extra_subscriber.dart';
 import 'package:nishauri/src/features/hiv/data/models/models.dart';
+import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 
+import '../../../../utils/constants.dart';
+
 class ARTGroupService extends HTTPService {
-  final String _token;
-  final List<ARTGroup> _groups = [
-    const ARTGroup(
-      title: "Marathon group ",
-      lead: "l-1",
-      id: "g-1",
-      description: "Some group description",
-    ),
-    const ARTGroup(
-      title: "Jambo group ",
-      lead: "l-2",
-      id: "g-2",
-      description: "Some group description",
-    ),
-    const ARTGroup(
-      title: "Kabogo group ",
-      lead: "l-3",
-      id: "g-3",
-      description: "Some group description",
-    ),
-    const ARTGroup(
-      title: "Oyula group ",
-      lead: "l-4",
-      id: "g-4",
-      description: "Some group description",
-    ),
-  ];
-  final List<ARTGroupSubscription> _subscriptions = [
-    const ARTGroupSubscription(
-        id: "s-1",
-        group: ARTGroup(
-          title: "Marathon group ",
-          lead: "l-1",
-          id: "g-1",
-          description: "Some group description",
-        ),
-        patient: "u-1",
-        name: "Omosh",
-        createdAt: "25th Oct 2023",
-        isCurrent: true),
-    const ARTGroupSubscription(
-        id: "s-2",
-        group: ARTGroup(
-          title: "Jambo group ",
-          lead: "l-2",
-          id: "g-2",
-          description: "Some group description",
-        ),
-        patient: "u-1",
-        createdAt: "25th Oct 2023",
-        name: "Omoshi"),
-    const ARTGroupSubscription(
-        id: "s-3",
-        group: ARTGroup(
-          title: "Kabogo group ",
-          lead: "l-3",
-          id: "g-3",
-          description: "Some group description",
-        ),
-        patient: "u-1",
-        createdAt: "25th Oct 2023",
-        name: "Lawi"),
-    const ARTGroupSubscription(
-        id: "s-4",
-        group: ARTGroup(
-          title: "Oyula group ",
-          lead: "l-4",
-          id: "g-4",
-          description: "Some group description",
-        ),
-        createdAt: "25th Oct 2023",
-        patient: "u-1",
-        name: "<Omosh/>"),
-  ];
-  final List<ARTGroupLead> _leads = [
-    const ARTGroupLead(group: "g-1", user: "u-1"),
-    const ARTGroupLead(group: "g-2", user: "u-2"),
-    const ARTGroupLead(group: "g-3", user: "u-3"),
-    const ARTGroupLead(group: "g-4", user: "u-4"),
-  ];
-
-  ARTGroupService(this._token);
-
   Future<List<ARTGroup>> getUserARTGroups() async {
-    return _groups;
+    final response = await call(getUserSubscriptions_, null);
+    final responseString = await response.stream.bytesToString();
+    final Map<String, dynamic> programData = json.decode(responseString);
+    final programs = (programData["results"] as List<dynamic>)
+        .map((e) => ARTGroup.fromJson(e))
+        .toList();
+    return programs;
   }
 
-  Future<ARTGroup> addARTGroup(ARTGroup group) async {
-    _groups.add(group);
-    return group;
+  Future<StreamedResponse> getUserARTGroups_(dynamic args) async {
+    final tokenPair = await getCachedToken();
+    var headers = {'x-access-token': tokenPair.accessToken};
+    var request = Request('GET',
+        Uri.parse('${Constants.BASE_URL}/hiv-program/art-community/groups'));
+    request.headers.addAll(headers);
+    return await request.send();
+  }
+
+  Future<void> addARTGroup(Map<String, dynamic> group) async {
+    await call(addARTGroup_, group);
+  }
+
+  Future<StreamedResponse> addARTGroup_(Map<String, dynamic> group) async {
+    final tokenPair = await getCachedToken();
+    var headers = {
+      'x-access-token': tokenPair.accessToken,
+      'Content-Type': 'application/json'
+    };
+    var request = Request('POST',
+        Uri.parse('${Constants.BASE_URL}/hiv-program/art-community/groups'));
+    request.headers.addAll(headers);
+    request.body = json.encode({
+      ...group,
+      "extraSubscribers":
+          (group["extraSubscribers"] as List<ARTGroupExtraSubscriber>)
+              .map((e) => e.toJson()).toList()
+    });
+    return await request.send();
   }
 
   Future<List<ARTGroupSubscription>> getUserSubscriptions() async {
-    await Future.delayed(const Duration(seconds: 3));
-    return _subscriptions;
+    final response = await call(getUserSubscriptions_, null);
+    final responseString = await response.stream.bytesToString();
+    final Map<String, dynamic> programData = json.decode(responseString);
+    final programs = (programData["results"] as List<dynamic>)
+        .map((e) => ARTGroupSubscription.fromJson(e))
+        .toList();
+    return programs;
   }
 
-  Future<List<ARTGroupLead>> getLeadsByGroupId(String id) async {
-    return _leads.where((element) => element.group == id).toList();
-  }
-
-  Future<ARTGroupSubscription> getSubscriptionById(String id) async {
-    return _subscriptions.firstWhere((element) => element.id == id);
-  }
-
-  Future<ARTGroupLead> getGroupLeadById(String id) async {
-    return _leads.firstWhere((element) => element.id == id);
+  Future<StreamedResponse> getUserSubscriptions_(dynamic args) async {
+    final tokenPair = await getCachedToken();
+    var headers = {'x-access-token': tokenPair.accessToken};
+    var request = Request(
+        'GET',
+        Uri.parse(
+            '${Constants.BASE_URL}/hiv-program/art-community/enrollments'));
+    request.headers.addAll(headers);
+    return await request.send();
   }
 }

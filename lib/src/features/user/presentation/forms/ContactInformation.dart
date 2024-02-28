@@ -49,8 +49,8 @@ class ContactInformation extends StatelessWidget {
               ),
               const SizedBox(height: Constants.SPACING),
               FormBuilderTextField(
-                name: "country",
-                initialValue: user.country,
+                name: "county",
+                initialValue: user.county,
                 decoration: inputDecoration(
                   placeholder: "Enter your county",
                   prefixIcon: Icons.location_city,

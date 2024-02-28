@@ -22,10 +22,11 @@ ARTGroupSubscription _$ARTGroupSubscriptionFromJson(Map<String, dynamic> json) {
 mixin _$ARTGroupSubscription {
   String? get id => throw _privateConstructorUsedError;
   ARTGroup get group => throw _privateConstructorUsedError;
-  String get patient => throw _privateConstructorUsedError;
-  String? get name => throw _privateConstructorUsedError;
+  ARTGroupMember get user => throw _privateConstructorUsedError;
+  String? get publicName => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
   bool? get isCurrent => throw _privateConstructorUsedError;
+  bool? get isAdmin => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,12 +43,14 @@ abstract class $ARTGroupSubscriptionCopyWith<$Res> {
   $Res call(
       {String? id,
       ARTGroup group,
-      String patient,
-      String? name,
+      ARTGroupMember user,
+      String? publicName,
       String createdAt,
-      bool? isCurrent});
+      bool? isCurrent,
+      bool? isAdmin});
 
   $ARTGroupCopyWith<$Res> get group;
+  $ARTGroupMemberCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -66,10 +69,11 @@ class _$ARTGroupSubscriptionCopyWithImpl<$Res,
   $Res call({
     Object? id = freezed,
     Object? group = null,
-    Object? patient = null,
-    Object? name = freezed,
+    Object? user = null,
+    Object? publicName = freezed,
     Object? createdAt = null,
     Object? isCurrent = freezed,
+    Object? isAdmin = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -80,13 +84,13 @@ class _$ARTGroupSubscriptionCopyWithImpl<$Res,
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
               as ARTGroup,
-      patient: null == patient
-          ? _value.patient
-          : patient // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      user: null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as ARTGroupMember,
+      publicName: freezed == publicName
+          ? _value.publicName
+          : publicName // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -96,6 +100,10 @@ class _$ARTGroupSubscriptionCopyWithImpl<$Res,
           ? _value.isCurrent
           : isCurrent // ignore: cast_nullable_to_non_nullable
               as bool?,
+      isAdmin: freezed == isAdmin
+          ? _value.isAdmin
+          : isAdmin // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 
@@ -104,6 +112,14 @@ class _$ARTGroupSubscriptionCopyWithImpl<$Res,
   $ARTGroupCopyWith<$Res> get group {
     return $ARTGroupCopyWith<$Res>(_value.group, (value) {
       return _then(_value.copyWith(group: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ARTGroupMemberCopyWith<$Res> get user {
+    return $ARTGroupMemberCopyWith<$Res>(_value.user, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
     });
   }
 }
@@ -119,13 +135,16 @@ abstract class _$$ARTGroupSubscriptionImplCopyWith<$Res>
   $Res call(
       {String? id,
       ARTGroup group,
-      String patient,
-      String? name,
+      ARTGroupMember user,
+      String? publicName,
       String createdAt,
-      bool? isCurrent});
+      bool? isCurrent,
+      bool? isAdmin});
 
   @override
   $ARTGroupCopyWith<$Res> get group;
+  @override
+  $ARTGroupMemberCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -141,10 +160,11 @@ class __$$ARTGroupSubscriptionImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? group = null,
-    Object? patient = null,
-    Object? name = freezed,
+    Object? user = null,
+    Object? publicName = freezed,
     Object? createdAt = null,
     Object? isCurrent = freezed,
+    Object? isAdmin = freezed,
   }) {
     return _then(_$ARTGroupSubscriptionImpl(
       id: freezed == id
@@ -155,13 +175,13 @@ class __$$ARTGroupSubscriptionImplCopyWithImpl<$Res>
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
               as ARTGroup,
-      patient: null == patient
-          ? _value.patient
-          : patient // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      user: null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as ARTGroupMember,
+      publicName: freezed == publicName
+          ? _value.publicName
+          : publicName // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -170,6 +190,10 @@ class __$$ARTGroupSubscriptionImplCopyWithImpl<$Res>
       isCurrent: freezed == isCurrent
           ? _value.isCurrent
           : isCurrent // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isAdmin: freezed == isAdmin
+          ? _value.isAdmin
+          : isAdmin // ignore: cast_nullable_to_non_nullable
               as bool?,
     ));
   }
@@ -183,10 +207,11 @@ class _$ARTGroupSubscriptionImpl
   const _$ARTGroupSubscriptionImpl(
       {this.id,
       required this.group,
-      required this.patient,
-      this.name,
+      required this.user,
+      this.publicName,
       required this.createdAt,
-      this.isCurrent = false});
+      this.isCurrent = false,
+      this.isAdmin = false});
 
   factory _$ARTGroupSubscriptionImpl.fromJson(Map<String, dynamic> json) =>
       _$$ARTGroupSubscriptionImplFromJson(json);
@@ -196,18 +221,21 @@ class _$ARTGroupSubscriptionImpl
   @override
   final ARTGroup group;
   @override
-  final String patient;
+  final ARTGroupMember user;
   @override
-  final String? name;
+  final String? publicName;
   @override
   final String createdAt;
   @override
   @JsonKey()
   final bool? isCurrent;
+  @override
+  @JsonKey()
+  final bool? isAdmin;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ARTGroupSubscription(id: $id, group: $group, patient: $patient, name: $name, createdAt: $createdAt, isCurrent: $isCurrent)';
+    return 'ARTGroupSubscription(id: $id, group: $group, user: $user, publicName: $publicName, createdAt: $createdAt, isCurrent: $isCurrent, isAdmin: $isAdmin)';
   }
 
   @override
@@ -217,10 +245,11 @@ class _$ARTGroupSubscriptionImpl
       ..add(DiagnosticsProperty('type', 'ARTGroupSubscription'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('group', group))
-      ..add(DiagnosticsProperty('patient', patient))
-      ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('user', user))
+      ..add(DiagnosticsProperty('publicName', publicName))
       ..add(DiagnosticsProperty('createdAt', createdAt))
-      ..add(DiagnosticsProperty('isCurrent', isCurrent));
+      ..add(DiagnosticsProperty('isCurrent', isCurrent))
+      ..add(DiagnosticsProperty('isAdmin', isAdmin));
   }
 
   @override
@@ -230,18 +259,20 @@ class _$ARTGroupSubscriptionImpl
             other is _$ARTGroupSubscriptionImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.group, group) || other.group == group) &&
-            (identical(other.patient, patient) || other.patient == patient) &&
-            (identical(other.name, name) || other.name == name) &&
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.publicName, publicName) ||
+                other.publicName == publicName) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.isCurrent, isCurrent) ||
-                other.isCurrent == isCurrent));
+                other.isCurrent == isCurrent) &&
+            (identical(other.isAdmin, isAdmin) || other.isAdmin == isAdmin));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, group, patient, name, createdAt, isCurrent);
+  int get hashCode => Object.hash(
+      runtimeType, id, group, user, publicName, createdAt, isCurrent, isAdmin);
 
   @JsonKey(ignore: true)
   @override
@@ -263,10 +294,11 @@ abstract class _ARTGroupSubscription implements ARTGroupSubscription {
   const factory _ARTGroupSubscription(
       {final String? id,
       required final ARTGroup group,
-      required final String patient,
-      final String? name,
+      required final ARTGroupMember user,
+      final String? publicName,
       required final String createdAt,
-      final bool? isCurrent}) = _$ARTGroupSubscriptionImpl;
+      final bool? isCurrent,
+      final bool? isAdmin}) = _$ARTGroupSubscriptionImpl;
 
   factory _ARTGroupSubscription.fromJson(Map<String, dynamic> json) =
       _$ARTGroupSubscriptionImpl.fromJson;
@@ -276,13 +308,15 @@ abstract class _ARTGroupSubscription implements ARTGroupSubscription {
   @override
   ARTGroup get group;
   @override
-  String get patient;
+  ARTGroupMember get user;
   @override
-  String? get name;
+  String? get publicName;
   @override
   String get createdAt;
   @override
   bool? get isCurrent;
+  @override
+  bool? get isAdmin;
   @override
   @JsonKey(ignore: true)
   _$$ARTGroupSubscriptionImplCopyWith<_$ARTGroupSubscriptionImpl>

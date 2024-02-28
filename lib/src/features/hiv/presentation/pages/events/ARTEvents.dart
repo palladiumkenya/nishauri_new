@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_events_provider.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class ARTEventsScreen extends ConsumerWidget {
   const ARTEventsScreen({super.key});
@@ -19,18 +20,33 @@ class ARTEventsScreen extends ConsumerWidget {
         ),
         title: const Text("ART Events"),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          context.goNamed(RouteNames.HIV_ART_EVENT_FORM, extra: null);
+        },
+        label: const Text("Add art Event"),
+        icon: const Icon(Icons.edit_calendar_rounded),
+        foregroundColor: theme.colorScheme.surface,
+        backgroundColor: theme.colorScheme.primary,
+      ),
       body: events.when(
         data: (data) => ListView.builder(
           itemCount: data.length,
-          itemBuilder: (BuildContext context, int index) => Card(
-            child: ListTile(
-              leading: const Icon(
-                Icons.group,
+          itemBuilder: (BuildContext context, int index) => Column(
+            children: [
+              const Divider(),
+              ListTile(
+              onTap: ()=>context.goNamed(RouteNames.HIV_ART_EVENT_DETAILS, pathParameters: {"id": data[index].id!}),
+                leading: const CircleAvatar(
+                  child: Icon(
+                    Icons.event,
+                  ),
+                ),
+                title: Text(data[index].title),
+                subtitle: Text(data[index].distributionTime),
+                trailing: const Icon(Icons.chevron_right),
               ),
-              title: Text(data[index].title),
-              subtitle: Text(data[index].distributionTime),
-              trailing: const Icon(Icons.chevron_right),
-            ),
+            ],
           ),
         ),
         error: (error, _) => Center(child: Text(error.toString())),
@@ -40,7 +56,7 @@ class ARTEventsScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Loading Events",
+                "Loading ART Events",
                 style: theme.textTheme.headlineSmall,
               ),
               const SizedBox(height: Constants.SPACING * 2),

@@ -8,9 +8,7 @@ import 'package:nishauri/src/features/hiv/presentation/controllers/ARTGroupContr
 final art_group_provider =
     StateNotifierProvider<ARTGroupController, AsyncValue<List<ARTGroupSubscription>>>(
         (ref) {
-  // Retrieve the authentication token from the authStateProvider
-  final authState = ref.watch(authStateProvider);
-  final service = ARTGroupService(authState.token);
+  final service = ARTGroupService();
   final repository = ARTGroupRepository(service);
   return ARTGroupController(repository);
 });

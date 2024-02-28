@@ -1,11 +1,8 @@
+import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/hiv/data/models/regimen/art_regimen.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 
 class ARTRegimenService extends HTTPService {
-  final String _token;
-
-  ARTRegimenService(this._token);
-
   final _regimen_history = [
     const ARTRegimen(
         name: "ABC+3TC+EFV",

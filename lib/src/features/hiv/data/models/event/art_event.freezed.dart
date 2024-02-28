@@ -23,8 +23,8 @@ mixin _$ARTEvent {
   String? get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get distributionTime => throw _privateConstructorUsedError;
-  Address get distributionLocation => throw _privateConstructorUsedError;
-  List<String>? get reminderNotificationDates =>
+  String get venue => throw _privateConstructorUsedError;
+  List<String> get reminderNotificationDates =>
       throw _privateConstructorUsedError;
   ARTGroup get group => throw _privateConstructorUsedError;
 
@@ -43,11 +43,10 @@ abstract class $ARTEventCopyWith<$Res> {
       {String? id,
       String title,
       String distributionTime,
-      Address distributionLocation,
-      List<String>? reminderNotificationDates,
+      String venue,
+      List<String> reminderNotificationDates,
       ARTGroup group});
 
-  $AddressCopyWith<$Res> get distributionLocation;
   $ARTGroupCopyWith<$Res> get group;
 }
 
@@ -67,8 +66,8 @@ class _$ARTEventCopyWithImpl<$Res, $Val extends ARTEvent>
     Object? id = freezed,
     Object? title = null,
     Object? distributionTime = null,
-    Object? distributionLocation = null,
-    Object? reminderNotificationDates = freezed,
+    Object? venue = null,
+    Object? reminderNotificationDates = null,
     Object? group = null,
   }) {
     return _then(_value.copyWith(
@@ -84,27 +83,19 @@ class _$ARTEventCopyWithImpl<$Res, $Val extends ARTEvent>
           ? _value.distributionTime
           : distributionTime // ignore: cast_nullable_to_non_nullable
               as String,
-      distributionLocation: null == distributionLocation
-          ? _value.distributionLocation
-          : distributionLocation // ignore: cast_nullable_to_non_nullable
-              as Address,
-      reminderNotificationDates: freezed == reminderNotificationDates
+      venue: null == venue
+          ? _value.venue
+          : venue // ignore: cast_nullable_to_non_nullable
+              as String,
+      reminderNotificationDates: null == reminderNotificationDates
           ? _value.reminderNotificationDates
           : reminderNotificationDates // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
+              as List<String>,
       group: null == group
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
               as ARTGroup,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $AddressCopyWith<$Res> get distributionLocation {
-    return $AddressCopyWith<$Res>(_value.distributionLocation, (value) {
-      return _then(_value.copyWith(distributionLocation: value) as $Val);
-    });
   }
 
   @override
@@ -128,12 +119,10 @@ abstract class _$$ARTEventImplCopyWith<$Res>
       {String? id,
       String title,
       String distributionTime,
-      Address distributionLocation,
-      List<String>? reminderNotificationDates,
+      String venue,
+      List<String> reminderNotificationDates,
       ARTGroup group});
 
-  @override
-  $AddressCopyWith<$Res> get distributionLocation;
   @override
   $ARTGroupCopyWith<$Res> get group;
 }
@@ -152,8 +141,8 @@ class __$$ARTEventImplCopyWithImpl<$Res>
     Object? id = freezed,
     Object? title = null,
     Object? distributionTime = null,
-    Object? distributionLocation = null,
-    Object? reminderNotificationDates = freezed,
+    Object? venue = null,
+    Object? reminderNotificationDates = null,
     Object? group = null,
   }) {
     return _then(_$ARTEventImpl(
@@ -169,14 +158,14 @@ class __$$ARTEventImplCopyWithImpl<$Res>
           ? _value.distributionTime
           : distributionTime // ignore: cast_nullable_to_non_nullable
               as String,
-      distributionLocation: null == distributionLocation
-          ? _value.distributionLocation
-          : distributionLocation // ignore: cast_nullable_to_non_nullable
-              as Address,
-      reminderNotificationDates: freezed == reminderNotificationDates
+      venue: null == venue
+          ? _value.venue
+          : venue // ignore: cast_nullable_to_non_nullable
+              as String,
+      reminderNotificationDates: null == reminderNotificationDates
           ? _value._reminderNotificationDates
           : reminderNotificationDates // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
+              as List<String>,
       group: null == group
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
@@ -192,8 +181,8 @@ class _$ARTEventImpl with DiagnosticableTreeMixin implements _ARTEvent {
       {this.id,
       required this.title,
       required this.distributionTime,
-      required this.distributionLocation,
-      final List<String>? reminderNotificationDates = const [],
+      required this.venue,
+      final List<String> reminderNotificationDates = const [],
       required this.group})
       : _reminderNotificationDates = reminderNotificationDates;
 
@@ -207,17 +196,15 @@ class _$ARTEventImpl with DiagnosticableTreeMixin implements _ARTEvent {
   @override
   final String distributionTime;
   @override
-  final Address distributionLocation;
-  final List<String>? _reminderNotificationDates;
+  final String venue;
+  final List<String> _reminderNotificationDates;
   @override
   @JsonKey()
-  List<String>? get reminderNotificationDates {
-    final value = _reminderNotificationDates;
-    if (value == null) return null;
+  List<String> get reminderNotificationDates {
     if (_reminderNotificationDates is EqualUnmodifiableListView)
       return _reminderNotificationDates;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
+    return EqualUnmodifiableListView(_reminderNotificationDates);
   }
 
   @override
@@ -225,7 +212,7 @@ class _$ARTEventImpl with DiagnosticableTreeMixin implements _ARTEvent {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ARTEvent(id: $id, title: $title, distributionTime: $distributionTime, distributionLocation: $distributionLocation, reminderNotificationDates: $reminderNotificationDates, group: $group)';
+    return 'ARTEvent(id: $id, title: $title, distributionTime: $distributionTime, venue: $venue, reminderNotificationDates: $reminderNotificationDates, group: $group)';
   }
 
   @override
@@ -236,7 +223,7 @@ class _$ARTEventImpl with DiagnosticableTreeMixin implements _ARTEvent {
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('distributionTime', distributionTime))
-      ..add(DiagnosticsProperty('distributionLocation', distributionLocation))
+      ..add(DiagnosticsProperty('venue', venue))
       ..add(DiagnosticsProperty(
           'reminderNotificationDates', reminderNotificationDates))
       ..add(DiagnosticsProperty('group', group));
@@ -251,8 +238,7 @@ class _$ARTEventImpl with DiagnosticableTreeMixin implements _ARTEvent {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.distributionTime, distributionTime) ||
                 other.distributionTime == distributionTime) &&
-            (identical(other.distributionLocation, distributionLocation) ||
-                other.distributionLocation == distributionLocation) &&
+            (identical(other.venue, venue) || other.venue == venue) &&
             const DeepCollectionEquality().equals(
                 other._reminderNotificationDates, _reminderNotificationDates) &&
             (identical(other.group, group) || other.group == group));
@@ -265,7 +251,7 @@ class _$ARTEventImpl with DiagnosticableTreeMixin implements _ARTEvent {
       id,
       title,
       distributionTime,
-      distributionLocation,
+      venue,
       const DeepCollectionEquality().hash(_reminderNotificationDates),
       group);
 
@@ -288,8 +274,8 @@ abstract class _ARTEvent implements ARTEvent {
       {final String? id,
       required final String title,
       required final String distributionTime,
-      required final Address distributionLocation,
-      final List<String>? reminderNotificationDates,
+      required final String venue,
+      final List<String> reminderNotificationDates,
       required final ARTGroup group}) = _$ARTEventImpl;
 
   factory _ARTEvent.fromJson(Map<String, dynamic> json) =
@@ -302,9 +288,9 @@ abstract class _ARTEvent implements ARTEvent {
   @override
   String get distributionTime;
   @override
-  Address get distributionLocation;
+  String get venue;
   @override
-  List<String>? get reminderNotificationDates;
+  List<String> get reminderNotificationDates;
   @override
   ARTGroup get group;
   @override

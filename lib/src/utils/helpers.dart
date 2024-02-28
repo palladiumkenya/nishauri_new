@@ -90,12 +90,34 @@ void handleResponseError(
     BuildContext context,
     Map<String, FormBuilderFieldState<FormBuilderField<dynamic>, dynamic>>
         formState,
-    err) {
+    err,
+    void Function() onLogout) {
   switch (err) {
-    case ValidationException e:
+    case BadRequestException e:
       for (var err in e.errors.entries) {
         formState[err.key]?.invalidate(err.value);
       }
+      break;
+    case ResourceNotFoundException e:
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message.toString())),
+      );
+      break;
+    case ForbiddenException e:
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message.toString())),
+      );
+      break;
+    case UnauthorizedException e:
+      onLogout();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message.toString())),
+      );
+      break;
+    case InternalServerErrorException e:
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message.toString())),
+      );
       break;
     default:
       ScaffoldMessenger.of(context).showSnackBar(

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nishauri/src/features/dashboard/presentation/pages/widgets/GeneralDashboard.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/dashboard/HIVDashboard.dart';
 import 'package:nishauri/src/features/user_programs/data/models/user_program.dart';
 import 'package:nishauri/src/features/user_programs/data/providers/program_provider.dart';
 import 'package:nishauri/src/utils/routes.dart';
+
+import '../widgets/GeneralDashboard.dart';
 
 class Dashboard extends ConsumerStatefulWidget {
   const Dashboard({super.key});
@@ -68,7 +69,7 @@ bool _hasDashboardData(UserProgram program) {
 Tab _getProgramTabBar(UserProgram program) {
   final programCode = program.program.programCode;
   if(programCode==ProgramCodeNames.HIV){
-    return const Tab(text: "HIV",);
+    return const Tab(text: "ART",);
   }
   return Tab(
     // icon: const Icon(Icons.directions_car),

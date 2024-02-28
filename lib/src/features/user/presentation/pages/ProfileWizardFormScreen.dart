@@ -28,7 +28,7 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
     final stepFieldsToValidate = [
       ["image", "username"],
       ["firstName", "lastName", "dateOfBirth", "gender"],
-      ["email", "phoneNumber", "country", "constituency"],
+      ["email", "phoneNumber", "county", "constituency"],
       ["bloodGroup", "allergies", "disabilities", "chronics"],
       ["weight", "height"],
       ["maritalStatus", "educationLevel", "primaryLanguage", "occupation"],
@@ -98,8 +98,7 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                 ),
                 const SizedBox(height: Constants.SPACING),
                 const Text(
-                    "Review your information for accuracy before submission."
-                )
+                    "Review your information for accuracy before submission.")
               ],
             ),
           ),
@@ -121,20 +120,22 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                   : dateOfBirth
             }))
             .then((value) {
+          //     Update auth state and redirect to home
           return ref.read(authStateProvider.notifier).markProfileAsUpdated();
         }).then((value) {
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Profile updated successfully!")));
         }).catchError((e) {
           switch (e) {
-            case ValidationException e:
-              handleResponseError(context, formKey.currentState!.fields, e);
+            case BadRequestException e:
+              handleResponseError(context, formKey.currentState!.fields, e, ref.read(authStateProvider.notifier).logout);
               //   Navigate to 1st step with the error
               final fieldStep = stepFieldsToValidate.indexWhere((fields) =>
                   fields.any((field) => e.errors.containsKey(field)));
               currentStep.value = fieldStep;
               break;
             default:
+              handleResponseError(context, formKey.currentState!.fields, e, ref.read(authStateProvider.notifier).logout);
               debugPrint("[PROFILE-WIZARD]: ${e.toString()}");
           }
         }).whenComplete(() => loading.value = false);
@@ -158,9 +159,11 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
               return IconButton(
                 onPressed: () {
                   try {
-                    if (authState.isProfileComplete) {
-                      context.goNamed(RouteNames.PROFILE_SETTINGS);
-                    }
+                    authState.whenData((value){
+                      if (value.isProfileComplete) {
+                        context.goNamed(RouteNames.PROFILE_SETTINGS);
+                      }
+                    });
                   } on GoError catch (e) {
                     debugPrint("[DEBUG-PROFILE-WIZARD]: $e");
                   }
