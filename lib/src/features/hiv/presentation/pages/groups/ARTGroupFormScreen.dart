@@ -121,6 +121,9 @@ class ARTGroupFormScreen extends HookWidget {
                           children: [
                             Expanded(
                               child: SingleChildScrollView(
+
+                                scrollDirection: Axis.horizontal,
+
                                 child: Row(
                                   children: state.value
                                           ?.map(

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
+import 'package:nishauri/src/features/hiv/data/models/group/art_group_extra_subscriber.dart';
 import 'package:nishauri/src/features/hiv/data/models/models.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
@@ -42,7 +43,12 @@ class ARTGroupService extends HTTPService {
     var request = Request('POST',
         Uri.parse('${Constants.BASE_URL}/hiv-program/art-community/groups'));
     request.headers.addAll(headers);
-    request.body = json.encode(group);
+    request.body = json.encode({
+      ...group,
+      "extraSubscribers":
+          (group["extraSubscribers"] as List<ARTGroupExtraSubscriber>)
+              .map((e) => e.toJson()).toList()
+    });
     return await request.send();
   }
 
