@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_group_provider.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -42,7 +43,9 @@ class ARTGroupsScreen extends StatelessWidget {
                   ListTile(
                     onTap: () => context.goNamed(
                         RouteNames.HIV_ART_GROUP_DETAIL,
-                        pathParameters: {"id": artGroupSubscriptions[index].id!}),
+                        pathParameters: {
+                          "id": artGroupSubscriptions[index].id!
+                        }),
                     leading: CircleAvatar(
                       child: Icon(
                         Icons.group,
@@ -53,7 +56,7 @@ class ARTGroupsScreen extends StatelessWidget {
                     ),
                     title: Text(artGroupSubscriptions[index].group.title),
                     subtitle: Text(
-                        "From: ${artGroupSubscriptions[index].createdAt} To: 31st Apr 2024"),
+                        "From: ${DateFormat("dd MMM yyy").format(DateTime.parse(artGroupSubscriptions[index].createdAt))}"),
                     trailing: artGroupSubscriptions[index].isCurrent == true
                         ? Container(
                             padding: const EdgeInsets.all(Constants.SPACING),

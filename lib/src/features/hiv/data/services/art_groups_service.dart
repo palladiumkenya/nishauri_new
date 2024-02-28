@@ -29,11 +29,11 @@ class ARTGroupService extends HTTPService {
     return await request.send();
   }
 
-  Future<void> addARTGroup(ARTGroup group) async {
-    await call(getUserSubscriptions_, group);
+  Future<void> addARTGroup(Map<String, dynamic> group) async {
+    await call(addARTGroup_, group);
   }
 
-  Future<StreamedResponse> addARTGroup_(ARTGroup group) async {
+  Future<StreamedResponse> addARTGroup_(Map<String, dynamic> group) async {
     final tokenPair = await getCachedToken();
     var headers = {
       'x-access-token': tokenPair.accessToken,
@@ -42,7 +42,7 @@ class ARTGroupService extends HTTPService {
     var request = Request('POST',
         Uri.parse('${Constants.BASE_URL}/hiv-program/art-community/groups'));
     request.headers.addAll(headers);
-    request.body = json.encode(group.toJson());
+    request.body = json.encode(group);
     return await request.send();
   }
 
@@ -53,7 +53,6 @@ class ARTGroupService extends HTTPService {
     final programs = (programData["results"] as List<dynamic>)
         .map((e) => ARTGroupSubscription.fromJson(e))
         .toList();
-    debugPrint("****************$programs");
     return programs;
   }
 

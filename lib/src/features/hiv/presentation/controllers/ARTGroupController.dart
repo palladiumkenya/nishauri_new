@@ -24,8 +24,7 @@ class ARTGroupController
 
   Future<void> addARTGroup(Map<String, dynamic> data) async {
     try {
-      final group = ARTGroup.fromJson(data);
-      await _repository.addGroup(group);
+      await _repository.addGroup(data);
       await getUserGroupSubscriptions();
     } catch (e) {
       rethrow;
@@ -33,8 +32,7 @@ class ARTGroupController
   }
   Future<void> updateARTGroup(Map<String, dynamic> data) async {
     try {
-      final group = ARTGroup.fromJson(data);
-      await _repository.updateGroup(group);
+      await _repository.updateGroup(data);
       await getUserGroupSubscriptions();
     } catch (e) {
       rethrow;

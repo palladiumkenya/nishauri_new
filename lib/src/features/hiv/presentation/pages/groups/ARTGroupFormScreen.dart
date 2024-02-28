@@ -7,7 +7,10 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/hiv/data/models/group/art_group.dart';
+import 'package:nishauri/src/features/hiv/data/models/group/art_group_extra_subscriber.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_group_provider.dart';
+import 'package:nishauri/src/features/hiv/presentation/widgets/groups/GroupExtraSubsscriberDialog.dart';
+import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
@@ -24,6 +27,7 @@ class ARTGroupFormScreen extends HookWidget {
   Widget build(BuildContext context) {
     final formKey = useMemoized(() => GlobalKey<FormBuilderState>());
     final loading = useState<bool>(false);
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -91,9 +95,76 @@ class ARTGroupFormScreen extends HookWidget {
                       label: "Description",
                       placeholder: "Enter group description",
                     ).copyWith(prefixIcon: null),
-                    minLines: 3, // Set this
-                    maxLines: 6, // and this
+                    minLines: 3,
+                    // Set this
+                    maxLines: 6,
+                    // and this
                     keyboardType: TextInputType.multiline,
+                  ),
+                  const SizedBox(height: Constants.SPACING * 2),
+                  FormBuilderField<List<ARTGroupExtraSubscriber>>(
+                    initialValue: group == null ? [] : group!.extraSubscribers,
+                    builder: (state) {
+                      return Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(Constants.ROUNDNESS),
+                          ),
+                          border: Border.all(
+                            width: 1,
+                            color: theme.colorScheme.onSurface.withOpacity(0.5),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: SingleChildScrollView(
+                                child: Row(
+                                  children: state.value
+                                          ?.map(
+                                            (e) => AppCard(
+                                              child: SizedBox(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      Constants.SPACING),
+                                                  child: Text(e.name),
+                                                ),
+                                              ),
+                                              onTap: () {
+                                                state.didChange(state.value
+                                                    ?.where((element) =>
+                                                        element.cccNumber !=
+                                                        e.cccNumber)
+                                                    .toList());
+                                              },
+                                            ),
+                                          )
+                                          .toList() ??
+                                      [],
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                final subscriber =
+                                    await showDialog<ARTGroupExtraSubscriber>(
+                                        context: context,
+                                        builder: (context) =>
+                                            const GroupExtraSubscriberDialog());
+                                if (subscriber != null) {
+                                  state.didChange(
+                                      [...state.value ?? [], subscriber]);
+                                }
+                              },
+                              icon: const Icon(Icons.add),
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                    name: "extraSubscribers",
                   ),
                   const SizedBox(height: Constants.SPACING * 2),
                   Consumer(
@@ -117,7 +188,10 @@ class ARTGroupFormScreen extends HookWidget {
                               );
                             }).catchError((error) {
                               handleResponseError(
-                                  context, formKey.currentState!.fields, error, ref.read(authStateProvider.notifier).logout);
+                                  context,
+                                  formKey.currentState!.fields,
+                                  error,
+                                  ref.read(authStateProvider.notifier).logout);
                             }).whenComplete(
                               () => loading.value = false,
                             );
