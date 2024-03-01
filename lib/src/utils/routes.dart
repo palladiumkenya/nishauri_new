@@ -33,6 +33,10 @@ class RouteNames {
   static const FACILITY_VISITS = "facility-visits";
   static const FACILITY_VISIT_DETAIL = "facility-visit-detail";
   static const VERIFY_PROGRAM_OTP = "verify-program-otp";
+
+
+  static const LAB_RESULTS = "lab-results";
+  static const LAB_RESULT_DETAIL = "lab-result-detail";
 }
 
 class MenuItemNames {
@@ -49,6 +53,7 @@ class MenuItemNames {
   static const CANCER_PROGRAM_MENU = "Cancer";
   static const HYPERTENSION_PROGRAM_MENU = "Hypertension";
   static const FACILITY_VISITS = "Visits";
+  static const LAB_RESULTS = "Lab Results";
 }
 
 class ProgramCodeNames {

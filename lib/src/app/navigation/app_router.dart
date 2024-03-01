@@ -44,6 +44,8 @@ import 'package:nishauri/src/features/visits/presentations/pages/FacilityVisitDe
 import 'package:nishauri/src/features/visits/presentations/pages/FacilityVisitsScreen.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
+import '../../features/lab/presentation/pages/LabResults.dart';
+
 final routesProvider = Provider<GoRouter>((ref) {
   final router = RouterNotifier(ref);
   return GoRouter(
@@ -218,6 +220,13 @@ final List<RouteBase> secureRoutes = [
     path: 'appointments',
     builder: (BuildContext context, GoRouterState state) {
       return const Appointments();
+    },
+  ),
+  GoRoute(
+    name: RouteNames.LAB_RESULTS,
+    path: 'lab-results',
+    builder: (BuildContext context, GoRouterState state) {
+      return const LabResults();
     },
   ),
   GoRoute(

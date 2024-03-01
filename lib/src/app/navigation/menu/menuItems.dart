@@ -71,6 +71,11 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
       onPressed: () => context.goNamed(RouteNames.APPOINTMENTS),
     ),
     MenuItem(
+      icon: Icons.medical_information_rounded,
+      title: MenuItemNames.LAB_RESULTS,
+      onPressed: () => context.goNamed(RouteNames.LAB_RESULTS),
+    ),
+    MenuItem(
       icon: Icons.group,
       title: MenuItemNames.TREATMENT_SUPPORT,
       onPressed: () => context.goNamed(RouteNames.TREATMENT_SUPPORT),

@@ -40,6 +40,7 @@ dependencies:
   json_annotation: ^4.8.1
   table_calendar: ^3.0.9
   fl_chart: ^0.64.0
+  uuid: ^3.0.4
 
 
   # The following adds the Cupertino Icons font to your application.
