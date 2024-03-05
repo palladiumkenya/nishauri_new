@@ -1,0 +1,33 @@
+{
+  "programs": [
+    {
+      "name": "ART",
+      "items": {
+        "currentRegimen": "string",
+        "currentViralLoad": "string",
+        "cd4Count": "string",
+        "adherence": "string",
+        "appointmentDate": "2021-04-13",
+        "nextRefillDate": "2021-04-13"
+      }
+    },
+    {
+      "name": "TB",
+      "items": {
+        "treatmentPlan": "string",
+        "drugAdherence": "string",
+        "treatmentOutcome": "string",
+        "lastFollowUpDate": "2021-04-13"
+      }
+    },
+    {
+      "name": "Malaria",
+      "items": {
+        "diagnosis": "string",
+        "treatment": "string",
+        "recoveryStatus": "string",
+        "nextCheckupDate": "2021-04-13"
+      }
+    }
+  ]
+}

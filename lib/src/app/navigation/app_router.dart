@@ -14,6 +14,7 @@ import 'package:nishauri/src/features/auth/presentation/pages/SplashScreen.dart'
 import 'package:nishauri/src/features/auth/presentation/pages/VerificationScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
+import 'package:nishauri/src/features/clinic_card/presentation/pages/ClinicCardScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart';
 import 'package:nishauri/src/features/dashboard/presentation/pages/Dashboard.dart';
 import 'package:nishauri/src/features/events_calendar/presentation/pages/EventsCalendar.dart';
@@ -227,6 +228,13 @@ final List<RouteBase> secureRoutes = [
     path: 'lab-results',
     builder: (BuildContext context, GoRouterState state) {
       return const LabResults();
+    },
+  ),
+  GoRoute(
+    name: RouteNames.MY_CLINIC_CARD,
+    path: 'clinic-card',
+    builder: (BuildContext context, GoRouterState state) {
+      return const ClinicCardScreen();
     },
   ),
   GoRoute(

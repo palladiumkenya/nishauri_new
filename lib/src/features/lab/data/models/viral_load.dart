@@ -1,19 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 part 'viral_load.freezed.dart';
-// part 'viral_load.g.dart';
-// @Freezed()
-// class ViralLoad with _$ViralLoad {
-//   const factory ViralLoad({
-//     required String id,
-//     required String result,
-//     required String status,
-//     required String date,
-//     required String plot,
-// }) = _ViralLoad;
-//
-//   factory ViralLoad.fromJson(Map<String, dynamic> json) => _$ViralLoadFromJson(json);
-// }
+
 @Freezed()
 class ViralLoad with _$ViralLoad {
   const factory ViralLoad({
