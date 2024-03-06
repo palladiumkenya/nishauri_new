@@ -37,6 +37,7 @@ class RouteNames {
 
   static const LAB_RESULTS = "lab-results";
   static const MY_CLINIC_CARD = "clinic-card";
+  static const CHAT_HCW = "chat-bot";
 }
 
 class MenuItemNames {
@@ -55,6 +56,7 @@ class MenuItemNames {
   static const FACILITY_VISITS = "Visits";
   static const LAB_RESULTS = "Lab Results";
   static const MY_CLINIC_CARD = "My Clinic Card";
+  static const CHAT_HCW = "Chat With HCW";
 }
 
 class ProgramCodeNames {

@@ -100,6 +100,11 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
       title: MenuItemNames.FACILITY_VISITS,
       onPressed: () => context.goNamed(RouteNames.FACILITY_VISITS),
     ),
+    MenuItem(
+      icon: Icons.send,
+      title: MenuItemNames.CHAT_HCW,
+      onPressed: () => context.goNamed(RouteNames.CHAT_HCW),
+    ),
   ];
 }
 

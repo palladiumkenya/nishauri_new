@@ -14,6 +14,7 @@ import 'package:nishauri/src/features/auth/presentation/pages/SplashScreen.dart'
 import 'package:nishauri/src/features/auth/presentation/pages/VerificationScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
+import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
 import 'package:nishauri/src/features/clinic_card/presentation/pages/ClinicCardScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart';
 import 'package:nishauri/src/features/dashboard/presentation/pages/Dashboard.dart';
@@ -235,6 +236,13 @@ final List<RouteBase> secureRoutes = [
     path: 'clinic-card',
     builder: (BuildContext context, GoRouterState state) {
       return const ClinicCardScreen();
+    },
+  ),
+  GoRoute(
+    name: RouteNames.CHAT_HCW,
+    path: 'chat-bot',
+    builder: (BuildContext context, GoRouterState state) {
+      return const ChatScreen();
     },
   ),
   GoRoute(
