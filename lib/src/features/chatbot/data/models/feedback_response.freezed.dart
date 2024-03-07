@@ -20,7 +20,7 @@ FeedbackResponse _$FeedbackResponseFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$FeedbackResponse {
-  String get text => throw _privateConstructorUsedError;
+  String get msg => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +34,7 @@ abstract class $FeedbackResponseCopyWith<$Res> {
           FeedbackResponse value, $Res Function(FeedbackResponse) then) =
       _$FeedbackResponseCopyWithImpl<$Res, FeedbackResponse>;
   @useResult
-  $Res call({String text});
+  $Res call({String msg});
 }
 
 /// @nodoc
@@ -50,12 +50,12 @@ class _$FeedbackResponseCopyWithImpl<$Res, $Val extends FeedbackResponse>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? text = null,
+    Object? msg = null,
   }) {
     return _then(_value.copyWith(
-      text: null == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
+      msg: null == msg
+          ? _value.msg
+          : msg // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -69,7 +69,7 @@ abstract class _$$FeedbackResponseImplCopyWith<$Res>
       __$$FeedbackResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String text});
+  $Res call({String msg});
 }
 
 /// @nodoc
@@ -83,12 +83,12 @@ class __$$FeedbackResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? text = null,
+    Object? msg = null,
   }) {
     return _then(_$FeedbackResponseImpl(
-      text: null == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
+      msg: null == msg
+          ? _value.msg
+          : msg // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -97,17 +97,17 @@ class __$$FeedbackResponseImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$FeedbackResponseImpl implements _FeedbackResponse {
-  const _$FeedbackResponseImpl({required this.text});
+  const _$FeedbackResponseImpl({required this.msg});
 
   factory _$FeedbackResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$FeedbackResponseImplFromJson(json);
 
   @override
-  final String text;
+  final String msg;
 
   @override
   String toString() {
-    return 'FeedbackResponse(text: $text)';
+    return 'FeedbackResponse(msg: $msg)';
   }
 
   @override
@@ -115,12 +115,12 @@ class _$FeedbackResponseImpl implements _FeedbackResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FeedbackResponseImpl &&
-            (identical(other.text, text) || other.text == text));
+            (identical(other.msg, msg) || other.msg == msg));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, text);
+  int get hashCode => Object.hash(runtimeType, msg);
 
   @JsonKey(ignore: true)
   @override
@@ -138,14 +138,14 @@ class _$FeedbackResponseImpl implements _FeedbackResponse {
 }
 
 abstract class _FeedbackResponse implements FeedbackResponse {
-  const factory _FeedbackResponse({required final String text}) =
+  const factory _FeedbackResponse({required final String msg}) =
       _$FeedbackResponseImpl;
 
   factory _FeedbackResponse.fromJson(Map<String, dynamic> json) =
       _$FeedbackResponseImpl.fromJson;
 
   @override
-  String get text;
+  String get msg;
   @override
   @JsonKey(ignore: true)
   _$$FeedbackResponseImplCopyWith<_$FeedbackResponseImpl> get copyWith =>

@@ -5,7 +5,7 @@ part 'feedback_response.g.dart';
 @Freezed()
 class FeedbackResponse with _$FeedbackResponse {
   const factory FeedbackResponse({
-    required String text,
+    required String msg,
   }) = _FeedbackResponse;
   factory FeedbackResponse.fromJson(Map<String, dynamic> json)=> _$FeedbackResponseFromJson(json);
 }

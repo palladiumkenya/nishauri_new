@@ -3,11 +3,10 @@ import 'package:http/http.dart' as http;
 import 'package:nishauri/src/features/chatbot/data/models/feedback_response.dart';
 import 'package:nishauri/src/features/chatbot/data/models/message.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
+import 'package:nishauri/src/utils/constants.dart';
 
 class ChatbotService extends HTTPService{
-  final String endpoint;
-
-  ChatbotService(this.endpoint);
+  final String endpoint = "${Constants.BASE_URL}/chat";
 
   Future<FeedbackResponse> sendMessage(Message message) async {
     final response = await http.post(
@@ -16,7 +15,8 @@ class ChatbotService extends HTTPService{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'message': message.text,
+
+        'question': message.question.toString(),
       }),
     );
 

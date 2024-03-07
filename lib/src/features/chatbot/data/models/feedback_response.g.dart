@@ -9,11 +9,11 @@ part of 'feedback_response.dart';
 _$FeedbackResponseImpl _$$FeedbackResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$FeedbackResponseImpl(
-      text: json['text'] as String,
+      msg: json['msg'] as String,
     );
 
 Map<String, dynamic> _$$FeedbackResponseImplToJson(
         _$FeedbackResponseImpl instance) =>
     <String, dynamic>{
-      'text': instance.text,
+      'msg': instance.msg,
     };

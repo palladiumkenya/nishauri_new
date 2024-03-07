@@ -6,7 +6,7 @@ part 'message.g.dart';
 @Freezed()
 class Message with _$Message {
   const factory Message({
-    required String text,
+    required String question,
     required bool isSentByUser,
   }) = _Message;
   factory Message.fromJson(Map<String, dynamic> json)=> _$MessageFromJson(json);

@@ -17,6 +17,7 @@ import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen
 import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
 import 'package:nishauri/src/features/clinic_card/presentation/pages/ClinicCardScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart';
+import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.dart';
 import 'package:nishauri/src/features/dashboard/presentation/pages/Dashboard.dart';
 import 'package:nishauri/src/features/events_calendar/presentation/pages/EventsCalendar.dart';
 import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
@@ -175,6 +176,13 @@ final List<RouteBase> secureRoutes = [
     path: 'privacy-settings',
     builder: (BuildContext context, GoRouterState state) {
       return const PrivacySettingsScreen();
+    },
+  ),
+  GoRoute(
+    name: RouteNames.SETTINGS,
+    path: 'settings',
+    builder: (BuildContext context, GoRouterState state) {
+      return const SettingsScreen();
     },
   ),
   GoRoute(

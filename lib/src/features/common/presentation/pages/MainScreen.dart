@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/custom_icons.dart';
+import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/HomeScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainMenuScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.dart';
@@ -23,7 +25,7 @@ class _HomeScreenState extends ConsumerState<MainScreen>
   final _pages = const [
     HomeScreen(),
     MainMenuScreen(),
-    SettingsScreen(),
+    ChatScreen(),
   ];
 
   @override
@@ -95,15 +97,15 @@ class _HomeScreenState extends ConsumerState<MainScreen>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _currIndex = 1;
-          });
-        },
-        child: const Icon(Icons.apps),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     setState(() {
+      //       _currIndex = 1;
+      //     });
+      //   },
+      //   // child: const Icon(Icons.apps),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Theme.of(context).colorScheme.primary,
         items: const [
@@ -113,11 +115,11 @@ class _HomeScreenState extends ConsumerState<MainScreen>
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.apps_rounded),
-            label: "",
+            label: "Apps",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: "Settings",
+            icon: Icon(CustomIcons.chat),
+            label: "Nishauri Bot",
           ),
         ],
         currentIndex: _currIndex,
