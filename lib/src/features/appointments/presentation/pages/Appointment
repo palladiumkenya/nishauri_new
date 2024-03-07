@@ -1,0 +1,31 @@
+class Appointment {
+  final int id;
+  final String appointmentType;
+  final String appointmentDate;
+  final String? dateAttended;
+  final String apptStatus;
+  final String rStatus;
+  final String appointment;
+
+  Appointment({
+    required this.id,
+    required this.appointmentType,
+    required this.appointmentDate,
+    required this.dateAttended,
+    required this.apptStatus,
+    required this.rStatus,
+    required this.appointment,
+  });
+
+  factory Appointment.fromJson(Map<String, dynamic> json) {
+    return Appointment(
+      id: json['id'],
+      appointmentType: json['appointment_type'],
+      appointmentDate: json['appointment_date'],
+      dateAttended: json['date_attended'],
+      apptStatus: json['appt_status'],
+      rStatus: json['r_status'],
+      appointment: json['appointment'],
+    );
+  }
+}
