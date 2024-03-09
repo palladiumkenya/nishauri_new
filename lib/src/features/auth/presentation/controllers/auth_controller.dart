@@ -15,12 +15,12 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
 
   Future<void> loadAuthState() async {
     try {
-      // final user = await _userRepository.getUser();
+      final user = await _userRepository.getUser();
       state = AsyncValue.data(AuthState(
-        // isAccountVerified: user.accountVerified,
-        // isProfileComplete: user.profileUpdated,
         isAccountVerified: true,
         isProfileComplete: true,
+        // isAccountVerified: true,
+        // isProfileComplete: true,
         isAuthenticated: true,
       ));
     } catch (e) {
@@ -31,18 +31,23 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
   Future<void> login(Map<String, dynamic> credentials) async {
     try {
       final authResponse = await _repository.authenticate(credentials);
+      var msg = authResponse.accessToken ?? '';
+      if (msg.isEmpty){
+        throw authResponse.message??'';
+      }
       await _repository.saveToken(TokenPair(
-        accessToken: authResponse.accessToken,
-        refreshToken: authResponse.refreshToken,
+        accessToken: authResponse.accessToken ?? '',
+        refreshToken: authResponse.refreshToken ?? '',
       ));
+      await _repository.saveUserId(authResponse.userId??'');
       state = AsyncValue.data(
         AuthState(
-          // isAccountVerified: authResponse.accountVerified,
-          // isProfileComplete: authResponse.profileUpdated,
-          // isAuthenticated: authResponse.accessToken.isNotEmpty,
-          isAccountVerified: true,
-          isProfileComplete: true,
-          isAuthenticated: true,
+          isAccountVerified: authResponse.accountVerified,
+          isProfileComplete: authResponse.profileUpdated,
+          isAuthenticated: msg.isNotEmpty,
+          // isAccountVerified: true,
+          // isProfileComplete: true,
+          // isAuthenticated: true,
 
         ),
       );
@@ -54,14 +59,16 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
   Future<void> register(Map<String, dynamic> data) async {
     try {
       final authResponse = await _repository.register(data);
+      var isAuth = authResponse.accessToken ?? '';
       await _repository.saveToken(TokenPair(
-        accessToken: authResponse.accessToken,
-        refreshToken: authResponse.refreshToken,
+        accessToken: authResponse.accessToken ?? '',
+        refreshToken: authResponse.refreshToken?? '',
       ));
+      await _repository.saveUserId(authResponse.userId??'');
       state = AsyncValue.data(AuthState(
         isAccountVerified: authResponse.accountVerified,
         isProfileComplete: authResponse.profileUpdated,
-        isAuthenticated: authResponse.accessToken.isNotEmpty,
+        isAuthenticated: isAuth.isNotEmpty,
       ));
     } catch (e) {
       rethrow;
@@ -94,6 +101,7 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
 
   Future<void> logout() async {
     _repository.deleteToken();
+    _repository.deleteUserId();
     state.when(
       data: (value) => state = AsyncValue.data(
         value.copyWith(

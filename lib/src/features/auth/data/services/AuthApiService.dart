@@ -12,7 +12,7 @@ class AuthApiService extends HTTPService {
   Future<AuthResponse> authenticate(Map<String, dynamic> credentials) async {
     var headers = {'Content-Type': 'application/json'};
     var request =
-        http.Request('POST', Uri.parse('${Constants.BASE_URL}/auth/login'));
+        http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}/signin'));
     request.body = json.encode(credentials);
     request.headers.addAll(headers);
 
@@ -21,10 +21,12 @@ class AuthApiService extends HTTPService {
       final responseString = await response.stream.bytesToString();
       final data = jsonDecode(responseString);
       final authState = AuthResponse(
-        accessToken: response.headers["x-access-token"]!,
-        refreshToken: response.headers["x-refresh-token"]!,
-        accountVerified: data["user"]["accountVerified"]!,
-        profileUpdated: data["user"]["profileUpdated"]!,
+          accessToken: data["data"]?["token"]!,
+          refreshToken: data["data"]?["token"]!,
+          accountVerified: data["data"]?["account_verified"] == "1"!,
+          profileUpdated: data["data"]?["account_verified"] == "1"!,
+          userId: data["data"]?["user_id"]!,
+          message: data["msg"]!
       );
       return authState;
     } else {
@@ -45,10 +47,12 @@ class AuthApiService extends HTTPService {
       final responseString = await response.stream.bytesToString();
       final data = jsonDecode(responseString);
       final authState = AuthResponse(
-        accessToken: response.headers["x-access-token"]!,
-        refreshToken: response.headers["x-refresh-token"]!,
-        accountVerified: data["user"]["accountVerified"]!,
-        profileUpdated: data["user"]["profileUpdated"]!,
+          accessToken: data["data"]?["token"]!,
+          refreshToken: data["data"]?["token"]!,
+          accountVerified: data["data"]?["account_verified"] == "1"!,
+          profileUpdated: data["data"]?["account_verified"] == "1"!,
+          userId: data["data"]?["user_id"]!,
+          message: data["msg"]!
       );
       return authState;
     } else {

@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
+import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
 import 'package:nishauri/src/features/user/data/models/user.dart';
+import 'package:nishauri/src/features/user/data/respositories/UserRepository.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 import 'package:nishauri/src/shared/models/token_pair.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -10,9 +13,10 @@ import 'package:nishauri/src/utils/helpers.dart';
 class UserService extends HTTPService {
   Future<User> _updateProfile(User user) async {
     final tokenPair = await getCachedToken();
-    var headers = {'x-access-token': tokenPair.accessToken};
+    // var headers = {'x-access-token': tokenPair.accessToken};
+    var headers = {'Content-Type': 'application/json'};
     var request = http.MultipartRequest(
-        'POST', Uri.parse('${Constants.BASE_URL}/auth/profile'));
+        'POST', Uri.parse('${Constants.BASE_URL_NEW}/profile'));
     // Serialize user data to JSON
     final userData = user.toJson();
     // Extract image path and remove it from user data
@@ -137,24 +141,34 @@ class UserService extends HTTPService {
     final response = await call(getUser_, null);
     final responseString = await response.stream.bytesToString();
     final userData = json.decode(responseString);
-    final Map<String, dynamic> person = userData["person"][0];
-    person.remove("_id");
+    final Map<String, dynamic> person = userData["data"][0];
+    person.remove("moh_upi");
+    final String fullName = person["client_name"] ?? "";
     return User.fromJson({
       ...userData,
       ...person,
-      "name": "${person["firstName"]} ${person["lastName"]}",
-      "id": userData["_id"],
-      "image": person["image"] != null
-          ? "${Constants.BASE_URL}/files/${person["image"]}"
-          : null
+      // "name": "${person["firstName"]} ${person["lastName"]}",
+      "name": fullName,
+      "id": "MTkz",
+      "image": "image",
+      "username": fullName,
+      "email": "email@email.com",
+      "phoneNumber": person["phone_no"],
+      // "id": userData["_id"],
+      // "image": person["image"] != null
+      //     ? "${Constants.BASE_URL}/files/${person["image"]}"
+      //     : null
     });
   }
 
+  final AuthRepository _repository = AuthRepository(AuthApiService());
   Future<http.StreamedResponse> getUser_(dynamic args) async {
+    final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
-    var headers = {'x-access-token': tokenPair.accessToken};
+    // var headers = {'x-access-token': tokenPair.accessToken};
+    var headers = {'Content-Type': 'application/json'};
     var request =
-        http.Request('GET', Uri.parse('${Constants.BASE_URL}/auth/profile'));
+        http.Request('GET', Uri.parse('${Constants.BASE_URL_NEW}/profile?user_id=$id'));
     request.headers.addAll(headers);
     return await request.send();
   }
