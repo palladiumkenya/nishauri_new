@@ -1,3 +1,8 @@
+//import 'package:freezed_annotation/freezed_annotation.dart';
+
+//part 'upcoming_appointment.dart';
+
+
 class Appointment {
   final int id;
   final String appointmentType;
@@ -11,7 +16,7 @@ class Appointment {
     required this.id,
     required this.appointmentType,
     required this.appointmentDate,
-    required this.dateAttended,
+    this.dateAttended,
     required this.apptStatus,
     required this.rStatus,
     required this.appointment,
@@ -19,13 +24,13 @@ class Appointment {
 
   factory Appointment.fromJson(Map<String, dynamic> json) {
     return Appointment(
-      id: json['id'],
-      appointmentType: json['appointment_type'],
-      appointmentDate: json['appointment_date'],
-      dateAttended: json['date_attended'],
-      apptStatus: json['appt_status'],
-      rStatus: json['r_status'],
-      appointment: json['appointment'],
+      id: json['id'] as int,
+      appointmentType: json['appointment_type'] as String,
+      appointmentDate: json['appointment_date'] as String,
+      dateAttended: json['date_attended'] as String?,
+      apptStatus: json['appt_status'] as String,
+      rStatus: json['r_status'] as String,
+      appointment: json['appointment'] as String,
     );
   }
 }

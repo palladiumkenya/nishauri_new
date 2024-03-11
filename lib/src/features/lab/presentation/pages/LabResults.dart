@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nishauri/src/features/lab/data/providers/VirolLoadprovider.dart';
+import 'package:nishauri/src/features/lab/data/providers/ViralLoadprovider.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class LabResults extends StatelessWidget {
