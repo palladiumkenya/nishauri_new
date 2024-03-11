@@ -143,6 +143,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 );
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text("Settings"),
+              onTap: () {
+                context.goNamed(RouteNames.SETTINGS);
+                // Close drawer
+                Navigator.pop(context);
+              },
+            ),
             // ...drawerItems.map(
             //   (e) => ListTile(
             //     leading: Icon(e.icon),

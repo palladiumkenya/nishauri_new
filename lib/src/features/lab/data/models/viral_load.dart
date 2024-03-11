@@ -17,10 +17,10 @@ class ViralLoad with _$ViralLoad {
 
     return ViralLoad(
       id: uuid,
-      result: json['result'] != null ? json['result'] as String : '', // Handle nullable value
-      status: json['status'] != null ? json['status'] as String : '', // Handle nullable value
-      date: json['date'] != null ? json['date'] as String : '', // Handle nullable value
-      plot: json['plot'] != null ? json['plot'] as int : 0, // Handle nullable value
+      result: json['result'] != null ? json['result'] as String : '',
+      status: json['status'] != null ? json['status'] as String : '',
+      date: json['date'] != null ? json['date'] as String : '',
+      plot: json['plot'] != null ? json['plot'] as int : 0,
     );
   }
 }
