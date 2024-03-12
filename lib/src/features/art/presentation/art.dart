@@ -28,6 +28,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController _controller = TextEditingController();
   List<Facility> _facilities = [];
+  bool _fetching = false;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 SizedBox(width: 8.0),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: _fetching ? null : () {
                     _fetchFacilities(_controller.text);
                   },
                   child: Text('Search'),
@@ -61,22 +62,26 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: _facilities.length,
-              itemBuilder: (context, index) {
-                Facility facility = _facilities[index];
-                return ListTile(
-                 title: Text(facility.name),
-  subtitle: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text('Telephone: ${facility.telephone}'),
-      Text('County: ${facility.county}'),
-    ],
-  ),
-                );
-              },
-            ),
+            child: _facilities.isEmpty && !_fetching
+                ? Center(child: Text('No facilities found'))
+                : _fetching
+                    ? Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                        itemCount: _facilities.length,
+                        itemBuilder: (context, index) {
+                          Facility facility = _facilities[index];
+                          return ListTile(
+                            title: Text(facility.name),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Telephone: ${facility.telephone}'),
+                                Text('County: ${facility.county}'),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
           ),
         ],
       ),
@@ -84,27 +89,45 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _fetchFacilities(String queryParameter) async {
-   // final url = 'http://prod.kenyahmis.org:8002/api/facility/directory?name=$name';
-   // final response = await http.get(url as Uri);
+    setState(() {
+      _facilities.clear();
+      _fetching = true;
+    });
 
-     String baseUrl = 'http://prod.kenyahmis.org:8002/api/facility/directory';
+    String baseUrl = 'http://prod.kenyahmis.org:8002/api/facility/directory';
     String url = '$baseUrl?name=$queryParameter';
 
-
-
-     try {
+    try {
       http.Response response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
         List<dynamic> jsonList = jsonDecode(response.body)['message'];
-        setState(() {
-          _facilities = jsonList.map((json) => Facility.fromJson(json)).toList();
-        });
+        if (jsonList != null) {
+          setState(() {
+            _facilities = jsonList.map((json) => Facility.fromJson(json)).toList();
+            _fetching = false;
+          });
+        } else {
+          setState(() {
+            _fetching = false;
+          });
+          _showToast('No facilities found');
+        }
       } else {
         print('Failed to load facilities. Error: ${response.statusCode}');
+        setState(() {
+          _fetching = false;
+        });
       }
     } catch (e) {
       print('Exception while fetching facilities: $e');
+      setState(() {
+        _fetching = false;
+      });
     }
   }
+
+  void _showToast(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
+}
