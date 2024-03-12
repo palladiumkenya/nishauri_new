@@ -15,6 +15,7 @@ class Art_Directory extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark(), // Set the theme to dark
       home: MyHomePage(),
     );
   }
@@ -35,6 +36,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Facility Directory'),
+        // leading: IconButton(
+        //   icon: Icon(Icons.arrow_back),
+        //   onPressed: () {
+        //     Navigator.of(context).pop();
+        //   },
+        // ),
       ),
       body: Column(
         children: <Widget>[
@@ -78,8 +85,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Text('Telephone: ${facility.telephone}'),
                                 Text('County: ${facility.county}'),
                               ],
+                              
                             ),
+                            
                           );
+                          
                         },
                       ),
           ),
