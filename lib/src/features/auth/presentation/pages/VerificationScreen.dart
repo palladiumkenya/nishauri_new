@@ -43,6 +43,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 .then((value) {
               // reload auth to redirect to profile update
               authStateNotifier.markProfileAsAccountVerified();
+              authStateNotifier.markProfileAsUpdated();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(value)),
               );
@@ -193,7 +194,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                           // _formState = _formState.copyWith(values: {..._formState.values,"otp": "1234"});
                                         });
                                       },
-                                      label: "OTP verification ode",
+                                      label: "OTP verification code",
                                     ),
                                     // readOnly: !(_formKey.currentState!.value["mode"].isNotEmpty == true && _sent),
                                     validator: FormBuilderValidators.compose([

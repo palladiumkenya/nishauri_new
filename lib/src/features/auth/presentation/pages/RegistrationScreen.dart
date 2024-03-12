@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
@@ -61,32 +62,45 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   child: Column(
                     children: [
-                      const SizedBox(height: Constants.SPACING),
+                      const SizedBox(height: Constants.SMALL_SPACING),
                       const DecoratedBox(
                         decoration: BoxDecoration(),
                         child: Logo(),
                       ),
-                      const SizedBox(height: Constants.SPACING),
+                      const SizedBox(height: Constants.SMALL_SPACING),
                       const Text(
                         "Sign Up",
                         style: TextStyle(
                             fontSize: 40, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      const SizedBox(height: Constants.SPACING),
+                      const SizedBox(height: Constants.SMALL_SPACING),
                       FormBuilderTextField(
-                        name: "username",
+                        name: "f_name",
                         decoration: inputDecoration(
                           placeholder: "e.g john",
-                          prefixIcon: Icons.person,
-                          label: "Username",
+                          prefixIcon: Icons.account_circle_outlined,
+                          label: "First Name",
                         ),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
                           FormBuilderValidators.minLength(4),
                         ]),
                       ),
-                      const SizedBox(height: Constants.SPACING),
+                      const SizedBox(height: Constants.SMALL_SPACING),
+                      FormBuilderTextField(
+                        name: "l_name",
+                        decoration: inputDecoration(
+                          placeholder: "e.g Doe",
+                          prefixIcon: Icons.account_circle_outlined,
+                          label: "Last Name",
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                          FormBuilderValidators.minLength(4),
+                        ]),
+                      ),
+                      const SizedBox(height: Constants.SMALL_SPACING),
                       FormBuilderTextField(
                         name: "email",
                         decoration: inputDecoration(
@@ -99,9 +113,47 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           FormBuilderValidators.email(),
                         ]),
                       ),
-                      const SizedBox(height: Constants.SPACING),
+                      const SizedBox(height: Constants.SMALL_SPACING),
+                      FormBuilderDateTimePicker(
+                        firstDate: DateTime(1950),
+                        lastDate: DateTime(2100),
+                        name: "dob",
+                        format: DateFormat('yyy MMM dd'),
+                        inputType: InputType.date,
+                        decoration: inputDecoration(
+                          placeholder: "Enter your date of birth",
+                          prefixIcon: Icons.calendar_month_rounded,
+                          label: "Date of birth",
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
+                        valueTransformer: (date) => date?.toIso8601String(),
+                      ),
+                      const SizedBox(height: Constants.SMALL_SPACING),
+                      FormBuilderDropdown(
+                        name: "gender",
+                        decoration: inputDecoration(
+                          prefixIcon: Icons.accessibility,
+                          label: "Gender",
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
+                        items: const [
+                          DropdownMenuItem(
+                            value: "Male",
+                            child: Text("Male"),
+                          ),
+                          DropdownMenuItem(
+                            value: "Female",
+                            child: Text("Female"),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: Constants.SMALL_SPACING),
                       FormBuilderTextField(
-                        name: "phoneNumber",
+                        name: "msisdn",
                         decoration: inputDecoration(
                           placeholder: "e.g 0712345678",
                           prefixIcon: Icons.phone,
@@ -113,7 +165,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           FormBuilderValidators.maxLength(13),
                         ]),
                       ),
-                      const SizedBox(height: Constants.SPACING),
+                      const SizedBox(height: Constants.SMALL_SPACING),
                       FormBuilderTextField(
                         name: "password",
                         obscureText: _hidePassword,
@@ -129,7 +181,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           FormBuilderValidators.required(),
                         ]),
                       ),
-                      const SizedBox(height: Constants.SPACING),
+                      const SizedBox(height: Constants.SMALL_SPACING),
                       FormBuilderTextField(
                         obscureText: _hidePassword,
                         name: "confirmPassword",
@@ -192,6 +244,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                           Text('Registration successful!,'),
                                     ),
                                   );
+                                  // context.goNamed(RouteNames.VERIFY_ACCOUNT);
                                 }).catchError((error) {
                                   handleResponseError(
                                     context,

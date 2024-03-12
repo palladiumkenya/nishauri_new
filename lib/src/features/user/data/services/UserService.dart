@@ -141,23 +141,27 @@ class UserService extends HTTPService {
     final response = await call(getUser_, null);
     final responseString = await response.stream.bytesToString();
     final userData = json.decode(responseString);
-    final Map<String, dynamic> person = userData["data"][0];
-    person.remove("moh_upi");
-    final String fullName = person["client_name"] ?? "";
+    final Map<String, dynamic> person = userData["data"];
+    person.remove("user_id");
     return User.fromJson({
       ...userData,
       ...person,
-      // "name": "${person["firstName"]} ${person["lastName"]}",
-      "name": fullName,
-      "id": "MTkz",
+      "name": "${person["profile"]["f_name"]} ${person["profile"]["l_name"]}",
+      "id": userData["user_id"],
+      "firstName": person["profile"]["f_name"],
+      "lastName": person["profile"]["l_name"],
+      "bloodGroup": person["profile"]["blood_group"],
+      "maritalStatus": person["profile"]["marital"],
+      "primaryLanguage": person["profile"]["primary_language"],
+      "educationLevel": person["profile"]["education"],
+      "constituency": person["profile"]["landmark"],
       "image": "image",
-      "username": fullName,
-      "email": "email@email.com",
-      "phoneNumber": person["phone_no"],
-      // "id": userData["_id"],
-      // "image": person["image"] != null
-      //     ? "${Constants.BASE_URL}/files/${person["image"]}"
-      //     : null
+      "username": "${person["profile"]["f_name"]} ${person["profile"]["l_name"]}",
+      // "email": "some@some.com",
+      // "phoneNumber": "0713423265",
+      "email": person["profile"]["email"],
+      "phoneNumber": person["profile"]["phone_no"],
+      "dateOfBirth": person["profile"]["dob"],
     });
   }
 
@@ -165,10 +169,10 @@ class UserService extends HTTPService {
   Future<http.StreamedResponse> getUser_(dynamic args) async {
     final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
-    // var headers = {'x-access-token': tokenPair.accessToken};
-    var headers = {'Content-Type': 'application/json'};
+    var headers = {'Authorization':"Bearer ${tokenPair.accessToken}",
+      'Content-Type': 'application/json'};
     var request =
-        http.Request('GET', Uri.parse('${Constants.BASE_URL_NEW}/profile?user_id=$id'));
+        http.Request('GET', Uri.parse('${Constants.BASE_URL_NEW}/get_profile?user_id=$id'));
     request.headers.addAll(headers);
     return await request.send();
   }
@@ -232,22 +236,40 @@ class UserService extends HTTPService {
 
   Future<String> accountVerify(Map<String, dynamic> data) async {
     http.StreamedResponse response = await call(accountVerify_, data);
+    String message = '';
+    try{
+      if (response.statusCode == 200) {
+        final responseString = await response.stream.bytesToString();
+        final userData = json.decode(responseString);
+        bool messageServer = userData["success"];
 
-    final responseString = await response.stream.bytesToString();
-    final userData = json.decode(responseString);
-    return userData["detail"];
+        if (messageServer == true){
+          message = userData["msg"];
+        }
+        else{
+          throw userData["msg"];
+        }
+      }
+    } catch (e)
+    {
+      rethrow;
+    }
+    return message;
   }
 
   Future<http.StreamedResponse> accountVerify_(
       Map<String, dynamic> data) async {
+    final id = await _repository.getUserId();
+    var user = {'user_id': id};
+    var mergedData = {...data, ...user};
     final tokenPair = await getCachedToken();
     var headers = {
-      'x-access-token': tokenPair.accessToken,
+      'Authorization': "Bearer ${tokenPair.accessToken}",
       'Content-Type': 'application/json',
     };
     var request =
-        http.Request('POST', Uri.parse('${Constants.BASE_URL}/auth/verify'));
-    request.body = jsonEncode(data);
+        http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}verifyotp'));
+    request.body = jsonEncode(mergedData);
     request.headers.addAll(headers);
     return await request.send();
   }
@@ -270,10 +292,14 @@ class UserService extends HTTPService {
   }
 
   Future<http.StreamedResponse> requestVerificationCode_(String? mode) async {
+    final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
-    var headers = {'x-access-token': tokenPair.accessToken};
+    var headers = {'Authorization': "Bearer ${tokenPair.accessToken}",
+      'Content-Type': 'application/json',};
+    var body = {'user_id': id};
     var request = http.Request(
-        'GET', Uri.parse('${Constants.BASE_URL}/auth/verify?mode=$mode'));
+        'POST', Uri.parse('${Constants.BASE_URL_NEW}sendotp'));
+    request.body = jsonEncode(body);
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     return response;
@@ -285,6 +311,6 @@ class UserService extends HTTPService {
 
     final responseString = await response.stream.bytesToString();
     final userData = json.decode(responseString);
-    return userData["detail"];
+    return userData["msg"];
   }
 }

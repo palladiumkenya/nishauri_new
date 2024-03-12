@@ -3,6 +3,7 @@ import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
 import 'package:nishauri/src/features/user/data/respositories/UserRepository.dart';
 import 'package:nishauri/src/shared/models/token_pair.dart';
+import 'dart:developer' as developer;
 
 class AuthController extends StateNotifier<AsyncValue<AuthState>> {
   /// Act as the view model that hold the state of component or screen
@@ -45,13 +46,11 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
           isAccountVerified: authResponse.accountVerified,
           isProfileComplete: authResponse.profileUpdated,
           isAuthenticated: msg.isNotEmpty,
-          // isAccountVerified: true,
-          // isProfileComplete: true,
-          // isAuthenticated: true,
 
         ),
       );
     } catch (e) {
+      developer.log('-->login ${e.toString()}');
       rethrow;
     }
   }
@@ -60,6 +59,9 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
     try {
       final authResponse = await _repository.register(data);
       var isAuth = authResponse.accessToken ?? '';
+      if (isAuth.isEmpty){
+        throw authResponse.message??'';
+      }
       await _repository.saveToken(TokenPair(
         accessToken: authResponse.accessToken ?? '',
         refreshToken: authResponse.refreshToken?? '',
@@ -71,20 +73,27 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
         isAuthenticated: isAuth.isNotEmpty,
       ));
     } catch (e) {
+      developer.log('-->register ${e.toString()}');
       rethrow;
     }
   }
 
   Future<void> markProfileAsUpdated() async {
-    state.when(
-      data: (value) => state = AsyncValue.data(
-        value.copyWith(
-          isProfileComplete: true,
+    try {
+      state.when(
+        data: (value) => state = AsyncValue.data(
+          value.copyWith(
+            isProfileComplete: true,
+          ),
         ),
-      ),
-      error: (error, stackTrace) => state = AsyncValue.error(error, stackTrace),
-      loading: () => state = const AsyncValue.loading(),
-    );
+        error: (error, stackTrace) => state = AsyncValue.error(error, stackTrace),
+        loading: () => state = const AsyncValue.loading(),
+      );
+    } catch (e)
+    {
+      rethrow;
+    }
+
   }
 
   Future<void> markProfileAsAccountVerified() async {
