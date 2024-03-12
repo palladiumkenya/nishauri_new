@@ -1,0 +1,14 @@
+{
+    "success": true,
+    "data": [
+        {
+            "id": 3123047,
+            "appointment_type": "Re-Fill",
+            "appointment_date": "Friday, April 5 2024",
+            "date_attended": null,
+            "appt_status": "Reschedule Pending Approval",
+            "r_status": "0",
+            "appointment": "05-04-2024"
+        }
+    ]
+}
