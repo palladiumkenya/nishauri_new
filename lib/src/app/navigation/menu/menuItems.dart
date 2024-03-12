@@ -55,11 +55,19 @@ MenuItem getProgramMenuItemByProgramCode(
 
 List<MenuItem> getGenericMenuItems(BuildContext context) {
   return [
+    // MenuItem(
+    //   icon: Icons.calendar_month_rounded,
+    //   title: MenuItemNames.MY_CALENDAR,
+    //   onPressed: () => context.goNamed(RouteNames.EVENTS_CALENDAR),
+    // ),
+
+    //art
     MenuItem(
       icon: Icons.calendar_month_rounded,
-      title: MenuItemNames.MY_CALENDAR,
-      onPressed: () => context.goNamed(RouteNames.EVENTS_CALENDAR),
+      title: MenuItemNames.ART_DIRECTORY,
+      onPressed: () => context.goNamed(RouteNames.ART_DIRECTORY),
     ),
+
     MenuItem(
       icon: Icons.dashboard_customize_outlined,
       title: MenuItemNames.DASHBOARD,

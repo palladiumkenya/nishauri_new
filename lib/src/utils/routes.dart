@@ -37,6 +37,7 @@ class RouteNames {
 
   static const LAB_RESULTS = "lab-results";
   static const MY_CLINIC_CARD = "clinic-card";
+  static const ART_DIRECTORY= "Art-directory";
 }
 
 class MenuItemNames {
@@ -55,6 +56,8 @@ class MenuItemNames {
   static const FACILITY_VISITS = "Visits";
   static const LAB_RESULTS = "Lab Results";
   static const MY_CLINIC_CARD = "My Clinic Card";
+
+   static const ART_DIRECTORY= "Art Directory";
 }
 
 class ProgramCodeNames {
