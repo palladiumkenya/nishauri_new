@@ -65,6 +65,8 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
     //   title: MenuItemNames.DASHBOARD,
     //   onPressed: () => context.goNamed(RouteNames.DASHBOARD),
     // ),
+
+   
     MenuItem(
       icon: Icons.calendar_month,
       title: MenuItemNames.APPOINTMENTS,
@@ -80,6 +82,11 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
       title: MenuItemNames.MY_CLINIC_CARD,
       onPressed: () => context.goNamed(RouteNames.MY_CLINIC_CARD),
     ),
+     MenuItem(
+       icon: Icons.event_note,
+       title: MenuItemNames.ART_DIRECTORY,
+       onPressed: () => context.goNamed(RouteNames.ART_DIRECTORY),
+     ),
     // MenuItem(
     //   icon: Icons.group,
     //   title: MenuItemNames.TREATMENT_SUPPORT,

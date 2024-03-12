@@ -157,10 +157,10 @@ class UserService extends HTTPService {
       "constituency": person["profile"]["landmark"],
       "image": "image",
       "username": "${person["profile"]["f_name"]} ${person["profile"]["l_name"]}",
-      // "email": "some@some.com",
-      // "phoneNumber": "0713423265",
-      "email": person["profile"]["email"],
-      "phoneNumber": person["profile"]["phone_no"],
+       "email": "some@some.com",
+       "phoneNumber": "0713423265",
+     // "email": person["profile"]["email"],
+      //"phoneNumber": person["profile"]["phone_no"],
       "dateOfBirth": person["profile"]["dob"],
     });
   }

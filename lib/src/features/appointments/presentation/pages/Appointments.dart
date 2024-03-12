@@ -28,8 +28,8 @@ class Appointments extends ConsumerWidget {
               title: const Text("Appointments"),
               bottom: TabBar(
                 tabs: [
-                  const Tab(text: "TB",),
-                  const Tab(text: "MNCH",),
+                  const Tab(text: "Upcoming Appontments",),
+                  const Tab(text: "Previous Appointments",),
                   ...programsWithAppointments
                       .map(_getProgramTabBar)
                       .toList(),
@@ -38,8 +38,8 @@ class Appointments extends ConsumerWidget {
             ),
             body: TabBarView(
               children: [
-                const Center(child: Text("TB Appointment")),
-                const Center(child: Text("MNCH Appointments")),
+                const Center(child: Text("Upcoming Appointments")),
+                const Center(child: Text("Previous Appointments")),
                 ...programsWithAppointments
                     .map(_getProgramAppointments)
                     .toList(),
