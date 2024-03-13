@@ -120,7 +120,6 @@ class UserService extends HTTPService {
     final response = await updateProfile_(user);
     final responseString = await response.stream.bytesToString();
     final userData = json.decode(responseString);
-    print(userData);
     // Check the response status code
     if (response.statusCode == 200) {
       // Update user object if necessary

@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/appointments/ARTAppointments.dart';
@@ -6,81 +9,83 @@ import 'package:nishauri/src/features/user_programs/data/models/user_program.dar
 import 'package:nishauri/src/features/user_programs/data/providers/program_provider.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
-class Appointments extends ConsumerWidget {
-  const Appointments({super.key});
+class Appointments extends StatefulWidget {
+  const Appointments({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final userPrograms = ref.watch(programProvider);
+  _AppointmentsState createState() => _AppointmentsState();
+}
 
-    return userPrograms.when(
-      data: (data) {
-        final programsWithAppointments = data
-            .where(_hasAppointData);
-        return DefaultTabController(
-          length: programsWithAppointments.length + 2,
-          child: Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                onPressed: () => context.pop(),
-                icon: const Icon(Icons.chevron_left),
-              ),
-              title: const Text("Appointments"),
-              bottom: TabBar(
-                tabs: [
-                  const Tab(text: "TB",),
-                  const Tab(text: "MNCH",),
-                  ...programsWithAppointments
-                      .map(_getProgramTabBar)
-                      .toList(),
-                ],
-              ),
-            ),
-            body: TabBarView(
-              children: [
-                const Center(child: Text("TB Appointment")),
-                const Center(child: Text("MNCH Appointments")),
-                ...programsWithAppointments
-                    .map(_getProgramAppointments)
-                    .toList(),
+class _AppointmentsState extends State<Appointments> {
+  late Future<List<dynamic>> _upcomingAppointmentsFuture;
+  late Future<List<dynamic>> _previousAppointmentsFuture;
 
-              ],
-            ),
+  @override
+  void initState() {
+    super.initState();
+    _upcomingAppointmentsFuture = _loadAppointments('assets/data/appointments.json');
+    _previousAppointmentsFuture = _loadAppointments('assets/data/previous.json');
+  }
+
+  Future<List<dynamic>> _loadAppointments(String jsonPath) async {
+    // Load appointments from JSON file
+    String appointmentsJson = await rootBundle.loadString(jsonPath);
+    Map<String, dynamic> appointmentsData = json.decode(appointmentsJson);
+    List<dynamic> appointments = appointmentsData['data'];
+    return appointments;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.chevron_left),
           ),
-        );
-      },
-      error: (error, _) => Center(child: Text(error.toString())),
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
+          title: const Text("Appointments"),
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: "Upcoming Appointments"),
+              Tab(text: "Previous Appointments"),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            _buildAppointmentsTab(_upcomingAppointmentsFuture),
+            _buildAppointmentsTab(_previousAppointmentsFuture),
+          ],
+        ),
       ),
     );
   }
-}
 
-bool _hasAppointData(UserProgram program) {
-  final codes = [
-    ProgramCodeNames.HIV,
-  ];
-  return codes.any((code) => code == program.program.programCode);
-}
-
-Tab _getProgramTabBar(UserProgram program) {
-  final programCode = program.program.programCode;
-  if (programCode == ProgramCodeNames.HIV) {
-    return const Tab(
-      text: "ART",
+  Widget _buildAppointmentsTab(Future<List<dynamic>> futureAppointments) {
+    return FutureBuilder(
+      future: futureAppointments,
+      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          List<dynamic> appointments = snapshot.data ?? [];
+          return ListView.builder(
+            itemCount: appointments.length,
+            itemBuilder: (context, index) {
+              // Customize the appearance of each appointment item
+              var appointment = appointments[index];
+              return ListTile(
+                title: Text(appointment['appointment_type']),
+                subtitle: Text(appointment['appointment_date']),
+              );
+            },
+          );
+        }
+      },
     );
   }
-  return Tab(
-    // icon: const Icon(Icons.directions_car),
-    text: program.program.name,
-  );
-}
-
-Widget _getProgramAppointments(UserProgram program) {
-  final programCode = program.program.programCode;
-  if (programCode == ProgramCodeNames.HIV) {
-    return const ARTAppointmentsScreen();
-  }
-  return Center(child: Text(program.program.name));
 }
