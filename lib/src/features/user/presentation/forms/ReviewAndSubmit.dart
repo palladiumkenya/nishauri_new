@@ -38,7 +38,7 @@ class ReviewAndSubmit extends StatelessWidget {
           title: const Text("Date of birth"),
           subtitle: Text(
             formState['dateOfBirth'] != null
-                ? DateFormat("dd MMM yyyy")
+                ? DateFormat("yyy-MM-dd")
                     .format(DateTime.parse("${formState['dateOfBirth']}"))
                 : "None",
           ),
@@ -69,26 +69,32 @@ class ReviewAndSubmit extends StatelessWidget {
         ),
         const Divider(),
 
-        Row(
-          children: [
-            Expanded(
-              child: ListTile(
-                title: const Text("County"),
-                subtitle: Text(
-                  formState['county'] ?? "None",
-                ),
-              ),
-            ),
-            Expanded(
-              child: ListTile(
-                title: const Text("Constituency"),
-                subtitle: Text(
-                  formState['constituency'] ?? "None",
-                ),
-              ),
-            ),
-          ],
+        ListTile(
+          title: const Text("Landmark"),
+          subtitle: Text(
+            formState['constituency'] ?? "None",
+          ),
         ),
+        // Row(
+        //   children: [
+        //     Expanded(
+        //       child: ListTile(
+        //         title: const Text("County"),
+        //         subtitle: Text(
+        //           formState['county'] ?? "None",
+        //         ),
+        //       ),
+        //     ),
+        //     Expanded(
+        //       child: ListTile(
+        //         title: const Text("Constituency"),
+        //         subtitle: Text(
+        //           formState['constituency'] ?? "None",
+        //         ),
+        //       ),
+        //     ),
+        //   ],
+        // ),
         // TODO Remove null checks
         const Divider(),
         ListTile(
@@ -98,23 +104,17 @@ class ReviewAndSubmit extends StatelessWidget {
         const Divider(),
         ListTile(
           title: const Text("Allergies"),
-          subtitle: Text(formState['allergies'].isNotEmpty
-              ? formState['allergies'].join(", ")
-              : "None"),
+          subtitle: Text(formState['allergies']?? "None"),
         ),
         const Divider(),
         ListTile(
           title: const Text("Disabilities"),
-          subtitle: Text(formState['disabilities'].isNotEmpty
-              ? formState['disabilities'].join(", ")
-              : "None"),
+          subtitle: Text(formState['disabilities']?? "None"),
         ),
         const Divider(),
         ListTile(
           title: const Text("Chronic Illnesses"),
-          subtitle: Text(formState['chronics'].isNotEmpty
-              ? formState['chronics'].join(", ")
-              : "None"),
+          subtitle: Text(formState['chronics']?? "None"),
         ),
         const Divider(),
         Row(

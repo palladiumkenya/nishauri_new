@@ -29,7 +29,7 @@ class ContactInformation extends StatelessWidget {
                   label: "Email",
                 ),
                 validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
+                  // FormBuilderValidators.required(),
                   FormBuilderValidators.email(),
                 ]),
               ),
@@ -44,33 +44,33 @@ class ContactInformation extends StatelessWidget {
                   label: "Phone number",
                 ),
                 validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
+                  // FormBuilderValidators.required(),
                 ]),
               ),
-              const SizedBox(height: Constants.SPACING),
-              FormBuilderTextField(
-                name: "county",
-                initialValue: user.county,
-                decoration: inputDecoration(
-                  placeholder: "Enter your county",
-                  prefixIcon: Icons.location_city,
-                  label: "County",
-                ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
-              ),
+              // const SizedBox(height: Constants.SPACING),
+              // FormBuilderTextField(
+              //   name: "county",
+              //   initialValue: user.county,
+              //   decoration: inputDecoration(
+              //     placeholder: "Enter your county",
+              //     prefixIcon: Icons.location_city,
+              //     label: "County",
+              //   ),
+              //   validator: FormBuilderValidators.compose([
+              //     // FormBuilderValidators.required(),
+              //   ]),
+              // ),
               const SizedBox(height: Constants.SPACING),
               FormBuilderTextField(
                 initialValue: user.constituency,
                 name: "constituency",
                 decoration: inputDecoration(
-                  placeholder: "Enter your constituency",
+                  placeholder: "Enter nearby landmark",
                   prefixIcon: Icons.map,
-                  label: "Constituency",
+                  label: "Landmark/Village/School",
                 ),
                 validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
+                  // FormBuilderValidators.required(),
                 ]),
               ),
             ],

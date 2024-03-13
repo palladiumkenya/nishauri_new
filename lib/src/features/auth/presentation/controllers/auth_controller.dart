@@ -16,9 +16,10 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
 
   Future<void> loadAuthState() async {
     try {
+      final verified = await _repository.getIsVerified();
       final user = await _userRepository.getUser();
       state = AsyncValue.data(AuthState(
-        isAccountVerified: true,
+        isAccountVerified: verified,
         isProfileComplete: true,
         // isAccountVerified: true,
         // isProfileComplete: true,
@@ -41,6 +42,7 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
         refreshToken: authResponse.refreshToken ?? '',
       ));
       await _repository.saveUserId(authResponse.userId??'');
+      await _repository.saveIsVerified(authResponse.accountVerified);
       state = AsyncValue.data(
         AuthState(
           isAccountVerified: authResponse.accountVerified,
@@ -67,6 +69,7 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
         refreshToken: authResponse.refreshToken?? '',
       ));
       await _repository.saveUserId(authResponse.userId??'');
+      await _repository.saveIsVerified(authResponse.accountVerified);
       state = AsyncValue.data(AuthState(
         isAccountVerified: authResponse.accountVerified,
         isProfileComplete: authResponse.profileUpdated,

@@ -83,7 +83,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   name:
                       (asyncUser.value?.name ?? "")
                           .titleCase,
-                  phoneNumber: asyncUser.value!.phoneNumber,
+                  phoneNumber: asyncUser.value!.phoneNumber??'',
                   image: asyncUser.value!.image,
                 ),
                 onTap: () => context.goNamed(RouteNames.PROFILE_SETTINGS),

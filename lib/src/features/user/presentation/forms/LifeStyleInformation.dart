@@ -32,9 +32,9 @@ class LifeStyleInformation extends StatelessWidget {
                   DropdownMenuItem(
                       value: "widow-widower", child: Text("Widow/Widower")),
                 ],
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                // validator: FormBuilderValidators.compose([
+                //   FormBuilderValidators.required(),
+                // ]),
               ),
               const SizedBox(height: Constants.SPACING),
               FormBuilderDropdown(
@@ -57,9 +57,9 @@ class LifeStyleInformation extends StatelessWidget {
                       value: "postgraduate",
                       child: Text("Postgraduate degree")),
                 ],
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                // validator: FormBuilderValidators.compose([
+                //   FormBuilderValidators.required(),
+                // ]),
               ),
               const SizedBox(height: Constants.SPACING),
               FormBuilderRadioGroup(
@@ -75,9 +75,9 @@ class LifeStyleInformation extends StatelessWidget {
                   FormBuilderFieldOption(
                       value: "english", child: Text("English")),
                 ],
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                // validator: FormBuilderValidators.compose([
+                //   FormBuilderValidators.required(),
+                // ]),
               ),
               const SizedBox(height: Constants.SPACING),
               FormBuilderRadioGroup(
@@ -95,9 +95,9 @@ class LifeStyleInformation extends StatelessWidget {
                   FormBuilderFieldOption(
                       value: "unemployed", child: Text("Unemployed")),
                 ],
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                // validator: FormBuilderValidators.compose([
+                //   FormBuilderValidators.required(),
+                // ]),
               ),
             ],
           ),

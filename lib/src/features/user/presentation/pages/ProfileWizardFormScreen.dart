@@ -27,11 +27,11 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
 
     final stepFieldsToValidate = [
       ["image", "username"],
-      ["firstName", "lastName", "dateOfBirth", "gender"],
-      ["email", "phoneNumber", "county", "constituency"],
-      ["bloodGroup", "allergies", "disabilities", "chronics"],
+      ["f_name", "l_name", "dob", "gender"],
+      ["email", "phone_no", "county", "landmark"],
+      ["blood_group", "allergies", "disabilities", "chronics"],
       ["weight", "height"],
-      ["maritalStatus", "educationLevel", "primaryLanguage", "occupation"],
+      ["marital", "education", "primary_language", "occupation"],
     ];
 
     List<Step> steps = [
@@ -110,12 +110,12 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
     void handleSubmit() {
       if (formKey.currentState!.validate()) {
         loading.value = true;
-        final dateOfBirth = formKey.currentState!.instantValue["dateOfBirth"];
+        final dateOfBirth = formKey.currentState!.instantValue["dob"];
         ref
             .read(userProvider.notifier)
             .updateUser(User.fromJson({
               ...formKey.currentState!.instantValue,
-              "dateOfBirth": dateOfBirth is DateTime
+              "dob": dateOfBirth is DateTime
                   ? dateOfBirth.toIso8601String()
                   : dateOfBirth
             }))

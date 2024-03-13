@@ -33,61 +33,83 @@ class HealthInformation extends StatelessWidget {
                   DropdownMenuItem(value: "B", child: Text("B")),
                   DropdownMenuItem(value: "AB", child: Text("AB")),
                   DropdownMenuItem(value: "O", child: Text("O")),
+                  DropdownMenuItem(value: "O+", child: Text("O+")),
+                  DropdownMenuItem(value: "O-", child: Text("O-")),
+                  DropdownMenuItem(value: "A+", child: Text("A+")),
+                  DropdownMenuItem(value: "A-", child: Text("A-")),
+                  DropdownMenuItem(value: "B+", child: Text("B+")),
+                  DropdownMenuItem(value: "B-", child: Text("B-")),
+                  DropdownMenuItem(value: "AB+", child: Text("AB+")),
+                  DropdownMenuItem(value: "AB-", child: Text("AB-")),
                 ],
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                // validator: FormBuilderValidators.compose([
+                //   FormBuilderValidators.required(),
+                // ]),
               ),
               const SizedBox(height: Constants.SPACING),
-              FormBuilderFilterChip(
+              FormBuilderDropdown(
                 initialValue: user.allergies,
                 name: "allergies",
-                spacing: Constants.SPACING,
                 decoration: inputDecoration(
-                  label: "Do you suffer from any allergies?",
+                  label: "Allergy",
                   prefixIcon: Icons.ac_unit,
                 ),
-                options: const [
-                  FormBuilderChipOption(value: "dust", child: Text("Dust")),
-                  FormBuilderChipOption(
-                      value: "feather", child: Text("Feather")),
-                  FormBuilderChipOption(value: "cold", child: Text("Cold")),
-                  FormBuilderChipOption(value: "husk", child: Text("Husk")),
+                items: const [
+                  DropdownMenuItem(value: "Dust",
+                      child: Text("Dust")),
+                  DropdownMenuItem(value: "Cold",
+                      child: Text("Cold")),
+                  DropdownMenuItem(value: "Fsh",
+                      child: Text("Fish")),
+                  DropdownMenuItem(value: "Cephalosporins",
+                      child: Text("Cephalosporins")),
+                  // FormBuilderChipOption(value: "dust", child: Text("Dust")),
+                  // FormBuilderChipOption(
+                  //     value: "feather", child: Text("Feather")),
+                  // FormBuilderChipOption(value: "cold", child: Text("Cold")),
+                  // FormBuilderChipOption(value: "husk", child: Text("Husk")),
                 ],
 
               ),
               const SizedBox(height: Constants.SPACING),
-              FormBuilderCheckboxGroup(
+              FormBuilderDropdown(
                 initialValue: user.disabilities,
                 name: "disabilities",
                 decoration: inputDecoration(
                   prefixIcon: Icons.accessible_forward,
-                  label: "Do you have any disabilities?",
+                  label: "Disabilities",
                 ),
-                options: const [
-                  FormBuilderFieldOption(value: "blind", child: Text("Blind")),
-                  FormBuilderFieldOption(
-                      value: "cripple", child: Text("Cripple")),
-                  FormBuilderFieldOption(value: "deaf", child: Text("Deaf")),
+                items: const [
+                  DropdownMenuItem(value: "Blind", child: Text("Blind")),
+                  DropdownMenuItem(value: "Cripple", child: Text("Cripple")),
+                  DropdownMenuItem(value: "Deaf", child: Text("Deaf")),
+                  // FormBuilderFieldOption(value: "blind", child: Text("Blind")),
+                  // FormBuilderFieldOption(
+                  //     value: "cripple", child: Text("Cripple")),
+                  // FormBuilderFieldOption(value: "deaf", child: Text("Deaf")),
                 ],
               ),
               const SizedBox(height: Constants.SPACING),
-              FormBuilderCheckboxGroup(
+              FormBuilderDropdown(
                 initialValue: user.chronics,
                 name: "chronics",
-                options: const [
-                  FormBuilderFieldOption(
-                      value: "TB", child: Text("Tuberculosis")),
-                  FormBuilderFieldOption(
-                      value: "asthma", child: Text("Asthma")),
-                  FormBuilderFieldOption(
-                      value: "cancer", child: Text("Cancer")),
-                  FormBuilderFieldOption(
-                      value: "diabetes", child: Text("Diabetes")),
+                items: const [
+                  DropdownMenuItem(value: "TB", child: Text("Tuberculosis")),
+                  DropdownMenuItem(value: "Asthma", child: Text("Asthma")),
+                  DropdownMenuItem(value: "Cancer", child: Text("Cancer")),
+                  DropdownMenuItem(value: "Diabetes", child: Text("Diabetes")),
+                  // FormBuilderFieldOption(
+                  //     value: "TB", child: Text("Tuberculosis")),
+                  // FormBuilderFieldOption(
+                  //     value: "asthma", child: Text("Asthma")),
+                  // FormBuilderFieldOption(
+                  //     value: "cancer", child: Text("Cancer")),
+                  // FormBuilderFieldOption(
+                  //     value: "diabetes", child: Text("Diabetes")),
                 ],
                 decoration: inputDecoration(
                   prefixIcon: Icons.sick,
-                  label: "Do you suffer from any chronic illness?",
+                  label: "Chronic Illness",
                 ),
               ),
               const SizedBox(height: Constants.SPACING),

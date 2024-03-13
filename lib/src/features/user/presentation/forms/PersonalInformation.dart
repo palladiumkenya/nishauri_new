@@ -27,9 +27,9 @@ class PersonalInformation extends StatelessWidget {
                   prefixIcon: Icons.account_circle_outlined,
                   label: "First name",
                 ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                // validator: FormBuilderValidators.compose([
+                //   FormBuilderValidators.required(),
+                // ]),
               ),
               const SizedBox(height: Constants.SPACING),
               FormBuilderTextField(
@@ -41,7 +41,7 @@ class PersonalInformation extends StatelessWidget {
                   label: "Last name",
                 ),
                 validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
+                  // FormBuilderValidators.required(),
                 ]),
               ),
               const SizedBox(height: Constants.SPACING),
@@ -50,7 +50,7 @@ class PersonalInformation extends StatelessWidget {
                 firstDate: DateTime(1950),
                 lastDate: DateTime(2100),
                 name: "dateOfBirth",
-                format: DateFormat('dd MMM yyy'),
+                format: DateFormat('yyy-MMM-dd'),
                 inputType: InputType.date,
                 decoration: inputDecoration(
                   placeholder: "Enter your date of birth",
@@ -58,28 +58,28 @@ class PersonalInformation extends StatelessWidget {
                   label: "Date of birth",
                 ),
                 validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
+                  // FormBuilderValidators.required(),
                 ]),
                 valueTransformer: (date) => date?.toIso8601String(),
               ),
               const SizedBox(height: Constants.SPACING),
               FormBuilderDropdown(
-                initialValue: user.gender != "U" ? user.gender : null,
+                initialValue: user.gender == "M" ? "Male" : "Female",
                 name: "gender",
                 decoration: inputDecoration(
                   prefixIcon: Icons.accessibility,
                   label: "Gender",
                 ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                // validator: FormBuilderValidators.compose([
+                //   FormBuilderValidators.required(),
+                // ]),
                 items: const [
                   DropdownMenuItem(
-                    value: "M",
+                    value: "Male",
                     child: Text("Male"),
                   ),
                   DropdownMenuItem(
-                    value: "F",
+                    value: "Female",
                     child: Text("Female"),
                   ),
                 ],

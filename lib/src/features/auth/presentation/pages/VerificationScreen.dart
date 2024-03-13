@@ -119,14 +119,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                         value: "email",
                                         child: ListTile(
                                             title: const Text('Email'),
-                                            subtitle: Text(user.email),
+                                            subtitle: Text(user.email??''),
                                             trailing: const Icon(Icons.email)),
                                       ),
                                       FormBuilderFieldOption(
                                         value: "watsapp",
                                         child: ListTile(
                                           title: const Text("WatsApp"),
-                                          subtitle: Text(user.phoneNumber),
+                                          subtitle: Text(user.phoneNumber??''),
                                           trailing:
                                               const Icon(Icons.chat_outlined),
                                         ),
@@ -135,7 +135,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                         value: "sms",
                                         child: ListTile(
                                           title: const Text("SMS"),
-                                          subtitle: Text(user.phoneNumber),
+                                          subtitle: Text(user.phoneNumber??''),
                                           trailing: const Icon(Icons.sms),
                                         ),
                                       ),

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:nishauri/src/shared/models/token_pair.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,5 +45,15 @@ class LocalStorage {
   static Future<void> delete(String key) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(key);
+  }
+
+  static Future<void> saveIsVerifiedAccount(String key, bool isVerified) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(key, isVerified);
+  }
+
+  static Future<bool> getIsVerified(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(key) ?? false;
   }
 }
