@@ -12,37 +12,37 @@ class MenuItem {
 
 MenuItem getProgramMenuItemByProgramCode(
     BuildContext context, String programCode) {
-  if (programCode == ProgramCodeNames.HIV) {
+  if (programCode == ProgramCodeNameIds.HIV) {
     return MenuItem(
       icon: Icons.vaccines,
       title: MenuItemNames.HIV_PROGRAM_MENU,
       onPressed: () => context.goNamed(RouteNames.HIV_PROGRAM),
     );
-  } else if (programCode == ProgramCodeNames.TB) {
+  } else if (programCode == ProgramCodeNameIds.TB) {
     return MenuItem(
       icon: Icons.sick,
       title: MenuItemNames.TB_PROGRAM_MENU,
       onPressed: () => "",
     );
-  } else if (programCode == ProgramCodeNames.ASTHMA) {
+  } else if (programCode == ProgramCodeNameIds.ASTHMA) {
     return MenuItem(
       icon: Icons.ac_unit,
       title: MenuItemNames.ASTHMA_PROGRAM_MENU,
       onPressed: () => "",
     );
-  } else if (programCode == ProgramCodeNames.DIABETES) {
+  } else if (programCode == ProgramCodeNameIds.DIABETES) {
     return MenuItem(
       icon: Icons.monitor_weight_outlined,
       title: MenuItemNames.DIABETES_PROGRAM_MENU,
       onPressed: () => "",
     );
-  } else if (programCode == ProgramCodeNames.CANCER) {
+  } else if (programCode == ProgramCodeNameIds.CANCER) {
     return MenuItem(
       icon: Icons.group_work,
       title: MenuItemNames.CANCER_PROGRAM_MENU,
       onPressed: () => "",
     );
-  } else if (programCode == ProgramCodeNames.HYPERTENSION) {
+  } else if (programCode == ProgramCodeNameIds.HYPERTENSION) {
     return MenuItem(
         icon: Icons.speed,
         title: MenuItemNames.HYPERTENSION_PROGRAM_MENU,
@@ -116,7 +116,7 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
 }
 
 List<MenuItem> getMenuItemByNames(BuildContext context, List<String> names) {
-  const programNames = ProgramCodeNames.SUPPOTED_PROGRAM_CODES;
+  const programNames = ProgramCodeNameIds.SUPPOTED_PROGRAM_CODES;
   return [
     ...getGenericMenuItems(context),
     ...programNames.map((e) => getProgramMenuItemByProgramCode(context, e)),

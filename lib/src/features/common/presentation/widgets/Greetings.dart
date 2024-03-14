@@ -176,9 +176,9 @@ _showDialog(BuildContext context) {
                   ...getGenericMenuItems(context),
                   // get program menu items
                   ...data.map((e) {
-                    final programCode = e.program.programCode;
+                    final programCode = e.program.program_code;
                     return getProgramMenuItemByProgramCode(
-                        context, programCode);
+                        context, programCode?? '');
                   }).toList(),
                 ],
               ),

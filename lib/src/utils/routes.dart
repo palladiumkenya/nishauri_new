@@ -63,13 +63,13 @@ class MenuItemNames {
   static const ART_DIRECTORY= "Art Directory";
 }
 
-class ProgramCodeNames {
-  static const HIV = "HIV";
-  static const TB = "TB";
-  static const ASTHMA = "ASTHMA";
-  static const DIABETES = "DIABETES";
-  static const CANCER = "CANCER";
-  static const HYPERTENSION = "HBP";
+class ProgramCodeNameIds {
+  static const HIV = "1";
+  static const TB = "2";
+  static const ASTHMA = "3";
+  static const DIABETES = "4";
+  static const CANCER = "5";
+  static const HYPERTENSION = "6";
 
   static const SUPPOTED_PROGRAM_CODES = [
     HIV,

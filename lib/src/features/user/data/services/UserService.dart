@@ -65,7 +65,7 @@ class UserService extends HTTPService {
   Future<http.StreamedResponse> updateProfile_(User user) async {
     final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
-    final userId = {'user_id': id}; // Creating a map for userId
+    final userId = {'user_id': id};
     final headers = {
       'Authorization': "Bearer ${tokenPair.accessToken}",
       'Content-Type': 'application/json'

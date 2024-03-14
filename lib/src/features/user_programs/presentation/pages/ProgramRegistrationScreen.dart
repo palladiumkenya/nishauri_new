@@ -96,7 +96,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                     const SizedBox(height: Constants.SPACING),
                                     const SizedBox(height: Constants.SPACING),
                                     FormBuilderDropdown<String>(
-                                      name: "programCode",
+                                      name: "program_id",
                                       decoration: inputDecoration(
                                         prefixIcon: Icons.read_more_outlined,
                                         label: "Program",
@@ -112,44 +112,75 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                         });
                                       },
                                     ),
+                                    // const SizedBox(height: Constants.SPACING),
+                                    // FormBuilderTextField(
+                                    //   name: "mflCode",
+                                    //   decoration: inputDecoration(
+                                    //     prefixIcon: Icons.local_hospital,
+                                    //     label: "Facility code",
+                                    //   ),
+                                    //   validator: FormBuilderValidators.compose([
+                                    //     FormBuilderValidators.required(),
+                                    //   ]),
+                                    // ),
                                     const SizedBox(height: Constants.SPACING),
-                                    FormBuilderTextField(
-                                      name: "mflCode",
-                                      decoration: inputDecoration(
-                                        prefixIcon: Icons.local_hospital,
-                                        label: "Facility code",
+                                    Visibility(
+                                      visible: _program == ProgramCodeNameIds.HIV, // Show if HIV program is selected
+                                      child: FormBuilderTextField(
+                                        name: "ccc_no",
+                                        decoration: inputDecoration(
+                                          placeholder: "e.g 1234567890",
+                                          prefixIcon: Icons.verified_user,
+                                          label: _getProgramId(_program),
+                                        ),
+                                        validator: FormBuilderValidators.compose([
+                                          FormBuilderValidators.required()
+                                        ]),
                                       ),
-                                      validator: FormBuilderValidators.compose([
-                                        FormBuilderValidators.required(),
-                                      ]),
                                     ),
+
                                     const SizedBox(height: Constants.SPACING),
-                                    FormBuilderTextField(
-                                      name: "uniquePatientProgramId",
-                                      decoration: inputDecoration(
-                                        placeholder: "e.g 1234567890",
-                                        prefixIcon: Icons.verified_user,
-                                        label: _getProgramId(_program),
+                                    Visibility(
+                                      visible: _program == ProgramCodeNameIds.HIV, // Show if HIV program is selected
+                                      child: FormBuilderTextField(
+                                        name: "firstname",
+                                        decoration: inputDecoration(
+                                          placeholder: "e.g John",
+                                          prefixIcon: Icons.person,
+                                          label: "First Name",
+                                        ),
+                                        validator: FormBuilderValidators.compose([
+                                          FormBuilderValidators.required(),
+                                        ]),
                                       ),
-                                      validator: FormBuilderValidators.compose([
-                                        FormBuilderValidators.required()
-                                      ]),
                                     ),
-                                    const SizedBox(height: Constants.SPACING),
-                                    FormBuilderTextField(
-                                      name: "firstName",
-                                      decoration: inputDecoration(
-                                        placeholder: "e.g John",
-                                        prefixIcon: Icons.person,
-                                        label: "First Name",
-                                      ),
-                                      validator: FormBuilderValidators.compose([
-                                        FormBuilderValidators.required(),
-                                      ]),
-                                    ),
+
+                                    // FormBuilderTextField(
+                                    //   name: "ccc_no",
+                                    //   decoration: inputDecoration(
+                                    //     placeholder: "e.g 1234567890",
+                                    //     prefixIcon: Icons.verified_user,
+                                    //     label: _getProgramId(_program),
+                                    //   ),
+                                    //   validator: FormBuilderValidators.compose([
+                                    //     FormBuilderValidators.required()
+                                    //   ]),
+                                    // ),
+                                    // const SizedBox(height: Constants.SPACING),
+                                    // FormBuilderTextField(
+                                    //   name: "firstname",
+                                    //   decoration: inputDecoration(
+                                    //     placeholder: "e.g John",
+                                    //     prefixIcon: Icons.person,
+                                    //     label: "First Name",
+                                    //   ),
+                                    //   validator: FormBuilderValidators.compose([
+                                    //     FormBuilderValidators.required(),
+                                    //   ]),
+                                    // ),
                                     const SizedBox(height: Constants.SPACING),
                                     Button(
-                                      title: "Register",
+                                      title: "Add Program",
                                       loading: _loading,
                                       onPress: () {
                                         final programsNotifier =
@@ -163,9 +194,17 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                               .registerProgram(
                                               _formKey.currentState!.value)
                                               .then((value) {
-                                            context.goNamed(
-                                                RouteNames.VERIFY_PROGRAM_OTP,
-                                                extra: value);
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(
+                                                content:
+                                                Text('Program Added successfully!,'),
+                                              ),
+                                            );
+                                            context.go("/");
+                                            // context.goNamed(
+                                            //   RouteNames.HIV_PROGRAM
+                                            //     // RouteNames.VERIFY_PROGRAM_OTP,
+                                            //     extra: value);
                                           }).catchError((err) {
                                             handleResponseError(
                                                 context,
@@ -205,20 +244,20 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
 
 List<DropdownMenuItem<String>> _getUnregisteredPrograms(
     List<UserProgram> programs) {
-  return ProgramCodeNames.SUPPOTED_PROGRAM_CODES
+  return ProgramCodeNameIds.SUPPOTED_PROGRAM_CODES
       .where((code) =>
-  !programs.any((program) => program.program.programCode == code))
+  !programs.any((program) => program.program.program_code == code))
       .map((e) =>
       DropdownMenuItem(
           value: e,
           child: Text(
-              ProgramCodeNames.getProgramNameByCode(e) ?? "Not Supported")))
+              ProgramCodeNameIds.getProgramNameByCode(e) ?? "Not Supported")))
       .toList();
 }
 
 String _getProgramId(program) {
   switch (program) {
-    case ProgramCodeNames.HIV:
+    case ProgramCodeNameIds.HIV:
       return "CCC Number";
     default:
       return "Unique Program Identifier";
