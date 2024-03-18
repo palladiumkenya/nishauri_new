@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:nishauri/src/features/user/data/models/user.dart';
 
 class AuthState {

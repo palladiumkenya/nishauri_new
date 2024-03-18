@@ -2,7 +2,7 @@ class Constants {
   // static const String BASE_URL = "http://192.168.2.166:5000/";
   // static const String BASE_URL = "https://ushauriapi.kenyahmis.org/nishauri_new/";
   // static const String BASE_URL = "http://192.168.2.133:5000";
-  static const String BASE_URL = "http://192.168.1.28:5000"; //HETARK
+  static const String BASE_URL = "http://10.96.240.76:5000"; //HETARK
   // static const String BASE_URL = "http://10.96.100.177:5000";
   // static const String BASE_URL = "http://192.168.100.40:5000";
   static const ROUNDNESS = 10.0;

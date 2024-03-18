@@ -16,6 +16,8 @@ import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 
+import '../../../../../shared/display/AppCard.dart';
+
 class ARTEventFormScreen extends HookWidget {
   final ARTEvent? event;
 
@@ -25,6 +27,7 @@ class ARTEventFormScreen extends HookWidget {
   Widget build(BuildContext context) {
     final formKey = useMemoized(() => GlobalKey<FormBuilderState>());
     final loading = useState<bool>(false);
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -93,7 +96,7 @@ class ARTEventFormScreen extends HookWidget {
                                 validator: FormBuilderValidators.compose([
                                   FormBuilderValidators.required(),
                                 ]),
-                                name: "venue",
+                                name: "distributionVenue",
                                 decoration: inputDecoration(
                                   prefixIcon: Icons.location_on_rounded,
                                   label: "Venue",
@@ -116,9 +119,94 @@ class ARTEventFormScreen extends HookWidget {
                                 valueTransformer: (date) =>
                                     date?.toIso8601String(),
                               ),
+                              const SizedBox(height: Constants.SPACING * 2),
+                              FormBuilderField<List<String>>(
+                                initialValue: event == null
+                                    ? []
+                                    : event!.reminderNotificationDates,
+                                builder: (state) {
+                                  return Container(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(Constants.ROUNDNESS),
+                                      ),
+                                      border: Border.all(
+                                        width: 1,
+                                        color: theme.colorScheme.onSurface
+                                            .withOpacity(0.5),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Row(
+                                              children: state.value
+                                                      ?.map(
+                                                        (e) => AppCard(
+                                                          child: SizedBox(
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(
+                                                                      Constants
+                                                                          .SPACING),
+                                                              child: Text(DateFormat(
+                                                                      "ddd MMM yyy HH:mm a")
+                                                                  .format(DateTime
+                                                                      .parse(
+                                                                          e))),
+                                                            ),
+                                                          ),
+                                                          onTap: () {
+                                                            state.didChange(state
+                                                                .value
+                                                                ?.where(
+                                                                    (element) =>
+                                                                        element !=
+                                                                        e)
+                                                                .toList());
+                                                          },
+                                                        ),
+                                                      )
+                                                      .toList() ??
+                                                  [],
+                                            ),
+                                          ),
+                                        ),
+                                        IconButton(
+                                          onPressed: () async {
+                                            final subscriber =
+                                                await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime.now(),
+                                              lastDate: DateTime.now().add(
+                                                const Duration(hours: 168),
+                                              ),
+                                            );
+                                            if (subscriber != null) {
+                                              state.didChange([
+                                                ...state.value ?? [],
+                                                subscriber.toIso8601String()
+                                              ]);
+                                            }
+                                          },
+                                          icon: const Icon(Icons.add),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                                name: "extraSubscribers",
+                              ),
                               const SizedBox(height: Constants.SPACING),
                               FormBuilderDropdown(
-                                name: "group",
+                                name: "groupMembership",
+                                //TODO
                                 initialValue: event?.group.id,
                                 decoration: inputDecoration(
                                   prefixIcon: Icons.group,
@@ -189,7 +277,11 @@ class ARTEventFormScreen extends HookWidget {
                                           handleResponseError(
                                               context,
                                               formKey.currentState!.fields,
-                                              error, ref.read(authStateProvider.notifier).logout);
+                                              error,
+                                              ref
+                                                  .read(authStateProvider
+                                                      .notifier)
+                                                  .logout);
                                         }).whenComplete(
                                           () => loading.value = false,
                                         );
