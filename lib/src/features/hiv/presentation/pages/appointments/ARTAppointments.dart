@@ -28,14 +28,14 @@ class ARTAppointmentsScreen extends HookConsumerWidget {
             case "Upcoming":
               return artAppointments.where(
                   (artAppointment) => // Filter only upcoming appointments
-                      DateTime.parse(artAppointment.appointmentDate)
+                      DateTime.parse(artAppointment.appointment_date)
                           .difference(DateTime.now())
                           .inDays >=
                       0);
             case "Past":
               return artAppointments.where(
                   (artAppointment) => // Filter only upcoming appointments
-                      DateTime.parse(artAppointment.appointmentDate)
+                      DateTime.parse(artAppointment.appointment_date)
                           .difference(DateTime.now())
                           .inDays <
                       0);
@@ -83,13 +83,13 @@ class ARTAppointmentsScreen extends HookConsumerWidget {
                       leading: const Icon(Icons.calendar_month_sharp),
                       title: Text(appointmentsToDisplay
                           .elementAt(currIndex)
-                          .appointmentType),
+                          .appointment_type),
                       subtitle: Text(
                         DateFormat("dd MMM yyy").format(
                           DateTime.parse(
                             appointmentsToDisplay
                                 .elementAt(currIndex)
-                                .appointmentDate,
+                                .appointment_date,
                           ),
                         ),
                       ),

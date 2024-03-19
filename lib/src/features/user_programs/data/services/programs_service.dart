@@ -45,63 +45,49 @@ class ProgramService extends HTTPService {
   //   ),
   // ];
 
-  /*final List<UserProgram> _userPrograms = [
-    // const UserProgram(
-    //   program: Program(
-    //     programCode: "HIV",
-    //     name: "HIV Program",
-    //     createdAt: "20th Oct 2023",
-    //   ),
-    //   user: "u-1",
-    //   createdAt: "20th Oct 2023",
-    // ),
-    // const UserProgram(
-    //   program: Program(
-    //     programCode: "TB",
-    //     name: "Tuberculosis Program",
-    //     createdAt: "20th Oct 2023",
-    //   ),
-    //   user: "u-1",
-    //   createdAt: "20th Oct 2023",
-    // ),
-    // const UserProgram(
-    //   program: Program(
-    //     programCode: "ASTHMA",
-    //     name: "Asthma Program",
-    //     createdAt: "20th Oct 2023",
-    //   ),
-    //   user: "u-1",
-    //   createdAt: "20th Oct 2023",
-    // ),
-    // const UserProgram(
-    //   program: Program(
-    //     programCode: "DIABETES",
-    //     name: "Diabetes Program",
-    //     createdAt: "20th Oct 2023",
-    //   ),
-    //   user: "u-1",
-    //   createdAt: "20th Oct 2023",
-    // ),
-    // const UserProgram(
-    //   program: Program(
-    //     programCode: "CANCER",
-    //     name: "Cancer Program",
-    //     createdAt: "20th Oct 2023",
-    //   ),
-    //   user: "u-1",
-    //   createdAt: "20th Oct 2023",
-    // ),
-    // const UserProgram(
-    //   program: Program(
-    //     programCode: "HBP",
-    //     name: "Hypertension",
-    //     createdAt: "20th Oct 2023",
-    //   ),
-    //   user: "u-1",
-    //   createdAt: "20th Oct 2023",
-    // ),
+  final List<UserProgram> _userPrograms = [
+    const UserProgram(
+      program: Program(
+        id: "1",
+        program_code: "HIV",
+        name: "HIV Program",
+        createdAt: "20th Oct 2023",
+      ),
+      // user: "u-1",
+      createdAt: "20th Oct 2023",
+    ),
+    const UserProgram(
+      program: Program(
+        id: "2",
+        program_code: "TB",
+        name: "Tuberculosis Program",
+        createdAt: "20th Oct 2023",
+      ),
+      // user: "u-1",
+      createdAt: "20th Oct 2023",
+    ),
+    const UserProgram(
+      program: Program(
+        id: "3",
+        program_code: "ASTHMA",
+        name: "Asthma Program",
+        createdAt: "20th Oct 2023",
+      ),
+      // user: "u-1",
+      createdAt: "20th Oct 2023",
+    ),
+    const UserProgram(
+      program: Program(
+        id: "4",
+        program_code: "DIABETES",
+        name: "Diabetes Program",
+        createdAt: "20th Oct 2023",
+      ),
+      // user: "u-1",
+      createdAt: "20th Oct 2023",
+    ),
   ];
-*/
+
   // Future<List<Program>> getPrograms() async {
   //   await Future.delayed(const Duration(seconds: 3));
   //   return _programs;
@@ -111,15 +97,17 @@ class ProgramService extends HTTPService {
     final response = await call(getUserPrograms_, null);
     final responseString = await response.stream.bytesToString();
     final Map<String, dynamic> programData = json.decode(responseString);
+    print(_userPrograms);
     final programs = (programData["programs"] as List<dynamic>)
         .map((e) => UserProgram.fromJson({
               ...e,
-              "id": e["_id"],
+              "id": e["id"],
               "program": Map<String, dynamic>.from(
-                  {...e["program"][0], "id": e["program"][0]["_id"]})
+                  {...e["program"][0], "id": e["program"][0]["id"]})
             }))
         .toList();
-    return programData["programs"];
+    // return programData["programs"];
+    return _userPrograms;
   }
 
   Future<http.StreamedResponse> getUserPrograms_(dynamic args) async {
@@ -140,6 +128,8 @@ class ProgramService extends HTTPService {
     if(responseData["success"] == true && responseData["msg"] == "Program Already Exist Succesfully. Please Login to access personalized data"){
       throw responseData["msg"];
     }
+    print(getUserPrograms());
+    print("xxxxxxxprinting");
     return ProgramVerificationDetail.fromJson(responseData);
   }
 

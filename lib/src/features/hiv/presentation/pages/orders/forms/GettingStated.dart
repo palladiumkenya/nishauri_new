@@ -106,8 +106,8 @@ class GettingStarted extends HookConsumerWidget {
               ]),
               items: appointment
                   .where((element) =>
-                      element.appointmentType == "Re-Fill" &&
-                      DateTime.parse(element.appointmentDate)
+                      element.appointment_type == "Re-Fill" &&
+                          DateFormat('EEEE, MMMM d y').parse(element.appointment_date)
                               .difference(DateTime.now())
                               .inDays >=
                           0)
@@ -115,7 +115,7 @@ class GettingStarted extends HookConsumerWidget {
                     (e) => DropdownMenuItem(
                       value: e.id,
                       child: Text(
-                        "${e.appointmentType}(${DateFormat("dd MMM yyy").format(DateTime.parse(e.appointmentDate))})",
+                        "${e.appointment_type}(${DateFormat("dd MMM yyy").format(DateFormat('EEEE, MMMM d y').parse(e.appointment_date))})",
                       ),
                     ),
                   )

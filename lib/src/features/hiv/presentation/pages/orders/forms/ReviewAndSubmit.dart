@@ -41,8 +41,8 @@ class ReviewAndSubmit extends ConsumerWidget {
               subtitle: Text(
                 apt == -1
                     ? "None"
-                    : "${data[apt].appointmentType}(${DateFormat("dd MMM yyy")
-                    .format(DateTime.parse(data[apt].appointmentDate))}})",
+                    : "${data[apt].appointment_type}(${DateFormat("dd MMM yyy")
+                    .format(DateFormat('EEEE, MMMM d y').parse(data[apt].appointment_date))}})",
               ),
               title: const Text("Appointment"),
               leading: const Icon(Icons.check),

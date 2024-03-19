@@ -9,9 +9,10 @@ part of 'art_appointment.dart';
 _$ARTAppointmentImpl _$$ARTAppointmentImplFromJson(Map<String, dynamic> json) =>
     _$ARTAppointmentImpl(
       id: json['id'] as String?,
-      cccNumber: json['cccNumber'] as String,
-      appointmentType: json['appointmentType'] as String,
-      appointmentDate: json['appointmentDate'] as String,
+      ccc_no: json['ccc_no'] as String,
+      appointment_type: json['appointment_type'] as String,
+      appointment_date: json['appointment_date'] as String,
+      appointment: json['appointment'] as String,
       nextAppointmentDate: json['nextAppointmentDate'] as String?,
     );
 
@@ -19,8 +20,9 @@ Map<String, dynamic> _$$ARTAppointmentImplToJson(
         _$ARTAppointmentImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'cccNumber': instance.cccNumber,
-      'appointmentType': instance.appointmentType,
-      'appointmentDate': instance.appointmentDate,
+      'ccc_no': instance.ccc_no,
+      'appointment_type': instance.appointment_type,
+      'appointment_date': instance.appointment_date,
+      'appointment': instance.appointment,
       'nextAppointmentDate': instance.nextAppointmentDate,
     };
