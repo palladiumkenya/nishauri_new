@@ -63,24 +63,24 @@ bool _hasDashboardData(UserProgram program) {
   final codes = [
     ProgramCodeNameIds.HIV,
   ];
-  return codes.any((code) => code == program.program.program_code);
+  return codes.any((code) => code == program.id);
 }
 
 Tab _getProgramTabBar(UserProgram program) {
-  final programCode = program.program.program_code;
+  final programCode = program.id;
   if(programCode==ProgramCodeNameIds.HIV){
     return const Tab(text: "ART",);
   }
   return Tab(
     // icon: const Icon(Icons.directions_car),
-    text: program.program.name,
+    text: program.id,
   );
 }
 
 Widget _getProgramDashboard(UserProgram program) {
-  final programCode = program.program.program_code;
+  final programCode = program.id;
   if(programCode==ProgramCodeNameIds.HIV){
     return const HIVDashboardScreen();
   }
-  return Center(child: Text(program.program.name?? ''));
+  return Center(child: Text(program.program_name?? ''));
 }

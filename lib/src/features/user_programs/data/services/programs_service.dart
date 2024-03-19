@@ -45,77 +45,88 @@ class ProgramService extends HTTPService {
   //   ),
   // ];
 
-  final List<UserProgram> _userPrograms = [
-    const UserProgram(
-      program: Program(
-        id: "1",
-        program_code: "HIV",
-        name: "HIV Program",
-        createdAt: "20th Oct 2023",
-      ),
-      // user: "u-1",
-      createdAt: "20th Oct 2023",
-    ),
-    const UserProgram(
-      program: Program(
-        id: "2",
-        program_code: "TB",
-        name: "Tuberculosis Program",
-        createdAt: "20th Oct 2023",
-      ),
-      // user: "u-1",
-      createdAt: "20th Oct 2023",
-    ),
-    const UserProgram(
-      program: Program(
-        id: "3",
-        program_code: "ASTHMA",
-        name: "Asthma Program",
-        createdAt: "20th Oct 2023",
-      ),
-      // user: "u-1",
-      createdAt: "20th Oct 2023",
-    ),
-    const UserProgram(
-      program: Program(
-        id: "4",
-        program_code: "DIABETES",
-        name: "Diabetes Program",
-        createdAt: "20th Oct 2023",
-      ),
-      // user: "u-1",
-      createdAt: "20th Oct 2023",
-    ),
-  ];
+  // final List<UserProgram> _userPrograms = [
+  //   const UserProgram(
+  //     program: Program(
+  //       id: "1",
+  //       program_code: "HIV",
+  //       name: "HIV Program",
+  //       createdAt: "20th Oct 2023",
+  //     ),
+  //     // user: "u-1",
+  //     createdAt: "20th Oct 2023",
+  //   ),
+  //   const UserProgram(
+  //     program: Program(
+  //       id: "2",
+  //       program_code: "TB",
+  //       name: "Tuberculosis Program",
+  //       createdAt: "20th Oct 2023",
+  //     ),
+  //     // user: "u-1",
+  //     createdAt: "20th Oct 2023",
+  //   ),
+  //   const UserProgram(
+  //     program: Program(
+  //       id: "3",
+  //       program_code: "ASTHMA",
+  //       name: "Asthma Program",
+  //       createdAt: "20th Oct 2023",
+  //     ),
+  //     // user: "u-1",
+  //     createdAt: "20th Oct 2023",
+  //   ),
+  //   const UserProgram(
+  //     program: Program(
+  //       id: "4",
+  //       program_code: "DIABETES",
+  //       name: "Diabetes Program",
+  //       createdAt: "20th Oct 2023",
+  //     ),
+  //     // user: "u-1",
+  //     createdAt: "20th Oct 2023",
+  //   ),
+  // ];
 
   // Future<List<Program>> getPrograms() async {
   //   await Future.delayed(const Duration(seconds: 3));
   //   return _programs;
   // }
-
   Future<List<UserProgram>> getUserPrograms() async {
-    final response = await call(getUserPrograms_, null);
-    final responseString = await response.stream.bytesToString();
-    final Map<String, dynamic> programData = json.decode(responseString);
-    print(_userPrograms);
-    final programs = (programData["programs"] as List<dynamic>)
-        .map((e) => UserProgram.fromJson({
-              ...e,
-              "id": e["id"],
-              "program": Map<String, dynamic>.from(
-                  {...e["program"][0], "id": e["program"][0]["id"]})
-            }))
-        .toList();
-    // return programData["programs"];
-    return _userPrograms;
+    try {
+      final response = await call(getUserPrograms_, null);
+      if (response.statusCode == 200) {
+        final responseString = await response.stream.bytesToString();
+        final List<dynamic> programData = json.decode(responseString)["programs"];
+        return programData.map((e) => userProgramFromJson(e)).toList();
+      } else {
+        throw "Something Went Wrong Contact Try Again";
+      }
+    } catch (e) {
+      throw "Please check your internet connection";
+    }
+  }
+
+  UserProgram userProgramFromJson(Map<String, dynamic> json) {
+    return UserProgram(
+      id: json['program_id'].toString(),
+      program_name: json['program_name'],
+      isActive: json['is_active'] == "1",
+      // createdAt: json['created_at'],
+    );
   }
 
   Future<http.StreamedResponse> getUserPrograms_(dynamic args) async {
     final tokenPair = await getCachedToken();
-    // var headers = {'x-access-token': tokenPair.accessToken};
+    final id = await _repository.getUserId();
+    var headers = {
+      'Authorization': 'Bearer ${tokenPair.accessToken}',
+      'Content-Type': 'application/json',
+    };
     var request = http.Request('GET',
-        Uri.parse('${Constants.BASE_URL_NEW}/get_program'));
-    // request.headers.addAll(headers);
+        Uri.parse('${Constants.BASE_URL_NEW}/user_programs?user_id=$id'));
+    request.headers.addAll(headers);
+    print(request.headers);
     return await request.send();
   }
 
@@ -128,8 +139,6 @@ class ProgramService extends HTTPService {
     if(responseData["success"] == true && responseData["msg"] == "Program Already Exist Succesfully. Please Login to access personalized data"){
       throw responseData["msg"];
     }
-    print(getUserPrograms());
-    print("xxxxxxxprinting");
     return ProgramVerificationDetail.fromJson(responseData);
   }
 

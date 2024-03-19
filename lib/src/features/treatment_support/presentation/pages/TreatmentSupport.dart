@@ -64,11 +64,11 @@ bool _hasTreatmentSupporters(UserProgram program) {
   final codes = [
     ProgramCodeNameIds.HIV,
   ];
-  return codes.any((code) => code == program.program.program_code);
+  return codes.any((code) => code == program.id);
 }
 
 Tab _getProgramTabBar(UserProgram program) {
-  final programCode = program.program.program_code;
+  final programCode = program.id;
   if (programCode == ProgramCodeNameIds.HIV) {
     return const Tab(
       text: "ART",
@@ -76,14 +76,14 @@ Tab _getProgramTabBar(UserProgram program) {
   }
   return Tab(
     // icon: const Icon(Icons.directions_car),
-    text: program.program.name,
+    text: program.program_name,
   );
 }
 
 Widget _getProgramAppointments(UserProgram program) {
-  final programCode = program.program.program_code;
+  final programCode = program.id;
   if (programCode == ProgramCodeNameIds.HIV) {
     return const ARTTreatmentSupportersScreen();
   }
-  return Center(child: Text(program.program.name?? ''));
+  return Center(child: Text(program.program_name?? ''));
 }

@@ -176,7 +176,7 @@ _showDialog(BuildContext context) {
                   ...getGenericMenuItems(context),
                   // get program menu items
                   ...data.map((e) {
-                    final programCode = e.program.program_code;
+                    final programCode = e.id;
                     return getProgramMenuItemByProgramCode(
                         context, programCode?? '');
                   }).toList(),

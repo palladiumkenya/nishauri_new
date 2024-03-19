@@ -25,7 +25,7 @@ class ARTAppointmentService extends HTTPService {
     final tokenPair = await getCachedToken();
     var headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
     var request =
-    Request('GET', Uri.parse('${Constants.BASE_URL_NEW}/patient_details?user_id=$id'));
+    Request('GET', Uri.parse('${Constants.BASE_URL_NEW}/upcoming_appointment?user_id=$id'));
     request.headers.addAll(headers);
     return await request.send();
   }

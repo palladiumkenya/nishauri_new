@@ -244,9 +244,10 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
 
 List<DropdownMenuItem<String>> _getUnregisteredPrograms(
     List<UserProgram> programs) {
+  print(programs);
   return ProgramCodeNameIds.SUPPOTED_PROGRAM_CODES
       .where((code) =>
-  !programs.any((program) => program.program.program_code == code))
+  !programs.any((program) => program.id == code))
       .map((e) =>
       DropdownMenuItem(
           value: e,

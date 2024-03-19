@@ -8,9 +8,9 @@ part 'user_program.g.dart';
 class UserProgram with _$UserProgram {
   const factory UserProgram({
     String? id,
-    required Program program,
+    String? program_name,
     @Default(false) bool isActive,
-    required String createdAt,
+    String? createdAt,
 
   }) = _UserProgram;
 
