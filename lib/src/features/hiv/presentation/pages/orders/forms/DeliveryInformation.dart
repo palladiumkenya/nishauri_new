@@ -25,7 +25,7 @@ class DeliveryInformation extends HookConsumerWidget {
             children: [
               const SizedBox(height: Constants.SPACING),
               FormBuilderTextField(
-                name: "phoneNumber",
+                name: "client_phone_no",
                 initialValue: user.phoneNumber,
                 keyboardType: TextInputType.phone,
                 decoration: inputDecoration(
@@ -33,16 +33,16 @@ class DeliveryInformation extends HookConsumerWidget {
                   prefixIcon: Icons.phone,
                   label: "Phone number",
                 ),
-                  validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(errorText: "Required"),
-                  ]),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(errorText: "Required"),
+                ]),
               ),
               const SizedBox(height: Constants.SPACING),
               // TODO Replace with https://pub.dev/packages/map_location_picker
               FormBuilderField<Map<String, dynamic>>(
-                validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(errorText: "Required"),
-                ]),
+                // validator: FormBuilderValidators.compose([
+                //     FormBuilderValidators.required(errorText: "Required"),
+                // ]),
                 builder: (state) {
                   final controller = TextEditingController(text: state.value?["address"]);
                   return TextField(
@@ -75,8 +75,9 @@ class DeliveryInformation extends HookConsumerWidget {
                     },
                   );
                 },
-                name: "deliveryAddress",
+                name: "delivery_address",
               ),
+
               const SizedBox(height: Constants.SPACING),
             ],
           ),

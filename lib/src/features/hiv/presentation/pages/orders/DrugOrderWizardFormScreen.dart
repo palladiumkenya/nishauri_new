@@ -109,16 +109,31 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
       if (formKey.currentState!.validate()) {
         debugPrint("=====================>${formKey.currentState?.instantValue}");
         loading.value = true;
-        final pickupTime = formKey.currentState!.instantValue["pickupTime"];
+        final pickupTime = formKey.currentState!.instantValue["delivery_pickup_time"];
+        final courierService = formKey.currentState!.instantValue["courier_service"].toString();
         ref.read(artDrugOrderProvider.notifier).createOrder({
           ...formKey.currentState!.instantValue,
-          "pickupTime":
+          "delivery_pickup_time":
               pickupTime is DateTime ? pickupTime.toIso8601String() : pickupTime,
-          ...(formKey.currentState?.instantValue["deliveryMethod"] == "in_person" ? {"deliveryPerson": {
-            "fullName": formKey.currentState!.instantValue["deliveryPersonFullName"],
-            "nationalId": formKey.currentState!.instantValue["deliveryPersonNationalId"],
-            "phoneNumber": formKey.currentState!.instantValue["deliveryPersonPhoneNumber"],
-            "pickupTime": formKey.currentState!.instantValue["pickupTime"],
+          "delivery_address": "",
+          "delivery_lat": "",
+          "delivery_long": "",
+        ...(formKey.currentState?.instantValue["delivery_method"] == "parcel" ? {
+          "delivery_person": "",
+          "delivery_person_id": "",
+          "delivery_person_contact": "",
+          "delivery_pickup_time":"",
+          "courier_service": courierService,
+          "delivery_method": "In Parcel",
+        } : {
+          "courier_service": "",
+          "delivery_method": "In Person",
+        }),
+          ...(formKey.currentState?.instantValue["delivery_method"] == "person" ? {"deliveryPerson": {
+            "fullName": formKey.currentState!.instantValue["delivery_person"],
+            "nationalId": formKey.currentState!.instantValue["delivery_person_id"],
+            "phoneNumber": formKey.currentState!.instantValue["delivery_person_contact"],
+            "pickupTime": formKey.currentState!.instantValue["delivery_pickup_time"],
           }} : {})
         }).then((value) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

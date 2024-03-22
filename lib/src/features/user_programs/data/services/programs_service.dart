@@ -127,6 +127,7 @@ class ProgramService extends HTTPService {
         Uri.parse('${Constants.BASE_URL_NEW}/user_programs?user_id=$id'));
     request.headers.addAll(headers);
     print(request.headers);
+    print(request);
     return await request.send();
   }
 

@@ -20,7 +20,7 @@ Courier _$CourierFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Courier {
-  String? get id => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
 
@@ -34,7 +34,7 @@ abstract class $CourierCopyWith<$Res> {
   factory $CourierCopyWith(Courier value, $Res Function(Courier) then) =
       _$CourierCopyWithImpl<$Res, Courier>;
   @useResult
-  $Res call({String? id, String name, String? description});
+  $Res call({int? id, String name, String? description});
 }
 
 /// @nodoc
@@ -58,7 +58,7 @@ class _$CourierCopyWithImpl<$Res, $Val extends Courier>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -78,7 +78,7 @@ abstract class _$$CourierImplCopyWith<$Res> implements $CourierCopyWith<$Res> {
       __$$CourierImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? id, String name, String? description});
+  $Res call({int? id, String name, String? description});
 }
 
 /// @nodoc
@@ -100,7 +100,7 @@ class __$$CourierImplCopyWithImpl<$Res>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -122,7 +122,7 @@ class _$CourierImpl with DiagnosticableTreeMixin implements _Courier {
       _$$CourierImplFromJson(json);
 
   @override
-  final String? id;
+  final int? id;
   @override
   final String name;
   @override
@@ -174,14 +174,14 @@ class _$CourierImpl with DiagnosticableTreeMixin implements _Courier {
 
 abstract class _Courier implements Courier {
   const factory _Courier(
-      {final String? id,
+      {final int? id,
       required final String name,
       final String? description}) = _$CourierImpl;
 
   factory _Courier.fromJson(Map<String, dynamic> json) = _$CourierImpl.fromJson;
 
   @override
-  String? get id;
+  int? get id;
   @override
   String get name;
   @override

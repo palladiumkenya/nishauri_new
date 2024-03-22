@@ -11,14 +11,30 @@ import '../../../../utils/constants.dart';
 class ARTAppointmentService extends HTTPService {
   final AuthRepository _repository = AuthRepository(AuthApiService());
   Future<List<ARTAppointment>> getAppointments() async{
-    final response = await call(getAppointments_, null);
-    final responseString = await response.stream.bytesToString();
-    final Map<String, dynamic> appointmentsData = json.decode(responseString);
-    final programs = (appointmentsData["data"] as List<dynamic>)
-        .map((e) => ARTAppointment.fromJson(e))
-        .toList();
-    return programs;
+    try{
+      final response = await call(getAppointments_, null);
+      if (response.statusCode == 200) {
+        final responseString = await response.stream.bytesToString();
+        final List<dynamic> appointmentData = json.decode(responseString)["data"];
+        return appointmentData.map((e) => userUpcomingAppointments(e)).toList();
+      } else {
+        throw "Something Went Wrong Contact Try Again";
+      }
+    } catch (e) {
+      throw "Please check your internet connection";
+    }
   }
+
+  ARTAppointment userUpcomingAppointments(Map<String, dynamic> json) {
+    return ARTAppointment(
+      id:json["appointment_id"].toString(),
+      ccc_no: json["ccc_no"],
+      appointment_type: json["appointment_type"],
+      appointment_date: json["appointment_date"],
+      appointment: json["appointment"],
+    );
+  }
+
 
   Future<StreamedResponse> getAppointments_(dynamic args) async {
     final id = await _repository.getUserId();

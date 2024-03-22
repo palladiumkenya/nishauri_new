@@ -19,7 +19,7 @@ class ARTDrugOrder with _$ARTDrugOrder {
     required Address deliveryAddress,
     required String deliveryMethod,
     required String phoneNumber,
-    required String type,
+    String? type,
     Courier? courierService,
     DeliveryPerson? deliveryPerson,
     String? createdAt,

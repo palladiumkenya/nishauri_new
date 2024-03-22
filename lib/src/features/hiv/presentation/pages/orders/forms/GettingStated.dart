@@ -36,9 +36,9 @@ class GettingStarted extends HookConsumerWidget {
         FormBuilderRadioGroup<String>(
             name: 'mode',
             initialValue: artEvent != null
-                ? "event"
+                ? "Event"
                 : artAppointment != null
-                    ? "appointment"
+                    ? "Appointment"
                     : null,
             onChanged: (mode_) {
               orderMode.value = mode_;
@@ -52,20 +52,20 @@ class GettingStarted extends HookConsumerWidget {
             ]),
             options: const [
               FormBuilderFieldOption(
-                value: "event",
+                value: "Event",
                 child: ListTile(
                   title: Text("Event"),
                 ),
               ),
               FormBuilderFieldOption(
-                value: "appointment",
+                value: "Appointment",
                 child: ListTile(
                   title: Text("Appointment"),
                 ),
               ),
             ]),
         FormBuilderRadioGroup<String>(
-            name: 'type',
+            name: 'order_type',
             onChanged: (type_) {
               orderType.value = type_;
             },
@@ -79,31 +79,39 @@ class GettingStarted extends HookConsumerWidget {
             ]),
             options: const [
               FormBuilderFieldOption(
-                value: "self",
+                value: "Self",
                 child: ListTile(
                   title: Text("Yourself"),
                 ),
               ),
-              FormBuilderFieldOption(
-                value: "other",
-                child: ListTile(
-                  title: Text("Care receiver"),
-                ),
-              ),
+              // FormBuilderFieldOption(
+              //   value: "other",
+              //   child: ListTile(
+              //     title: Text("Care receiver"),
+              //   ),
+              // ),
             ]),
-        if (orderMode.value == "appointment")
+        const SizedBox(height: Constants.SPACING),
+        // Hidden field for ccc_no
+        FormBuilderTextField(
+          name: "ccc_no",
+          initialValue: artAppointment?.ccc_no,
+          enabled: false,
+        ),
+        const SizedBox(height: Constants.SPACING),
+        if (orderMode.value == "Appointment")
           asyncARTAppointments.when(
             data: (appointment) => FormBuilderDropdown(
-              name: "appointment",
+              name: "appointment_id",
               decoration: inputDecoration(
                 prefixIcon: Icons.calendar_today,
                 label: "Appointment",
               ),
               initialValue: artAppointment?.id,
-              validator: FormBuilderValidators.compose([
-                if (orderMode.value == "appointment")
-                  FormBuilderValidators.required(errorText: "Required"),
-              ]),
+              // validator: FormBuilderValidators.compose([
+              //   if (orderMode.value == "appointment")
+              //     FormBuilderValidators.required(errorText: "Required"),
+              // ]),
               items: appointment
                   .where((element) =>
                       element.appointment_type == "Re-Fill" &&
@@ -115,7 +123,7 @@ class GettingStarted extends HookConsumerWidget {
                     (e) => DropdownMenuItem(
                       value: e.id,
                       child: Text(
-                        "${e.appointment_type}(${DateFormat("dd MMM yyy").format(DateFormat('EEEE, MMMM d y').parse(e.appointment_date))})",
+                        "${e.appointment_type} " " (${DateFormat("dd MMM yyy").format(DateFormat('EEEE, MMMM d y').parse(e.appointment_date))})",
                       ),
                     ),
                   )

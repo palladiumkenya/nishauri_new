@@ -20,7 +20,7 @@ _$ARTDrugOrderImpl _$$ARTDrugOrderImplFromJson(Map<String, dynamic> json) =>
           Address.fromJson(json['deliveryAddress'] as Map<String, dynamic>),
       deliveryMethod: json['deliveryMethod'] as String,
       phoneNumber: json['phoneNumber'] as String,
-      type: json['type'] as String,
+      type: json['type'] as String?,
       courierService: json['courierService'] == null
           ? null
           : Courier.fromJson(json['courierService'] as Map<String, dynamic>),

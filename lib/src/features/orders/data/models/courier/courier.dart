@@ -6,7 +6,7 @@ part 'courier.g.dart';
 @Freezed()
 class Courier with _$Courier {
   const factory Courier({
-    String? id,
+    int? id,
     required String name,
     String? description,
   }) = _Courier;

@@ -26,7 +26,7 @@ mixin _$ARTDrugOrder {
   Address get deliveryAddress => throw _privateConstructorUsedError;
   String get deliveryMethod => throw _privateConstructorUsedError;
   String get phoneNumber => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError;
+  String? get type => throw _privateConstructorUsedError;
   Courier? get courierService => throw _privateConstructorUsedError;
   DeliveryPerson? get deliveryPerson => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
@@ -51,7 +51,7 @@ abstract class $ARTDrugOrderCopyWith<$Res> {
       Address deliveryAddress,
       String deliveryMethod,
       String phoneNumber,
-      String type,
+      String? type,
       Courier? courierService,
       DeliveryPerson? deliveryPerson,
       String? createdAt,
@@ -83,7 +83,7 @@ class _$ARTDrugOrderCopyWithImpl<$Res, $Val extends ARTDrugOrder>
     Object? deliveryAddress = null,
     Object? deliveryMethod = null,
     Object? phoneNumber = null,
-    Object? type = null,
+    Object? type = freezed,
     Object? courierService = freezed,
     Object? deliveryPerson = freezed,
     Object? createdAt = freezed,
@@ -114,10 +114,10 @@ class _$ARTDrugOrderCopyWithImpl<$Res, $Val extends ARTDrugOrder>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      type: null == type
+      type: freezed == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       courierService: freezed == courierService
           ? _value.courierService
           : courierService // ignore: cast_nullable_to_non_nullable
@@ -209,7 +209,7 @@ abstract class _$$ARTDrugOrderImplCopyWith<$Res>
       Address deliveryAddress,
       String deliveryMethod,
       String phoneNumber,
-      String type,
+      String? type,
       Courier? courierService,
       DeliveryPerson? deliveryPerson,
       String? createdAt,
@@ -244,7 +244,7 @@ class __$$ARTDrugOrderImplCopyWithImpl<$Res>
     Object? deliveryAddress = null,
     Object? deliveryMethod = null,
     Object? phoneNumber = null,
-    Object? type = null,
+    Object? type = freezed,
     Object? courierService = freezed,
     Object? deliveryPerson = freezed,
     Object? createdAt = freezed,
@@ -275,10 +275,10 @@ class __$$ARTDrugOrderImplCopyWithImpl<$Res>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      type: null == type
+      type: freezed == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       courierService: freezed == courierService
           ? _value.courierService
           : courierService // ignore: cast_nullable_to_non_nullable
@@ -309,7 +309,7 @@ class _$ARTDrugOrderImpl with DiagnosticableTreeMixin implements _ARTDrugOrder {
       required this.deliveryAddress,
       required this.deliveryMethod,
       required this.phoneNumber,
-      required this.type,
+      this.type,
       this.courierService,
       this.deliveryPerson,
       this.createdAt,
@@ -331,7 +331,7 @@ class _$ARTDrugOrderImpl with DiagnosticableTreeMixin implements _ARTDrugOrder {
   @override
   final String phoneNumber;
   @override
-  final String type;
+  final String? type;
   @override
   final Courier? courierService;
   @override
@@ -428,7 +428,7 @@ abstract class _ARTDrugOrder implements ARTDrugOrder {
       required final Address deliveryAddress,
       required final String deliveryMethod,
       required final String phoneNumber,
-      required final String type,
+      final String? type,
       final Courier? courierService,
       final DeliveryPerson? deliveryPerson,
       final String? createdAt,
@@ -450,7 +450,7 @@ abstract class _ARTDrugOrder implements ARTDrugOrder {
   @override
   String get phoneNumber;
   @override
-  String get type;
+  String? get type;
   @override
   Courier? get courierService;
   @override
