@@ -16,11 +16,12 @@ _$ARTDrugOrderImpl _$$ARTDrugOrderImplFromJson(Map<String, dynamic> json) =>
           ? null
           : ARTAppointment.fromJson(
               json['appointment'] as Map<String, dynamic>),
-      deliveryAddress:
-          Address.fromJson(json['deliveryAddress'] as Map<String, dynamic>),
-      deliveryMethod: json['deliveryMethod'] as String,
-      phoneNumber: json['phoneNumber'] as String,
-      type: json['type'] as String?,
+      deliveryAddress: json['deliveryAddress'] == null
+          ? null
+          : Address.fromJson(json['deliveryAddress'] as Map<String, dynamic>),
+      delivery_method: json['delivery_method'] as String?,
+      client_phone_no: json['client_phone_no'] as String?,
+      order_type: json['order_type'] as String?,
       courierService: json['courierService'] == null
           ? null
           : Courier.fromJson(json['courierService'] as Map<String, dynamic>),
@@ -30,6 +31,7 @@ _$ARTDrugOrderImpl _$$ARTDrugOrderImplFromJson(Map<String, dynamic> json) =>
               json['deliveryPerson'] as Map<String, dynamic>),
       createdAt: json['createdAt'] as String?,
       updateAt: json['updateAt'] as String?,
+      status: json['status'] as String?,
     );
 
 Map<String, dynamic> _$$ARTDrugOrderImplToJson(_$ARTDrugOrderImpl instance) =>
@@ -38,11 +40,12 @@ Map<String, dynamic> _$$ARTDrugOrderImplToJson(_$ARTDrugOrderImpl instance) =>
       'event': instance.event,
       'appointment': instance.appointment,
       'deliveryAddress': instance.deliveryAddress,
-      'deliveryMethod': instance.deliveryMethod,
-      'phoneNumber': instance.phoneNumber,
-      'type': instance.type,
+      'delivery_method': instance.delivery_method,
+      'client_phone_no': instance.client_phone_no,
+      'order_type': instance.order_type,
       'courierService': instance.courierService,
       'deliveryPerson': instance.deliveryPerson,
       'createdAt': instance.createdAt,
       'updateAt': instance.updateAt,
+      'status': instance.status,
     };

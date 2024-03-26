@@ -32,7 +32,7 @@ class ARTAppointmentDetailScreen extends StatelessWidget {
         const Divider(),
         ListTile(
           leading: const Icon(Icons.menu),
-          title: Text(artAppointment.appointment_type),
+          title: Text(artAppointment.appointment_type??''),
           subtitle: const Text("Appointment type"),
           trailing: const Icon(Icons.chevron_right),
         ),

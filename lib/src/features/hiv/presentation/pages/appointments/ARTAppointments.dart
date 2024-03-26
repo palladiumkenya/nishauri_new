@@ -83,7 +83,7 @@ class ARTAppointmentsScreen extends HookConsumerWidget {
                       leading: const Icon(Icons.calendar_month_sharp),
                       title: Text(appointmentsToDisplay
                           .elementAt(currIndex)
-                          .appointment_type),
+                          .appointment_type??''),
                       subtitle: Text(
                         DateFormat("dd MMM yyy").format(
                           DateTime.parse(

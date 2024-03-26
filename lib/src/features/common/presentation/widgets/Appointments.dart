@@ -75,7 +75,7 @@ class Appointments extends HookConsumerWidget {
                           ),
                         ),
                         title:
-                            Text(artAppointment.appointment_type, maxLines: 1),
+                            Text(artAppointment.appointment_type??'', maxLines: 1),
                         titleTextStyle: theme.textTheme.titleSmall
                             ?.copyWith(overflow: TextOverflow.ellipsis),
                         subtitle: Text(

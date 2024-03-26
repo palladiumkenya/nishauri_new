@@ -77,7 +77,7 @@ class DeliveryPreference extends HookConsumerWidget {
                       (e) => DropdownMenuItem(
                         value: e.id,
                         child: Text(
-                          e.name,
+                          e.name??'',
                         ),
                       ),
                     )

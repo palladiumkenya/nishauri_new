@@ -7,7 +7,7 @@ part 'courier.g.dart';
 class Courier with _$Courier {
   const factory Courier({
     int? id,
-    required String name,
+    String? name,
     String? description,
   }) = _Courier;
 

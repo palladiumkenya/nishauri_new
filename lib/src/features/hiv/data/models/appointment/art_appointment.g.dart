@@ -10,9 +10,9 @@ _$ARTAppointmentImpl _$$ARTAppointmentImplFromJson(Map<String, dynamic> json) =>
     _$ARTAppointmentImpl(
       id: json['id'] as String?,
       ccc_no: json['ccc_no'] as String,
-      appointment_type: json['appointment_type'] as String,
+      appointment_type: json['appointment_type'] as String?,
       appointment_date: json['appointment_date'] as String,
-      appointment: json['appointment'] as String,
+      appointment: json['appointment'] as String?,
       nextAppointmentDate: json['nextAppointmentDate'] as String?,
     );
 

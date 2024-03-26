@@ -1,32 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:nishauri/src/features/hiv/data/models/art_orders/art_drug_order.dart';
 import 'package:nishauri/src/shared/display/AppSearch.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class AllOrders extends StatelessWidget {
-  const AllOrders({super.key});
+  final List<ARTDrugOrder> orders;
+
+  const AllOrders({Key? key, required this.orders}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       children: [
-        const Padding(
-          padding: EdgeInsets.all(Constants.SPACING),
-          child: AppSearch(),
+        Padding(
+          padding: const EdgeInsets.all(Constants.SPACING),
+          child: Text(
+            "All Drug Requests",
+            style: theme.textTheme.headlineMedium,
+          ),
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: 10,
-            itemBuilder: (BuildContext context, int currIndex) => Column(
-              children: [
-                const Divider(),
-                ListTile(
-                  leading: const Icon(Icons.shopping_cart),
-                  title: Text("Order $currIndex name here"),
-                  subtitle: Text("$currIndex October 2023"),
-                  trailing: const Icon(Icons.chevron_right),
-                ),
-              ],
-            ),
+            itemCount: orders.length,
+            itemBuilder: (BuildContext context, int index) {
+              final order = orders[index];
+              return Column(
+                children: [
+                  const Divider(),
+                  ListTile(
+                    // leading: const Icon(Icons.all_inbox),
+                    title: Text("Delivery Method: ${order.delivery_method ?? ''}"),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Appointment Date: ${ DateFormat("dd MMM yyy").format(
+                          DateTime.parse(order.appointment?.appointment_date??''))}"),
+                        Text("Courier Service: ${order.courierService?.name ?? ''}"),
+                        Text("Deliver Person: ${order.deliveryPerson?.fullName ?? ''}"),
+                        Text("Deliver Person Phone: ${order.deliveryPerson?.phoneNumber ?? ''}"),
+                        Text("Deliver Status: ${order.status ?? ''}"),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ],

@@ -107,7 +107,7 @@ class ReviewAndSubmit extends ConsumerWidget {
               subtitle: Text(
                 courier == -1
                     ? "None"
-                    : data[courier].name,
+                    : data[courier].name??'',
               ),
               title: const Text("Courier service"),
               leading: const Icon(Icons.check),

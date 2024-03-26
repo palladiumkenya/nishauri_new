@@ -16,14 +16,15 @@ class ARTDrugOrder with _$ARTDrugOrder {
     String? id,
     ARTEvent? event,
     ARTAppointment? appointment,
-    required Address deliveryAddress,
-    required String deliveryMethod,
-    required String phoneNumber,
-    String? type,
+    Address? deliveryAddress,
+    String? delivery_method,
+    String? client_phone_no,
+    String? order_type,
     Courier? courierService,
     DeliveryPerson? deliveryPerson,
     String? createdAt,
     String? updateAt,
+    String? status,
   }) = _ARTDrugOrder;
 
   factory ARTDrugOrder.fromJson(Map<String, dynamic> json)=> _$ARTDrugOrderFromJson(json);

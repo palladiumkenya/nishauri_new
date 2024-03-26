@@ -8,9 +8,9 @@ class ARTAppointment with _$ARTAppointment {
   const factory ARTAppointment({
     String? id,
     required String ccc_no,
-    required String appointment_type,
+    String? appointment_type,
     required String appointment_date,
-    required String appointment,
+    String? appointment,
     String? nextAppointmentDate,
   }) = _ARTAppointment;
 

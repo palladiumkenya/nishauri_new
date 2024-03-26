@@ -22,9 +22,9 @@ ARTAppointment _$ARTAppointmentFromJson(Map<String, dynamic> json) {
 mixin _$ARTAppointment {
   String? get id => throw _privateConstructorUsedError;
   String get ccc_no => throw _privateConstructorUsedError;
-  String get appointment_type => throw _privateConstructorUsedError;
+  String? get appointment_type => throw _privateConstructorUsedError;
   String get appointment_date => throw _privateConstructorUsedError;
-  String get appointment => throw _privateConstructorUsedError;
+  String? get appointment => throw _privateConstructorUsedError;
   String? get nextAppointmentDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,9 +42,9 @@ abstract class $ARTAppointmentCopyWith<$Res> {
   $Res call(
       {String? id,
       String ccc_no,
-      String appointment_type,
+      String? appointment_type,
       String appointment_date,
-      String appointment,
+      String? appointment,
       String? nextAppointmentDate});
 }
 
@@ -63,9 +63,9 @@ class _$ARTAppointmentCopyWithImpl<$Res, $Val extends ARTAppointment>
   $Res call({
     Object? id = freezed,
     Object? ccc_no = null,
-    Object? appointment_type = null,
+    Object? appointment_type = freezed,
     Object? appointment_date = null,
-    Object? appointment = null,
+    Object? appointment = freezed,
     Object? nextAppointmentDate = freezed,
   }) {
     return _then(_value.copyWith(
@@ -77,18 +77,18 @@ class _$ARTAppointmentCopyWithImpl<$Res, $Val extends ARTAppointment>
           ? _value.ccc_no
           : ccc_no // ignore: cast_nullable_to_non_nullable
               as String,
-      appointment_type: null == appointment_type
+      appointment_type: freezed == appointment_type
           ? _value.appointment_type
           : appointment_type // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       appointment_date: null == appointment_date
           ? _value.appointment_date
           : appointment_date // ignore: cast_nullable_to_non_nullable
               as String,
-      appointment: null == appointment
+      appointment: freezed == appointment
           ? _value.appointment
           : appointment // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       nextAppointmentDate: freezed == nextAppointmentDate
           ? _value.nextAppointmentDate
           : nextAppointmentDate // ignore: cast_nullable_to_non_nullable
@@ -108,9 +108,9 @@ abstract class _$$ARTAppointmentImplCopyWith<$Res>
   $Res call(
       {String? id,
       String ccc_no,
-      String appointment_type,
+      String? appointment_type,
       String appointment_date,
-      String appointment,
+      String? appointment,
       String? nextAppointmentDate});
 }
 
@@ -127,9 +127,9 @@ class __$$ARTAppointmentImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? ccc_no = null,
-    Object? appointment_type = null,
+    Object? appointment_type = freezed,
     Object? appointment_date = null,
-    Object? appointment = null,
+    Object? appointment = freezed,
     Object? nextAppointmentDate = freezed,
   }) {
     return _then(_$ARTAppointmentImpl(
@@ -141,18 +141,18 @@ class __$$ARTAppointmentImplCopyWithImpl<$Res>
           ? _value.ccc_no
           : ccc_no // ignore: cast_nullable_to_non_nullable
               as String,
-      appointment_type: null == appointment_type
+      appointment_type: freezed == appointment_type
           ? _value.appointment_type
           : appointment_type // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       appointment_date: null == appointment_date
           ? _value.appointment_date
           : appointment_date // ignore: cast_nullable_to_non_nullable
               as String,
-      appointment: null == appointment
+      appointment: freezed == appointment
           ? _value.appointment
           : appointment // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       nextAppointmentDate: freezed == nextAppointmentDate
           ? _value.nextAppointmentDate
           : nextAppointmentDate // ignore: cast_nullable_to_non_nullable
@@ -169,9 +169,9 @@ class _$ARTAppointmentImpl
   const _$ARTAppointmentImpl(
       {this.id,
       required this.ccc_no,
-      required this.appointment_type,
+      this.appointment_type,
       required this.appointment_date,
-      required this.appointment,
+      this.appointment,
       this.nextAppointmentDate});
 
   factory _$ARTAppointmentImpl.fromJson(Map<String, dynamic> json) =>
@@ -182,11 +182,11 @@ class _$ARTAppointmentImpl
   @override
   final String ccc_no;
   @override
-  final String appointment_type;
+  final String? appointment_type;
   @override
   final String appointment_date;
   @override
-  final String appointment;
+  final String? appointment;
   @override
   final String? nextAppointmentDate;
 
@@ -249,9 +249,9 @@ abstract class _ARTAppointment implements ARTAppointment {
   const factory _ARTAppointment(
       {final String? id,
       required final String ccc_no,
-      required final String appointment_type,
+      final String? appointment_type,
       required final String appointment_date,
-      required final String appointment,
+      final String? appointment,
       final String? nextAppointmentDate}) = _$ARTAppointmentImpl;
 
   factory _ARTAppointment.fromJson(Map<String, dynamic> json) =
@@ -262,11 +262,11 @@ abstract class _ARTAppointment implements ARTAppointment {
   @override
   String get ccc_no;
   @override
-  String get appointment_type;
+  String? get appointment_type;
   @override
   String get appointment_date;
   @override
-  String get appointment;
+  String? get appointment;
   @override
   String? get nextAppointmentDate;
   @override
