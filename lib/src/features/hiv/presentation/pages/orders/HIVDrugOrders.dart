@@ -23,28 +23,28 @@ class HIVDrugOrdersScreen extends ConsumerWidget {
         // Separate orders based on their status
         List<ARTDrugOrder> allOrders = data;
         List<ARTDrugOrder> pendingOrders =
-        allOrders.where((order) => order.status == 'Pending').toList();
+        allOrders.where((order) => order.status != 'Pending').toList();
         List<ARTDrugOrder> approvedOrders =
         allOrders.where((order) => order.status == 'Approved').toList();
         List<ARTDrugOrder> fulfilledOrders =
         allOrders.where((order) => order.status == 'FullFilled').toList();
 
         return DefaultTabController(
-          length: 3,
+          length: 2,
           child: Scaffold(
             appBar: AppBar(
               leading: IconButton(
                 onPressed: () => context.pop(),
                 icon: const Icon(Icons.chevron_left),
               ),
-              title: const Text("ARV Drug Orders"),
+              title: const Text("Drug Request"),
               backgroundColor: Theme.of(context).primaryColor,
               bottom: TabBar(
                 tabs: const [
-                  Tab(icon: Icon(Icons.all_inbox), text: "All Orders"),
-                  Tab(icon: Icon(Icons.pending), text: "Pending"),
+                  Tab(icon: Icon(Icons.all_inbox), text: "Active Drug Request"),
+                  // Tab(icon: Icon(Icons.pending), text: "Pending"),
                   // Tab(icon: Icon(Icons.pending), text: "Approved"),
-                  Tab(icon: Icon(Icons.done_all), text: "FullFilled"),
+                  Tab(icon: Icon(Icons.done_all), text: "FullFilled Request"),
                 ],
                 labelColor: theme.colorScheme.onPrimary,
               ),
@@ -63,7 +63,7 @@ class HIVDrugOrdersScreen extends ConsumerWidget {
                 children: [
                   // Populate tab views with respective orders
                   AllOrders(orders: allOrders),
-                  PendingOrders(orders: pendingOrders),
+                  // PendingOrders(orders: pendingOrders),
                   // ApprovedOrders(orders: approvedOrders),
                   FulfilledOrders(orders: fulfilledOrders),
                 ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/hiv/data/models/art_orders/art_drug_order.dart';
-import 'package:nishauri/src/shared/display/AppSearch.dart';
+import 'package:nishauri/src/features/hiv/presentation/widgets/orders/DeliveryProgression.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class FulfilledOrders extends StatelessWidget {
@@ -16,7 +17,7 @@ class FulfilledOrders extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(Constants.SPACING),
           child: Text(
-            "All Fulfilled Requests",
+            "Fulfilled Drug Requests",
             style: theme.textTheme.headlineMedium,
           ),
         ),
@@ -25,20 +26,45 @@ class FulfilledOrders extends StatelessWidget {
             itemCount: orders.length,
             itemBuilder: (BuildContext context, int index) {
               final order = orders[index];
-              return Column(
-                children: [
-                  const Divider(),
-                  ListTile(
-                    leading: const Icon(Icons.all_inbox),
-                    title: Text("Delivery Method: ${order.delivery_method??''}"),
-                    subtitle: Text("Deliver Status: ${order.status??''}"),
-                  ),
-                ],
-              );
+              return buildOrderTile(context, order);
             },
           ),
         ),
       ],
+    );
+  }
+
+  Widget buildOrderTile(BuildContext context, ARTDrugOrder order) {
+    return GestureDetector(
+      onTap: () => navigateToDeliveryProgression(context, order),
+      child: Column(
+        children: [
+          const Divider(),
+          ListTile(
+            title: Text("Delivery Method: ${order.delivery_method ?? ''}"),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Appointment Date: ${DateFormat("dd MMM yyy").format(DateTime.parse(order.appointment?.appointment_date ?? ''))}"),
+                Text("Courier Service: ${order.courierService?.name ?? ''}"),
+                Text("Deliver Person: ${order.deliveryPerson?.fullName ?? ''}"),
+                Text("Deliver Person Phone: ${order.deliveryPerson?.phoneNumber ?? ''}"),
+                Text("Deliver Status: ${order.status ?? ''}"),
+              ],
+            ),
+            trailing: const Icon(Icons.chevron_right),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void navigateToDeliveryProgression(BuildContext context, ARTDrugOrder order) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DeliverProgression(order: order),
+      ),
     );
   }
 }

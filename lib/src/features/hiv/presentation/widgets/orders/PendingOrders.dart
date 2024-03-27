@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/hiv/data/models/art_orders/art_drug_order.dart';
 import 'package:nishauri/src/shared/display/AppSearch.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -29,9 +30,19 @@ class PendingOrders extends StatelessWidget {
                 children: [
                   const Divider(),
                   ListTile(
-                    leading: const Icon(Icons.all_inbox),
-                    title: Text("Delivery Method: ${order.delivery_method??''}"),
-                    subtitle: Text("Deliver Status: ${order.status??''}"),
+                    // leading: const Icon(Icons.all_inbox),
+                    title: Text("Delivery Method: ${order.delivery_method ?? ''}"),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Appointment Date: ${ DateFormat("dd MMM yyy").format(
+                            DateTime.parse(order.appointment?.appointment_date??''))}"),
+                        Text("Courier Service: ${order.courierService?.name ?? ''}"),
+                        Text("Deliver Person: ${order.deliveryPerson?.fullName ?? ''}"),
+                        Text("Deliver Person Phone: ${order.deliveryPerson?.phoneNumber ?? ''}"),
+                        Text("Deliver Status: ${order.status ?? ''}"),
+                      ],
+                    ),
                   ),
                 ],
               );
