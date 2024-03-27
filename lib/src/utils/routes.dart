@@ -41,6 +41,7 @@ class RouteNames {
   static const SETTINGS = "settings";
 
   static const ART_DIRECTORY= "art-directory";
+  static const PROGRAM_MENU = "program-menu";
 }
 
 class MenuItemNames {
@@ -61,6 +62,7 @@ class MenuItemNames {
   static const MY_CLINIC_CARD = "My Clinic Card";
   static const CHAT_HCW = "Nishauri Bot";
   static const ART_DIRECTORY= "Art Directory";
+  static const PROGRAM_MENU = "Program Menu";
 }
 
 class ProgramCodeNameIds {

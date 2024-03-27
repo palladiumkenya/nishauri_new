@@ -35,9 +35,11 @@ class HIVMenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final _items = _menuItems(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: theme.primaryColor,
         leading: IconButton(
           icon: const Icon(Icons.chevron_left),
           onPressed: () => context.pop(),

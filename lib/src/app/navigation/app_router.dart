@@ -36,6 +36,7 @@ import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroupForm
 import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroups.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/orders/DrugOrderWizardFormScreen.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/orders/HIVDrugOrders.dart';
+import 'package:nishauri/src/features/programs/presentation/pages/programs.dart';
 import 'package:nishauri/src/features/treatment_support/presentation/pages/TreatmentSupport.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileScreen.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileWizardFormScreen.dart';
@@ -198,6 +199,13 @@ final List<RouteBase> secureRoutes = [
     path: 'profile',
     builder: (BuildContext context, GoRouterState state) {
       return const ProfileScreen();
+    },
+  ),
+  GoRoute(
+    name: RouteNames.PROGRAM_MENU,
+    path: 'program-menu',
+    builder: (BuildContext context, GoRouterState state) {
+      return  ProgramsMenuScreen();
     },
   ),
   GoRoute(
