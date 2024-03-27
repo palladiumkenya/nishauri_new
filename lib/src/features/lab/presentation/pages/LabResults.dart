@@ -31,7 +31,7 @@ class LabResults extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: data.length,
                     itemBuilder: (BuildContext context, int index) {
-                      final color = data[index].status == "Viral unsuppressed" ? Colors.red : null;
+                      final color = data[index].status == "Viral unsuppressed" ? Colors.red : Colors.greenAccent;
                       return Column(
                         children: [
                           const Divider(),
@@ -48,7 +48,7 @@ class LabResults extends StatelessWidget {
                                           : 'Viral Suppressed (${data[index].plot})',
                                       style: theme.textTheme.titleMedium,
                                     ),
-                                   const Divider(), // Add a Divider widget to separate the title and content
+                                    const Divider(), // Add a Divider widget to separate the title and content
                                   ],
                                 ),
                                 content: Text(
@@ -69,8 +69,8 @@ class LabResults extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  " ${data[index].date} ",
-                                  style: theme.textTheme.titleMedium
+                                    " ${data[index].date} ",
+                                    style: theme.textTheme.titleMedium
                                 ),
                                 Text(
                                   " ${data[index].result} ",
@@ -91,7 +91,10 @@ class LabResults extends StatelessWidget {
                                 ),
                               ],
                             ),
+                            trailing: Icon(Icons.info_outline, color: color),
+
                           )
+
                         ],
                       );
                     },
