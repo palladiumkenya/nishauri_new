@@ -25,8 +25,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
   bool _loading = false;
   bool _requestLoading = false;
   bool _sent = false;
-  int _countdownSeconds = 30; // Countdown duration in seconds
-  Timer? _countdownTimer; // Timer object to handle countdown
+  int _countdownSeconds = 30;
+  Timer? _countdownTimer;
 
   void _startCountdownTimer() {
     // const oneMinute = Duration(minutes: 1);
