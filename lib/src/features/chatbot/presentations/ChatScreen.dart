@@ -43,7 +43,7 @@ class _TypingAnimationState extends State<TypingAnimation>
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: _animation,
-      child: const Text('NishauriBot is typing...'),
+      child: const Text('Nuru is typing...'),
     );
   }
 
@@ -148,10 +148,9 @@ class _ChatScreenState extends State<ChatScreen> {
         curve: Curves.easeOut,
       );
     } catch (e) {
-      print('Failed to send message: $e');
       setState(() {
         _messages.add(const Message(
-            question: 'Failed to send message..', isSentByUser: false));
+            question: 'Failed to send message to Nuru..', isSentByUser: false));
         _isBotTyping = false; // Bot stops typing on failure to send message
       });
     }
@@ -165,7 +164,7 @@ class _ChatScreenState extends State<ChatScreen> {
           onPressed: () => Navigator.of(context).pop(),
           icon: const Icon(Icons.arrow_back),
         ),
-        title: const Text('Nishauri Bot'),
+        title: const Text('Chat with Nuru'),
       ),
       body: Column(
         children: <Widget>[
@@ -192,7 +191,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildComposer() {
-    String hintText = _isBotTyping ? 'Bot is typing...' : 'Enter your message...';
+    String hintText = _isBotTyping ? 'Nuru is typing...' : 'Chat with Nuru...';
 
     return Container(
       padding: const EdgeInsets.all(Constants.SPACING),

@@ -119,7 +119,7 @@ class _HomeScreenState extends ConsumerState<MainScreen>
           ),
           BottomNavigationBarItem(
             icon: Icon(CustomIcons.chat),
-            label: "Nishauri Bot",
+            label: "Ask Nuru",
           ),
         ],
         currentIndex: _currIndex,

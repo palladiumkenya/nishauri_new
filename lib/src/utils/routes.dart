@@ -60,7 +60,7 @@ class MenuItemNames {
   static const FACILITY_VISITS = "Visits";
   static const LAB_RESULTS = "Lab Results";
   static const MY_CLINIC_CARD = "My Clinic Card";
-  static const CHAT_HCW = "Nishauri Bot";
+  static const CHAT_HCW = "Ask Nuru";
   static const ART_DIRECTORY= "Art Directory";
   static const PROGRAM_MENU = "Program Menu";
 }
