@@ -5,6 +5,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
+import 'package:nishauri/src/features/auth/data/services/Terms.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
@@ -27,6 +28,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   bool _hidePassword = true;
   bool _loading = false;
+  bool _termsAccepted = false;
 
   void _toggleShowPassword() {
     setState(() {
@@ -115,8 +117,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                       const SizedBox(height: Constants.SMALL_SPACING),
                       FormBuilderDateTimePicker(
-                        firstDate: DateTime(1950),
-                        lastDate: DateTime(2100),
+                        firstDate: DateTime(1920),
+                        lastDate: DateTime.now(),
                         name: "dob",
                         format: DateFormat('yyy MMM dd'),
                         inputType: InputType.date,
@@ -161,6 +163,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
+                          FormBuilderValidators.min(10),
                           FormBuilderValidators.minLength(10),
                           FormBuilderValidators.maxLength(13),
                         ]),
@@ -179,6 +182,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             onSurfixIconPressed: _toggleShowPassword),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
+                          FormBuilderValidators.min(8),
+                          FormBuilderValidators.minLength(8),
                         ]),
                       ),
                       const SizedBox(height: Constants.SMALL_SPACING),
@@ -195,6 +200,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             onSurfixIconPressed: _toggleShowPassword),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
+                          FormBuilderValidators.min(8),
+                          FormBuilderValidators.minLength(8),
                           (value) =>
                               _formKey.currentState!.value["password"] != value
                                   ? "Password didn't match"
@@ -202,16 +209,46 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ]),
                       ),
                       FormBuilderCheckbox(
-                        initialValue: false,
+                        initialValue: _termsAccepted,
                         name: "termsAccepted",
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                          (value) => value == false
-                              ? "You must accept terms and conditions"
-                              : null
-                        ]),
-                        title: const Text("Accept terms and conditions"),
+                        onChanged: (value) {
+                          setState(() {
+                            _termsAccepted = value!;
+                          });
+                        },
+                        title: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "Accept terms and conditions",
+                                overflow: TextOverflow.ellipsis, // Handle overflow by ellipsis if needed
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () => showTermsDialog(context), // Show terms dialog on tap
+                              child: Text(
+                                " (Terms)",
+                                style: TextStyle(
+                                  color: Colors.blue, // Change color to indicate it's a link
+                                  decoration: TextDecoration.underline, // Add underline to indicate it's a link
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
                       ),
+                      // FormBuilderCheckbox(
+                      //   initialValue: false,
+                      //   name: "termsAccepted",
+                      //   validator: FormBuilderValidators.compose([
+                      //     FormBuilderValidators.required(),
+                      //     (value) => value == false
+                      //         ? "You must accept terms and conditions"
+                      //         : null
+                      //   ]),
+                      //   title: const Text("Accept terms and conditions"),
+                      // ),
                       const SizedBox(height: Constants.SPACING),
                       LinkedRichText(
                         linked: "Already have account? ",

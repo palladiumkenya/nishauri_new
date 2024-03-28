@@ -73,6 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     name: "user_name",
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(),
+                      FormBuilderValidators.min(10),
                     ]),
                     decoration: inputDecoration(
                       prefixIcon: Icons.account_circle,
