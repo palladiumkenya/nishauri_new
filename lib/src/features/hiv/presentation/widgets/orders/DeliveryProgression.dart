@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/hiv/data/models/art_orders/art_drug_order.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class DeliverProgression extends StatefulWidget {
   final ARTDrugOrder order;
@@ -36,6 +37,16 @@ class _DeliverProgressionState extends State<DeliverProgression> {
         title: const Text("Drug Delivery Progression Update"),
         backgroundColor: Theme.of(context).primaryColor,
       ),
+      floatingActionButton: widget.order.status == 'Pending'
+          ? FloatingActionButton.extended(
+        onPressed: () {
+          context.goNamed(RouteNames.CONFIRM_DELIVERY,
+              extra: {"payload": null, "type": null});
+        },
+        label: const Text("Confirm Delivery"),
+        icon: const Icon(Icons.shopping_basket_outlined),
+      )
+          : null,
       body: Container(
         child: Stepper(
           currentStep: currentStep,

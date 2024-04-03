@@ -19,6 +19,7 @@ import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
 import 'package:nishauri/src/features/clinic_card/presentation/pages/ClinicCardScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.dart';
+import 'package:nishauri/src/features/confirm_delivery/presentation/pages/ConfirmDeliveryScreen.dart';
 import 'package:nishauri/src/features/dashboard/presentation/pages/Dashboard.dart';
 import 'package:nishauri/src/features/events_calendar/presentation/pages/EventsCalendar.dart';
 import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
@@ -401,6 +402,14 @@ final List<RouteBase> hivProgramRoutes = [
         artAppointment: extras,
       );
     },
+  ),
+  GoRoute(
+    name: RouteNames.CONFIRM_DELIVERY,
+    path: "confirm-delivery",
+
+    builder: (BuildContext context, GoRouterState state) {
+    return const ConfirmDeliveryScreen();
+    }
   ),
   GoRoute(
     name: RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,

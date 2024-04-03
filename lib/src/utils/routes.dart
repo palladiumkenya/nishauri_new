@@ -33,6 +33,7 @@ class RouteNames {
   static const FACILITY_VISITS = "facility-visits";
   static const FACILITY_VISIT_DETAIL = "facility-visit-detail";
   static const VERIFY_PROGRAM_OTP = "verify-program-otp";
+  static const CONFIRM_DELIVERY = "confirm-delivery";
 
 
   static const LAB_RESULTS = "lab-results";
@@ -63,6 +64,7 @@ class MenuItemNames {
   static const CHAT_HCW = "Ask Nuru";
   static const ART_DIRECTORY= "Art Directory";
   static const PROGRAM_MENU = "Program Menu";
+
 }
 
 class ProgramCodeNameIds {
