@@ -25,12 +25,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
   bool _loading = false;
   bool _requestLoading = false;
   bool _sent = false;
-  int _countdownSeconds = 30;
+  int _countdownSeconds = 60;
   Timer? _countdownTimer;
 
   void _startCountdownTimer() {
     // const oneMinute = Duration(minutes: 1);
-    _countdownSeconds = 30;
+    _countdownSeconds = 60;
     _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         if (_countdownSeconds > 0) {
@@ -128,22 +128,22 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                   label: Text("Want to receive OTP code through?"),
                                 ),
                                 options: [
-                                  FormBuilderFieldOption(
-                                    value: "email",
-                                    child: ListTile(
-                                      title: const Text('Email'),
-                                      subtitle: Text(user.email ?? ''),
-                                      trailing: const Icon(Icons.email),
-                                    ),
-                                  ),
-                                  FormBuilderFieldOption(
-                                    value: "watsapp",
-                                    child: ListTile(
-                                      title: const Text("WatsApp"),
-                                      subtitle: Text(user.phoneNumber ?? ''),
-                                      trailing: const Icon(Icons.chat_outlined),
-                                    ),
-                                  ),
+                                  // FormBuilderFieldOption(
+                                  //   value: "email",
+                                  //   child: ListTile(
+                                  //     title: const Text('Email'),
+                                  //     subtitle: Text(user.email ?? ''),
+                                  //     trailing: const Icon(Icons.email),
+                                  //   ),
+                                  // ),
+                                  // FormBuilderFieldOption(
+                                  //   value: "watsapp",
+                                  //   child: ListTile(
+                                  //     title: const Text("WatsApp"),
+                                  //     subtitle: Text(user.phoneNumber ?? ''),
+                                  //     trailing: const Icon(Icons.chat_outlined),
+                                  //   ),
+                                  // ),
                                   FormBuilderFieldOption(
                                     value: "sms",
                                     child: ListTile(

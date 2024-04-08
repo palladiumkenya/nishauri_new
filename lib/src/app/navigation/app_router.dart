@@ -37,6 +37,7 @@ import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroupForm
 import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroups.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/orders/DrugOrderWizardFormScreen.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/orders/HIVDrugOrders.dart';
+import 'package:nishauri/src/features/lab/presentation/pages/LabResultsScreen.dart';
 import 'package:nishauri/src/features/programs/presentation/pages/programs.dart';
 import 'package:nishauri/src/features/treatment_support/presentation/pages/TreatmentSupport.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileScreen.dart';
@@ -253,7 +254,7 @@ final List<RouteBase> secureRoutes = [
     name: RouteNames.LAB_RESULTS,
     path: 'lab-results',
     builder: (BuildContext context, GoRouterState state) {
-      return const LabResults();
+      return const LabResultsScreen();
     },
   ),
   GoRoute(
