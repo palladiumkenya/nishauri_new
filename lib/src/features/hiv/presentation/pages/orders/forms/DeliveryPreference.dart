@@ -160,6 +160,5 @@ class DeliveryPreference extends HookConsumerWidget {
         child: CircularProgressIndicator(),
       ),
     );
-    ;
   }
 }

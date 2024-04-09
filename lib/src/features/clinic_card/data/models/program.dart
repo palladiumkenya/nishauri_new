@@ -8,6 +8,7 @@ class Program with _$Program {
   const factory Program({
     required String id,
     required String name,
+    String? facility_name,
     required Map<String, String> items,
   }) = _Program;
 
@@ -16,6 +17,7 @@ class Program with _$Program {
     return Program(
       id:uuid,
       name: json['name'],
+      facility_name: json['facility_name'],
       items: Map<String, String>.from(json['items']),
     );
   }

@@ -12,7 +12,7 @@ class ViralLoadResults extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(Constants.SPACING),
+          padding: const EdgeInsets.all(Constants.SIDE_SPACE),
           child: Text(
             "Viral Load Results",
             style: theme.textTheme.headlineMedium,

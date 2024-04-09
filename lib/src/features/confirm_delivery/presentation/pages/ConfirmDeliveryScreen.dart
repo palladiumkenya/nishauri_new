@@ -1,47 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
+import 'package:nishauri/src/features/confirm_delivery/data/modules/confirm_delivery.dart';
+import 'package:nishauri/src/features/confirm_delivery/data/providers/confirm_delivery_provider.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/display/verify.dart';
+import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 
-class ConfirmDeliveryScreen extends StatelessWidget {
-  const ConfirmDeliveryScreen({super.key});
+class ConfirmDeliveryScreen extends HookConsumerWidget {
+  final ConfirmDelivery? confirmDelivery;
+  const ConfirmDeliveryScreen({super.key, this.confirmDelivery});
 
 
   @override
-  Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormBuilderState>();
+  Widget build(BuildContext context, WidgetRef ref) {
+    TextEditingController textarea = TextEditingController();
+    final _formKey = useMemoized(() => GlobalKey<FormBuilderState>());
     bool _loading = false;
-    // void handleSubmit() {
-    //   if (_formKey.currentState!.saveAndValidate()) {
-    //     setState(() {
-    //       _loading = true;
-    //     });
-    //     final userStateNotifier = ref.read(userProvider.notifier);
-    //     final authStateNotifier = ref.read(authStateProvider.notifier);
-    //     userStateNotifier.verify(_formKey.currentState!.value).then((value) {
-    //       authStateNotifier.markProfileAsAccountVerified();
-    //       authStateNotifier.markProfileAsUpdated();
-    //       ScaffoldMessenger.of(context).showSnackBar(
-    //         SnackBar(content: Text(value)),
-    //       );
-    //     }).catchError((err) {
-    //       handleResponseError(context, _formKey.currentState!.fields, err, authStateNotifier.logout);
-    //     }).whenComplete(() {
-    //       setState(() {
-    //         _loading = false;
-    //       });
-    //     });
-    //   }
-    // }
+
+    void handleSubmit() {
+      debugPrint("=====================>${_formKey.currentState?.fields}");
+      if (_formKey.currentState!.validate()) {
+        debugPrint("=====================>${_formKey.currentState?.instantValue}");
+        _loading = true;
+        ref.read(confirmDeliveryProvider.notifier).confirmDelivery({
+          ..._formKey.currentState!.instantValue,
+          "is_received" : 1,
+        }).then((value) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Drug delivery was a success!")));
+        }).catchError((e) {
+          switch (e) {
+            case BadRequestException e:
+              handleResponseError(context, _formKey.currentState!.fields, e,
+                  ref.read(authStateProvider.notifier).logout);
+              break;
+            default:
+              handleResponseError(context, _formKey.currentState!.fields, e,
+                  ref.read(authStateProvider.notifier).logout);
+              debugPrint("-->Delivery Confirmation: ${e.toString()}");
+          }
+        }).whenComplete(() => _loading = false);
+      }
+    }
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -79,7 +90,7 @@ class ConfirmDeliveryScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: Constants.SPACING),
                       FormBuilderTextField(
-                        name: "code",
+                        name: "confirmation_code",
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
                           FormBuilderValidators.min(10),
@@ -92,7 +103,9 @@ class ConfirmDeliveryScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: Constants.SPACING),
                       FormBuilderTextField(
-                        name: "feedback",
+                        name: "comment",
+                        controller: textarea,
+                        maxLines: 4,
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
                           FormBuilderValidators.min(10),
@@ -100,8 +113,9 @@ class ConfirmDeliveryScreen extends StatelessWidget {
                         decoration: inputDecoration(
                           prefixIcon: Icons.abc_outlined,
                           label: "Feedback",
-                          placeholder: "Write a feedback on the delivery",
+                          placeholder: "Write a feedback/comment on the delivery...",
                         ),
+
                       ),
 
                       const SizedBox(height: Constants.SPACING),
@@ -109,7 +123,7 @@ class ConfirmDeliveryScreen extends StatelessWidget {
                         builder: (context, ref, child) {
                           return                               Button(
                             title: "Confirm Delivery",
-                            // onPress: handleSubmit,
+                            onPress: handleSubmit,
                             loading: _loading,
                           );
                         },

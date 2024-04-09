@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$Program {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String? get facility_name => throw _privateConstructorUsedError;
   Map<String, String> get items => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -29,7 +30,11 @@ abstract class $ProgramCopyWith<$Res> {
   factory $ProgramCopyWith(Program value, $Res Function(Program) then) =
       _$ProgramCopyWithImpl<$Res, Program>;
   @useResult
-  $Res call({String id, String name, Map<String, String> items});
+  $Res call(
+      {String id,
+      String name,
+      String? facility_name,
+      Map<String, String> items});
 }
 
 /// @nodoc
@@ -47,6 +52,7 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? facility_name = freezed,
     Object? items = null,
   }) {
     return _then(_value.copyWith(
@@ -58,6 +64,10 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      facility_name: freezed == facility_name
+          ? _value.facility_name
+          : facility_name // ignore: cast_nullable_to_non_nullable
+              as String?,
       items: null == items
           ? _value.items
           : items // ignore: cast_nullable_to_non_nullable
@@ -73,7 +83,11 @@ abstract class _$$ProgramImplCopyWith<$Res> implements $ProgramCopyWith<$Res> {
       __$$ProgramImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, Map<String, String> items});
+  $Res call(
+      {String id,
+      String name,
+      String? facility_name,
+      Map<String, String> items});
 }
 
 /// @nodoc
@@ -89,6 +103,7 @@ class __$$ProgramImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? facility_name = freezed,
     Object? items = null,
   }) {
     return _then(_$ProgramImpl(
@@ -100,6 +115,10 @@ class __$$ProgramImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      facility_name: freezed == facility_name
+          ? _value.facility_name
+          : facility_name // ignore: cast_nullable_to_non_nullable
+              as String?,
       items: null == items
           ? _value._items
           : items // ignore: cast_nullable_to_non_nullable
@@ -114,6 +133,7 @@ class _$ProgramImpl implements _Program {
   const _$ProgramImpl(
       {required this.id,
       required this.name,
+      this.facility_name,
       required final Map<String, String> items})
       : _items = items;
 
@@ -121,6 +141,8 @@ class _$ProgramImpl implements _Program {
   final String id;
   @override
   final String name;
+  @override
+  final String? facility_name;
   final Map<String, String> _items;
   @override
   Map<String, String> get items {
@@ -131,7 +153,7 @@ class _$ProgramImpl implements _Program {
 
   @override
   String toString() {
-    return 'Program(id: $id, name: $name, items: $items)';
+    return 'Program(id: $id, name: $name, facility_name: $facility_name, items: $items)';
   }
 
   @override
@@ -141,12 +163,14 @@ class _$ProgramImpl implements _Program {
             other is _$ProgramImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.facility_name, facility_name) ||
+                other.facility_name == facility_name) &&
             const DeepCollectionEquality().equals(other._items, _items));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, name, const DeepCollectionEquality().hash(_items));
+  int get hashCode => Object.hash(runtimeType, id, name, facility_name,
+      const DeepCollectionEquality().hash(_items));
 
   @JsonKey(ignore: true)
   @override
@@ -159,12 +183,15 @@ abstract class _Program implements Program {
   const factory _Program(
       {required final String id,
       required final String name,
+      final String? facility_name,
       required final Map<String, String> items}) = _$ProgramImpl;
 
   @override
   String get id;
   @override
   String get name;
+  @override
+  String? get facility_name;
   @override
   Map<String, String> get items;
   @override

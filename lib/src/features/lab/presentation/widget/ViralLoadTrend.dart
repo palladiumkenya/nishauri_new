@@ -1,6 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/lab/data/models/viral_load.dart';
+import 'package:nishauri/src/utils/constants.dart';
 
 class ViralLoadTrend extends StatelessWidget {
   final List<ViralLoad> data;
@@ -9,49 +11,47 @@ class ViralLoadTrend extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LineChartWidget(data: data);
+    final theme = Theme.of(context);
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(Constants.SPACING),
+          child: Text(
+            "Lab Result Trend",
+            style: theme.textTheme.headlineMedium,
+          ),
+        ),
+        const Divider(),
+        Container(
+          margin: const EdgeInsets.only(top: Constants.SPACING),
+          child: SizedBox(
+            height: 300,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: CombinedChartWidget(data: data),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 
-class LineChartWidget extends StatefulWidget {
+class CombinedChartWidget extends StatelessWidget {
   final List<ViralLoad> data;
 
-  const LineChartWidget({Key? key, required this.data}) : super(key: key);
-
-  @override
-  State<LineChartWidget> createState() => _LineChartWidgetState(data: data);
-}
-
-class _LineChartWidgetState extends State<LineChartWidget> {
-  final List<ViralLoad> data;
-  late int showingTooltipSpot;
-
-  _LineChartWidgetState({required this.data});
-
-  @override
-  void initState() {
-    showingTooltipSpot = -1;
-    super.initState();
-  }
+  const CombinedChartWidget({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final List<LineChartBarData> _lineBarsData = [
-      LineChartBarData(
-        spots: data
-            .map((e) => FlSpot(data.indexOf(e).toDouble(), e.plot.toDouble()/100))
-            .toList(),
-        isCurved: false,
-        dotData: FlDotData(show: false),
-        color: Colors.red,
-      ),
-    ];
-
     return AspectRatio(
-      aspectRatio: 2,
+      aspectRatio: 1.5,
       child: LineChart(
         LineChartData(
-          lineBarsData: _lineBarsData,
+          lineBarsData: _lineBarsData(),
           borderData: FlBorderData(
             border: Border(
               bottom: BorderSide(),
@@ -61,68 +61,55 @@ class _LineChartWidgetState extends State<LineChartWidget> {
           gridData: FlGridData(show: false),
           titlesData: FlTitlesData(
             bottomTitles: AxisTitles(sideTitles: _bottomTitles),
-            leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: true)),
+            leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
             topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
             rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          ),
-          showingTooltipIndicators: showingTooltipSpot != -1
-              ? [
-            ShowingTooltipIndicators([
-              LineBarSpot(_lineBarsData[0], showingTooltipSpot,
-                  _lineBarsData[0].spots[showingTooltipSpot]),
-            ])
-          ]
-              : [],
-          lineTouchData: LineTouchData(
-            enabled: true,
-            touchTooltipData: LineTouchTooltipData(
-              tooltipBgColor: Colors.blue,
-              tooltipRoundedRadius: 20.0,
-              fitInsideHorizontally: true,
-              tooltipMargin: 0,
-              getTooltipItems: (touchedSpots) {
-                return touchedSpots.map(
-                      (LineBarSpot touchedSpot) {
-                    const TextStyle textStyle = TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    );
-                    return LineTooltipItem(
-                      data[touchedSpot.spotIndex].plot.toStringAsFixed(2),
-                      textStyle,
-                    );
-                  },
-                ).toList();
-              },
-            ),
-            handleBuiltInTouches: false,
-            touchCallback: (event, response) {
-              if (response?.lineBarSpots != null && event is FlTapUpEvent) {
-                setState(() {
-                  final spotIndex =
-                      response?.lineBarSpots?[0].spotIndex ?? -1;
-                  if (spotIndex == showingTooltipSpot) {
-                    showingTooltipSpot = -1;
-                  } else {
-                    showingTooltipSpot = spotIndex;
-                  }
-                });
-              }
-            },
           ),
         ),
       ),
     );
   }
 
+  List<LineChartBarData> _lineBarsData() {
+    return [
+      LineChartBarData(
+        spots: _lineSpots(),
+        isCurved: true,
+        color: Colors.green,
+        barWidth: 2,
+      ),
+    ];
+  }
+
+  List<FlSpot> _lineSpots() {
+    return List.generate(data.length, (index) {
+      return FlSpot(index.toDouble(), data[index].plot.toDouble());
+    });
+  }
+
+  // List<BarChartGroupData> _barGroups() {
+  //   return List.generate(data.length, (index) {
+  //     return BarChartGroupData(
+  //       x: index,
+  //       barRods: [
+  //         BarChartRodData(
+  //           toY: data[index].plot.toDouble(),
+  //           colors: [Colors.red],
+  //           width: 8,
+  //         ),
+  //       ],
+  //     );
+  //   });
+  // }
+
   SideTitles get _bottomTitles => SideTitles(
     showTitles: true,
+    interval: 1,
     getTitlesWidget: (value, meta) {
       if (value.toInt() >= 0 && value.toInt() < data.length) {
-        return Text(data[value.toInt()].date);
+        return Text(DateFormat('dd-MM-yy').format(DateTime.parse(data[value.toInt()].date)));
       }
-      return Text("");
+      return SizedBox();
     },
   );
 }

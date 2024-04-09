@@ -14,10 +14,15 @@ class ClinicalDetailsTab extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.all(Constants.SPACING),
-          child: Text(
-            "Program Details",
-            style: theme.textTheme.headlineMedium,
+          child: ListTile(
+            title: Text("${program.name} Program Details"),
+            subtitle: Text('Facility Name: ${program.facility_name}'),
           ),
+          // child: Text(
+          //
+          //   "Program Details",
+          //   style: theme.textTheme.headlineMedium,
+          // ),
         ),
         Expanded(
           child: ListView.builder(
