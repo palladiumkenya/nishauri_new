@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/appointments/presentation/pages/Appointments.dart';
-import 'package:nishauri/src/features/art/presentation/art.dart';
+import 'package:nishauri/src/features/art/presentation/FacilityDirectory.dart';
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/ChangePassword.dart';
@@ -155,10 +155,10 @@ final List<RouteBase> secureRoutes = [
     },
   ),
    GoRoute(
-    name: RouteNames.ART_DIRECTORY,
-    path: 'Art-directory',
+    name: RouteNames.Facility_Directory,
+    path: 'Facility-directory',
     builder: (BuildContext context, GoRouterState state) {
-      return  Art_Directory();
+      return  Facility_Directory();
     },
   ),
   GoRoute(

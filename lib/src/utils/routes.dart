@@ -1,3 +1,5 @@
+import 'package:nishauri/src/features/art/presentation/FacilityDirectory.dart';
+
 class RouteNames {
   static const SPLASH_SCREEN = "splash";
   static const WELCOME_SCREEN = "welcome";
@@ -41,7 +43,7 @@ class RouteNames {
   static const CHAT_HCW = "chat-bot";
   static const SETTINGS = "settings";
 
-  static const ART_DIRECTORY= "art-directory";
+  static const Facility_Directory= "facility-directory";
   static const PROGRAM_MENU = "program-menu";
 }
 
@@ -62,7 +64,7 @@ class MenuItemNames {
   static const LAB_RESULTS = "Lab Results";
   static const MY_CLINIC_CARD = "My Clinic Card";
   static const CHAT_HCW = "Ask Nuru";
-  static const ART_DIRECTORY= "Art Directory";
+  static const FACILITY_DIRECTORY= "Facility Directory";
   static const PROGRAM_MENU = "Program Menu";
 
 }

@@ -7,10 +7,10 @@ import 'package:nishauri/src/features/art/model/Facility.dart';
 
 void main() {
 //  runApp(ProviderScope(child: Art_Directory());
-  ProviderScope(child: Art_Directory());
+  ProviderScope(child: Facility_Directory());
 }
 
-class Art_Directory extends StatelessWidget {
+class Facility_Directory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -103,6 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _facilities.clear();
       _fetching = true;
     });
+
 
     String baseUrl = 'http://prod.kenyahmis.org:8002/api/facility/directory';
     String url = '$baseUrl?name=$queryParameter';

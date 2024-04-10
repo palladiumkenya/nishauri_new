@@ -90,8 +90,8 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
     ),
      MenuItem(
        icon: Icons.event_note,
-       title: MenuItemNames.ART_DIRECTORY,
-       onPressed: () => context.goNamed(RouteNames.ART_DIRECTORY),
+       title: MenuItemNames.FACILITY_DIRECTORY,
+       onPressed: () => context.goNamed(RouteNames.Facility_Directory),
      ),
     // MenuItem(
     //   icon: Icons.group,
