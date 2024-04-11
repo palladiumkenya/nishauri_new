@@ -1,5 +1,5 @@
 class Facility {
-  final int code;
+  final String code;
   final String name;
   final String partnerName;
   final String facilityType;
@@ -18,6 +18,7 @@ class Facility {
   factory Facility.fromJson(Map<String, dynamic> json) {
     return Facility(
       code: json['code'],
+    //  code: json['code'].toString(), // Parse as a string
       name: json['name'],
       partnerName: json['PartnerName'],
       facilityType: json['facility_type'],
