@@ -45,13 +45,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+
         title: Text('Facility Directory'),
         // leading: IconButton(
         //   icon: Icon(Icons.arrow_back),
-        //   onPressed: () {
-        //     Navigator.of(context).pop();
+        //    onPressed: () {
+        //      Navigator.of(context).pop();
         //   },
-        // ),
+        //  ),
       ),
       body: Column(
         children: <Widget>[
@@ -63,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: TextField(
                     controller: _controller,
                     decoration: InputDecoration(
-                      labelText: 'Search by name',
+                      labelText: 'Search by name or MFL code',
                       border: OutlineInputBorder(),
                     ),
                   ),
