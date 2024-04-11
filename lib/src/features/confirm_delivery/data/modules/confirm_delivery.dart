@@ -7,6 +7,7 @@ part 'confirm_delivery.g.dart';
 class ConfirmDelivery with _$ConfirmDelivery {
   const factory ConfirmDelivery({
     String? id,
+    int? order_id,
     required String confirmation_code,
     required int is_received,
     String? comment,

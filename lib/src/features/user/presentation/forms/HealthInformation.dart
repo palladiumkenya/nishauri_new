@@ -23,7 +23,7 @@ class HealthInformation extends StatelessWidget {
               const SizedBox(height: Constants.SPACING),
               FormBuilderDropdown(
                 initialValue: user.bloodGroup,
-                name: "bloodGroup",
+                name: "blood_group",
                 decoration: inputDecoration(
                   label: "Blood group",
                   prefixIcon: Icons.bloodtype,
@@ -47,42 +47,33 @@ class HealthInformation extends StatelessWidget {
                 // ]),
               ),
               const SizedBox(height: Constants.SPACING),
-              FormBuilderDropdown(
-                initialValue: user.allergies,
+              FormBuilderCheckboxGroup(
+                initialValue: user.allergies?.split(",").toList() ?? [],
                 name: "allergies",
                 decoration: inputDecoration(
                   label: "Allergy",
                   prefixIcon: Icons.ac_unit,
                 ),
-                items: const [
-                  DropdownMenuItem(value: "Dust",
-                      child: Text("Dust")),
-                  DropdownMenuItem(value: "Cold",
-                      child: Text("Cold")),
-                  DropdownMenuItem(value: "Fsh",
-                      child: Text("Fish")),
-                  DropdownMenuItem(value: "Cephalosporins",
-                      child: Text("Cephalosporins")),
-                  // FormBuilderChipOption(value: "dust", child: Text("Dust")),
-                  // FormBuilderChipOption(
-                  //     value: "feather", child: Text("Feather")),
-                  // FormBuilderChipOption(value: "cold", child: Text("Cold")),
-                  // FormBuilderChipOption(value: "husk", child: Text("Husk")),
+                options: const [
+                  FormBuilderFieldOption(value: "Dust", child: Text("Dust")),
+                  FormBuilderFieldOption(value: "Cold", child: Text("Cold")),
+                  FormBuilderFieldOption(value: "Fsh", child: Text("Fish")),
+                  FormBuilderFieldOption(
+                      value: "Cephalosporins", child: Text("Cephalosporins")),
                 ],
-
               ),
               const SizedBox(height: Constants.SPACING),
-              FormBuilderDropdown(
-                initialValue: user.disabilities,
+              FormBuilderCheckboxGroup(
+                initialValue: user.disabilities?.split(",").toList() ?? [],
                 name: "disabilities",
                 decoration: inputDecoration(
                   prefixIcon: Icons.accessible_forward,
                   label: "Disabilities",
                 ),
-                items: const [
-                  DropdownMenuItem(value: "Blind", child: Text("Blind")),
-                  DropdownMenuItem(value: "Cripple", child: Text("Cripple")),
-                  DropdownMenuItem(value: "Deaf", child: Text("Deaf")),
+                options: const [
+                  FormBuilderFieldOption(value: "Blind", child: Text("Blind")),
+                  FormBuilderFieldOption(value: "Cripple", child: Text("Cripple")),
+                  FormBuilderFieldOption(value: "Deaf", child: Text("Deaf")),
                   // FormBuilderFieldOption(value: "blind", child: Text("Blind")),
                   // FormBuilderFieldOption(
                   //     value: "cripple", child: Text("Cripple")),
@@ -90,14 +81,14 @@ class HealthInformation extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: Constants.SPACING),
-              FormBuilderDropdown(
-                initialValue: user.chronics,
+              FormBuilderCheckboxGroup(
+                initialValue: user.chronics?.split(",").toList() ?? [],
                 name: "chronics",
-                items: const [
-                  DropdownMenuItem(value: "TB", child: Text("Tuberculosis")),
-                  DropdownMenuItem(value: "Asthma", child: Text("Asthma")),
-                  DropdownMenuItem(value: "Cancer", child: Text("Cancer")),
-                  DropdownMenuItem(value: "Diabetes", child: Text("Diabetes")),
+                options: const [
+                  FormBuilderFieldOption(value: "TB", child: Text("Tuberculosis")),
+                  FormBuilderFieldOption(value: "Asthma", child: Text("Asthma")),
+                  FormBuilderFieldOption(value: "Cancer", child: Text("Cancer")),
+                  FormBuilderFieldOption(value: "Diabetes", child: Text("Diabetes")),
                   // FormBuilderFieldOption(
                   //     value: "TB", child: Text("Tuberculosis")),
                   // FormBuilderFieldOption(

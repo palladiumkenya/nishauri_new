@@ -22,7 +22,7 @@ class UserController extends StateNotifier<AsyncValue<User>> {
     }
   }
 
-  Future<void> updateUser(User user) async {
+  Future<void> updateUser(Map<String, dynamic> user) async {
     try {
       final user_ = await _repository.updateProfile(user);
       await getUser();

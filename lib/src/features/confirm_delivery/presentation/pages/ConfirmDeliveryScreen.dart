@@ -16,10 +16,12 @@ import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class ConfirmDeliveryScreen extends HookConsumerWidget {
   final ConfirmDelivery? confirmDelivery;
-  const ConfirmDeliveryScreen({super.key, this.confirmDelivery});
+  final int? orderId;
+  const ConfirmDeliveryScreen({super.key, this.confirmDelivery, this.orderId});
 
 
   @override
@@ -29,16 +31,16 @@ class ConfirmDeliveryScreen extends HookConsumerWidget {
     bool _loading = false;
 
     void handleSubmit() {
-      debugPrint("=====================>${_formKey.currentState?.fields}");
       if (_formKey.currentState!.validate()) {
-        debugPrint("=====================>${_formKey.currentState?.instantValue}");
         _loading = true;
         ref.read(confirmDeliveryProvider.notifier).confirmDelivery({
           ..._formKey.currentState!.instantValue,
           "is_received" : 1,
+          "order_id" : orderId,
         }).then((value) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("Drug delivery was a success!")));
+              context.goNamed(RouteNames.PROGRAM_MENU);
         }).catchError((e) {
           switch (e) {
             case BadRequestException e:
@@ -106,10 +108,10 @@ class ConfirmDeliveryScreen extends HookConsumerWidget {
                         name: "comment",
                         controller: textarea,
                         maxLines: 4,
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.min(10),
-                        ]),
+                        // validator: FormBuilderValidators.compose([
+                        //   FormBuilderValidators.required(),
+                        //   FormBuilderValidators.min(10),
+                        // ]),
                         decoration: inputDecoration(
                           prefixIcon: Icons.abc_outlined,
                           label: "Feedback",

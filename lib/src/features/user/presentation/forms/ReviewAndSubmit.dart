@@ -30,16 +30,16 @@ class ReviewAndSubmit extends StatelessWidget {
         ListTile(
           title: const Text("Full name"),
           subtitle: Text(
-              "${formState['firstName'] ?? "None"} ${formState['lastName'] ?? "None"}"),
+              "${formState['f_name'] ?? "None"} ${formState['l_name'] ?? "None"}"),
         ),
         const Divider(),
 
         ListTile(
           title: const Text("Date of birth"),
           subtitle: Text(
-            formState['dateOfBirth'] != null
+            formState['dob'] != null
                 ? DateFormat("yyy-MM-dd")
-                    .format(DateTime.parse("${formState['dateOfBirth']}"))
+                    .format(DateTime.parse("${formState['dob']}"))
                 : "None",
           ),
         ),
@@ -64,7 +64,7 @@ class ReviewAndSubmit extends StatelessWidget {
         ListTile(
           title: const Text("Phone number"),
           subtitle: Text(
-            formState['phoneNumber'] ?? "None",
+            formState['phone_no'] ?? "None",
           ),
         ),
         const Divider(),
@@ -72,7 +72,7 @@ class ReviewAndSubmit extends StatelessWidget {
         ListTile(
           title: const Text("Landmark"),
           subtitle: Text(
-            formState['constituency'] ?? "None",
+            formState['landmark'] ?? "None",
           ),
         ),
         // Row(
@@ -99,22 +99,22 @@ class ReviewAndSubmit extends StatelessWidget {
         const Divider(),
         ListTile(
           title: const Text("Blood Group"),
-          subtitle: Text(formState['bloodGroup'] ?? "None"),
+          subtitle: Text(formState['blood_group'] ?? "None"),
         ),
         const Divider(),
         ListTile(
           title: const Text("Allergies"),
-          subtitle: Text(formState['allergies']?? "None"),
+          subtitle: Text(formState['allergies']?.join(", ")?? "None"),
         ),
         const Divider(),
         ListTile(
           title: const Text("Disabilities"),
-          subtitle: Text(formState['disabilities']?? "None"),
+          subtitle: Text(formState['disabilities']?.join(", ")?? "None"),
         ),
         const Divider(),
         ListTile(
           title: const Text("Chronic Illnesses"),
-          subtitle: Text(formState['chronics']?? "None"),
+          subtitle: Text(formState['chronics']?.join(", ")?? "None"),
         ),
         const Divider(),
         Row(

@@ -108,6 +108,12 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
       title: MenuItemNames.BMI_CALCULATOR,
       onPressed: () => context.goNamed(RouteNames.BMI_CALCULATOR),
     ),
+
+    MenuItem(
+      icon: Icons.vaccines_sharp,
+      title: MenuItemNames.DAWA_DROP,
+      onPressed: () => context.goNamed(RouteNames.DAWA_DROP),
+    ),
     // MenuItem(
     //   icon: Icons.move_down,
     //   title: MenuItemNames.FACILITY_VISITS,

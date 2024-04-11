@@ -45,6 +45,7 @@ class RouteNames {
 
   static const Facility_Directory= "facility-directory";
   static const PROGRAM_MENU = "program-menu";
+  static const DAWA_DROP = "dawa-drop";
 }
 
 class MenuItemNames {
@@ -56,7 +57,7 @@ class MenuItemNames {
   static const BMI_CALCULATOR = "BMI Calculator";
   static const HIV_PROGRAM_MENU = "ART Program";
   static const TB_PROGRAM_MENU = "TB Program";
-  static const ASTHMA_PROGRAM_MENU = "Asthma";
+  static const ASTHMA_PROGRAM_MENU = "Hypertension";
   static const DIABETES_PROGRAM_MENU = "Diabetes";
   static const CANCER_PROGRAM_MENU = "Cancer";
   static const HYPERTENSION_PROGRAM_MENU = "Hypertension";
@@ -66,7 +67,7 @@ class MenuItemNames {
   static const CHAT_HCW = "Ask Nuru";
   static const FACILITY_DIRECTORY= "Facility Directory";
   static const PROGRAM_MENU = "Program Menu";
-
+  static const DAWA_DROP = "Dawa Drop";
 }
 
 class ProgramCodeNameIds {

@@ -21,7 +21,7 @@ class PersonalInformation extends StatelessWidget {
               const SizedBox(height: Constants.SPACING),
               FormBuilderTextField(
                 initialValue: user.firstName,
-                name: "firstName",
+                name: "f_name",
                 decoration: inputDecoration(
                   placeholder: "Enter your firstname",
                   prefixIcon: Icons.account_circle_outlined,
@@ -34,7 +34,7 @@ class PersonalInformation extends StatelessWidget {
               const SizedBox(height: Constants.SPACING),
               FormBuilderTextField(
                 initialValue: user.lastName,
-                name: "lastName",
+                name: "l_name",
                 decoration: inputDecoration(
                   placeholder: "Enter your last name",
                   prefixIcon: Icons.account_circle_outlined,
@@ -49,7 +49,7 @@ class PersonalInformation extends StatelessWidget {
                 initialValue: DateTime.tryParse(user.dateOfBirth ?? ""),
                 firstDate: DateTime(1950),
                 lastDate: DateTime(2100),
-                name: "dateOfBirth",
+                name: "dob",
                 format: DateFormat('yyy-MMM-dd'),
                 inputType: InputType.date,
                 decoration: inputDecoration(

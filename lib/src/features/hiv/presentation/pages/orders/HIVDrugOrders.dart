@@ -8,6 +8,7 @@ import 'package:nishauri/src/features/hiv/data/providers/art_drug_order_provider
 import 'package:nishauri/src/features/hiv/presentation/widgets/orders/AllOrders.dart';
 import 'package:nishauri/src/features/hiv/presentation/widgets/orders/FulfilledOrders.dart';
 import 'package:nishauri/src/features/hiv/presentation/widgets/orders/PendingOrders.dart';
+import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 class HIVDrugOrdersScreen extends ConsumerWidget {
@@ -23,11 +24,11 @@ class HIVDrugOrdersScreen extends ConsumerWidget {
         // Separate orders based on their status
         List<ARTDrugOrder> allOrders = data;
         List<ARTDrugOrder> pendingOrders =
-        allOrders.where((order) => order.status != 'Pending').toList();
+        allOrders.where((order) => order.status != 'Fullfilled').toList();
         List<ARTDrugOrder> approvedOrders =
         allOrders.where((order) => order.status == 'Approved').toList();
         List<ARTDrugOrder> fulfilledOrders =
-        allOrders.where((order) => order.status == 'FullFilled').toList();
+        allOrders.where((order) => order.status == 'Fullfilled').toList();
 
         return DefaultTabController(
           length: 2,
@@ -49,20 +50,20 @@ class HIVDrugOrdersScreen extends ConsumerWidget {
                 labelColor: theme.colorScheme.onPrimary,
               ),
             ),
-            floatingActionButton: FloatingActionButton.extended(
-              onPressed: () {
-                context.goNamed(RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
-                    extra: {"payload": null, "type": null});
-              },
-              label: const Text("Order now"),
-              icon: const Icon(Icons.add),
-            ),
+            // floatingActionButton: FloatingActionButton.extended(
+            //   onPressed: () {
+            //     context.goNamed(RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
+            //         extra: {"payload": null, "type": null});
+            //   },
+            //   label: const Text("Order now"),
+            //   icon: const Icon(Icons.add),
+            // ),
             body: FractionallySizedBox(
               heightFactor: 1,
               child: TabBarView(
                 children: [
                   // Populate tab views with respective orders
-                  AllOrders(orders: allOrders),
+                  AllOrders(orders: pendingOrders),
                   // PendingOrders(orders: pendingOrders),
                   // ApprovedOrders(orders: approvedOrders),
                   FulfilledOrders(orders: fulfilledOrders),
@@ -72,8 +73,32 @@ class HIVDrugOrdersScreen extends ConsumerWidget {
           ),
         );
       },
-      error: (error, _) => Center(child: Text(error.toString())),
-      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, _) => Center(child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            error.toString(),
+            style: theme.textTheme.headlineSmall,
+          ),
+          const SizedBox(height: Constants.SPACING * 2),
+        ],
+      )),
+      // Text(error.toString())),
+      loading: ()  => Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Loading Drug requests",
+              style: theme.textTheme.headline6,
+            ),
+            const SizedBox(height: Constants.SPACING * 2),
+            const CircularProgressIndicator(),
+          ],
+        ),
+      ),
     );
   }
 }

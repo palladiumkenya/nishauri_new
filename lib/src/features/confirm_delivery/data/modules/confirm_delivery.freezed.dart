@@ -21,6 +21,7 @@ ConfirmDelivery _$ConfirmDeliveryFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ConfirmDelivery {
   String? get id => throw _privateConstructorUsedError;
+  int? get order_id => throw _privateConstructorUsedError;
   String get confirmation_code => throw _privateConstructorUsedError;
   int get is_received => throw _privateConstructorUsedError;
   String? get comment => throw _privateConstructorUsedError;
@@ -38,7 +39,11 @@ abstract class $ConfirmDeliveryCopyWith<$Res> {
       _$ConfirmDeliveryCopyWithImpl<$Res, ConfirmDelivery>;
   @useResult
   $Res call(
-      {String? id, String confirmation_code, int is_received, String? comment});
+      {String? id,
+      int? order_id,
+      String confirmation_code,
+      int is_received,
+      String? comment});
 }
 
 /// @nodoc
@@ -55,6 +60,7 @@ class _$ConfirmDeliveryCopyWithImpl<$Res, $Val extends ConfirmDelivery>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order_id = freezed,
     Object? confirmation_code = null,
     Object? is_received = null,
     Object? comment = freezed,
@@ -64,6 +70,10 @@ class _$ConfirmDeliveryCopyWithImpl<$Res, $Val extends ConfirmDelivery>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      order_id: freezed == order_id
+          ? _value.order_id
+          : order_id // ignore: cast_nullable_to_non_nullable
+              as int?,
       confirmation_code: null == confirmation_code
           ? _value.confirmation_code
           : confirmation_code // ignore: cast_nullable_to_non_nullable
@@ -89,7 +99,11 @@ abstract class _$$ConfirmDeliveryImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? id, String confirmation_code, int is_received, String? comment});
+      {String? id,
+      int? order_id,
+      String confirmation_code,
+      int is_received,
+      String? comment});
 }
 
 /// @nodoc
@@ -104,6 +118,7 @@ class __$$ConfirmDeliveryImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order_id = freezed,
     Object? confirmation_code = null,
     Object? is_received = null,
     Object? comment = freezed,
@@ -113,6 +128,10 @@ class __$$ConfirmDeliveryImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      order_id: freezed == order_id
+          ? _value.order_id
+          : order_id // ignore: cast_nullable_to_non_nullable
+              as int?,
       confirmation_code: null == confirmation_code
           ? _value.confirmation_code
           : confirmation_code // ignore: cast_nullable_to_non_nullable
@@ -134,6 +153,7 @@ class __$$ConfirmDeliveryImplCopyWithImpl<$Res>
 class _$ConfirmDeliveryImpl implements _ConfirmDelivery {
   const _$ConfirmDeliveryImpl(
       {this.id,
+      this.order_id,
       required this.confirmation_code,
       required this.is_received,
       this.comment});
@@ -144,6 +164,8 @@ class _$ConfirmDeliveryImpl implements _ConfirmDelivery {
   @override
   final String? id;
   @override
+  final int? order_id;
+  @override
   final String confirmation_code;
   @override
   final int is_received;
@@ -152,7 +174,7 @@ class _$ConfirmDeliveryImpl implements _ConfirmDelivery {
 
   @override
   String toString() {
-    return 'ConfirmDelivery(id: $id, confirmation_code: $confirmation_code, is_received: $is_received, comment: $comment)';
+    return 'ConfirmDelivery(id: $id, order_id: $order_id, confirmation_code: $confirmation_code, is_received: $is_received, comment: $comment)';
   }
 
   @override
@@ -161,6 +183,8 @@ class _$ConfirmDeliveryImpl implements _ConfirmDelivery {
         (other.runtimeType == runtimeType &&
             other is _$ConfirmDeliveryImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.order_id, order_id) ||
+                other.order_id == order_id) &&
             (identical(other.confirmation_code, confirmation_code) ||
                 other.confirmation_code == confirmation_code) &&
             (identical(other.is_received, is_received) ||
@@ -170,8 +194,8 @@ class _$ConfirmDeliveryImpl implements _ConfirmDelivery {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, confirmation_code, is_received, comment);
+  int get hashCode => Object.hash(
+      runtimeType, id, order_id, confirmation_code, is_received, comment);
 
   @JsonKey(ignore: true)
   @override
@@ -191,6 +215,7 @@ class _$ConfirmDeliveryImpl implements _ConfirmDelivery {
 abstract class _ConfirmDelivery implements ConfirmDelivery {
   const factory _ConfirmDelivery(
       {final String? id,
+      final int? order_id,
       required final String confirmation_code,
       required final int is_received,
       final String? comment}) = _$ConfirmDeliveryImpl;
@@ -200,6 +225,8 @@ abstract class _ConfirmDelivery implements ConfirmDelivery {
 
   @override
   String? get id;
+  @override
+  int? get order_id;
   @override
   String get confirmation_code;
   @override

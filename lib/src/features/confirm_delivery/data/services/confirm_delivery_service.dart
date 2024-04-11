@@ -12,18 +12,19 @@ class ConfirmDeliveryService extends HTTPService {
   Future<StreamedResponse> confirmDelivery_(Map<String, dynamic> data) async {
     final id = await _repository.getUserId();
     final token = await getCachedToken();
-    final userId = {'user_id': id};
-    var mergedData = {...data, ...userId};
+    // final userId = {'user_id': id};
+    // var mergedData = {...data, ...userId};
     var headers = {
       'Authorization': 'Bearer ${token.accessToken}',
       'Content-Type': 'application/json',
     };
     var request = Request(
       'POST',
-      Uri.parse('${Constants.BASE_URL_NEW}/confirm_delivery'),
+      Uri.parse('${Constants.BASE_URL_NEW}/delivery_confirmation'),
     );
-    request.body = json.encode(mergedData);
+    request.body = json.encode(data);
     request.headers.addAll(headers);
+    print(request.body);
     return await request.send();
   }
 

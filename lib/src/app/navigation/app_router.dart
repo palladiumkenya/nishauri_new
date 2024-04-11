@@ -21,6 +21,7 @@ import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart'
 import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.dart';
 import 'package:nishauri/src/features/confirm_delivery/presentation/pages/ConfirmDeliveryScreen.dart';
 import 'package:nishauri/src/features/dashboard/presentation/pages/Dashboard.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/dawa_drop_screen.dart';
 import 'package:nishauri/src/features/events_calendar/presentation/pages/EventsCalendar.dart';
 import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
@@ -265,6 +266,13 @@ final List<RouteBase> secureRoutes = [
     },
   ),
   GoRoute(
+    name: RouteNames.DAWA_DROP,
+    path: 'dawa-drop',
+    builder: (BuildContext context, GoRouterState state) {
+      return const DawaDropScreen();
+    },
+  ),
+  GoRoute(
     name: RouteNames.CHAT_HCW,
     path: 'chat-bot',
     builder: (BuildContext context, GoRouterState state) {
@@ -405,12 +413,18 @@ final List<RouteBase> hivProgramRoutes = [
     },
   ),
   GoRoute(
-    name: RouteNames.CONFIRM_DELIVERY,
-    path: "confirm-delivery",
-
-    builder: (BuildContext context, GoRouterState state) {
-    return const ConfirmDeliveryScreen();
-    }
+      name: RouteNames.CONFIRM_DELIVERY,
+      path: "confirm-delivery",
+      builder: (BuildContext context, GoRouterState state) {
+        final extra = state.extra as Map<String, dynamic>;
+        final orderId = extra["OrderId"] as int?;
+        print(orderId);
+        if (orderId == null) {
+          throw "Order with this id was not found";
+        } else {
+          return ConfirmDeliveryScreen(orderId: orderId);
+        }
+      }
   ),
   GoRoute(
     name: RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,

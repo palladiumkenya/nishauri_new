@@ -30,7 +30,7 @@ class LabResultsScreen extends ConsumerWidget {
             bottom: const TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.medication), text: "Viral Load Results"),
-                Tab(icon: Icon(Icons.medication), text: "Viral Load Trend"),
+                Tab(icon: Icon(Icons.auto_graph_outlined), text: "Viral Load Trend"),
               ],
             ),
           ),
@@ -46,7 +46,18 @@ class LabResultsScreen extends ConsumerWidget {
         ),
       );
     },
-        error: (error, _) => Center(child: Text(error.toString())),
+        error: (error, _) => Center(child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              error.toString(),
+              style: theme.textTheme.headlineSmall,
+            ),
+            const SizedBox(height: Constants.SPACING * 2),
+          ],
+        )),
+        // Text(error.toString())),
         loading: ()  => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

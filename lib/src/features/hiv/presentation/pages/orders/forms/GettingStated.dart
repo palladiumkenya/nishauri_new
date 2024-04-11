@@ -51,12 +51,12 @@ class GettingStarted extends HookConsumerWidget {
               FormBuilderValidators.required(errorText: "Required"),
             ]),
             options: const [
-              FormBuilderFieldOption(
-                value: "Event",
-                child: ListTile(
-                  title: Text("Event"),
-                ),
-              ),
+              // FormBuilderFieldOption(
+              //   value: "Event",
+              //   child: ListTile(
+              //     title: Text("Event"),
+              //   ),
+              // ),
               FormBuilderFieldOption(
                 value: "Appointment",
                 child: ListTile(
@@ -108,10 +108,10 @@ class GettingStarted extends HookConsumerWidget {
                 label: "Appointment",
               ),
               initialValue: artAppointment?.id,
-              // validator: FormBuilderValidators.compose([
-              //   if (orderMode.value == "appointment")
-              //     FormBuilderValidators.required(errorText: "Required"),
-              // ]),
+              validator: FormBuilderValidators.compose([
+                if (orderMode.value == "appointment")
+                  FormBuilderValidators.required(errorText: "Required"),
+              ]),
               items: appointment
                   .where((element) =>
                       element.appointment_type == "Re-Fill" &&

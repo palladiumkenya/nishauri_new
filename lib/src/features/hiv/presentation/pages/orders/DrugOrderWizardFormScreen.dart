@@ -115,7 +115,6 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
           ...formKey.currentState!.instantValue,
           "delivery_pickup_time":
               pickupTime is DateTime ? pickupTime.toIso8601String() : pickupTime,
-          "delivery_address": "",
           "delivery_lat": "",
           "delivery_long": "",
         ...(formKey.currentState?.instantValue["delivery_method"] == "parcel" ? {

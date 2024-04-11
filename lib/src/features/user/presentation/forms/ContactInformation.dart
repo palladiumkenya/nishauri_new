@@ -35,7 +35,7 @@ class ContactInformation extends StatelessWidget {
               ),
               const SizedBox(height: Constants.SPACING),
               FormBuilderTextField(
-                name: "phoneNumber",
+                name: "phone_no",
                 initialValue: user.phoneNumber,
                 keyboardType: TextInputType.phone,
                 decoration: inputDecoration(
@@ -63,7 +63,7 @@ class ContactInformation extends StatelessWidget {
               const SizedBox(height: Constants.SPACING),
               FormBuilderTextField(
                 initialValue: user.constituency,
-                name: "constituency",
+                name: "landmark",
                 decoration: inputDecoration(
                   placeholder: "Enter nearby landmark",
                   prefixIcon: Icons.map,

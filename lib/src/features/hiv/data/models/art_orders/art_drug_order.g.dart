@@ -8,7 +8,7 @@ part of 'art_drug_order.dart';
 
 _$ARTDrugOrderImpl _$$ARTDrugOrderImplFromJson(Map<String, dynamic> json) =>
     _$ARTDrugOrderImpl(
-      id: json['id'] as String?,
+      order_id: json['order_id'] as int?,
       event: json['event'] == null
           ? null
           : ARTEvent.fromJson(json['event'] as Map<String, dynamic>),
@@ -32,11 +32,15 @@ _$ARTDrugOrderImpl _$$ARTDrugOrderImplFromJson(Map<String, dynamic> json) =>
       createdAt: json['createdAt'] as String?,
       updateAt: json['updateAt'] as String?,
       status: json['status'] as String?,
+      approved_date: json['approved_date'] as String?,
+      dispatched_date: json['dispatched_date'] as String?,
+      fullfilled_date: json['fullfilled_date'] as String?,
+      date_order_posted: json['date_order_posted'] as String?,
     );
 
 Map<String, dynamic> _$$ARTDrugOrderImplToJson(_$ARTDrugOrderImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      'order_id': instance.order_id,
       'event': instance.event,
       'appointment': instance.appointment,
       'deliveryAddress': instance.deliveryAddress,
@@ -48,4 +52,8 @@ Map<String, dynamic> _$$ARTDrugOrderImplToJson(_$ARTDrugOrderImpl instance) =>
       'createdAt': instance.createdAt,
       'updateAt': instance.updateAt,
       'status': instance.status,
+      'approved_date': instance.approved_date,
+      'dispatched_date': instance.dispatched_date,
+      'fullfilled_date': instance.fullfilled_date,
+      'date_order_posted': instance.date_order_posted,
     };

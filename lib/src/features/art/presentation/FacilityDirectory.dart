@@ -5,6 +5,7 @@ import 'package:nishauri/src/features/art/FacilityHTTPService.dart';
 
 import 'dart:convert';
 import 'package:nishauri/src/features/art/model/Facility.dart';
+import 'package:nishauri/src/utils/constants.dart';
 
 import '../../../shared/interfaces/HTTPService.dart';
 import '../../auth/data/respositories/auth_repository.dart';
@@ -133,6 +134,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
     String url='https://ushauriapi.kenyahmis.org/nishauri_new/artdirectory?name=$queryParameter&user_id=$id';
+// =======
+//     String baseUrl = 'http://prod.kenyahmis.org:8002/api/facility/directory';
+//     String url = '$baseUrl?name=$queryParameter';
+// >>>>>>> 48aaf36 (:construction: Add dawa drop global)
 
     try {
      // http.Response response = await http.get(Uri.parse(url));

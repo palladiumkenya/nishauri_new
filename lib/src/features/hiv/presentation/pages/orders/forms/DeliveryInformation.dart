@@ -40,7 +40,7 @@ class DeliveryInformation extends HookConsumerWidget {
               const SizedBox(height: Constants.SPACING),
               // TODO Replace with https://pub.dev/packages/map_location_picker
               FormBuilderTextField(
-                name: "location_name",
+                name: "delivery_address",
                 // initialValue: user.phoneNumber,
                 keyboardType: TextInputType.text,
                 decoration: inputDecoration(

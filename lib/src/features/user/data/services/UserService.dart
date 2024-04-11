@@ -62,7 +62,7 @@ class UserService extends HTTPService {
     }
   }
 
-  Future<http.StreamedResponse> updateProfile_(User user) async {
+  Future<http.StreamedResponse> updateProfile_(Map<String, dynamic> user) async {
     final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
     final userId = {'user_id': id};
@@ -71,10 +71,10 @@ class UserService extends HTTPService {
       'Content-Type': 'application/json'
     };
 
-    final url = '${Constants.BASE_URL_NEW}setprofile';
+    const url = '${Constants.BASE_URL_NEW}setprofile';
 
     // Serialize user data to JSON
-    final userData = user.toJson();
+    final userData = user;
     // Add userId to userData
     userData.addAll(userId);
     // Extract image path and remove it from user data
@@ -83,23 +83,10 @@ class UserService extends HTTPService {
     // Map the user data fields to the expected server field names
     final mappedUserData = {
       'user_id': id,
-      'f_name': userData['firstName'] ?? '',
-      'l_name': userData['lastName'] ?? '',
-      'dob': userData['dateOfBirth'] ?? '',
-      'gender': userData['gender'] ?? '',
-      'email': userData['email'] ?? '',
-      'phone_no': userData['phoneNumber'] ?? '',
-      'landmark': userData['constituency'] ?? '',
-      'weight': userData['weight'] ?? '',
-      'primary_language': userData['primaryLanguage'] ?? '',
-      'marital': userData['maritalStatus'] ?? '',
-      'blood_group': userData['bloodGroup'] ?? '',
-      'education': userData['educationLevel'] ?? '',
-      'height': userData['height'] ?? '',
-      'occupation': userData['occupation'] ?? '',
-      'allergies': userData['allergies']?.isNotEmpty == true ? userData['allergies'][0] : '',
-      'disabilities': userData['disabilities']?.isNotEmpty == true ? userData['disabilities'][0] : '',
-      'chronics': userData['chronics']?.isNotEmpty == true ? userData['chronics'][0] : '',
+      ...userData,
+      'allergies': userData['allergies']?.join(",") ?? '',
+      'disabilities': userData['disabilities']?.join(",") ?? '',
+      'chronics': userData['chronics']?.join(",") ?? '',
       // Map other fields as needed
       // Ensure you handle null values appropriately
     };
@@ -115,7 +102,7 @@ class UserService extends HTTPService {
     return response;
   }
 
-  Future<User> updateProfile(User user) async {
+  Future<void> updateProfile(Map<String, dynamic> user) async {
     // Send the request and get the response
     final response = await updateProfile_(user);
     final responseString = await response.stream.bytesToString();
@@ -124,7 +111,7 @@ class UserService extends HTTPService {
     if (response.statusCode == 200) {
       // Update user object if necessary
       // For now, just return the user object unchanged
-      return user;
+      return ;//user;
     } else {
       // Handle error appropriately, throw exception or return null
       throw 'Failed to update profile: Try Again in A few Seconds!';

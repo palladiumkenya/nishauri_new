@@ -154,7 +154,7 @@ class ReviewAndSubmit extends ConsumerWidget {
         leading: const Icon(Icons.check),
       ),
       ListTile(
-        subtitle: Text(formState["deliveryAddress"]?["address"] ?? "None"),
+        subtitle: Text(formState["delivery_address"] ?? "None"),
         title: const Text("Delivery location"),
         leading: const Icon(Icons.check),
       ),

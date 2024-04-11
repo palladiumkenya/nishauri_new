@@ -27,6 +27,11 @@ class ARTDrugOrderService extends HTTPService {
     return await request.send();
   }
   Future<List<ARTDrugOrder>> getOrders() async {
+    // try{
+    //
+    // } catch (e){
+    //   throw "No Request orders found";
+    // }
     final response = await call(getOrders_, null);
     final responseString = await response.stream.bytesToString();
     final Map<String, dynamic> responseData = json.decode(responseString);
@@ -52,6 +57,7 @@ class ARTDrugOrderService extends HTTPService {
           client_phone_no: json['client_phone_no'],
           order_type: json['order_type'],
           status: json['status'],
+          order_id: json['order_id'],
           courierService: Courier(
             name: json['courier_service'],
           ),
@@ -113,10 +119,10 @@ class ARTDrugOrderService extends HTTPService {
           throw orderData["msg"];
         }
       } else {
-        throw "Something Went Wrong Contact Try Again";
+        throw "Something Went Wrong Try Again Later";
       }
     } catch (e) {
-      throw e.toString();
+      throw "Something Went Wrong Try Again Later";
     }
     // return ARTDrugOrder.fromJson(orderData);
   }
