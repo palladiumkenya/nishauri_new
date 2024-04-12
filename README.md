@@ -1,5 +1,11 @@
 # nishauri
 
+
+<picture>
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="./.meta/Nishauri.pdf.jpg">
+</picture>
+
+
 A new Flutter project.
 
 ## Getting Started
