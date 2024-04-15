@@ -21,6 +21,7 @@ PasswordReset _$PasswordResetFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PasswordReset {
   String? get id => throw _privateConstructorUsedError;
+  String? get current_password => throw _privateConstructorUsedError;
   String? get new_password => throw _privateConstructorUsedError;
   String? get confirm_password => throw _privateConstructorUsedError;
   String? get user_name => throw _privateConstructorUsedError;
@@ -40,6 +41,7 @@ abstract class $PasswordResetCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
+      String? current_password,
       String? new_password,
       String? confirm_password,
       String? user_name,
@@ -60,6 +62,7 @@ class _$PasswordResetCopyWithImpl<$Res, $Val extends PasswordReset>
   @override
   $Res call({
     Object? id = freezed,
+    Object? current_password = freezed,
     Object? new_password = freezed,
     Object? confirm_password = freezed,
     Object? user_name = freezed,
@@ -69,6 +72,10 @@ class _$PasswordResetCopyWithImpl<$Res, $Val extends PasswordReset>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      current_password: freezed == current_password
+          ? _value.current_password
+          : current_password // ignore: cast_nullable_to_non_nullable
               as String?,
       new_password: freezed == new_password
           ? _value.new_password
@@ -100,6 +107,7 @@ abstract class _$$PasswordResetImplCopyWith<$Res>
   @useResult
   $Res call(
       {String? id,
+      String? current_password,
       String? new_password,
       String? confirm_password,
       String? user_name,
@@ -118,6 +126,7 @@ class __$$PasswordResetImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? current_password = freezed,
     Object? new_password = freezed,
     Object? confirm_password = freezed,
     Object? user_name = freezed,
@@ -127,6 +136,10 @@ class __$$PasswordResetImplCopyWithImpl<$Res>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      current_password: freezed == current_password
+          ? _value.current_password
+          : current_password // ignore: cast_nullable_to_non_nullable
               as String?,
       new_password: freezed == new_password
           ? _value.new_password
@@ -155,6 +168,7 @@ class _$PasswordResetImpl
     implements _PasswordReset {
   const _$PasswordResetImpl(
       {this.id,
+      this.current_password,
       this.new_password,
       this.confirm_password,
       this.user_name,
@@ -166,6 +180,8 @@ class _$PasswordResetImpl
   @override
   final String? id;
   @override
+  final String? current_password;
+  @override
   final String? new_password;
   @override
   final String? confirm_password;
@@ -176,7 +192,7 @@ class _$PasswordResetImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PasswordReset(id: $id, new_password: $new_password, confirm_password: $confirm_password, user_name: $user_name, otp: $otp)';
+    return 'PasswordReset(id: $id, current_password: $current_password, new_password: $new_password, confirm_password: $confirm_password, user_name: $user_name, otp: $otp)';
   }
 
   @override
@@ -185,6 +201,7 @@ class _$PasswordResetImpl
     properties
       ..add(DiagnosticsProperty('type', 'PasswordReset'))
       ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('current_password', current_password))
       ..add(DiagnosticsProperty('new_password', new_password))
       ..add(DiagnosticsProperty('confirm_password', confirm_password))
       ..add(DiagnosticsProperty('user_name', user_name))
@@ -197,6 +214,8 @@ class _$PasswordResetImpl
         (other.runtimeType == runtimeType &&
             other is _$PasswordResetImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.current_password, current_password) ||
+                other.current_password == current_password) &&
             (identical(other.new_password, new_password) ||
                 other.new_password == new_password) &&
             (identical(other.confirm_password, confirm_password) ||
@@ -208,8 +227,8 @@ class _$PasswordResetImpl
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, new_password, confirm_password, user_name, otp);
+  int get hashCode => Object.hash(runtimeType, id, current_password,
+      new_password, confirm_password, user_name, otp);
 
   @JsonKey(ignore: true)
   @override
@@ -228,6 +247,7 @@ class _$PasswordResetImpl
 abstract class _PasswordReset implements PasswordReset {
   const factory _PasswordReset(
       {final String? id,
+      final String? current_password,
       final String? new_password,
       final String? confirm_password,
       final String? user_name,
@@ -238,6 +258,8 @@ abstract class _PasswordReset implements PasswordReset {
 
   @override
   String? get id;
+  @override
+  String? get current_password;
   @override
   String? get new_password;
   @override

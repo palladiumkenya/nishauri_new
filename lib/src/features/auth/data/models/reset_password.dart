@@ -8,6 +8,7 @@ part 'reset_password.g.dart';
 class PasswordReset with _$PasswordReset {
   const factory PasswordReset({
     String? id,
+    String? current_password,
     String? new_password,
     String? confirm_password,
     String? user_name,

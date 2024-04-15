@@ -7,7 +7,7 @@ import 'package:nishauri/src/features/appointments/presentation/pages/Appointmen
 import 'package:nishauri/src/features/art/presentation/FacilityDirectory.dart';
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
-import 'package:nishauri/src/features/auth/presentation/pages/ChangePassword.dart';
+import 'package:nishauri/src/features/auth/presentation/pages/UpdatePassword.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/LoginScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/RegistrationScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/ResetPasswordScreen.dart';
@@ -173,7 +173,7 @@ final List<RouteBase> secureRoutes = [
     name: RouteNames.CHANGE_PASSWORD,
     path: 'change-password',
     builder: (BuildContext context, GoRouterState state) {
-      return const ChangePassword();
+      return const UpdatePassword();
     },
   ),
   GoRoute(

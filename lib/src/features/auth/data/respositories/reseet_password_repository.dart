@@ -16,4 +16,8 @@ class ResetPasswordRepository {
   Future<String> changePassword(Map<String, dynamic> data) async {
     return await _service.changePassword(data);
   }
+
+  Future<String> updatePassword(Map<String, dynamic> data) async {
+    return await _service.updatePassword(data);
+  }
 }

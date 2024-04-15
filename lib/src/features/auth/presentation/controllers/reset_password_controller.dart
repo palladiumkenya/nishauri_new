@@ -35,4 +35,13 @@ class ResetPasswordController extends StateNotifier<AsyncValue<PasswordReset>>{
       rethrow;
     }
   }
+
+  Future<String> updatePassword(Map<String, dynamic> data) async{
+    try {
+      return await _repository.updatePassword(data);
+    } catch (e) {
+      developer.log('-->changePassword ${e.toString()}');
+      rethrow;
+    }
+  }
 }

@@ -11,6 +11,7 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 
 class ResetPasswordService extends HTTPService {
+  final AuthRepository _repository = AuthRepository(AuthApiService());
    Future<http.StreamedResponse> resetPassword_(Map<String, dynamic> data) async {
      var headers = {
        'Content-Type': 'application/json',
@@ -19,8 +20,6 @@ class ResetPasswordService extends HTTPService {
      http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}resetpassword'));
      request.body = jsonEncode(data);
      request.headers.addAll(headers);
-     print(request);
-     print(request.body);
      return await request.send();
    }
 
@@ -52,8 +51,6 @@ class ResetPasswordService extends HTTPService {
      http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}verifyresetpassotp'));
      request.body = jsonEncode(data);
      request.headers.addAll(headers);
-     print(request);
-     print(request.body);
      return await request.send();
    }
 
@@ -103,6 +100,40 @@ class ResetPasswordService extends HTTPService {
      };
      var request =
      http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}changepassword'));
+     request.body = jsonEncode(data);
+     request.headers.addAll(headers);
+     print(request);
+     print(request.body);
+     return await request.send();
+   }
+
+   Future<String> updatePassword(Map<String, dynamic> data) async {
+     http.StreamedResponse response = await call(updatePassword_, data);
+     try{
+       if (response.statusCode == 200) {
+         final responseString = await response.stream.bytesToString();
+         final userData = json.decode(responseString);
+         if (userData["success"] == true)
+         {
+           return userData["msg"];
+         } else {
+           throw userData["msg"];
+         }
+       }
+     } catch (e)
+     {
+       throw "$e";
+     }
+     return "";
+   }
+
+   Future<http.StreamedResponse> updatePassword_(Map<String, dynamic> data) async {
+     final id = await _repository.getUserId();
+     var headers = {
+       'Content-Type': 'application/json',
+     };
+     var request =
+     http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}updatepassword?user_id=$id'));
      request.body = jsonEncode(data);
      request.headers.addAll(headers);
      print(request);
