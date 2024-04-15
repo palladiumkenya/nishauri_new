@@ -137,12 +137,12 @@ class _ChangePasswordState extends State<ChangePassword> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                            child: Text("Register"), onPressed: () {}),
+                            child: Text("Update"), onPressed: handleSubmit),
                       ),
-                      Button(
-                        title: "Register",
-                        onPress: handleSubmit,
-                      )
+                      // Button(
+                      //   title: "Register",
+                      //   onPress: handleSubmit,
+                      // )
                     ],
                   ),
                 ),

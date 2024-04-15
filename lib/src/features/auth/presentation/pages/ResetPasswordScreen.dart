@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
+import 'package:nishauri/src/features/auth/presentation/pages/VerifyResetPasswordScreen.dart';
+import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
-import 'package:nishauri/src/shared/input/FormInputTextField.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
+import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -17,31 +23,43 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-  final _formKey = GlobalKey<FormState>();
-  var username = TextEditingController();
-  var password = TextEditingController();
+  final _formKey = GlobalKey<FormBuilderState>();
+  // var username = TextEditingController();
+  bool _loading = false;
+  // var password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
         void handleSubmit() async {
-          if (_formKey.currentState!.validate()) {
-            // If the form is valid, display a snack-bar. In the real world,
-            // you'd often call a server or save the information in a database.
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Login successfully!,')),
-            );
-            final credentials = {
-              "username": username.text,
-              "password": password.text
-            };
+          if (_formKey.currentState != null && _formKey.currentState!.saveAndValidate()) {
+            final formState = _formKey.currentState!.value;
+            setState(() {
+              _loading = true;
+            });
+            final authStateNotifier = ref.read(authStateProvider.notifier);
+            final userStateNotifier = ref.read(resetPasswordProvider.notifier);
+            userStateNotifier.resetPassword(formState).then((value) {
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(value)),
+              );
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => VerifyResetPasswordScreen(user_name: formState['user_name'])));
+            }).catchError((err) {
+              handleResponseError(context, _formKey.currentState!.fields, err, authStateNotifier.logout);
+            }).whenComplete(() {
+              setState(() {
+                _loading = false;
+              });
+            });
+
           }
         }
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text("Reset password"),
+            title: const Text("Forgot password"),
             leading: IconButton(
               onPressed: () => context.pop(),
               icon: const Icon(Icons.chevron_left),
@@ -55,7 +73,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   color: color,
                   borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
                 ),
-                child: Form(
+                child: FormBuilder(
                   key: _formKey,
                   child: SingleChildScrollView(
                     child: Padding(
@@ -75,13 +93,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           ),
                           const SizedBox(height: Constants.SPACING),
                           const Text(
-                            "Reset Password",
+                            "Forgot Password",
                             style: TextStyle(
                                 fontSize: 40, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 20),
                           Text(
-                            "Kindly provide your phone number \nor email address!",
+                            "Kindly provide your phone number!",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).colorScheme.onTertiaryContainer,
@@ -89,23 +108,26 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: Constants.SPACING),
-                          FormInputTextField(
-                            controler: username,
-                            placeholder: "Enter username or email",
-                            prefixIcon: Icons.account_circle,
-                            label: "Email or phone number",
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter some text';
-                              }
-                              return null;
-                            },
+                          FormBuilderTextField(
+                            name: "user_name",
+                            decoration: inputDecoration(
+                              placeholder: "e.g 0712345678",
+                              prefixIcon: Icons.phone,
+                              label: "Phone number",
+                            ),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(),
+                              FormBuilderValidators.min(10),
+                              FormBuilderValidators.minLength(10),
+                              FormBuilderValidators.maxLength(13),
+                            ]),
                           ),
                           const SizedBox(height: Constants.SPACING),
                           const SizedBox(height: Constants.SPACING),
                           Button(
                             title: "Submit",
                             onPress: handleSubmit,
+                            loading: _loading,
                           ),
                           const SizedBox(
                             height: Constants.SPACING,

@@ -62,37 +62,43 @@ class LifeStyleInformation extends StatelessWidget {
                 // ]),
               ),
               const SizedBox(height: Constants.SPACING),
-              FormBuilderRadioGroup(
+              FormBuilderDropdown(
                 initialValue: user.primaryLanguage,
                 name: "primary_language",
                 decoration: inputDecoration(
                   prefixIcon: Icons.language,
                   label: "Primary Language",
                 ),
-                options: const [
-                  FormBuilderFieldOption(
+                items: const [
+                  DropdownMenuItem(
                       value: "swahili", child: Text("Swahili")),
-                  FormBuilderFieldOption(
+                  DropdownMenuItem(
                       value: "english", child: Text("English")),
                 ],
+                // options: const [
+                //   FormBuilderFieldOption(
+                //       value: "swahili", child: Text("Swahili")),
+                //   FormBuilderFieldOption(
+                //       value: "english", child: Text("English")),
+                // ],
                 // validator: FormBuilderValidators.compose([
                 //   FormBuilderValidators.required(),
                 // ]),
               ),
               const SizedBox(height: Constants.SPACING),
-              FormBuilderRadioGroup(
+              FormBuilderDropdown(
                 initialValue: user.occupation,
                 name: "occupation",
                 decoration: inputDecoration(
                   prefixIcon: Icons.work,
                   label: "Occupation",
                 ),
-                options: const [
-                  FormBuilderFieldOption(
+                items: const [
+                  DropdownMenuItem(
                       value: "employed", child: Text("Employed")),
-                  FormBuilderFieldOption(
+                  DropdownMenuItem(
                       value: "self-employed", child: Text("Self Employed")),
-                  FormBuilderFieldOption(
+                  DropdownMenuItem(
                       value: "unemployed", child: Text("Unemployed")),
                 ],
                 // validator: FormBuilderValidators.compose([
