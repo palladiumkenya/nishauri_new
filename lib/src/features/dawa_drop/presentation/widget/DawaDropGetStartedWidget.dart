@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nishauri/src/features/appointments/presentation/pages/Appointments.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/program_appointments.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 
 class DawaDropGetStartedWidget extends StatefulWidget {
@@ -20,12 +21,12 @@ class _DawaDropGetStartedWidgetState extends State<DawaDropGetStartedWidget> {
 
   void _navigateToCurrentAppointments() {
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => Appointments()));
+        MaterialPageRoute(builder: (context) => ProgramAppointmentsScreen()));
   }
 
   void _navigateToOngoing() {
     // Navigator.push(
-    //     context, MaterialPageRoute(builder: (context) => OngoingScreen()));
+    //     context, MaterialPageRoute(builder: (context) => ProgramAppointmentsScreen()));
   }
 
   void _navigateBasedOnSelection() {
@@ -41,7 +42,7 @@ class _DawaDropGetStartedWidgetState extends State<DawaDropGetStartedWidget> {
     final theme = Theme.of(context);
     List<Widget> screenRoutes = [
       RadioListTile<String>(
-        title: const Text('With a program'),
+        title: const Text('Yes'),
         value: 'In a program',
         groupValue: selectedOption,
         onChanged: (value) {
@@ -51,7 +52,7 @@ class _DawaDropGetStartedWidgetState extends State<DawaDropGetStartedWidget> {
         },
       ),
       RadioListTile<String>(
-        title: const Text('With out program'),
+        title: const Text('No'),
         value: 'Not In a program',
         groupValue: selectedOption,
         onChanged: (value) {
@@ -100,10 +101,10 @@ class _DawaDropGetStartedWidgetState extends State<DawaDropGetStartedWidget> {
                 Padding(
                   padding: EdgeInsets.only(top: 20.0),
                   child: Text(
-                    "Select one of the options to proceed.",
+                    "Do you want to request drugs using A program?.",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -111,7 +112,7 @@ class _DawaDropGetStartedWidgetState extends State<DawaDropGetStartedWidget> {
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 20),
                   width: 200,
-                  height: 140,
+                  height: 120,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -120,7 +121,7 @@ class _DawaDropGetStartedWidgetState extends State<DawaDropGetStartedWidget> {
                 ),
                 ElevatedButton(
                   onPressed: _navigateBasedOnSelection,
-                  child: Text('Next'),
+                  child: Text('  Next  '),
                 ),
               ],
             ),

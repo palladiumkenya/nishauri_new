@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
 import 'package:nishauri/src/features/appointments/presentation/pages/Appointments.dart';
 import 'package:nishauri/src/features/art/presentation/FacilityDirectory.dart';
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
@@ -406,7 +407,7 @@ final List<RouteBase> hivProgramRoutes = [
     name: RouteNames.HIV_ART_APPOINTMENT_DETAILS,
     path: "art-appointment",
     builder: (BuildContext context, GoRouterState state) {
-      final extras = state.extra as ARTAppointment;
+      final extras = state.extra as Appointment;
       return ARTAppointmentDetailScreen(
         artAppointment: extras,
       );
@@ -433,7 +434,7 @@ final List<RouteBase> hivProgramRoutes = [
       final extra = state.extra as Map<String, dynamic>;
       final payload = extra["payload"];
       final type = extra["type"] as String?;
-      if (payload is ARTAppointment) {
+      if (payload is Appointment) {
         return DrugOrderWizardFormScreen(artAppointment: payload, type: type);
       }
       if (payload is ARTEvent) {

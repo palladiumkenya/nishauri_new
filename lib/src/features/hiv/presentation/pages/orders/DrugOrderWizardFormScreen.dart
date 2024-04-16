@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
 import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_drug_order_provider.dart';
@@ -20,7 +21,7 @@ import '../../../../../utils/helpers.dart';
 import '../../../../auth/data/providers/auth_provider.dart';
 
 class DrugOrderWizardFormScreen extends HookConsumerWidget {
-  final ARTAppointment? artAppointment;
+  final Appointment? artAppointment;
   final ARTEvent? artEvent;
   final String? type;
 

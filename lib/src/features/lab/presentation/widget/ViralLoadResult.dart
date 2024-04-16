@@ -67,12 +67,16 @@ class ViralLoadResults extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                            " ${data[index].date} ",
-                            style: theme.textTheme.titleMedium
+                          " ${data[index].status} ",
+                          style: theme.textTheme.titleMedium?.merge(
+                            TextStyle(
+                              color: color,
+                            ),
+                          ),
                         ),
                         Text(
                           " ${data[index].result} ",
-                          style: theme.textTheme.titleSmall?.merge(
+                          style: theme.textTheme.titleMedium?.merge(
                             TextStyle(
                               color: color,
 
@@ -80,12 +84,8 @@ class ViralLoadResults extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          " ${data[index].status} ",
-                          style: theme.textTheme.titleSmall?.merge(
-                            TextStyle(
-                              color: color,
-                            ),
-                          ),
+                            " ${data[index].date} ",
+                            style: theme.textTheme.titleSmall
                         ),
                       ],
                     ),

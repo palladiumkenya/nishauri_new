@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
 import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 class ARTAppointmentDetailScreen extends StatelessWidget {
-  final ARTAppointment artAppointment;
+  final Appointment artAppointment;
 
   const ARTAppointmentDetailScreen({super.key, required this.artAppointment});
 
@@ -50,7 +51,7 @@ class ARTAppointmentDetailScreen extends StatelessWidget {
         const Divider(),
         ListTile(
           leading: const Icon(Icons.perm_identity),
-          title: Text(artAppointment.ccc_no),
+          title: Text(artAppointment.ccc_no??''),
           subtitle: const Text("CCC Number"),
           trailing: const Icon(Icons.chevron_right),
         ),

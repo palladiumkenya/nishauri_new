@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/utils/routes.dart';
 import '../../../../utils/constants.dart';
-import '../../../hiv/data/providers/art_appointmen_provider.dart';
 
 class Appointments extends HookConsumerWidget {
   const Appointments({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final artAppointmentsAsync = ref.watch(artAppointmentProvider);
+    final appointmentsAsync = ref.watch(appointmentProvider);
     final screenSize = MediaQuery.of(context).size;
     final theme = Theme.of(context);
 
-    return artAppointmentsAsync.when(
+    return appointmentsAsync.when(
       data: (data) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -4,6 +4,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
+import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
 import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_appointmen_provider.dart';
@@ -13,7 +15,7 @@ import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class GettingStarted extends HookConsumerWidget {
-  final ARTAppointment? artAppointment;
+  final Appointment? artAppointment;
   final ARTEvent? artEvent;
   final String? type;
 
@@ -22,7 +24,7 @@ class GettingStarted extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final asyncARTAppointments = ref.watch(artAppointmentProvider);
+    final asyncARTAppointments = ref.watch(appointmentProvider);
     final asyncARTEvents = ref.watch(art_event_provider);
     final asyncARTTreatmentSupport = ref.watch(artTreatmentSupportProvider);
     final orderType = useState<String?>(type);
