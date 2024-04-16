@@ -4,11 +4,13 @@ import 'package:nishauri/src/shared/input/Button.dart';
 
 class DawaDropGetStartedWidget extends StatefulWidget {
   @override
-  _DawaDropGetStartedWidgetState createState() => _DawaDropGetStartedWidgetState();
+  _DawaDropGetStartedWidgetState createState() =>
+      _DawaDropGetStartedWidgetState();
 }
 
 class _DawaDropGetStartedWidgetState extends State<DawaDropGetStartedWidget> {
   late bool _loading;
+  String? selectedOption;
 
   @override
   void initState() {
@@ -17,8 +19,8 @@ class _DawaDropGetStartedWidgetState extends State<DawaDropGetStartedWidget> {
   }
 
   void _navigateToCurrentAppointments() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Appointments()));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => Appointments()));
   }
 
   void _navigateToOngoing() {
@@ -26,18 +28,37 @@ class _DawaDropGetStartedWidgetState extends State<DawaDropGetStartedWidget> {
     //     context, MaterialPageRoute(builder: (context) => OngoingScreen()));
   }
 
+  void _navigateBasedOnSelection() {
+    if (selectedOption == "In a program") {
+      _navigateToCurrentAppointments();
+    } else if (selectedOption == "Not In a program") {
+      _navigateToOngoing();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     List<Widget> screenRoutes = [
-      Button(
-        title: "In a program",
-        onPress: _navigateToCurrentAppointments,
+      RadioListTile<String>(
+        title: const Text('With a program'),
+        value: 'In a program',
+        groupValue: selectedOption,
+        onChanged: (value) {
+          setState(() {
+            selectedOption = value;
+          });
+        },
       ),
-      Button(
-        title: "Not In a program",
-        onPress: _navigateToOngoing,
+      RadioListTile<String>(
+        title: const Text('With out program'),
+        value: 'Not In a program',
+        groupValue: selectedOption,
+        onChanged: (value) {
+          setState(() {
+            selectedOption = value;
+          });
+        },
       ),
     ];
     return Scaffold(
@@ -79,7 +100,7 @@ class _DawaDropGetStartedWidgetState extends State<DawaDropGetStartedWidget> {
                 Padding(
                   padding: EdgeInsets.only(top: 20.0),
                   child: Text(
-                    "Select one of the buttons below to proceed to requesting medication drugs.",
+                    "Select one of the options to proceed.",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
@@ -97,6 +118,10 @@ class _DawaDropGetStartedWidgetState extends State<DawaDropGetStartedWidget> {
                     children: screenRoutes,
                   ),
                 ),
+                ElevatedButton(
+                  onPressed: _navigateBasedOnSelection,
+                  child: Text('Next'),
+                ),
               ],
             ),
           ),
@@ -104,5 +129,4 @@ class _DawaDropGetStartedWidgetState extends State<DawaDropGetStartedWidget> {
       ),
     );
   }
-
 }

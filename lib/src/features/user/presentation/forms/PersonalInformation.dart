@@ -48,7 +48,7 @@ class PersonalInformation extends StatelessWidget {
               FormBuilderDateTimePicker(
                 initialValue: DateTime.tryParse(user.dateOfBirth ?? ""),
                 firstDate: DateTime(1950),
-                lastDate: DateTime(2100),
+                lastDate: DateTime.now(),
                 name: "dob",
                 format: DateFormat('yyy-MMM-dd'),
                 inputType: InputType.date,

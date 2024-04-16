@@ -29,11 +29,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   bool _hidePassword = true;
   bool _loading = false;
   bool _termsAccepted = false;
+  DateTime? _selectedDate;
 
   void _toggleShowPassword() {
     setState(() {
       _hidePassword = !_hidePassword;
     });
+  }
+
+  int calculateAge(DateTime? dob) {
+    if (dob == null) return 0;
+    var now = DateTime.now();
+    var age = now.year - dob.year;
+    if (now.month < dob.month || (now.month == dob.month && now.day < dob.day)) {
+      age--;
+    }
+    return age;
   }
 
   @override
@@ -122,14 +133,28 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         name: "dob",
                         format: DateFormat('yyy MMM dd'),
                         inputType: InputType.date,
-                        decoration: inputDecoration(
+                        decoration: widgetSurfixIconDecoration(
                           placeholder: "Enter your date of birth",
                           prefixIcon: Icons.calendar_month_rounded,
+                          surfixIcon: Text(
+                            _selectedDate != null ? '${calculateAge(_selectedDate!).toString()} years' : '',
+                            style: TextStyle(fontSize: 16),
+                          ),
                           label: "Date of birth",
                         ),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
+                              (date) {
+                            if (date == null) return "Date of birth is required";
+                            if (calculateAge(date) < 12) return "You must be at least 12 years old";
+                            return null;
+                          },
                         ]),
+                        onChanged: (date) {
+                          setState(() {
+                            _selectedDate = date;
+                          });
+                        },
                         valueTransformer: (date) => date?.toIso8601String(),
                       ),
                       const SizedBox(height: Constants.SMALL_SPACING),
