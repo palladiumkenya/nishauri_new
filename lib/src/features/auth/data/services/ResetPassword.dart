@@ -102,8 +102,6 @@ class ResetPasswordService extends HTTPService {
      http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}changepassword'));
      request.body = jsonEncode(data);
      request.headers.addAll(headers);
-     print(request);
-     print(request.body);
      return await request.send();
    }
 
@@ -129,15 +127,17 @@ class ResetPasswordService extends HTTPService {
 
    Future<http.StreamedResponse> updatePassword_(Map<String, dynamic> data) async {
      final id = await _repository.getUserId();
+     final tokenPair = await getCachedToken();
+     var userId = {'user_id': id};
+     var mergedData = {...userId, ...data};
      var headers = {
+     'Authorization': 'Bearer ${tokenPair.accessToken}',
        'Content-Type': 'application/json',
      };
      var request =
-     http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}updatepassword?user_id=$id'));
-     request.body = jsonEncode(data);
+     http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}updatepassword'));
+     request.body = jsonEncode(mergedData);
      request.headers.addAll(headers);
-     print(request);
-     print(request.body);
      return await request.send();
    }
 }

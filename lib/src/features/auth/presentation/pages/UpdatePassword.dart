@@ -126,15 +126,13 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                               decoration: inputDecoration(
                                   placeholder: "********",
                                   prefixIcon: Icons.lock,
-                                  label: "Password",
+                                  label: "Current Password",
                                   surfixIcon: _hidePassword
                                       ? Icons.visibility
                                       : Icons.visibility_off,
                                   onSurfixIconPressed: _toggleShowPassword),
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.required(),
-                                FormBuilderValidators.min(8),
-                                FormBuilderValidators.minLength(8),
                               ]),
                             ),
                             const SizedBox(height: Constants.SPACING),
@@ -144,7 +142,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                               decoration: inputDecoration(
                                   placeholder: "********",
                                   prefixIcon: Icons.lock,
-                                  label: "Password",
+                                  label: "New Password",
                                   surfixIcon: _hidePassword
                                       ? Icons.visibility
                                       : Icons.visibility_off,
@@ -162,7 +160,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                               decoration: inputDecoration(
                                   placeholder: "********",
                                   prefixIcon: Icons.lock,
-                                  label: "Confirm Password",
+                                  label: "Confirm New Password",
                                   surfixIcon: _hidePassword
                                       ? Icons.visibility
                                       : Icons.visibility_off,
