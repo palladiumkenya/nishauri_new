@@ -50,7 +50,8 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
 
     List<Step> steps = [
       Step(
-        title: const Text("Getting Started"),
+        // title: const Text("Getting Started"),
+        title: const Text("Appointment Details"),
         subtitle: const Text(
           "Please confirm the details",
         ),

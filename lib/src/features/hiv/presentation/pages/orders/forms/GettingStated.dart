@@ -11,6 +11,7 @@ import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_appointmen_provider.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_events_provider.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_treatment_Support_provider.dart';
+import 'package:nishauri/src/shared/input/FormInputTextField.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
@@ -28,90 +29,113 @@ class GettingStarted extends HookConsumerWidget {
     final asyncARTEvents = ref.watch(art_event_provider);
     final asyncARTTreatmentSupport = ref.watch(artTreatmentSupportProvider);
     final orderType = useState<String?>(type);
-    final orderMode = useState<String?>(artEvent != null
-        ? "event"
-        : artAppointment != null
-            ? "appointment"
-            : null);
+    // final orderMode = useState<String?>(artEvent != null
+    //     ? "event"
+    //     : artAppointment != null
+    //         ? "appointment"
+    //         : null);
+    final orderMode = "Appointment";
     return Column(
       children: [
-        FormBuilderRadioGroup<String>(
-            name: 'mode',
-            initialValue: artEvent != null
-                ? "Event"
-                : artAppointment != null
-                    ? "Appointment"
-                    : null,
-            onChanged: (mode_) {
-              orderMode.value = mode_;
-            },
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              labelText: "Request based on",
-            ),
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(errorText: "Required"),
-            ]),
-            options: const [
-              // FormBuilderFieldOption(
-              //   value: "Event",
-              //   child: ListTile(
-              //     title: Text("Event"),
-              //   ),
-              // ),
-              FormBuilderFieldOption(
-                value: "Appointment",
-                child: ListTile(
-                  title: Text("Appointment"),
-                ),
-              ),
-            ]),
-        FormBuilderRadioGroup<String>(
-            name: 'order_type',
-            onChanged: (type_) {
-              orderType.value = type_;
-            },
-            initialValue: type,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              labelText: "Who are you requesting for?",
-            ),
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(errorText: "Required"),
-            ]),
-            options: const [
-              FormBuilderFieldOption(
-                value: "Self",
-                child: ListTile(
-                  title: Text("Yourself"),
-                ),
-              ),
-              // FormBuilderFieldOption(
-              //   value: "other",
-              //   child: ListTile(
-              //     title: Text("Care receiver"),
-              //   ),
-              // ),
-            ]),
+        // FormBuilderRadioGroup<String>(
+        //     name: 'mode',
+        //     initialValue: "Appointment",
+        //
+        //     decoration: const InputDecoration(
+        //       border: InputBorder.none,
+        //       labelText: "Request based on",
+        //     ),
+        //     validator: FormBuilderValidators.compose([
+        //       FormBuilderValidators.required(errorText: "Required"),
+        //     ]),
+        //     options: const [
+        //       // FormBuilderFieldOption(
+        //       //   value: "Event",
+        //       //   child: ListTile(
+        //       //     title: Text("Event"),
+        //       //   ),
+        //       // ),
+        //       FormBuilderFieldOption(
+        //         value: "Appointment",
+        //         child: ListTile(
+        //           title: Text("Appointment"),
+        //         ),
+        //       ),
+        //     ]),
+        // const SizedBox(height: Constants.SPACING),
+        // Hidden field for ccc_no
+        const SizedBox(height: Constants.SPACING),
+        FormBuilderTextField(
+          name: 'mode',
+          initialValue: "Appointment",
+          enabled: false,
+          decoration: inputDecoration(
+            label: "Request based on",
+            prefixIcon: Icons.real_estate_agent_outlined,
+          ),
+        ),
+        // FormInputTextField(
+        //     name: 'order_type',
+        //     onChanged: (type_) {
+        //       orderType.value = type_;
+        //     },
+        //     initialValue: type,
+        //     decoration: const InputDecoration(
+        //       border: InputBorder.none,
+        //       labelText: "Who are you requesting for?",
+        //     ),
+        //     validator: FormBuilderValidators.compose([
+        //       FormBuilderValidators.required(errorText: "Required"),
+        //     ]),
+        //     options: const [
+        //       FormBuilderFieldOption(
+        //         value: "Self",
+        //         child: ListTile(
+        //           title: Text("Yourself"),
+        //         ),
+        //       ),
+        //       // FormBuilderFieldOption(
+        //       //   value: "other",
+        //       //   child: ListTile(
+        //       //     title: Text("Care receiver"),
+        //       //   ),
+        //       // ),
+        //     ]),
+        const SizedBox(height: Constants.SPACING),
+        // Hidden field for ccc_no
+        FormBuilderTextField(
+          name: 'order_type',
+          initialValue: "Self",
+          enabled: false,
+          decoration: inputDecoration(
+            label: "Request is for",
+            prefixIcon: Icons.account_circle,
+          ),
+        ),
         const SizedBox(height: Constants.SPACING),
         // Hidden field for ccc_no
         FormBuilderTextField(
           name: "ccc_no",
           initialValue: artAppointment?.ccc_no,
           enabled: false,
+          decoration: inputDecoration(
+            label: "CCC Number",
+            prefixIcon: Icons.abc_sharp,
+          ),
         ),
         const SizedBox(height: Constants.SPACING),
-        if (orderMode.value == "Appointment")
+        if (orderMode == "Appointment")
           asyncARTAppointments.when(
             data: (appointment) => FormBuilderDropdown(
               name: "appointment_id",
+              enabled: false,
               decoration: inputDecoration(
                 prefixIcon: Icons.calendar_today,
                 label: "Appointment",
               ),
               initialValue: artAppointment?.id,
               validator: FormBuilderValidators.compose([
-                if (orderMode.value == "appointment")
+                if (orderMode == "appointment")
                   FormBuilderValidators.required(errorText: "Required"),
               ]),
               items: appointment
@@ -136,7 +160,7 @@ class GettingStarted extends HookConsumerWidget {
               child: CircularProgressIndicator(),
             ),
           ),
-        if (orderMode.value == "event")
+        if (orderMode == "event")
           asyncARTEvents.when(
             data: (events) => FormBuilderDropdown(
               initialValue: artEvent?.id,
@@ -146,7 +170,7 @@ class GettingStarted extends HookConsumerWidget {
                 label: "Event",
               ),
               validator: FormBuilderValidators.compose([
-                if (orderMode.value == "event")
+                if (orderMode == "event")
                   FormBuilderValidators.required(errorText: "Required"),
               ]),
               items: events
