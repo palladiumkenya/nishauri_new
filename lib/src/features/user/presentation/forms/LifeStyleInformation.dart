@@ -20,7 +20,7 @@ class LifeStyleInformation extends StatelessWidget {
               const SizedBox(height: Constants.SPACING),
               FormBuilderDropdown(
                 initialValue: user.maritalStatus,
-                name: "marital",
+                name: "maritalStatus",
                 decoration: inputDecoration(
                   prefixIcon: Icons.accessibility_sharp,
                   label: "Marital status",
@@ -39,7 +39,7 @@ class LifeStyleInformation extends StatelessWidget {
               const SizedBox(height: Constants.SPACING),
               FormBuilderDropdown(
                 initialValue: user.educationLevel,
-                name: "education",
+                name: "educationLevel",
                 decoration: inputDecoration(
                   prefixIcon: Icons.school_outlined,
                   label: "Education level",
@@ -64,7 +64,7 @@ class LifeStyleInformation extends StatelessWidget {
               const SizedBox(height: Constants.SPACING),
               FormBuilderDropdown(
                 initialValue: user.primaryLanguage,
-                name: "primary_language",
+                name: "primaryLanguage",
                 decoration: inputDecoration(
                   prefixIcon: Icons.language,
                   label: "Primary Language",

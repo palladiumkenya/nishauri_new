@@ -34,7 +34,7 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                  children: [
-                   Text("ART Program",
+                   Text('Program: ${appointment.program_name ?? ''}',
                    style: theme.textTheme.titleMedium?.merge(TextStyle(color: Colors.green)),),
                    Text(appointment.appointment_type ?? '',
                      style: theme.textTheme.titleSmall?.merge(TextStyle(color: Colors.grey)),),

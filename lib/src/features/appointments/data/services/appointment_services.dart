@@ -15,6 +15,7 @@ class AppointmentService extends HTTPService {
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final List<dynamic> appointmentData = json.decode(responseString)["data"];
+        print(appointmentData);
         return appointmentData.map((e) => userUpcomingAppointments(e)).toList();
       } else {
         throw "Something Went Wrong Contact Try Again";
@@ -31,6 +32,7 @@ class AppointmentService extends HTTPService {
       appointment_type: json["appointment_type"],
       appointment_date: json["appointment_date"],
       appointment: json["appointment"],
+      program_name: json["program_name"],
     );
   }
 
