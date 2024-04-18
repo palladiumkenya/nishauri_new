@@ -107,6 +107,7 @@ class HealthInformation extends StatelessWidget {
                   ValueItem(label: 'Cold', value: 'Cold'),
                   ValueItem(label: 'Cephalosporins', value: 'Cephalosporins'),
                   ValueItem(label: 'Peanuts', value: 'Peanuts'),
+                  ValueItem(label: 'Milk', value: 'Milk'),
                 ],
                 searchEnabled: true,
                 selectedOptions: user.allergies?.split(",")?.map((item) => ValueItem(label: item, value: item)).toList() ?? [],
