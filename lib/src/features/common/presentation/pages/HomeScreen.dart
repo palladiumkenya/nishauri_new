@@ -11,6 +11,7 @@ import 'package:nishauri/src/features/common/presentation/widgets/AnnouncementCa
 import 'package:nishauri/src/features/common/presentation/widgets/Announcements.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/Appointments.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/Greetings.dart';
+import 'package:nishauri/src/features/common/presentation/widgets/ShortcutsUi.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_appointmen_provider.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
@@ -163,6 +164,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       name: (user.name ?? "").titleCase,
                     ),
                     const Appointments(),
+                    const SizedBox(height: Constants.SPACING),
+                    ShortcutsWidget(),
                     const SizedBox(height: Constants.SPACING),
                     Padding(
                       padding: const EdgeInsets.all(Constants.SPACING),
