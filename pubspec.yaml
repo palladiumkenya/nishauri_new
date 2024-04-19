@@ -39,7 +39,7 @@ dependencies:
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
   table_calendar: ^3.0.9
-  fl_chart: ^0.65.0
+  fl_chart: ^0.64.0
   gap: ^3.0.1
   uuid: ^3.0.4
   autocomplete_textfield: ^2.0.1

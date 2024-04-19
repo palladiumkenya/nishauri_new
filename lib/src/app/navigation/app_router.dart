@@ -14,6 +14,8 @@ import 'package:nishauri/src/features/auth/presentation/pages/RegistrationScreen
 import 'package:nishauri/src/features/auth/presentation/pages/ResetPasswordScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/SplashScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/VerificationScreen.dart';
+import 'package:nishauri/src/features/auth/presentation/pages/VerifiedResetPassword.dart';
+import 'package:nishauri/src/features/auth/presentation/pages/VerifyResetPasswordScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
 import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
@@ -156,11 +158,11 @@ final List<RouteBase> secureRoutes = [
       return const EventsCalendar();
     },
   ),
-   GoRoute(
+  GoRoute(
     name: RouteNames.Facility_Directory,
     path: 'Facility-directory',
     builder: (BuildContext context, GoRouterState state) {
-      return  Facility_Directory();
+      return Facility_Directory();
     },
   ),
   GoRoute(
@@ -209,7 +211,7 @@ final List<RouteBase> secureRoutes = [
     name: RouteNames.PROGRAM_MENU,
     path: 'program-menu',
     builder: (BuildContext context, GoRouterState state) {
-      return  ProgramsMenuScreen();
+      return ProgramsMenuScreen();
     },
   ),
   GoRoute(
@@ -324,6 +326,21 @@ final List<RouteBase> openRoutes = [
     path: 'reset-password',
     builder: (context, state) => const ResetPasswordScreen(),
   ),
+  GoRoute(
+    name: RouteNames.VERIFY_RESET_PASSWORD_SCREEN,
+    path: 'verify-reset-password',
+    builder: (context, state) {
+      final extras = state.extra as String;
+      return ResetPasswordVerificationScreen(username: extras);
+    },
+  ),GoRoute(
+    name: RouteNames.VERIFIED_RESET_PASSWORD_SCREEN,
+    path: 'verified-reset-password',
+    builder: (context, state) {
+      final extras = state.extra as String;
+      return VerifiedResetPassword(username: extras);
+    },
+  ),
 ];
 
 final List<RouteBase> hivProgramRoutes = [
@@ -425,8 +442,7 @@ final List<RouteBase> hivProgramRoutes = [
         } else {
           return ConfirmDeliveryScreen(orderId: orderId);
         }
-      }
-  ),
+      }),
   GoRoute(
     name: RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
     path: "art-drug-request-form",

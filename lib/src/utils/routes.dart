@@ -9,6 +9,8 @@ class RouteNames {
   static const LOGIN_SCREEN = "login";
   static const REGISTER_SCREEN = "register";
   static const RESET_PASSWORD_SCREEN = "reset-password";
+  static const VERIFY_RESET_PASSWORD_SCREEN = "verify-reset-password";
+  static const VERIFIED_RESET_PASSWORD_SCREEN = "verified-reset-password";
   static const ROOT = "root";
   static const CHANGE_PASSWORD = "change-password";
   static const VERIFY_ACCOUNT = "verify";
