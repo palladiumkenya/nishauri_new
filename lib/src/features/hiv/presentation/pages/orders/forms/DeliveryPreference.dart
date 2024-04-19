@@ -23,7 +23,7 @@ class DeliveryPreference extends HookConsumerWidget {
       data: (user) => Column(
         children: [
           FormBuilderRadioGroup<String>(
-              name: 'deliveryMethod',
+              name: 'delivery_method',
               onChanged: (method_) {
                 orderDeliveryMethod.value = method_;
               },
@@ -36,10 +36,10 @@ class DeliveryPreference extends HookConsumerWidget {
               ),
               options: [
                 FormBuilderFieldOption(
-                  value: "in_person",
+                  value: "person",
                   child: ListTile(
                     trailing: const Icon(Icons.person),
-                    title: const Text("In person"),
+                    title: const Text("Trusted person"),
                     subtitle: Text(
                       "Have someone trusted pick up drugs for you",
                       style: TextStyle(
@@ -48,10 +48,10 @@ class DeliveryPreference extends HookConsumerWidget {
                   ),
                 ),
                 FormBuilderFieldOption(
-                  value: "in_parcel",
+                  value: "parcel",
                   child: ListTile(
                     trailing: const Icon(Icons.card_giftcard),
-                    title: const Text("In parcel"),
+                    title: const Text("By parcel"),
                     subtitle: Text(
                         style: TextStyle(
                             color: theme.colorScheme.onTertiaryContainer),
@@ -60,16 +60,16 @@ class DeliveryPreference extends HookConsumerWidget {
                 ),
               ]),
           const SizedBox(height: Constants.SPACING),
-          if (orderDeliveryMethod.value == "in_parcel")
+          if (orderDeliveryMethod.value == "parcel")
             asyncCourierServices.when(
               data: (courierService) => FormBuilderDropdown(
-                name: "courierService",
+                name: "courier_service",
                 decoration: inputDecoration(
                   prefixIcon: Icons.delivery_dining,
                   label: "Courier",
                 ),
                 validator: FormBuilderValidators.compose([
-                  if (orderDeliveryMethod.value == "in_parcel")
+                  if (orderDeliveryMethod.value == "parcel")
                     FormBuilderValidators.required(errorText: "Required"),
                 ]),
                 items: courierService
@@ -77,7 +77,7 @@ class DeliveryPreference extends HookConsumerWidget {
                       (e) => DropdownMenuItem(
                         value: e.id,
                         child: Text(
-                          e.name,
+                          e.name??'',
                         ),
                       ),
                     )
@@ -88,39 +88,39 @@ class DeliveryPreference extends HookConsumerWidget {
                 child: CircularProgressIndicator(),
               ),
             ),
-          if (orderDeliveryMethod.value == "in_person")
+          if (orderDeliveryMethod.value == "person")
             FormBuilderTextField(
-              name: "deliveryPersonFullName",
+              name: "delivery_person",
               decoration: inputDecoration(
                 placeholder: "e.g John Doe",
                 prefixIcon: Icons.account_circle_outlined,
                 label: "Full name",
               ),
               validator: FormBuilderValidators.compose([
-                if (orderDeliveryMethod.value == "in_person")
+                if (orderDeliveryMethod.value == "person")
                   FormBuilderValidators.required(errorText: "Required"),
               ]),
             ),
-          if (orderDeliveryMethod.value == "in_person")
+          if (orderDeliveryMethod.value == "person")
             const SizedBox(height: Constants.SPACING),
-          if (orderDeliveryMethod.value == "in_person")
+          if (orderDeliveryMethod.value == "person")
             FormBuilderTextField(
-              name: "deliveryPersonNationalId",
+              name: "delivery_person_id",
               decoration: inputDecoration(
                 placeholder: "e.g 12345678",
                 prefixIcon: Icons.perm_identity,
                 label: "National Id",
               ),
               validator: FormBuilderValidators.compose([
-                if (orderDeliveryMethod.value == "in_person")
+                if (orderDeliveryMethod.value == "person")
                   FormBuilderValidators.required(errorText: "Required"),
               ]),
             ),
-          if (orderDeliveryMethod.value == "in_person")
+          if (orderDeliveryMethod.value == "person")
             const SizedBox(height: Constants.SPACING),
-          if (orderDeliveryMethod.value == "in_person")
+          if (orderDeliveryMethod.value == "person")
             FormBuilderTextField(
-              name: "deliveryPersonPhoneNumber",
+              name: "delivery_person_contact",
               keyboardType: TextInputType.phone,
               decoration: inputDecoration(
                 placeholder: "e.g 0712345678",
@@ -128,17 +128,17 @@ class DeliveryPreference extends HookConsumerWidget {
                 label: "Phone number",
               ),
               validator: FormBuilderValidators.compose([
-                if (orderDeliveryMethod.value == "in_person")
+                if (orderDeliveryMethod.value == "person")
                   FormBuilderValidators.required(errorText: "Required"),
               ]),
             ),
-          if (orderDeliveryMethod.value == "in_person")
+          if (orderDeliveryMethod.value == "person")
             const SizedBox(height: Constants.SPACING),
-          if (orderDeliveryMethod.value == "in_person")
+          if (orderDeliveryMethod.value == "person")
             FormBuilderDateTimePicker(
               firstDate: DateTime.now(),
               lastDate: DateTime.now().add(const Duration(days: 7)),
-              name: "pickupTime",
+              name: "delivery_pickup_time",
               format: DateFormat('dd MMM yyy HH:mm a'),
               inputType: InputType.both,
               decoration: inputDecoration(
@@ -147,7 +147,7 @@ class DeliveryPreference extends HookConsumerWidget {
                 label: "Pickup time",
               ),
               validator: FormBuilderValidators.compose([
-                if (orderDeliveryMethod.value == "in_person")
+                if (orderDeliveryMethod.value == "person")
                   FormBuilderValidators.required(errorText: "Required"),
               ]),
               valueTransformer: (date) => date?.toIso8601String(),
@@ -160,6 +160,5 @@ class DeliveryPreference extends HookConsumerWidget {
         child: CircularProgressIndicator(),
       ),
     );
-    ;
   }
 }

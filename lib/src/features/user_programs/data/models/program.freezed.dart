@@ -21,10 +21,10 @@ Program _$ProgramFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Program {
   String? get id => throw _privateConstructorUsedError;
-  String get programCode => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  String? get program_code => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
-  bool get isActive => throw _privateConstructorUsedError;
+  bool get is_active => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,10 +39,10 @@ abstract class $ProgramCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
-      String programCode,
-      String name,
+      String? program_code,
+      String? name,
       String? description,
-      bool isActive,
+      bool is_active,
       String createdAt});
 }
 
@@ -60,10 +60,10 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
   @override
   $Res call({
     Object? id = freezed,
-    Object? programCode = null,
-    Object? name = null,
+    Object? program_code = freezed,
+    Object? name = freezed,
     Object? description = freezed,
-    Object? isActive = null,
+    Object? is_active = null,
     Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
@@ -71,21 +71,21 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      programCode: null == programCode
-          ? _value.programCode
-          : programCode // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
+      program_code: freezed == program_code
+          ? _value.program_code
+          : program_code // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      isActive: null == isActive
-          ? _value.isActive
-          : isActive // ignore: cast_nullable_to_non_nullable
+      is_active: null == is_active
+          ? _value.is_active
+          : is_active // ignore: cast_nullable_to_non_nullable
               as bool,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -104,10 +104,10 @@ abstract class _$$ProgramImplCopyWith<$Res> implements $ProgramCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
-      String programCode,
-      String name,
+      String? program_code,
+      String? name,
       String? description,
-      bool isActive,
+      bool is_active,
       String createdAt});
 }
 
@@ -123,10 +123,10 @@ class __$$ProgramImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? programCode = null,
-    Object? name = null,
+    Object? program_code = freezed,
+    Object? name = freezed,
     Object? description = freezed,
-    Object? isActive = null,
+    Object? is_active = null,
     Object? createdAt = null,
   }) {
     return _then(_$ProgramImpl(
@@ -134,21 +134,21 @@ class __$$ProgramImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      programCode: null == programCode
-          ? _value.programCode
-          : programCode // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
+      program_code: freezed == program_code
+          ? _value.program_code
+          : program_code // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      isActive: null == isActive
-          ? _value.isActive
-          : isActive // ignore: cast_nullable_to_non_nullable
+      is_active: null == is_active
+          ? _value.is_active
+          : is_active // ignore: cast_nullable_to_non_nullable
               as bool,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -163,10 +163,10 @@ class __$$ProgramImplCopyWithImpl<$Res>
 class _$ProgramImpl with DiagnosticableTreeMixin implements _Program {
   const _$ProgramImpl(
       {this.id,
-      required this.programCode,
-      required this.name,
+      this.program_code,
+      this.name,
       this.description,
-      this.isActive = false,
+      this.is_active = false,
       required this.createdAt});
 
   factory _$ProgramImpl.fromJson(Map<String, dynamic> json) =>
@@ -175,20 +175,20 @@ class _$ProgramImpl with DiagnosticableTreeMixin implements _Program {
   @override
   final String? id;
   @override
-  final String programCode;
+  final String? program_code;
   @override
-  final String name;
+  final String? name;
   @override
   final String? description;
   @override
   @JsonKey()
-  final bool isActive;
+  final bool is_active;
   @override
   final String createdAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Program(id: $id, programCode: $programCode, name: $name, description: $description, isActive: $isActive, createdAt: $createdAt)';
+    return 'Program(id: $id, program_code: $program_code, name: $name, description: $description, is_active: $is_active, createdAt: $createdAt)';
   }
 
   @override
@@ -197,10 +197,10 @@ class _$ProgramImpl with DiagnosticableTreeMixin implements _Program {
     properties
       ..add(DiagnosticsProperty('type', 'Program'))
       ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('programCode', programCode))
+      ..add(DiagnosticsProperty('program_code', program_code))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('description', description))
-      ..add(DiagnosticsProperty('isActive', isActive))
+      ..add(DiagnosticsProperty('is_active', is_active))
       ..add(DiagnosticsProperty('createdAt', createdAt));
   }
 
@@ -210,13 +210,13 @@ class _$ProgramImpl with DiagnosticableTreeMixin implements _Program {
         (other.runtimeType == runtimeType &&
             other is _$ProgramImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.programCode, programCode) ||
-                other.programCode == programCode) &&
+            (identical(other.program_code, program_code) ||
+                other.program_code == program_code) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.isActive, isActive) ||
-                other.isActive == isActive) &&
+            (identical(other.is_active, is_active) ||
+                other.is_active == is_active) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
@@ -224,7 +224,7 @@ class _$ProgramImpl with DiagnosticableTreeMixin implements _Program {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, programCode, name, description, isActive, createdAt);
+      runtimeType, id, program_code, name, description, is_active, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -243,10 +243,10 @@ class _$ProgramImpl with DiagnosticableTreeMixin implements _Program {
 abstract class _Program implements Program {
   const factory _Program(
       {final String? id,
-      required final String programCode,
-      required final String name,
+      final String? program_code,
+      final String? name,
       final String? description,
-      final bool isActive,
+      final bool is_active,
       required final String createdAt}) = _$ProgramImpl;
 
   factory _Program.fromJson(Map<String, dynamic> json) = _$ProgramImpl.fromJson;
@@ -254,13 +254,13 @@ abstract class _Program implements Program {
   @override
   String? get id;
   @override
-  String get programCode;
+  String? get program_code;
   @override
-  String get name;
+  String? get name;
   @override
   String? get description;
   @override
-  bool get isActive;
+  bool get is_active;
   @override
   String get createdAt;
   @override

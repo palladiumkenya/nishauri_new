@@ -22,8 +22,8 @@ class AccountInformation extends StatelessWidget {
               FormBuilderField<String>(
                 initialValue: user.image,
                 validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(
-                      errorText: "You must provide an image"),
+                  // FormBuilderValidators.required(
+                  //     errorText: "You must provide an image"),
                 ]),
                 builder: (FormFieldState<String> state) => Column(
                   children: [
@@ -58,7 +58,7 @@ class AccountInformation extends StatelessWidget {
                   label: "Username",
                 ),
                 validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
+                  // FormBuilderValidators.required(),
                 ]),
               ),
               const SizedBox(height: Constants.SPACING),

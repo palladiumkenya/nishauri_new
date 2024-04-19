@@ -7,9 +7,10 @@ part 'art_appointment.g.dart';
 class ARTAppointment with _$ARTAppointment {
   const factory ARTAppointment({
     String? id,
-    required String cccNumber,
-    required String appointmentType,
-    required String appointmentDate,
+    required String ccc_no,
+    String? appointment_type,
+    required String appointment_date,
+    String? appointment,
     String? nextAppointmentDate,
   }) = _ARTAppointment;
 

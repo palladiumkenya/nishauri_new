@@ -91,38 +91,38 @@ class WelcomeScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: Constants.SPACING),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1),
-                      color: theme.colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
-                    ),
-                    child: IconButton(
-                      onPressed: () async {
-                        final uri = Uri.parse("${Constants.BASE_URL}/auth/google");
-                        final result = await FlutterWebAuth2.authenticate(url: uri.toString(),callbackUrlScheme: "http");
-                        debugPrint("**********************$result");
-                      },
-                      icon: SvgPicture.asset("assets/images/google.svg", width: 20,height: 20,),
-                    ),
-                  ),
-                  const SizedBox(width: Constants.SPACING),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1),
-                      color: theme.colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
-                    ),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.apple, size: 30),
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     DecoratedBox(
+              //       decoration: BoxDecoration(
+              //         border: Border.all(width: 1),
+              //         color: theme.colorScheme.outlineVariant,
+              //         borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
+              //       ),
+              //       child: IconButton(
+              //         onPressed: () async {
+              //           final uri = Uri.parse("${Constants.BASE_URL}/auth/google");
+              //           final result = await FlutterWebAuth2.authenticate(url: uri.toString(),callbackUrlScheme: "http");
+              //           debugPrint("**********************$result");
+              //         },
+              //         icon: SvgPicture.asset("assets/images/google.svg", width: 20,height: 20,),
+              //       ),
+              //     ),
+              //     // const SizedBox(width: Constants.SPACING),
+              //     // DecoratedBox(
+              //     //   decoration: BoxDecoration(
+              //     //     border: Border.all(width: 1),
+              //     //     color: theme.colorScheme.outlineVariant,
+              //     //     borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
+              //     //   ),
+              //     //   child: IconButton(
+              //     //     onPressed: () {},
+              //     //     icon: const Icon(Icons.apple, size: 30),
+              //     //   ),
+              //     // ),
+              //   ],
+              // ),
             ],
           ),
         ),

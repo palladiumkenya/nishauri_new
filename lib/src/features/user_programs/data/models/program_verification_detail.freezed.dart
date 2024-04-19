@@ -21,8 +21,8 @@ ProgramVerificationDetail _$ProgramVerificationDetailFromJson(
 
 /// @nodoc
 mixin _$ProgramVerificationDetail {
-  String get programCode => throw _privateConstructorUsedError;
-  String get message => throw _privateConstructorUsedError;
+  String? get programCode => throw _privateConstructorUsedError;
+  String? get message => throw _privateConstructorUsedError;
   List<ProgramVerificationContact> get contacts =>
       throw _privateConstructorUsedError;
 
@@ -39,8 +39,8 @@ abstract class $ProgramVerificationDetailCopyWith<$Res> {
       _$ProgramVerificationDetailCopyWithImpl<$Res, ProgramVerificationDetail>;
   @useResult
   $Res call(
-      {String programCode,
-      String message,
+      {String? programCode,
+      String? message,
       List<ProgramVerificationContact> contacts});
 }
 
@@ -58,19 +58,19 @@ class _$ProgramVerificationDetailCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? programCode = null,
-    Object? message = null,
+    Object? programCode = freezed,
+    Object? message = freezed,
     Object? contacts = null,
   }) {
     return _then(_value.copyWith(
-      programCode: null == programCode
+      programCode: freezed == programCode
           ? _value.programCode
           : programCode // ignore: cast_nullable_to_non_nullable
-              as String,
-      message: null == message
+              as String?,
+      message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       contacts: null == contacts
           ? _value.contacts
           : contacts // ignore: cast_nullable_to_non_nullable
@@ -89,8 +89,8 @@ abstract class _$$ProgramVerificationDetailImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String programCode,
-      String message,
+      {String? programCode,
+      String? message,
       List<ProgramVerificationContact> contacts});
 }
 
@@ -107,19 +107,19 @@ class __$$ProgramVerificationDetailImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? programCode = null,
-    Object? message = null,
+    Object? programCode = freezed,
+    Object? message = freezed,
     Object? contacts = null,
   }) {
     return _then(_$ProgramVerificationDetailImpl(
-      programCode: null == programCode
+      programCode: freezed == programCode
           ? _value.programCode
           : programCode // ignore: cast_nullable_to_non_nullable
-              as String,
-      message: null == message
+              as String?,
+      message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       contacts: null == contacts
           ? _value._contacts
           : contacts // ignore: cast_nullable_to_non_nullable
@@ -134,8 +134,8 @@ class _$ProgramVerificationDetailImpl
     with DiagnosticableTreeMixin
     implements _ProgramVerificationDetail {
   const _$ProgramVerificationDetailImpl(
-      {required this.programCode,
-      required this.message,
+      {this.programCode,
+      this.message,
       final List<ProgramVerificationContact> contacts = const []})
       : _contacts = contacts;
 
@@ -143,9 +143,9 @@ class _$ProgramVerificationDetailImpl
       _$$ProgramVerificationDetailImplFromJson(json);
 
   @override
-  final String programCode;
+  final String? programCode;
   @override
-  final String message;
+  final String? message;
   final List<ProgramVerificationContact> _contacts;
   @override
   @JsonKey()
@@ -203,8 +203,8 @@ class _$ProgramVerificationDetailImpl
 
 abstract class _ProgramVerificationDetail implements ProgramVerificationDetail {
   const factory _ProgramVerificationDetail(
-          {required final String programCode,
-          required final String message,
+          {final String? programCode,
+          final String? message,
           final List<ProgramVerificationContact> contacts}) =
       _$ProgramVerificationDetailImpl;
 
@@ -212,9 +212,9 @@ abstract class _ProgramVerificationDetail implements ProgramVerificationDetail {
       _$ProgramVerificationDetailImpl.fromJson;
 
   @override
-  String get programCode;
+  String? get programCode;
   @override
-  String get message;
+  String? get message;
   @override
   List<ProgramVerificationContact> get contacts;
   @override

@@ -9,8 +9,8 @@ part of 'program_verification_detail.dart';
 _$ProgramVerificationDetailImpl _$$ProgramVerificationDetailImplFromJson(
         Map<String, dynamic> json) =>
     _$ProgramVerificationDetailImpl(
-      programCode: json['programCode'] as String,
-      message: json['message'] as String,
+      programCode: json['programCode'] as String?,
+      message: json['message'] as String?,
       contacts: (json['contacts'] as List<dynamic>?)
               ?.map((e) => ProgramVerificationContact.fromJson(
                   e as Map<String, dynamic>))

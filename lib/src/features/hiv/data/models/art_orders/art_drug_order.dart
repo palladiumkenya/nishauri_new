@@ -13,17 +13,22 @@ part 'art_drug_order.g.dart';
 @Freezed()
 class ARTDrugOrder with _$ARTDrugOrder {
   const factory ARTDrugOrder({
-    String? id,
+    int? order_id,
     ARTEvent? event,
     ARTAppointment? appointment,
-    required Address deliveryAddress,
-    required String deliveryMethod,
-    required String phoneNumber,
-    required String type,
+    Address? deliveryAddress,
+    String? delivery_method,
+    String? client_phone_no,
+    String? order_type,
     Courier? courierService,
     DeliveryPerson? deliveryPerson,
     String? createdAt,
     String? updateAt,
+    String? status,
+    String? approved_date,
+    String? dispatched_date,
+    String? fullfilled_date,
+    String? date_order_posted,
   }) = _ARTDrugOrder;
 
   factory ARTDrugOrder.fromJson(Map<String, dynamic> json)=> _$ARTDrugOrderFromJson(json);

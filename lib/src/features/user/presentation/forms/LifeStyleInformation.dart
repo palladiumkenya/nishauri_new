@@ -32,9 +32,9 @@ class LifeStyleInformation extends StatelessWidget {
                   DropdownMenuItem(
                       value: "widow-widower", child: Text("Widow/Widower")),
                 ],
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                // validator: FormBuilderValidators.compose([
+                //   FormBuilderValidators.required(),
+                // ]),
               ),
               const SizedBox(height: Constants.SPACING),
               FormBuilderDropdown(
@@ -57,47 +57,53 @@ class LifeStyleInformation extends StatelessWidget {
                       value: "postgraduate",
                       child: Text("Postgraduate degree")),
                 ],
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                // validator: FormBuilderValidators.compose([
+                //   FormBuilderValidators.required(),
+                // ]),
               ),
               const SizedBox(height: Constants.SPACING),
-              FormBuilderRadioGroup(
+              FormBuilderDropdown(
                 initialValue: user.primaryLanguage,
                 name: "primaryLanguage",
                 decoration: inputDecoration(
                   prefixIcon: Icons.language,
                   label: "Primary Language",
                 ),
-                options: const [
-                  FormBuilderFieldOption(
+                items: const [
+                  DropdownMenuItem(
                       value: "swahili", child: Text("Swahili")),
-                  FormBuilderFieldOption(
+                  DropdownMenuItem(
                       value: "english", child: Text("English")),
                 ],
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                // options: const [
+                //   FormBuilderFieldOption(
+                //       value: "swahili", child: Text("Swahili")),
+                //   FormBuilderFieldOption(
+                //       value: "english", child: Text("English")),
+                // ],
+                // validator: FormBuilderValidators.compose([
+                //   FormBuilderValidators.required(),
+                // ]),
               ),
               const SizedBox(height: Constants.SPACING),
-              FormBuilderRadioGroup(
+              FormBuilderDropdown(
                 initialValue: user.occupation,
                 name: "occupation",
                 decoration: inputDecoration(
                   prefixIcon: Icons.work,
                   label: "Occupation",
                 ),
-                options: const [
-                  FormBuilderFieldOption(
+                items: const [
+                  DropdownMenuItem(
                       value: "employed", child: Text("Employed")),
-                  FormBuilderFieldOption(
+                  DropdownMenuItem(
                       value: "self-employed", child: Text("Self Employed")),
-                  FormBuilderFieldOption(
+                  DropdownMenuItem(
                       value: "unemployed", child: Text("Unemployed")),
                 ],
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                // validator: FormBuilderValidators.compose([
+                //   FormBuilderValidators.required(),
+                // ]),
               ),
             ],
           ),

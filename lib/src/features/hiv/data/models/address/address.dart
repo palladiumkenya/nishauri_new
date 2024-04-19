@@ -7,8 +7,8 @@ part 'address.g.dart';
 class Address with _$Address {
   const factory Address({
     String? id,
-    required String latitude,
-    required String longitude,
+    String? latitude,
+    String? longitude,
     String? address,
   }) = _Address;
 

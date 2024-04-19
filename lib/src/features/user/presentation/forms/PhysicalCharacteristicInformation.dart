@@ -28,8 +28,8 @@ class PhysicalCharacteristicInformation extends StatelessWidget {
                 ),
                 keyboardType: TextInputType.number,
                 validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.numeric(),
+                  // FormBuilderValidators.required(),
+                  // FormBuilderValidators.numeric(),
                 ]),
               ),
               const SizedBox(height: Constants.SPACING),
@@ -43,8 +43,8 @@ class PhysicalCharacteristicInformation extends StatelessWidget {
                   label: "Height (Cm)",
                 ),
                 validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.numeric(),
+                  // FormBuilderValidators.required(),
+                  // FormBuilderValidators.numeric(),
                 ]),
               ),
             ],

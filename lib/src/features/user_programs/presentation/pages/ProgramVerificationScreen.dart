@@ -41,7 +41,7 @@ class ProgramVerificationScreen extends HookConsumerWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                  "${ProgramCodeNames.getProgramNameByCode(verificationDetail.programCode)} Program Registered successfully"),
+                  "${ProgramCodeNameIds.getProgramNameByCode(verificationDetail.programCode?? '')} Program Registered successfully"),
             ),
           );
           context.go("/");
@@ -106,7 +106,7 @@ class ProgramVerificationScreen extends HookConsumerWidget {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   label: Text(
-                    verificationDetail.message,
+                    verificationDetail.message?? '',
                   ),
                 ),
                 validator: FormBuilderValidators.compose([

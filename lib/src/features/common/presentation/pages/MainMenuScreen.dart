@@ -57,11 +57,12 @@ class MainMenuScreen extends StatelessWidget {
                       items: [
                         // get generic menu items
                         ...getGenericMenuItems(context),
-                        // get program menu items
-                        ...data.map((e) {
-                          final programCode = e.program.programCode;
-                          return getProgramMenuItemByProgramCode(context, programCode);
-                        }).toList(),
+                        // // get program menu items
+                        // ...data.map((e) {
+                        //   final programCode = e.id;
+                        //   print(e.id);
+                        //   return getProgramMenuItemByProgramCode(context, programCode?? '');
+                        // }).toList(),
                         // Register new program
                         MenuItem(
                           icon: Icons.add,

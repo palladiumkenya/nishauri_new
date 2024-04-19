@@ -83,7 +83,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   name:
                       (asyncUser.value?.name ?? "")
                           .titleCase,
-                  phoneNumber: asyncUser.value!.phoneNumber,
+                  phoneNumber: asyncUser.value!.phoneNumber??'',
                   image: asyncUser.value!.image,
                 ),
                 onTap: () => context.goNamed(RouteNames.PROFILE_SETTINGS),
@@ -99,18 +99,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               },
             ),
 
+            // ListTile(
+            //   leading: const Icon(Icons.notifications),
+            //   title: const Text("Notification"),
+            //   onTap: () {
+            //     // Close drawer
+            //     Navigator.pop(context);
+            //   },
+            // ),
+            // ListTile(
+            //   leading: const Icon(Icons.feedback),
+            //   title: const Text("Send Feedback"),
+            //   onTap: () {
+            //     // Close drawer
+            //     Navigator.pop(context);
+            //   },
+            // ),
             ListTile(
-              leading: const Icon(Icons.notifications),
-              title: const Text("Notification"),
+              leading: const Icon(Icons.settings),
+              title: const Text("Settings"),
               onTap: () {
-                // Close drawer
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.feedback),
-              title: const Text("Send Feedback"),
-              onTap: () {
+                context.goNamed(RouteNames.SETTINGS);
                 // Close drawer
                 Navigator.pop(context);
               },
@@ -143,6 +152,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 );
               },
             ),
+
             // ...drawerItems.map(
             //   (e) => ListTile(
             //     leading: Icon(e.icon),

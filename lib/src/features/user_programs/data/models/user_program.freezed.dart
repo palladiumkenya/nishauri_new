@@ -21,9 +21,9 @@ UserProgram _$UserProgramFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserProgram {
   String? get id => throw _privateConstructorUsedError;
-  Program get program => throw _privateConstructorUsedError;
+  String? get program_name => throw _privateConstructorUsedError;
   bool get isActive => throw _privateConstructorUsedError;
-  String get createdAt => throw _privateConstructorUsedError;
+  String? get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,9 +37,8 @@ abstract class $UserProgramCopyWith<$Res> {
           UserProgram value, $Res Function(UserProgram) then) =
       _$UserProgramCopyWithImpl<$Res, UserProgram>;
   @useResult
-  $Res call({String? id, Program program, bool isActive, String createdAt});
-
-  $ProgramCopyWith<$Res> get program;
+  $Res call(
+      {String? id, String? program_name, bool isActive, String? createdAt});
 }
 
 /// @nodoc
@@ -56,36 +55,28 @@ class _$UserProgramCopyWithImpl<$Res, $Val extends UserProgram>
   @override
   $Res call({
     Object? id = freezed,
-    Object? program = null,
+    Object? program_name = freezed,
     Object? isActive = null,
-    Object? createdAt = null,
+    Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      program: null == program
-          ? _value.program
-          : program // ignore: cast_nullable_to_non_nullable
-              as Program,
+      program_name: freezed == program_name
+          ? _value.program_name
+          : program_name // ignore: cast_nullable_to_non_nullable
+              as String?,
       isActive: null == isActive
           ? _value.isActive
           : isActive // ignore: cast_nullable_to_non_nullable
               as bool,
-      createdAt: null == createdAt
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $ProgramCopyWith<$Res> get program {
-    return $ProgramCopyWith<$Res>(_value.program, (value) {
-      return _then(_value.copyWith(program: value) as $Val);
-    });
   }
 }
 
@@ -97,10 +88,8 @@ abstract class _$$UserProgramImplCopyWith<$Res>
       __$$UserProgramImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? id, Program program, bool isActive, String createdAt});
-
-  @override
-  $ProgramCopyWith<$Res> get program;
+  $Res call(
+      {String? id, String? program_name, bool isActive, String? createdAt});
 }
 
 /// @nodoc
@@ -115,27 +104,27 @@ class __$$UserProgramImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? program = null,
+    Object? program_name = freezed,
     Object? isActive = null,
-    Object? createdAt = null,
+    Object? createdAt = freezed,
   }) {
     return _then(_$UserProgramImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      program: null == program
-          ? _value.program
-          : program // ignore: cast_nullable_to_non_nullable
-              as Program,
+      program_name: freezed == program_name
+          ? _value.program_name
+          : program_name // ignore: cast_nullable_to_non_nullable
+              as String?,
       isActive: null == isActive
           ? _value.isActive
           : isActive // ignore: cast_nullable_to_non_nullable
               as bool,
-      createdAt: null == createdAt
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -144,10 +133,7 @@ class __$$UserProgramImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserProgramImpl with DiagnosticableTreeMixin implements _UserProgram {
   const _$UserProgramImpl(
-      {this.id,
-      required this.program,
-      this.isActive = false,
-      required this.createdAt});
+      {this.id, this.program_name, this.isActive = false, this.createdAt});
 
   factory _$UserProgramImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserProgramImplFromJson(json);
@@ -155,16 +141,16 @@ class _$UserProgramImpl with DiagnosticableTreeMixin implements _UserProgram {
   @override
   final String? id;
   @override
-  final Program program;
+  final String? program_name;
   @override
   @JsonKey()
   final bool isActive;
   @override
-  final String createdAt;
+  final String? createdAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserProgram(id: $id, program: $program, isActive: $isActive, createdAt: $createdAt)';
+    return 'UserProgram(id: $id, program_name: $program_name, isActive: $isActive, createdAt: $createdAt)';
   }
 
   @override
@@ -173,7 +159,7 @@ class _$UserProgramImpl with DiagnosticableTreeMixin implements _UserProgram {
     properties
       ..add(DiagnosticsProperty('type', 'UserProgram'))
       ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('program', program))
+      ..add(DiagnosticsProperty('program_name', program_name))
       ..add(DiagnosticsProperty('isActive', isActive))
       ..add(DiagnosticsProperty('createdAt', createdAt));
   }
@@ -184,7 +170,8 @@ class _$UserProgramImpl with DiagnosticableTreeMixin implements _UserProgram {
         (other.runtimeType == runtimeType &&
             other is _$UserProgramImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.program, program) || other.program == program) &&
+            (identical(other.program_name, program_name) ||
+                other.program_name == program_name) &&
             (identical(other.isActive, isActive) ||
                 other.isActive == isActive) &&
             (identical(other.createdAt, createdAt) ||
@@ -194,7 +181,7 @@ class _$UserProgramImpl with DiagnosticableTreeMixin implements _UserProgram {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, program, isActive, createdAt);
+      Object.hash(runtimeType, id, program_name, isActive, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -213,9 +200,9 @@ class _$UserProgramImpl with DiagnosticableTreeMixin implements _UserProgram {
 abstract class _UserProgram implements UserProgram {
   const factory _UserProgram(
       {final String? id,
-      required final Program program,
+      final String? program_name,
       final bool isActive,
-      required final String createdAt}) = _$UserProgramImpl;
+      final String? createdAt}) = _$UserProgramImpl;
 
   factory _UserProgram.fromJson(Map<String, dynamic> json) =
       _$UserProgramImpl.fromJson;
@@ -223,11 +210,11 @@ abstract class _UserProgram implements UserProgram {
   @override
   String? get id;
   @override
-  Program get program;
+  String? get program_name;
   @override
   bool get isActive;
   @override
-  String get createdAt;
+  String? get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$UserProgramImplCopyWith<_$UserProgramImpl> get copyWith =>

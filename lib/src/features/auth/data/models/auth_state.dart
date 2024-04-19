@@ -51,14 +51,16 @@ class AuthState {
 
 
 class AuthResponse{
-  final String accessToken;
-  final String refreshToken;
+  final String? accessToken;
+  final String? refreshToken;
   final bool accountVerified;
   final bool profileUpdated;
+  final String? userId;
+  final String? message;
 
-  AuthResponse({required this.accountVerified, required this.profileUpdated, required this.accessToken, required this.refreshToken});
+  AuthResponse({ required this.accountVerified, required this.profileUpdated, this.accessToken, this.refreshToken,  this.userId,  this.message});
   @override
   String toString() {
-    return "AuthState<accessToken: $accessToken, refreshToken: $refreshToken, accountVerified: $accountVerified, profileUpdated: $profileUpdated>";
+    return "AuthState<accessToken: $accessToken, refreshToken: $refreshToken, accountVerified: $accountVerified, profileUpdated: $profileUpdated, userId: $userId, message: $message>";
   }
 }
