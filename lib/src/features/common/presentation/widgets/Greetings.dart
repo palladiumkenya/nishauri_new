@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuItemsBuilder.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuOption.dart';
 import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
@@ -20,103 +21,117 @@ class Greetings extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final theme = Theme.of(context);
-    final headerHeight = screenSize.height * 0.28;
-    final radius = screenSize.width * 0.12;
 
     return Container(
-      margin: EdgeInsets.only(bottom: headerHeight * 0.3),
-      child: Stack(
-        clipBehavior: Clip.none,
-        alignment: Alignment.center,
+      width: double.maxFinite,
+      padding: const EdgeInsets.all(Constants.SPACING),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: headerHeight,
-            width: screenSize.width,
-            decoration: BoxDecoration(
-              color: theme.primaryColor,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(radius),
-                bottomRight: Radius.circular(radius),
-              ),
-            ),
+          Text(
+            "Hey, 👋",
+            style: theme.textTheme.headlineMedium
+                ?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
           ),
-          Positioned(
-            bottom: -(headerHeight * 0.25),
-            height: headerHeight * 1.25,
-            width: screenSize.width * 0.89,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Hello 👋,",
-                ),
-                Text(
-                  name,
-                  style: const TextStyle(fontSize: 20),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Expanded(
-                  child: AppCard(
-                    color: theme.colorScheme.onPrimary,
-                    variant: CardVariant.ELEVETED,
-                    child: Container(
-                      padding: const EdgeInsets.all(Constants.SPACING),
-                      width: double.infinity,
-                      height: double.infinity,
-                      child: Center(
-                        child: Consumer(
-                          builder: (context, ref, child) {
-                            final shortcuts = ref.watch(shortcutProvider);
-                            return MenuItemsBuilder(
-                              itemBuilder: (item) => MenuOption(
-                                title: item.title ?? "",
-                                icon: item.icon,
-                                bgColor: item.title == "Edit Shortcut"
-                                    ? theme.colorScheme.secondary
-                                    : null,
-                                onPress: item.onPressed,
-                              ),
-                              items: getMenuItemByNames(context, shortcuts)
-                                ..add(
-                                  MenuItem(
-                                    icon: Icons.edit_note_sharp,
-                                    title: "Edit Shortcut",
-                                    onPressed: () => _showDialog(context),
-                                  ),
-                                ),
-                            );
+          Text(
+            name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.headlineLarge
+                ?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: Constants.SPACING * 3),
+          Text(
+            DateFormat("EEEE, MMMM dd").format(
+              DateTime.now(),
+            ),
+            style: theme.textTheme.titleLarge
+                ?.copyWith(color: theme.colorScheme.onSurface.withOpacity(0.3)),
+          ),
 
-                            return Wrap(
-                              alignment: WrapAlignment.spaceBetween,
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              spacing: Constants.SPACING,
-                              runSpacing: Constants.SPACING,
-                              children: [
-                                ...getMenuItemByNames(context, shortcuts)
-                                    .map((e) => MenuOption(
-                                          title: e.title ?? "",
-                                          icon: e.icon,
-                                          onPress: e.onPressed,
-                                        )),
-                                MenuOption(
-                                  icon: Icons.add,
-                                  title: "Add Shortcut",
-                                  onPress: () {
-                                    _showDialog(context);
-                                  },
-                                ),
-                              ],
-                            );
-                          },
+          /* Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.center,
+            children: [
+              Positioned(
+                bottom: -(headerHeight * 0.25),
+                height: headerHeight * 1.25,
+                width: screenSize.width * 0.89,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Hello 👋,",
+                    ),
+                    Text(
+                      name,
+                      style: const TextStyle(fontSize: 20),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Expanded(
+                      child: AppCard(
+                        color: theme.colorScheme.onPrimary,
+                        variant: CardVariant.ELEVETED,
+                        child: Container(
+                          padding: const EdgeInsets.all(Constants.SPACING),
+                          width: double.infinity,
+                          height: double.infinity,
+                          child: Center(
+                            child: Consumer(
+                              builder: (context, ref, child) {
+                                final shortcuts = ref.watch(shortcutProvider);
+                                return MenuItemsBuilder(
+                                  itemBuilder: (item) => MenuOption(
+                                    title: item.title ?? "",
+                                    icon: item.icon,
+                                    bgColor: item.title == "Edit Shortcut"
+                                        ? theme.colorScheme.secondary
+                                        : null,
+                                    onPress: item.onPressed,
+                                  ),
+                                  items: getMenuItemByNames(context, shortcuts)
+                                    ..add(
+                                      MenuItem(
+                                        icon: Icons.edit_note_sharp,
+                                        title: "Edit Shortcut",
+                                        onPressed: () => _showDialog(context),
+                                      ),
+                                    ),
+                                );
+
+                                return Wrap(
+                                  alignment: WrapAlignment.spaceBetween,
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  spacing: Constants.SPACING,
+                                  runSpacing: Constants.SPACING,
+                                  children: [
+                                    ...getMenuItemByNames(context, shortcuts)
+                                        .map((e) => MenuOption(
+                                              title: e.title ?? "",
+                                              icon: e.icon,
+                                              onPress: e.onPressed,
+                                            )),
+                                    MenuOption(
+                                      icon: Icons.add,
+                                      title: "Add Shortcut",
+                                      onPress: () {
+                                        _showDialog(context);
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            ],
+          ),*/
         ],
       ),
     );
@@ -178,7 +193,7 @@ _showDialog(BuildContext context) {
                   ...data.map((e) {
                     final programCode = e.id;
                     return getProgramMenuItemByProgramCode(
-                        context, programCode?? '');
+                        context, programCode ?? '');
                   }).toList(),
                 ],
               ),
