@@ -45,7 +45,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(value)),
               );
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => VerifyResetPasswordScreen(user_name: formState['user_name'])));
+              context.goNamed(RouteNames.VERIFY_RESET_PASSWORD_SCREEN,  extra:formState['user_name'] );
             }).catchError((err) {
               handleResponseError(context, _formKey.currentState!.fields, err, authStateNotifier.logout);
             }).whenComplete(() {
