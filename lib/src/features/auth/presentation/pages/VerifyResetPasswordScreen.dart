@@ -8,7 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/ResetPasswordScreen.dart';
-import 'package:nishauri/src/features/auth/presentation/pages/resetPasswordScreen.dart';
+import 'package:nishauri/src/features/auth/presentation/pages/ResetPasswordScreen.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
