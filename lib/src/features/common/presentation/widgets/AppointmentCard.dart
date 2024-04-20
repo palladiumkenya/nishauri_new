@@ -10,6 +10,8 @@ class AppointmentCard extends StatelessWidget {
   final String providerImage;
   final DateTime appointmentTime;
   final String appointmentType;
+  final double width;
+  final double height;
 
   const AppointmentCard({
     super.key,
@@ -17,6 +19,8 @@ class AppointmentCard extends StatelessWidget {
     required this.providerImage,
     required this.appointmentTime,
     required this.appointmentType,
+    required this.width,
+    required this.height,
   });
 
   @override
@@ -31,11 +35,13 @@ class AppointmentCard extends StatelessWidget {
           Card(
             clipBehavior: Clip.antiAlias, // Clip the corners of the card
             shape: RoundedRectangleBorder(
-              borderRadius:
-                  BorderRadius.circular(Constants.ROUNDNESS * 2), // Customize corner radius
+              borderRadius: BorderRadius.circular(
+                  Constants.ROUNDNESS * 2), // Customize corner radius
             ),
             child: Container(
               padding: const EdgeInsets.all(Constants.SPACING),
+              // width: width,
+              // height: height,
               decoration: BoxDecoration(
                   gradient: LinearGradient(
                 begin: Alignment.topCenter,
@@ -134,32 +140,40 @@ class AppointmentCard extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: -20,
+            bottom: -15,
             right: 50,
-            child: Card(
-              clipBehavior: Clip.antiAlias, // Clip the corners of the card
-              // shape: RoundedRectangleBorder(
-              //   borderRadius: BorderRadius.circular(
-              //     Constants.ROUNDNESS * 6,
-              //   ), // Customize corner radius
-              // ),
-              shape: const OvalBorder(),
-              child: InkWell(
-                  splashColor: theme.colorScheme.primary.withAlpha(30),
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: Constants.SPACING,
-                        horizontal: Constants.SPACING * 2),
-                    color: theme.canvasColor,
-                    child: const Row(
-                      children: [
-                        Icon(Icons.schedule),
-                        SizedBox(width: Constants.SPACING),
-                        Text("Reschedule"),
-                      ],
-                    ),
-                  )),
+            child: Container(
+              decoration: BoxDecoration(
+                // border: Border.all(width: 2, color: theme.canvasColor),
+                color: theme.canvasColor,
+                borderRadius: BorderRadius.circular(Constants.ROUNDNESS * 6)
+              ),
+              child: Card(
+                shadowColor: theme.colorScheme.primary,
+                clipBehavior: Clip.antiAlias,
+                // Clip the corners of the card
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    Constants.ROUNDNESS * 6,
+                  ), // Customize corner radius
+                ),
+                // shape: const OvalBorder(),
+                child: InkWell(
+                    splashColor: theme.colorScheme.primary.withAlpha(30),
+                    onTap: () {},
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: Constants.SPACING * 0.5,
+                          horizontal: Constants.SPACING * 2),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.schedule),
+                          SizedBox(width: Constants.SPACING),
+                          Text("Reschedule"),
+                        ],
+                      ),
+                    )),
+              ),
             ),
           )
         ],

@@ -24,113 +24,130 @@ class Appointments extends HookConsumerWidget {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: Constants.SPACING),
-            child: Text(
-              "Upcoming appointments",
-              style: theme.textTheme.titleMedium,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Upcoming appointments",
+                  style: theme.textTheme.titleMedium,
+                ),
+                InkWell(
+                  onTap: (){
+
+                  },
+                  child: Text(
+                    "View all",
+                    style: theme.textTheme.titleMedium
+                        ?.copyWith(color: theme.colorScheme.primary),
+                  ),
+                ),
+              ],
             ),
           ),
-          AppointmentCard(
-            appointmentType:
-            "Unknown type",
-            appointmentTime: DateTime.parse(
-              // artAppointment.appointment ??
-              DateTime.now().toIso8601String(),
-            ),
-            providerImage:
-            "https://www.emeraldgrouppublishing.com/sites/default/files/image/covid-cells.jpg",
-            providerName: "Dr John Doe",
-          ),
-          // CarouselSlider(
-          //   options: CarouselOptions(
-          //     enableInfiniteScroll: false,
-          //     height: screenSize.height * 0.15,
-          //     enlargeCenterPage: true,
-          //     enlargeFactor: 0.3,
+          // AppointmentCard(
+          //   appointmentType: "Unknown type",
+          //   appointmentTime: DateTime.parse(
+          //     // artAppointment.appointment ??
+          //     DateTime.now().toIso8601String(),
           //   ),
-          //   items: data
-          //       .where((artAppointment) => // Filter only upcoming appointments
-          //           DateFormat('EEEE, MMMM d y')
-          //               .parse(artAppointment.appointment_date)
-          //               .difference(DateTime.now())
-          //               .inDays >=
-          //           0)
-          //       .map(
-          //     (artAppointment) {
-          //       return Builder(
-          //         builder: (BuildContext context) {
-          //           return AppointmentCard(
-          //             appointmentType:
-          //                 artAppointment.appointment_type ?? "Unknown type",
-          //             appointmentTime: DateTime.parse(
-          //               // artAppointment.appointment ??
-          //                   DateTime.now().toIso8601String(),
-          //             ),
-          //             providerImage:
-          //                 "https://www.emeraldgrouppublishing.com/sites/default/files/image/covid-cells.jpg",
-          //             providerName: "Dr John Doe",
-          //           );
-          //           return AppCard(
-          //             onTap: () {
-          //               context.goNamed(
-          //                 RouteNames.HIV_ART_APPOINTMENT_DETAILS,
-          //                 extra: artAppointment,
-          //               );
-          //             },
-          //             color: theme.colorScheme.onPrimary,
-          //             variant: CardVariant.ELEVETED,
-          //             child: ListTile(
-          //               leading: Container(
-          //                 padding: const EdgeInsets.all(
-          //                   Constants.SPACING,
-          //                 ),
-          //                 decoration: BoxDecoration(
-          //                   color: theme.colorScheme.background,
-          //                   borderRadius: const BorderRadius.all(
-          //                     Radius.circular(
-          //                       Constants.ROUNDNESS,
-          //                     ),
-          //                   ),
-          //                 ),
-          //                 child: const Column(
-          //                   mainAxisAlignment: MainAxisAlignment.center,
-          //                   children: [
-          //                     Icon(Icons.calendar_month),
-          //                   ],
-          //                 ),
-          //               ),
-          //               title: Text(artAppointment.appointment_type ?? '',
-          //                   maxLines: 1),
-          //               titleTextStyle: theme.textTheme.titleSmall
-          //                   ?.copyWith(overflow: TextOverflow.ellipsis),
-          //               subtitle: Text(
-          //                   "${DateFormat('EEEE, MMMM d y').parse(artAppointment.appointment_date).difference(DateTime.now()).inDays} days Remaining"),
-          //               subtitleTextStyle: theme.textTheme.bodySmall,
-          //               trailing: Column(
-          //                 mainAxisAlignment: MainAxisAlignment.center,
-          //                 children: [
-          //                   Text(
-          //                     DateFormat('d').format(
-          //                         DateFormat('EEEE, MMMM d y')
-          //                             .parse(artAppointment.appointment_date)),
-          //                     style: theme.textTheme.bodySmall
-          //                         ?.copyWith(fontWeight: FontWeight.bold),
-          //                   ),
-          //                   Text(
-          //                     DateFormat("MMM").format(
-          //                         DateFormat('EEEE, MMMM d y')
-          //                             .parse(artAppointment.appointment_date)),
-          //                     style: theme.textTheme.bodySmall
-          //                         ?.copyWith(fontWeight: FontWeight.bold),
-          //                   ),
-          //                 ],
-          //               ),
-          //             ),
-          //           );
-          //         },
-          //       );
-          //     },
-          //   ).toList(),
+          //   providerImage:
+          //       "https://www.emeraldgrouppublishing.com/sites/default/files/image/covid-cells.jpg",
+          //   providerName: "Dr John Doe",
+          //   height: screenSize.height * 0.25,
+          //   width: screenSize.width,
           // ),
+          CarouselSlider(
+            options: CarouselOptions(
+              enableInfiniteScroll: true,
+              height: screenSize.height * 0.16,
+              enlargeCenterPage: true,
+              enlargeFactor: 0.1,
+            ),
+            items: data
+                .where((artAppointment) => // Filter only upcoming appointments
+                    DateFormat('EEEE, MMMM d y')
+                        .parse(artAppointment.appointment_date)
+                        .difference(DateTime.now())
+                        .inDays >=
+                    0)
+                .map(
+              (artAppointment) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return AppointmentCard(
+                      appointmentType:
+                          artAppointment.appointment_type ?? "Unknown type",
+                      appointmentTime: DateTime.parse(
+                        // artAppointment.appointment ??
+                            DateTime.now().toIso8601String(),
+                      ),
+                      providerImage:
+                          "https://www.emeraldgrouppublishing.com/sites/default/files/image/covid-cells.jpg",
+                      providerName: "Dr John Doe",
+                      width: 100,height: 100,
+                    );
+                    return AppCard(
+                      onTap: () {
+                        context.goNamed(
+                          RouteNames.HIV_ART_APPOINTMENT_DETAILS,
+                          extra: artAppointment,
+                        );
+                      },
+                      color: theme.colorScheme.onPrimary,
+                      variant: CardVariant.ELEVETED,
+                      child: ListTile(
+                        leading: Container(
+                          padding: const EdgeInsets.all(
+                            Constants.SPACING,
+                          ),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.background,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(
+                                Constants.ROUNDNESS,
+                              ),
+                            ),
+                          ),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.calendar_month),
+                            ],
+                          ),
+                        ),
+                        title: Text(artAppointment.appointment_type ?? '',
+                            maxLines: 1),
+                        titleTextStyle: theme.textTheme.titleSmall
+                            ?.copyWith(overflow: TextOverflow.ellipsis),
+                        subtitle: Text(
+                            "${DateFormat('EEEE, MMMM d y').parse(artAppointment.appointment_date).difference(DateTime.now()).inDays} days Remaining"),
+                        subtitleTextStyle: theme.textTheme.bodySmall,
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              DateFormat('d').format(
+                                  DateFormat('EEEE, MMMM d y')
+                                      .parse(artAppointment.appointment_date)),
+                              style: theme.textTheme.bodySmall
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              DateFormat("MMM").format(
+                                  DateFormat('EEEE, MMMM d y')
+                                      .parse(artAppointment.appointment_date)),
+                              style: theme.textTheme.bodySmall
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ).toList(),
+          ),
         ],
       ),
       error: (error, _) => Container(),
