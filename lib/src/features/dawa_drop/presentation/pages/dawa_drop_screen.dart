@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuItemsBuilder.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuOption.dart';
 import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/dawa_drop_menu.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/widget/DawaDropGetStartedWidget.dart';
 import 'package:nishauri/src/shared/display/meds.dart';
 import 'package:nishauri/src/utils/routes.dart';
@@ -69,7 +70,7 @@ class DawaDropScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 20.0),
                   ElevatedButton(
-                    onPressed: () => navigateToDawaDropGetStarted(context),
+                    onPressed: () => navigateToDawaDropMenu(context),
                     child: const Text(
                       'Get Started',
                       style: TextStyle(
@@ -174,4 +175,11 @@ void navigateToDawaDropGetStarted(BuildContext context) {
     context,
     MaterialPageRoute(builder: (context) => DawaDropGetStartedWidget(),),
   );
+}
+
+  void navigateToDawaDropMenu(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => DawaDropMenuScreen(),),
+    );
 }
