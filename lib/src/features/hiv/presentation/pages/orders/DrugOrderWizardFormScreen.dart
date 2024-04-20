@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
 import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_drug_order_provider.dart';
@@ -20,7 +21,7 @@ import '../../../../../utils/helpers.dart';
 import '../../../../auth/data/providers/auth_provider.dart';
 
 class DrugOrderWizardFormScreen extends HookConsumerWidget {
-  final ARTAppointment? artAppointment;
+  final Appointment? artAppointment;
   final ARTEvent? artEvent;
   final String? type;
 
@@ -49,7 +50,8 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
 
     List<Step> steps = [
       Step(
-        title: const Text("Getting Started"),
+        // title: const Text("Getting Started"),
+        title: const Text("Appointment Details"),
         subtitle: const Text(
           "Please confirm the details",
         ),
@@ -109,16 +111,30 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
       if (formKey.currentState!.validate()) {
         debugPrint("=====================>${formKey.currentState?.instantValue}");
         loading.value = true;
-        final pickupTime = formKey.currentState!.instantValue["pickupTime"];
+        final pickupTime = formKey.currentState!.instantValue["delivery_pickup_time"];
+        final courierService = formKey.currentState!.instantValue["courier_service"].toString();
         ref.read(artDrugOrderProvider.notifier).createOrder({
           ...formKey.currentState!.instantValue,
-          "pickupTime":
+          "delivery_pickup_time":
               pickupTime is DateTime ? pickupTime.toIso8601String() : pickupTime,
-          ...(formKey.currentState?.instantValue["deliveryMethod"] == "in_person" ? {"deliveryPerson": {
-            "fullName": formKey.currentState!.instantValue["deliveryPersonFullName"],
-            "nationalId": formKey.currentState!.instantValue["deliveryPersonNationalId"],
-            "phoneNumber": formKey.currentState!.instantValue["deliveryPersonPhoneNumber"],
-            "pickupTime": formKey.currentState!.instantValue["pickupTime"],
+          "delivery_lat": "",
+          "delivery_long": "",
+        ...(formKey.currentState?.instantValue["delivery_method"] == "parcel" ? {
+          "delivery_person": "",
+          "delivery_person_id": "",
+          "delivery_person_contact": "",
+          "delivery_pickup_time":"",
+          "courier_service": courierService,
+          "delivery_method": "In Parcel",
+        } : {
+          "courier_service": "",
+          "delivery_method": "In Person",
+        }),
+          ...(formKey.currentState?.instantValue["delivery_method"] == "person" ? {"deliveryPerson": {
+            "fullName": formKey.currentState!.instantValue["delivery_person"],
+            "nationalId": formKey.currentState!.instantValue["delivery_person_id"],
+            "phoneNumber": formKey.currentState!.instantValue["delivery_person_contact"],
+            "pickupTime": formKey.currentState!.instantValue["delivery_pickup_time"],
           }} : {})
         }).then((value) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

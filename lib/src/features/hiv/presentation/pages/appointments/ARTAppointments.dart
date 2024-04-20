@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
 import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_appointmen_provider.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
@@ -19,23 +20,23 @@ class ARTAppointmentsScreen extends HookConsumerWidget {
     final theme = Theme.of(context);
     final filters = ["All", "Upcoming", "Past"];
     final currFilter = useState<String>("All");
-    final artAppointmentsAsync = ref.watch(artAppointmentProvider);
+    final appointmentsAsync = ref.watch(appointmentProvider);
 
-    return artAppointmentsAsync.when(
+    return appointmentsAsync.when(
       data: (artAppointments) {
         getFilteredAppointments(String filter) {
           switch (filter) {
             case "Upcoming":
               return artAppointments.where(
                   (artAppointment) => // Filter only upcoming appointments
-                      DateTime.parse(artAppointment.appointmentDate)
+                      DateTime.parse(artAppointment.appointment_date)
                           .difference(DateTime.now())
                           .inDays >=
                       0);
             case "Past":
               return artAppointments.where(
                   (artAppointment) => // Filter only upcoming appointments
-                      DateTime.parse(artAppointment.appointmentDate)
+                      DateTime.parse(artAppointment.appointment_date)
                           .difference(DateTime.now())
                           .inDays <
                       0);
@@ -83,13 +84,13 @@ class ARTAppointmentsScreen extends HookConsumerWidget {
                       leading: const Icon(Icons.calendar_month_sharp),
                       title: Text(appointmentsToDisplay
                           .elementAt(currIndex)
-                          .appointmentType),
+                          .appointment_type??''),
                       subtitle: Text(
                         DateFormat("dd MMM yyy").format(
                           DateTime.parse(
                             appointmentsToDisplay
                                 .elementAt(currIndex)
-                                .appointmentDate,
+                                .appointment_date,
                           ),
                         ),
                       ),
@@ -115,7 +116,7 @@ class ARTAppointmentsScreen extends HookConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Loading ART Appointments",
+              "Loading Appointments",
               style: theme.textTheme.headlineSmall,
             ),
             const SizedBox(height: Constants.SPACING * 2),

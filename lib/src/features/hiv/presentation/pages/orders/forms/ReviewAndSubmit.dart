@@ -28,21 +28,21 @@ class ReviewAndSubmit extends ConsumerWidget {
         leading: const Icon(Icons.check),
       ),
       ListTile(
-        subtitle: Text(formState["type"] ?? "None"),
+        subtitle: Text(formState["order_type"] ?? "None"),
         title: const Text("Type"),
         leading: const Icon(Icons.check),
       ),
-      if (formState["mode"] == "appointment")
+      if (formState["mode"] == "Appointment")
         asyncARTAppointments.when(
           data: (data) {
             final apt = data.indexWhere(
-                    (element) => element.id == formState["appointment"]);
+                    (element) => element.id == formState["appointment_id"]);
             return ListTile(
               subtitle: Text(
                 apt == -1
                     ? "None"
-                    : "${data[apt].appointmentType}(${DateFormat("dd MMM yyy")
-                    .format(DateTime.parse(data[apt].appointmentDate))}})",
+                    : "${data[apt].appointment_type}(${DateFormat("dd MMM yyy")
+                    .format(DateFormat('EEEE, MMMM d y').parse(data[apt].appointment_date))}})",
               ),
               title: const Text("Appointment"),
               leading: const Icon(Icons.check),
@@ -54,11 +54,11 @@ class ReviewAndSubmit extends ConsumerWidget {
             child: CircularProgressIndicator(),
           ),
         ),
-      if (formState["mode"] == "event")
+      if (formState["mode"] == "Event")
         asyncARTEvents.when(
           data: (data) {
             final event = data.indexWhere(
-                    (element) => element.id == formState["event"]);
+                    (element) => element.id == formState["Event"]);
 
             return ListTile(
               subtitle: Text(
@@ -77,7 +77,7 @@ class ReviewAndSubmit extends ConsumerWidget {
             child: CircularProgressIndicator(),
           ),
         ),
-      if (formState["type"] == "other")
+      if (formState["order_type"] == "other")
         asyncARTTreatmentSupport.when(
           data: (data) {
             final careReceiver = data.indexWhere(
@@ -98,16 +98,16 @@ class ReviewAndSubmit extends ConsumerWidget {
           ),
         )
       ,
-      if (formState["deliveryMethod"] == "in-parcel")
+      if (formState["delivery_method"] == "parcel")
         asyncCourierServices.when(
           data: (data) {
             final courier = data.indexWhere(
-                    (element) => element.id == formState["courierService"]);
+                    (element) => element.id == formState["courier_service"]);
             return ListTile(
               subtitle: Text(
                 courier == -1
                     ? "None"
-                    : data[courier].name,
+                    : data[courier].name??'',
               ),
               title: const Text("Courier service"),
               leading: const Icon(Icons.check),
@@ -120,41 +120,41 @@ class ReviewAndSubmit extends ConsumerWidget {
           ),
         ),
       ListTile(
-        subtitle: Text(formState["deliveryMethod"] ?? "None"),
+        subtitle: Text(formState["delivery_method"] ?? "None"),
         title: const Text("Delivery preference"),
         leading: const Icon(Icons.check),
       ),
-      if (formState["deliveryMethod"] == "in-person")
+      if (formState["delivery_method"] == "person")
         ExpansionTile(
           title: const Text("Delivery Person"),
           leading: const Icon(Icons.check),
-          subtitle: Text(formState["deliveryPersonFullName"] ?? "None"),
+          subtitle: Text(formState["delivery_person"] ?? "None"),
           children: [
             ListTile(
-              subtitle: Text(formState["deliveryPersonNationalId"] ?? "None"),
+              subtitle: Text(formState["delivery_person_id"] ?? "None"),
               title: const Text("National Id"),
               leading: const Icon(Icons.subdirectory_arrow_right),
             ),
             ListTile(
-              subtitle: Text(formState["deliveryPersonPhoneNumber"] ?? "None"),
+              subtitle: Text(formState["delivery_person_contact"] ?? "None"),
               title: const Text("contact"),
               leading: const Icon(Icons.subdirectory_arrow_right),
             ),
             ListTile(
-              subtitle: Text(formState["pickupTime"] == null ? "None":  DateFormat("dd MMM yyy HH:mm a")
-                  .format(DateTime.parse(formState["pickupTime"]))),
+              subtitle: Text(formState["delivery_pickup_time"] == null ? "None":  DateFormat("dd MMM yyy HH:mm a")
+                  .format(DateTime.parse(formState["delivery_pickup_time"]))),
               title: const Text("Pickup time"),
               leading: const Icon(Icons.subdirectory_arrow_right),
             ),
           ],
         ),
       ListTile(
-        subtitle: Text(formState["phoneNumber"] ?? "None"),
+        subtitle: Text(formState["client_phone_no"] ?? "None"),
         title: const Text("Phone number"),
         leading: const Icon(Icons.check),
       ),
       ListTile(
-        subtitle: Text(formState["deliveryAddress"]?["address"] ?? "None"),
+        subtitle: Text(formState["delivery_address"] ?? "None"),
         title: const Text("Delivery location"),
         leading: const Icon(Icons.check),
       ),

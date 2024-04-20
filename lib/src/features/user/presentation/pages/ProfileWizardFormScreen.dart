@@ -27,11 +27,13 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
 
     final stepFieldsToValidate = [
       ["image", "username"],
-      ["firstName", "lastName", "dateOfBirth", "gender"],
-      ["email", "phoneNumber", "county", "constituency"],
-      ["bloodGroup", "allergies", "disabilities", "chronics"],
+      ["f_name", "l_name", "dob", "gender"],
+      ["email", "phone_no",
+        // "county",
+        "landmark"],
+      ["blood_group", "allergies", "disabilities", "chronics"],
       ["weight", "height"],
-      ["maritalStatus", "educationLevel", "primaryLanguage", "occupation"],
+      ["marital", "education", "primary_language", "occupation"],
     ];
 
     List<Step> steps = [
@@ -110,15 +112,15 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
     void handleSubmit() {
       if (formKey.currentState!.validate()) {
         loading.value = true;
-        final dateOfBirth = formKey.currentState!.instantValue["dateOfBirth"];
+        final dateOfBirth = formKey.currentState!.instantValue["dob"];
         ref
             .read(userProvider.notifier)
-            .updateUser(User.fromJson({
-              ...formKey.currentState!.instantValue,
-              "dateOfBirth": dateOfBirth is DateTime
-                  ? dateOfBirth.toIso8601String()
-                  : dateOfBirth
-            }))
+            .updateUser({
+          ...formKey.currentState!.instantValue,
+          "dob": dateOfBirth is DateTime
+              ? dateOfBirth.toIso8601String()
+              : dateOfBirth
+        })
             .then((value) {
           //     Update auth state and redirect to home
           return ref.read(authStateProvider.notifier).markProfileAsUpdated();
@@ -187,10 +189,10 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                 // 1.validate current step fields and prevent continue encase of any error in current step
                 if (!isLastStep) {
                   final currentStepFields =
-                      stepFieldsToValidate[currentStep.value];
+                  stepFieldsToValidate[currentStep.value];
 
                   if (currentStepFields.any((field) =>
-                      !formKey.currentState!.fields[field]!.validate())) {
+                  !formKey.currentState!.fields[field]!.validate())) {
                     return; //Don't move to next step if current step not valid
                   }
                 }
@@ -211,7 +213,7 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                     Expanded(
                       child: Builder(builder: (context) {
                         bool isLastStep =
-                            (currentStep.value == steps.length - 1);
+                        (currentStep.value == steps.length - 1);
                         if (isLastStep) {
                           return Button(
                             onPress: () async {
@@ -226,7 +228,7 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                                     child: SingleChildScrollView(
                                       child: ReviewAndSubmit(
                                         formState:
-                                            formKey.currentState!.instantValue,
+                                        formKey.currentState!.instantValue,
                                       ),
                                     ),
                                   ),
@@ -242,7 +244,7 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                                       onPress: context.pop,
                                       titleStyle: theme.textTheme.titleLarge
                                           ?.copyWith(
-                                              color: theme.colorScheme.error),
+                                          color: theme.colorScheme.error),
                                     ),
                                   ],
                                 ),

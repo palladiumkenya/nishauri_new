@@ -25,7 +25,7 @@ class DeliveryInformation extends HookConsumerWidget {
             children: [
               const SizedBox(height: Constants.SPACING),
               FormBuilderTextField(
-                name: "phoneNumber",
+                name: "client_phone_no",
                 initialValue: user.phoneNumber,
                 keyboardType: TextInputType.phone,
                 decoration: inputDecoration(
@@ -33,50 +33,63 @@ class DeliveryInformation extends HookConsumerWidget {
                   prefixIcon: Icons.phone,
                   label: "Phone number",
                 ),
-                  validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(errorText: "Required"),
-                  ]),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(errorText: "Required"),
+                ]),
               ),
               const SizedBox(height: Constants.SPACING),
               // TODO Replace with https://pub.dev/packages/map_location_picker
-              FormBuilderField<Map<String, dynamic>>(
+              FormBuilderTextField(
+                name: "delivery_address",
+                // initialValue: user.phoneNumber,
+                keyboardType: TextInputType.text,
+                decoration: inputDecoration(
+                  placeholder: "e.g Kimbo",
+                  prefixIcon: Icons.map_outlined,
+                  label: "Location Name",
+                ),
                 validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(errorText: "Required"),
+                  FormBuilderValidators.required(errorText: "Required"),
                 ]),
-                builder: (state) {
-                  final controller = TextEditingController(text: state.value?["address"]);
-                  return TextField(
-                    controller: controller,
-                    readOnly: true,
-                    decoration: inputDecoration(
-                      placeholder: "Search location ...",
-                      prefixIcon: Icons.map,
-                      label: "Delivery Location",
-                    ).copyWith(errorText: state.errorText),
-                    onTap: () {
-                      showModalBottomSheet(
-                          isScrollControlled: true,
-                          context: context,
-                          isDismissible: true,
-                          showDragHandle: true,
-                          useSafeArea: true,
-                          builder: (context) {
-                            return LocationPicker(
-                              onChange: (place) {
-                                // controller.text = place.display;
-                                state.didChange({
-                                  "latitude": place.coordinates.lat,
-                                  "longitude": place.coordinates.lng,
-                                  "address": place.display
-                                });
-                              },
-                            );
-                          });
-                    },
-                  );
-                },
-                name: "deliveryAddress",
               ),
+              // FormBuilderField<Map<String, dynamic>>(
+              //   validator: FormBuilderValidators.compose([
+              //     FormBuilderValidators.required(errorText: "Required"),
+              //   ]),
+              //   builder: (state) {
+              //     final controller = TextEditingController(text: state.value?["address"]);
+              //     return TextField(
+              //       controller: controller,
+              //       readOnly: true,
+              //       decoration: inputDecoration(
+              //         placeholder: "Search location ...",
+              //         prefixIcon: Icons.map,
+              //         label: "Delivery Location",
+              //       ).copyWith(errorText: state.errorText),
+              //       onTap: () {
+              //         showModalBottomSheet(
+              //             isScrollControlled: true,
+              //             context: context,
+              //             isDismissible: true,
+              //             showDragHandle: true,
+              //             useSafeArea: true,
+              //             builder: (context) {
+              //               return LocationPicker(
+              //                 onChange: (place) {
+              //                   // controller.text = place.display;
+              //                   state.didChange({
+              //                     "latitude": place.coordinates.lat,
+              //                     "longitude": place.coordinates.lng,
+              //                     "address": place.display
+              //                   });
+              //                 },
+              //               );
+              //             });
+              //       },
+              //     );
+              //   },
+              //   name: "deliveryAddress",
+              // ),
               const SizedBox(height: Constants.SPACING),
             ],
           ),

@@ -9,3 +9,10 @@ final artDrugOrderProvider = StateNotifierProvider<ARTDrugOrderController,
   final repo = ARTDrugOrderRepository(ARTDrugOrderService());
   return ARTDrugOrderController(repo);
 });
+
+final getOrderProvider = FutureProvider<List<ARTDrugOrder>>((ref) async{
+
+  final service = ARTDrugOrderService();
+  final repository = ARTDrugOrderRepository(service);
+  return await repository.getOrders();
+});

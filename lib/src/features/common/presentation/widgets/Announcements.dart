@@ -23,7 +23,7 @@ class Announcements extends HookConsumerWidget {
          CarouselSlider(
            options: CarouselOptions(
                height: screenSize.height * 0.20,
-               autoPlay: true,
+               autoPlay: false,
                autoPlayInterval:
                const Duration(seconds: 3),
                enlargeCenterPage: true,

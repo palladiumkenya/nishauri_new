@@ -20,8 +20,8 @@ Courier _$CourierFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Courier {
-  String? get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -34,7 +34,7 @@ abstract class $CourierCopyWith<$Res> {
   factory $CourierCopyWith(Courier value, $Res Function(Courier) then) =
       _$CourierCopyWithImpl<$Res, Courier>;
   @useResult
-  $Res call({String? id, String name, String? description});
+  $Res call({int? id, String? name, String? description});
 }
 
 /// @nodoc
@@ -51,18 +51,18 @@ class _$CourierCopyWithImpl<$Res, $Val extends Courier>
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = null,
+    Object? name = freezed,
     Object? description = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      name: null == name
+              as int?,
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -78,7 +78,7 @@ abstract class _$$CourierImplCopyWith<$Res> implements $CourierCopyWith<$Res> {
       __$$CourierImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? id, String name, String? description});
+  $Res call({int? id, String? name, String? description});
 }
 
 /// @nodoc
@@ -93,18 +93,18 @@ class __$$CourierImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = null,
+    Object? name = freezed,
     Object? description = freezed,
   }) {
     return _then(_$CourierImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      name: null == name
+              as int?,
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -116,15 +116,15 @@ class __$$CourierImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$CourierImpl with DiagnosticableTreeMixin implements _Courier {
-  const _$CourierImpl({this.id, required this.name, this.description});
+  const _$CourierImpl({this.id, this.name, this.description});
 
   factory _$CourierImpl.fromJson(Map<String, dynamic> json) =>
       _$$CourierImplFromJson(json);
 
   @override
-  final String? id;
+  final int? id;
   @override
-  final String name;
+  final String? name;
   @override
   final String? description;
 
@@ -174,16 +174,16 @@ class _$CourierImpl with DiagnosticableTreeMixin implements _Courier {
 
 abstract class _Courier implements Courier {
   const factory _Courier(
-      {final String? id,
-      required final String name,
+      {final int? id,
+      final String? name,
       final String? description}) = _$CourierImpl;
 
   factory _Courier.fromJson(Map<String, dynamic> json) = _$CourierImpl.fromJson;
 
   @override
-  String? get id;
+  int? get id;
   @override
-  String get name;
+  String? get name;
   @override
   String? get description;
   @override

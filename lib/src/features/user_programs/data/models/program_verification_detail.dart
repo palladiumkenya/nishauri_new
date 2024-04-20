@@ -8,8 +8,8 @@ part 'program_verification_detail.g.dart';
 @Freezed()
 class ProgramVerificationDetail with _$ProgramVerificationDetail {
   const factory ProgramVerificationDetail({
-    required String programCode,
-    required String message,
+    String? programCode,
+    String? message,
     @Default([]) List<ProgramVerificationContact> contacts,
   }) = _ProgramVerificationDetail;
 

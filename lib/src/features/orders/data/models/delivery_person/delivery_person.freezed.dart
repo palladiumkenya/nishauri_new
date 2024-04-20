@@ -20,10 +20,10 @@ DeliveryPerson _$DeliveryPersonFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$DeliveryPerson {
-  String get fullName => throw _privateConstructorUsedError;
-  int get nationalId => throw _privateConstructorUsedError;
-  String get phoneNumber => throw _privateConstructorUsedError;
-  String get pickupTime => throw _privateConstructorUsedError;
+  String? get fullName => throw _privateConstructorUsedError;
+  String? get nationalId => throw _privateConstructorUsedError;
+  String? get phoneNumber => throw _privateConstructorUsedError;
+  String? get pickupTime => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,7 +38,10 @@ abstract class $DeliveryPersonCopyWith<$Res> {
       _$DeliveryPersonCopyWithImpl<$Res, DeliveryPerson>;
   @useResult
   $Res call(
-      {String fullName, int nationalId, String phoneNumber, String pickupTime});
+      {String? fullName,
+      String? nationalId,
+      String? phoneNumber,
+      String? pickupTime});
 }
 
 /// @nodoc
@@ -54,28 +57,28 @@ class _$DeliveryPersonCopyWithImpl<$Res, $Val extends DeliveryPerson>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? fullName = null,
-    Object? nationalId = null,
-    Object? phoneNumber = null,
-    Object? pickupTime = null,
+    Object? fullName = freezed,
+    Object? nationalId = freezed,
+    Object? phoneNumber = freezed,
+    Object? pickupTime = freezed,
   }) {
     return _then(_value.copyWith(
-      fullName: null == fullName
+      fullName: freezed == fullName
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
-              as String,
-      nationalId: null == nationalId
+              as String?,
+      nationalId: freezed == nationalId
           ? _value.nationalId
           : nationalId // ignore: cast_nullable_to_non_nullable
-              as int,
-      phoneNumber: null == phoneNumber
+              as String?,
+      phoneNumber: freezed == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      pickupTime: null == pickupTime
+              as String?,
+      pickupTime: freezed == pickupTime
           ? _value.pickupTime
           : pickupTime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -89,7 +92,10 @@ abstract class _$$DeliveryPersonImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String fullName, int nationalId, String phoneNumber, String pickupTime});
+      {String? fullName,
+      String? nationalId,
+      String? phoneNumber,
+      String? pickupTime});
 }
 
 /// @nodoc
@@ -103,28 +109,28 @@ class __$$DeliveryPersonImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? fullName = null,
-    Object? nationalId = null,
-    Object? phoneNumber = null,
-    Object? pickupTime = null,
+    Object? fullName = freezed,
+    Object? nationalId = freezed,
+    Object? phoneNumber = freezed,
+    Object? pickupTime = freezed,
   }) {
     return _then(_$DeliveryPersonImpl(
-      fullName: null == fullName
+      fullName: freezed == fullName
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
-              as String,
-      nationalId: null == nationalId
+              as String?,
+      nationalId: freezed == nationalId
           ? _value.nationalId
           : nationalId // ignore: cast_nullable_to_non_nullable
-              as int,
-      phoneNumber: null == phoneNumber
+              as String?,
+      phoneNumber: freezed == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      pickupTime: null == pickupTime
+              as String?,
+      pickupTime: freezed == pickupTime
           ? _value.pickupTime
           : pickupTime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -135,22 +141,19 @@ class _$DeliveryPersonImpl
     with DiagnosticableTreeMixin
     implements _DeliveryPerson {
   const _$DeliveryPersonImpl(
-      {required this.fullName,
-      required this.nationalId,
-      required this.phoneNumber,
-      required this.pickupTime});
+      {this.fullName, this.nationalId, this.phoneNumber, this.pickupTime});
 
   factory _$DeliveryPersonImpl.fromJson(Map<String, dynamic> json) =>
       _$$DeliveryPersonImplFromJson(json);
 
   @override
-  final String fullName;
+  final String? fullName;
   @override
-  final int nationalId;
+  final String? nationalId;
   @override
-  final String phoneNumber;
+  final String? phoneNumber;
   @override
-  final String pickupTime;
+  final String? pickupTime;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -205,22 +208,22 @@ class _$DeliveryPersonImpl
 
 abstract class _DeliveryPerson implements DeliveryPerson {
   const factory _DeliveryPerson(
-      {required final String fullName,
-      required final int nationalId,
-      required final String phoneNumber,
-      required final String pickupTime}) = _$DeliveryPersonImpl;
+      {final String? fullName,
+      final String? nationalId,
+      final String? phoneNumber,
+      final String? pickupTime}) = _$DeliveryPersonImpl;
 
   factory _DeliveryPerson.fromJson(Map<String, dynamic> json) =
       _$DeliveryPersonImpl.fromJson;
 
   @override
-  String get fullName;
+  String? get fullName;
   @override
-  int get nationalId;
+  String? get nationalId;
   @override
-  String get phoneNumber;
+  String? get phoneNumber;
   @override
-  String get pickupTime;
+  String? get pickupTime;
   @override
   @JsonKey(ignore: true)
   _$$DeliveryPersonImplCopyWith<_$DeliveryPersonImpl> get copyWith =>

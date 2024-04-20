@@ -3,7 +3,9 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
+import 'package:nishauri/src/features/auth/data/services/Terms.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
@@ -26,11 +28,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   bool _hidePassword = true;
   bool _loading = false;
+  bool _termsAccepted = false;
+  DateTime? _selectedDate;
 
   void _toggleShowPassword() {
     setState(() {
       _hidePassword = !_hidePassword;
     });
+  }
+
+  int calculateAge(DateTime? dob) {
+    if (dob == null) return 0;
+    var now = DateTime.now();
+    var age = now.year - dob.year;
+    if (now.month < dob.month || (now.month == dob.month && now.day < dob.day)) {
+      age--;
+    }
+    return age;
   }
 
   @override
@@ -61,32 +75,45 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   child: Column(
                     children: [
-                      const SizedBox(height: Constants.SPACING),
+                      const SizedBox(height: Constants.SMALL_SPACING),
                       const DecoratedBox(
                         decoration: BoxDecoration(),
                         child: Logo(),
                       ),
-                      const SizedBox(height: Constants.SPACING),
+                      const SizedBox(height: Constants.SMALL_SPACING),
                       const Text(
                         "Sign Up",
                         style: TextStyle(
                             fontSize: 40, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      const SizedBox(height: Constants.SPACING),
+                      const SizedBox(height: Constants.SMALL_SPACING),
                       FormBuilderTextField(
-                        name: "username",
+                        name: "f_name",
                         decoration: inputDecoration(
                           placeholder: "e.g john",
-                          prefixIcon: Icons.person,
-                          label: "Username",
+                          prefixIcon: Icons.account_circle_outlined,
+                          label: "First Name",
                         ),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
                           FormBuilderValidators.minLength(4),
                         ]),
                       ),
-                      const SizedBox(height: Constants.SPACING),
+                      const SizedBox(height: Constants.SMALL_SPACING),
+                      FormBuilderTextField(
+                        name: "l_name",
+                        decoration: inputDecoration(
+                          placeholder: "e.g Doe",
+                          prefixIcon: Icons.account_circle_outlined,
+                          label: "Last Name",
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                          FormBuilderValidators.minLength(4),
+                        ]),
+                      ),
+                      const SizedBox(height: Constants.SMALL_SPACING),
                       FormBuilderTextField(
                         name: "email",
                         decoration: inputDecoration(
@@ -99,9 +126,61 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           FormBuilderValidators.email(),
                         ]),
                       ),
-                      const SizedBox(height: Constants.SPACING),
+                      const SizedBox(height: Constants.SMALL_SPACING),
+                      FormBuilderDateTimePicker(
+                        firstDate: DateTime(1920),
+                        lastDate: DateTime.now(),
+                        name: "dob",
+                        format: DateFormat('yyy MMM dd'),
+                        inputType: InputType.date,
+                        decoration: widgetSurfixIconDecoration(
+                          placeholder: "Enter your date of birth",
+                          prefixIcon: Icons.calendar_month_rounded,
+                          surfixIcon: Text(
+                            _selectedDate != null ? '${calculateAge(_selectedDate!).toString()} years' : '',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          label: "Date of birth",
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                              (date) {
+                            if (date == null) return "Date of birth is required";
+                            if (calculateAge(date) < 12) return "You must be at least 12 years old";
+                            return null;
+                          },
+                        ]),
+                        onChanged: (date) {
+                          setState(() {
+                            _selectedDate = date;
+                          });
+                        },
+                        valueTransformer: (date) => date?.toIso8601String(),
+                      ),
+                      const SizedBox(height: Constants.SMALL_SPACING),
+                      FormBuilderDropdown(
+                        name: "gender",
+                        decoration: inputDecoration(
+                          prefixIcon: Icons.accessibility,
+                          label: "Gender",
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
+                        items: const [
+                          DropdownMenuItem(
+                            value: "Male",
+                            child: Text("Male"),
+                          ),
+                          DropdownMenuItem(
+                            value: "Female",
+                            child: Text("Female"),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: Constants.SMALL_SPACING),
                       FormBuilderTextField(
-                        name: "phoneNumber",
+                        name: "msisdn",
                         decoration: inputDecoration(
                           placeholder: "e.g 0712345678",
                           prefixIcon: Icons.phone,
@@ -109,11 +188,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
+                          FormBuilderValidators.min(10),
                           FormBuilderValidators.minLength(10),
                           FormBuilderValidators.maxLength(13),
                         ]),
                       ),
-                      const SizedBox(height: Constants.SPACING),
+                      const SizedBox(height: Constants.SMALL_SPACING),
                       FormBuilderTextField(
                         name: "password",
                         obscureText: _hidePassword,
@@ -127,9 +207,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             onSurfixIconPressed: _toggleShowPassword),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
+                          FormBuilderValidators.min(8),
+                          FormBuilderValidators.minLength(8),
                         ]),
                       ),
-                      const SizedBox(height: Constants.SPACING),
+                      const SizedBox(height: Constants.SMALL_SPACING),
                       FormBuilderTextField(
                         obscureText: _hidePassword,
                         name: "confirmPassword",
@@ -143,6 +225,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             onSurfixIconPressed: _toggleShowPassword),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
+                          FormBuilderValidators.min(8),
+                          FormBuilderValidators.minLength(8),
                           (value) =>
                               _formKey.currentState!.value["password"] != value
                                   ? "Password didn't match"
@@ -150,16 +234,46 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ]),
                       ),
                       FormBuilderCheckbox(
-                        initialValue: false,
+                        initialValue: _termsAccepted,
                         name: "termsAccepted",
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                          (value) => value == false
-                              ? "You must accept terms and conditions"
-                              : null
-                        ]),
-                        title: const Text("Accept terms and conditions"),
+                        onChanged: (value) {
+                          setState(() {
+                            _termsAccepted = value!;
+                          });
+                        },
+                        title: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "Accept terms and conditions",
+                                overflow: TextOverflow.ellipsis, // Handle overflow by ellipsis if needed
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () => showTermsDialog(context), // Show terms dialog on tap
+                              child: Text(
+                                " (Terms)",
+                                style: TextStyle(
+                                  color: Colors.blue, // Change color to indicate it's a link
+                                  decoration: TextDecoration.underline, // Add underline to indicate it's a link
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
                       ),
+                      // FormBuilderCheckbox(
+                      //   initialValue: false,
+                      //   name: "termsAccepted",
+                      //   validator: FormBuilderValidators.compose([
+                      //     FormBuilderValidators.required(),
+                      //     (value) => value == false
+                      //         ? "You must accept terms and conditions"
+                      //         : null
+                      //   ]),
+                      //   title: const Text("Accept terms and conditions"),
+                      // ),
                       const SizedBox(height: Constants.SPACING),
                       LinkedRichText(
                         linked: "Already have account? ",
@@ -192,6 +306,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                           Text('Registration successful!,'),
                                     ),
                                   );
+                                  // context.goNamed(RouteNames.VERIFY_ACCOUNT);
                                 }).catchError((error) {
                                   handleResponseError(
                                     context,

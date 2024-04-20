@@ -21,8 +21,8 @@ Address _$AddressFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Address {
   String? get id => throw _privateConstructorUsedError;
-  String get latitude => throw _privateConstructorUsedError;
-  String get longitude => throw _privateConstructorUsedError;
+  String? get latitude => throw _privateConstructorUsedError;
+  String? get longitude => throw _privateConstructorUsedError;
   String? get address => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +35,7 @@ abstract class $AddressCopyWith<$Res> {
   factory $AddressCopyWith(Address value, $Res Function(Address) then) =
       _$AddressCopyWithImpl<$Res, Address>;
   @useResult
-  $Res call({String? id, String latitude, String longitude, String? address});
+  $Res call({String? id, String? latitude, String? longitude, String? address});
 }
 
 /// @nodoc
@@ -52,8 +52,8 @@ class _$AddressCopyWithImpl<$Res, $Val extends Address>
   @override
   $Res call({
     Object? id = freezed,
-    Object? latitude = null,
-    Object? longitude = null,
+    Object? latitude = freezed,
+    Object? longitude = freezed,
     Object? address = freezed,
   }) {
     return _then(_value.copyWith(
@@ -61,14 +61,14 @@ class _$AddressCopyWithImpl<$Res, $Val extends Address>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      latitude: null == latitude
+      latitude: freezed == latitude
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
-              as String,
-      longitude: null == longitude
+              as String?,
+      longitude: freezed == longitude
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       address: freezed == address
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
@@ -84,7 +84,7 @@ abstract class _$$AddressImplCopyWith<$Res> implements $AddressCopyWith<$Res> {
       __$$AddressImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? id, String latitude, String longitude, String? address});
+  $Res call({String? id, String? latitude, String? longitude, String? address});
 }
 
 /// @nodoc
@@ -99,8 +99,8 @@ class __$$AddressImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? latitude = null,
-    Object? longitude = null,
+    Object? latitude = freezed,
+    Object? longitude = freezed,
     Object? address = freezed,
   }) {
     return _then(_$AddressImpl(
@@ -108,14 +108,14 @@ class __$$AddressImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      latitude: null == latitude
+      latitude: freezed == latitude
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
-              as String,
-      longitude: null == longitude
+              as String?,
+      longitude: freezed == longitude
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       address: freezed == address
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
@@ -127,8 +127,7 @@ class __$$AddressImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AddressImpl with DiagnosticableTreeMixin implements _Address {
-  const _$AddressImpl(
-      {this.id, required this.latitude, required this.longitude, this.address});
+  const _$AddressImpl({this.id, this.latitude, this.longitude, this.address});
 
   factory _$AddressImpl.fromJson(Map<String, dynamic> json) =>
       _$$AddressImplFromJson(json);
@@ -136,9 +135,9 @@ class _$AddressImpl with DiagnosticableTreeMixin implements _Address {
   @override
   final String? id;
   @override
-  final String latitude;
+  final String? latitude;
   @override
-  final String longitude;
+  final String? longitude;
   @override
   final String? address;
 
@@ -193,8 +192,8 @@ class _$AddressImpl with DiagnosticableTreeMixin implements _Address {
 abstract class _Address implements Address {
   const factory _Address(
       {final String? id,
-      required final String latitude,
-      required final String longitude,
+      final String? latitude,
+      final String? longitude,
       final String? address}) = _$AddressImpl;
 
   factory _Address.fromJson(Map<String, dynamic> json) = _$AddressImpl.fromJson;
@@ -202,9 +201,9 @@ abstract class _Address implements Address {
   @override
   String? get id;
   @override
-  String get latitude;
+  String? get latitude;
   @override
-  String get longitude;
+  String? get longitude;
   @override
   String? get address;
   @override

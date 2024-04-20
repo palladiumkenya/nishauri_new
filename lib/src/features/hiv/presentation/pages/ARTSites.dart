@@ -55,8 +55,8 @@ class _ARTSitesScreenState extends State<ARTSitesScreen> {
                       (e) => Marker(
                         markerId: MarkerId(e.mflCode),
                         position: LatLng(
-                          double.parse(e.address.latitude),
-                          double.parse(e.address.longitude),
+                          double.parse(e.address.latitude??''),
+                          double.parse(e.address.longitude??''),
                         ),
                         infoWindow: InfoWindow(
                             title: e.name,

@@ -22,20 +22,23 @@ User _$UserFromJson(Map<String, dynamic> json) {
 mixin _$User {
   String? get id => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
-  String get username => throw _privateConstructorUsedError;
+  String? get username => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
   String? get lastName => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get dateOfBirth => throw _privateConstructorUsedError;
   String? get gender => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError;
-  String get phoneNumber => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
+  String? get phoneNumber => throw _privateConstructorUsedError;
   String? get county => throw _privateConstructorUsedError;
   String? get constituency => throw _privateConstructorUsedError;
-  String? get bloodGroup => throw _privateConstructorUsedError;
-  List<String> get allergies => throw _privateConstructorUsedError;
-  List<String> get disabilities => throw _privateConstructorUsedError;
-  List<String> get chronics => throw _privateConstructorUsedError;
+  String? get bloodGroup =>
+      throw _privateConstructorUsedError; // @Default([]) List<String> allergies,
+// @Default([]) List<String> disabilities,
+// @Default([]) List<String> chronics,
+  String? get allergies => throw _privateConstructorUsedError;
+  String? get disabilities => throw _privateConstructorUsedError;
+  String? get chronics => throw _privateConstructorUsedError;
   String? get weight => throw _privateConstructorUsedError;
   String? get height => throw _privateConstructorUsedError;
   String? get maritalStatus => throw _privateConstructorUsedError;
@@ -58,20 +61,20 @@ abstract class $UserCopyWith<$Res> {
   $Res call(
       {String? id,
       String? image,
-      String username,
+      String? username,
       String? firstName,
       String? lastName,
       String? name,
       String? dateOfBirth,
       String? gender,
-      String email,
-      String phoneNumber,
+      String? email,
+      String? phoneNumber,
       String? county,
       String? constituency,
       String? bloodGroup,
-      List<String> allergies,
-      List<String> disabilities,
-      List<String> chronics,
+      String? allergies,
+      String? disabilities,
+      String? chronics,
       String? weight,
       String? height,
       String? maritalStatus,
@@ -97,20 +100,20 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   $Res call({
     Object? id = freezed,
     Object? image = freezed,
-    Object? username = null,
+    Object? username = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
     Object? name = freezed,
     Object? dateOfBirth = freezed,
     Object? gender = freezed,
-    Object? email = null,
-    Object? phoneNumber = null,
+    Object? email = freezed,
+    Object? phoneNumber = freezed,
     Object? county = freezed,
     Object? constituency = freezed,
     Object? bloodGroup = freezed,
-    Object? allergies = null,
-    Object? disabilities = null,
-    Object? chronics = null,
+    Object? allergies = freezed,
+    Object? disabilities = freezed,
+    Object? chronics = freezed,
     Object? weight = freezed,
     Object? height = freezed,
     Object? maritalStatus = freezed,
@@ -129,10 +132,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String?,
-      username: null == username
+      username: freezed == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       firstName: freezed == firstName
           ? _value.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
@@ -153,14 +156,14 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
               as String?,
-      email: null == email
+      email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      phoneNumber: null == phoneNumber
+              as String?,
+      phoneNumber: freezed == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       county: freezed == county
           ? _value.county
           : county // ignore: cast_nullable_to_non_nullable
@@ -173,18 +176,18 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.bloodGroup
           : bloodGroup // ignore: cast_nullable_to_non_nullable
               as String?,
-      allergies: null == allergies
+      allergies: freezed == allergies
           ? _value.allergies
           : allergies // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      disabilities: null == disabilities
+              as String?,
+      disabilities: freezed == disabilities
           ? _value.disabilities
           : disabilities // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      chronics: null == chronics
+              as String?,
+      chronics: freezed == chronics
           ? _value.chronics
           : chronics // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as String?,
       weight: freezed == weight
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
@@ -231,20 +234,20 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   $Res call(
       {String? id,
       String? image,
-      String username,
+      String? username,
       String? firstName,
       String? lastName,
       String? name,
       String? dateOfBirth,
       String? gender,
-      String email,
-      String phoneNumber,
+      String? email,
+      String? phoneNumber,
       String? county,
       String? constituency,
       String? bloodGroup,
-      List<String> allergies,
-      List<String> disabilities,
-      List<String> chronics,
+      String? allergies,
+      String? disabilities,
+      String? chronics,
       String? weight,
       String? height,
       String? maritalStatus,
@@ -267,20 +270,20 @@ class __$$UserImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? image = freezed,
-    Object? username = null,
+    Object? username = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
     Object? name = freezed,
     Object? dateOfBirth = freezed,
     Object? gender = freezed,
-    Object? email = null,
-    Object? phoneNumber = null,
+    Object? email = freezed,
+    Object? phoneNumber = freezed,
     Object? county = freezed,
     Object? constituency = freezed,
     Object? bloodGroup = freezed,
-    Object? allergies = null,
-    Object? disabilities = null,
-    Object? chronics = null,
+    Object? allergies = freezed,
+    Object? disabilities = freezed,
+    Object? chronics = freezed,
     Object? weight = freezed,
     Object? height = freezed,
     Object? maritalStatus = freezed,
@@ -299,10 +302,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String?,
-      username: null == username
+      username: freezed == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       firstName: freezed == firstName
           ? _value.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
@@ -323,14 +326,14 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
               as String?,
-      email: null == email
+      email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      phoneNumber: null == phoneNumber
+              as String?,
+      phoneNumber: freezed == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       county: freezed == county
           ? _value.county
           : county // ignore: cast_nullable_to_non_nullable
@@ -343,18 +346,18 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.bloodGroup
           : bloodGroup // ignore: cast_nullable_to_non_nullable
               as String?,
-      allergies: null == allergies
-          ? _value._allergies
+      allergies: freezed == allergies
+          ? _value.allergies
           : allergies // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      disabilities: null == disabilities
-          ? _value._disabilities
+              as String?,
+      disabilities: freezed == disabilities
+          ? _value.disabilities
           : disabilities // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      chronics: null == chronics
-          ? _value._chronics
+              as String?,
+      chronics: freezed == chronics
+          ? _value.chronics
           : chronics // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as String?,
       weight: freezed == weight
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
@@ -397,20 +400,20 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   const _$UserImpl(
       {required this.id,
       this.image,
-      required this.username,
+      this.username,
       this.firstName,
       this.lastName,
       this.name,
       this.dateOfBirth,
       this.gender,
-      required this.email,
-      required this.phoneNumber,
+      this.email,
+      this.phoneNumber,
       this.county,
       this.constituency,
       this.bloodGroup,
-      final List<String> allergies = const [],
-      final List<String> disabilities = const [],
-      final List<String> chronics = const [],
+      this.allergies,
+      this.disabilities,
+      this.chronics,
       this.weight,
       this.height,
       this.maritalStatus,
@@ -418,10 +421,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       this.primaryLanguage,
       this.occupation,
       this.profileUpdated = false,
-      this.accountVerified = false})
-      : _allergies = allergies,
-        _disabilities = disabilities,
-        _chronics = chronics;
+      this.accountVerified = false});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -431,7 +431,7 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   @override
   final String? image;
   @override
-  final String username;
+  final String? username;
   @override
   final String? firstName;
   @override
@@ -443,42 +443,24 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   @override
   final String? gender;
   @override
-  final String email;
+  final String? email;
   @override
-  final String phoneNumber;
+  final String? phoneNumber;
   @override
   final String? county;
   @override
   final String? constituency;
   @override
   final String? bloodGroup;
-  final List<String> _allergies;
+// @Default([]) List<String> allergies,
+// @Default([]) List<String> disabilities,
+// @Default([]) List<String> chronics,
   @override
-  @JsonKey()
-  List<String> get allergies {
-    if (_allergies is EqualUnmodifiableListView) return _allergies;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_allergies);
-  }
-
-  final List<String> _disabilities;
+  final String? allergies;
   @override
-  @JsonKey()
-  List<String> get disabilities {
-    if (_disabilities is EqualUnmodifiableListView) return _disabilities;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_disabilities);
-  }
-
-  final List<String> _chronics;
+  final String? disabilities;
   @override
-  @JsonKey()
-  List<String> get chronics {
-    if (_chronics is EqualUnmodifiableListView) return _chronics;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_chronics);
-  }
-
+  final String? chronics;
   @override
   final String? weight;
   @override
@@ -559,11 +541,12 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
                 other.constituency == constituency) &&
             (identical(other.bloodGroup, bloodGroup) ||
                 other.bloodGroup == bloodGroup) &&
-            const DeepCollectionEquality()
-                .equals(other._allergies, _allergies) &&
-            const DeepCollectionEquality()
-                .equals(other._disabilities, _disabilities) &&
-            const DeepCollectionEquality().equals(other._chronics, _chronics) &&
+            (identical(other.allergies, allergies) ||
+                other.allergies == allergies) &&
+            (identical(other.disabilities, disabilities) ||
+                other.disabilities == disabilities) &&
+            (identical(other.chronics, chronics) ||
+                other.chronics == chronics) &&
             (identical(other.weight, weight) || other.weight == weight) &&
             (identical(other.height, height) || other.height == height) &&
             (identical(other.maritalStatus, maritalStatus) ||
@@ -597,9 +580,9 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
         county,
         constituency,
         bloodGroup,
-        const DeepCollectionEquality().hash(_allergies),
-        const DeepCollectionEquality().hash(_disabilities),
-        const DeepCollectionEquality().hash(_chronics),
+        allergies,
+        disabilities,
+        chronics,
         weight,
         height,
         maritalStatus,
@@ -628,20 +611,20 @@ abstract class _User implements User {
   const factory _User(
       {required final String? id,
       final String? image,
-      required final String username,
+      final String? username,
       final String? firstName,
       final String? lastName,
       final String? name,
       final String? dateOfBirth,
       final String? gender,
-      required final String email,
-      required final String phoneNumber,
+      final String? email,
+      final String? phoneNumber,
       final String? county,
       final String? constituency,
       final String? bloodGroup,
-      final List<String> allergies,
-      final List<String> disabilities,
-      final List<String> chronics,
+      final String? allergies,
+      final String? disabilities,
+      final String? chronics,
       final String? weight,
       final String? height,
       final String? maritalStatus,
@@ -658,7 +641,7 @@ abstract class _User implements User {
   @override
   String? get image;
   @override
-  String get username;
+  String? get username;
   @override
   String? get firstName;
   @override
@@ -670,21 +653,23 @@ abstract class _User implements User {
   @override
   String? get gender;
   @override
-  String get email;
+  String? get email;
   @override
-  String get phoneNumber;
+  String? get phoneNumber;
   @override
   String? get county;
   @override
   String? get constituency;
   @override
   String? get bloodGroup;
+  @override // @Default([]) List<String> allergies,
+// @Default([]) List<String> disabilities,
+// @Default([]) List<String> chronics,
+  String? get allergies;
   @override
-  List<String> get allergies;
+  String? get disabilities;
   @override
-  List<String> get disabilities;
-  @override
-  List<String> get chronics;
+  String? get chronics;
   @override
   String? get weight;
   @override

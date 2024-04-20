@@ -62,28 +62,28 @@ class TreatmentSupport extends ConsumerWidget {
 
 bool _hasTreatmentSupporters(UserProgram program) {
   final codes = [
-    ProgramCodeNames.HIV,
+    ProgramCodeNameIds.HIV,
   ];
-  return codes.any((code) => code == program.program.programCode);
+  return codes.any((code) => code == program.id);
 }
 
 Tab _getProgramTabBar(UserProgram program) {
-  final programCode = program.program.programCode;
-  if (programCode == ProgramCodeNames.HIV) {
+  final programCode = program.id;
+  if (programCode == ProgramCodeNameIds.HIV) {
     return const Tab(
       text: "ART",
     );
   }
   return Tab(
     // icon: const Icon(Icons.directions_car),
-    text: program.program.name,
+    text: program.program_name,
   );
 }
 
 Widget _getProgramAppointments(UserProgram program) {
-  final programCode = program.program.programCode;
-  if (programCode == ProgramCodeNames.HIV) {
+  final programCode = program.id;
+  if (programCode == ProgramCodeNameIds.HIV) {
     return const ARTTreatmentSupportersScreen();
   }
-  return Center(child: Text(program.program.name));
+  return Center(child: Text(program.program_name?? ''));
 }

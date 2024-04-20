@@ -47,19 +47,19 @@ class ProfileScreen extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.perm_identity),
                   title: const Text("Username"),
-                  subtitle: Text(user.username),
+                  subtitle: Text(user.username??''),
                 ),
                 const Divider(),
                 ListTile(
                   leading: const Icon(Icons.email),
                   title: const Text("Email"),
-                  subtitle: Text(user.email),
+                  subtitle: Text(user.email??''),
                 ),
                 const Divider(),
                 ListTile(
                   leading: const Icon(Icons.phone),
                   title: const Text("Phone number"),
-                  subtitle: Text(user.phoneNumber),
+                  subtitle: Text(user.phoneNumber??''),
                 ),
                 const Divider(),
                 ListTile(
@@ -73,22 +73,22 @@ class ProfileScreen extends StatelessWidget {
                   title: const Text("Date of birth"),
                   subtitle: Text(
                     DateTime.tryParse(user.dateOfBirth ?? "") != null
-                        ? DateFormat("dd MM yyyy")
+                        ? DateFormat("yyy-MM-dd")
                             .format(DateTime.parse(user.dateOfBirth!))
                         : "None",
                   ),
                 ),
-                const Divider(),
-                ListTile(
-                  leading: const Icon(Icons.calendar_month),
-                  title: const Text("Date of birth"),
-                  subtitle: Text(
-                    DateTime.tryParse(user.dateOfBirth ?? "") != null
-                        ? DateFormat("dd MM yyyy")
-                            .format(DateTime.parse(user.dateOfBirth!))
-                        : "None",
-                  ),
-                ),
+                // const Divider(),
+                // ListTile(
+                //   leading: const Icon(Icons.calendar_month),
+                //   title: const Text("Date of birth"),
+                //   subtitle: Text(
+                //     DateTime.tryParse(user.dateOfBirth ?? "") != null
+                //         ? DateFormat("dd MM yyyy")
+                //             .format(DateTime.parse(user.dateOfBirth!))
+                //         : "None",
+                //   ),
+                // ),
                 const Divider(),
 
               ],

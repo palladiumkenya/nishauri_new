@@ -7,10 +7,10 @@ part 'program.g.dart';
 class Program with _$Program {
   const factory Program({
     String? id,
-    required String programCode,
-    required String name,
+    String? program_code,
+    String? name,
     String? description,
-    @Default(false) bool isActive,
+    @Default(false) bool is_active,
     required String createdAt,
   }) = _Program;
 

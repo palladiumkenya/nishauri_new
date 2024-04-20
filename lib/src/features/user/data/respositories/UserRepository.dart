@@ -13,9 +13,9 @@ class UserRepository {
     return user;
   }
 
-  Future<User> updateProfile(User user) async {
+  Future<void> updateProfile(Map<String, dynamic> user) async {
     final user_ = await _service.updateProfile(user);
-    return user_;
+    return; //user_;
   }
 
   Future<String> verifyAccount(Map<String, dynamic> data) async {

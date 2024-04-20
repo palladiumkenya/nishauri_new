@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/utils/routes.dart';
 import '../../../../utils/constants.dart';
-import '../../../hiv/data/providers/art_appointmen_provider.dart';
 
 class Appointments extends HookConsumerWidget {
   const Appointments({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final artAppointmentsAsync = ref.watch(artAppointmentProvider);
+    final appointmentsAsync = ref.watch(appointmentProvider);
     final screenSize = MediaQuery.of(context).size;
     final theme = Theme.of(context);
 
-    return artAppointmentsAsync.when(
+    return appointmentsAsync.when(
       data: (data) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -37,7 +37,7 @@ class Appointments extends HookConsumerWidget {
             ),
             items: data
                 .where((artAppointment) => // Filter only upcoming appointments
-                    DateTime.parse(artAppointment.appointmentDate)
+            DateFormat('EEEE, MMMM d y').parse(artAppointment.appointment_date)
                         .difference(DateTime.now())
                         .inDays >=
                     0)
@@ -75,24 +75,24 @@ class Appointments extends HookConsumerWidget {
                           ),
                         ),
                         title:
-                            Text(artAppointment.appointmentType, maxLines: 1),
+                            Text(artAppointment.appointment_type??'', maxLines: 1),
                         titleTextStyle: theme.textTheme.titleSmall
                             ?.copyWith(overflow: TextOverflow.ellipsis),
                         subtitle: Text(
-                            "${DateTime.parse(artAppointment.appointmentDate).difference(DateTime.now()).inDays} days Remaining"),
+                            "${DateFormat('EEEE, MMMM d y').parse(artAppointment.appointment_date).difference(DateTime.now()).inDays} days Remaining"),
                         subtitleTextStyle: theme.textTheme.bodySmall,
                         trailing: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              DateFormat("d").format(DateTime.parse(
-                                  artAppointment.appointmentDate)),
+                              DateFormat('d').format(
+                                  DateFormat('EEEE, MMMM d y').parse(artAppointment.appointment_date)
+                              ),
                               style: theme.textTheme.bodySmall
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              DateFormat("MMM").format(DateTime.parse(
-                                  artAppointment.appointmentDate)),
+                              DateFormat("MMM").format(DateFormat('EEEE, MMMM d y').parse(artAppointment.appointment_date)),
                               style: theme.textTheme.bodySmall
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),

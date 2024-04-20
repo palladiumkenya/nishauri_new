@@ -11,9 +11,9 @@ class ProgramsRepository {
 
   ProgramsRepository(this._service);
 
-  Future<List<Program>> getPrograms() async {
-    return await _service.getPrograms();
-  }
+  // Future<List<Program>> getPrograms() async {
+  //   return await _service.getPrograms();
+  // }
 
   Future<List<UserProgram>> getUserPrograms() async {
     return await _service.getUserPrograms();

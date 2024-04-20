@@ -11,7 +11,11 @@ class ARTDrugOrderRepository {
   Future<List<ARTDrugOrder>> getOrders() async {
     return await _service.getOrders();
   }
-  Future<ARTDrugOrder> createOrder(Map<String, dynamic> data) async {
+  // Future<ARTDrugOrder> createOrder(Map<String, dynamic> data) async {
+  //   return await _service.createOrder(data);
+  // }
+
+  Future<String> createOrder(Map<String, dynamic> data) async {
     return await _service.createOrder(data);
   }
 }
