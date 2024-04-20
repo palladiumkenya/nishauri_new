@@ -14,6 +14,7 @@ import 'package:nishauri/src/features/common/presentation/widgets/Greetings.dart
 import 'package:nishauri/src/features/common/presentation/widgets/ShortcutsUi.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_appointmen_provider.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
+import 'package:nishauri/src/shared/display/AppAvatar.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:nishauri/src/shared/extensions/extensions.dart';
@@ -48,15 +49,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       appBar: AppBar(
         // backgroundColor: theme.primaryColor,
         leading: IconButton(
-          onPressed: toggleDrawer,
-          icon: const CircleAvatar(
-            child: Icon(Icons.person),
+          onPressed: () {
+            context.goNamed(RouteNames.PROFILE_SETTINGS);
+          },
+          icon: Container(
+            padding: const EdgeInsets.all(Constants.SPACING * 0.15),
+            decoration: BoxDecoration(
+                border: Border.all(width: 1, color: theme.primaryColor),
+                shape: BoxShape.circle),
+            child: const AppAvatar(
+              alt: Icon(Icons.person),
+              image:
+                  "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            ),
           ),
         ),
         actions: [
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.notifications),
+          ),
+          IconButton(
+            onPressed: toggleDrawer,
+            icon: const Icon(Icons.more_vert),
           ),
         ],
       ),
