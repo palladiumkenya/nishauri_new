@@ -24,7 +24,11 @@ import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart'
 import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.dart';
 import 'package:nishauri/src/features/confirm_delivery/presentation/pages/ConfirmDeliveryScreen.dart';
 import 'package:nishauri/src/features/dashboard/presentation/pages/Dashboard.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/dawa_drop_menu.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/dawa_drop_screen.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/dispatched_drugs.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/program_appointments.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_drug.dart';
 import 'package:nishauri/src/features/events_calendar/presentation/pages/EventsCalendar.dart';
 import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
@@ -223,6 +227,14 @@ final List<RouteBase> secureRoutes = [
     routes: hivProgramRoutes,
   ),
   GoRoute(
+    name: RouteNames.DAWA_DROP_MENU,
+    path: 'dawa-drop-menu',
+    builder: (BuildContext context, GoRouterState state) {
+      return const DawaDropMenuScreen();
+    },
+    routes: dawaDropRoutes,
+  ),
+  GoRoute(
     name: RouteNames.PROGRAME_REGISTRATION_SCREEN,
     path: 'program-register',
     builder: (BuildContext context, GoRouterState state) {
@@ -345,13 +357,6 @@ final List<RouteBase> openRoutes = [
 
 final List<RouteBase> hivProgramRoutes = [
   GoRoute(
-    name: RouteNames.HIV_DRUG_ORDERS,
-    path: 'drug-order',
-    builder: (BuildContext context, GoRouterState state) {
-      return const HIVDrugOrdersScreen();
-    },
-  ),
-  GoRoute(
     name: RouteNames.HIV_ART_SITES,
     path: 'art-sites',
     builder: (BuildContext context, GoRouterState state) {
@@ -420,6 +425,74 @@ final List<RouteBase> hivProgramRoutes = [
       ),
     ],
   ),
+
+];
+
+final List<RouteBase> dawaDropRoutes = [
+  GoRoute(
+    name: RouteNames.REQUEST_DRUGS,
+    path: 'request-drugs',
+    builder: (BuildContext context, GoRouterState state) {
+      return  RequestDrugMenuScreen();
+    },
+    routes: [
+      GoRoute(
+        name: RouteNames.PROGRAM_APPOINTMENT,
+        path: 'program-appointment',
+        builder: (BuildContext context, GoRouterState state) {
+          return  ProgramAppointmentsScreen();
+        },
+      ),
+      GoRoute(
+        name: RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
+        path: "art-drug-request-form",
+        builder: (BuildContext context, GoRouterState state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final payload = extra["payload"];
+          final type = extra["type"] as String?;
+          if (payload is Appointment) {
+            return DrugOrderWizardFormScreen(artAppointment: payload, type: type);
+          }
+          if (payload is ARTEvent) {
+            return DrugOrderWizardFormScreen(artEvent: payload, type: type);
+          }
+          return DrugOrderWizardFormScreen(type: type);
+          return const DrugOrderWizardFormScreen();
+        },
+      ),
+    ]
+  ),
+  GoRoute(
+    name: RouteNames.HIV_DRUG_ORDERS,
+    path: 'drug-order',
+    builder: (BuildContext context, GoRouterState state) {
+      return const HIVDrugOrdersScreen();
+    },
+  ),
+  GoRoute(
+    name: RouteNames.DISPATCHED_DRUGS,
+    path: 'dispatched-drugs',
+    builder: (BuildContext context, GoRouterState state) {
+      return const DispatchedDrugs();
+    },
+    routes: [
+      GoRoute(
+          name: RouteNames.CONFIRM_DELIVERY,
+          path: "confirm-delivery",
+          builder: (BuildContext context, GoRouterState state) {
+            final extra = state.extra as Map<String, dynamic>;
+            final orderId = extra["OrderId"] as int?;
+            print(orderId);
+            if (orderId == null) {
+              throw "Order with this id was not found";
+            } else {
+              return ConfirmDeliveryScreen(orderId: orderId);
+            }
+          }
+      ),
+    ]
+  ),
+
   GoRoute(
     name: RouteNames.HIV_ART_APPOINTMENT_DETAILS,
     path: "art-appointment",
@@ -430,34 +503,6 @@ final List<RouteBase> hivProgramRoutes = [
       );
     },
   ),
-  GoRoute(
-      name: RouteNames.CONFIRM_DELIVERY,
-      path: "confirm-delivery",
-      builder: (BuildContext context, GoRouterState state) {
-        final extra = state.extra as Map<String, dynamic>;
-        final orderId = extra["OrderId"] as int?;
-        print(orderId);
-        if (orderId == null) {
-          throw "Order with this id was not found";
-        } else {
-          return ConfirmDeliveryScreen(orderId: orderId);
-        }
-      }),
-  GoRoute(
-    name: RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
-    path: "art-drug-request-form",
-    builder: (BuildContext context, GoRouterState state) {
-      final extra = state.extra as Map<String, dynamic>;
-      final payload = extra["payload"];
-      final type = extra["type"] as String?;
-      if (payload is Appointment) {
-        return DrugOrderWizardFormScreen(artAppointment: payload, type: type);
-      }
-      if (payload is ARTEvent) {
-        return DrugOrderWizardFormScreen(artEvent: payload, type: type);
-      }
-      return DrugOrderWizardFormScreen(type: type);
-      return const DrugOrderWizardFormScreen();
-    },
-  ),
+
+
 ];
