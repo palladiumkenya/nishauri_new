@@ -215,7 +215,7 @@ final List<RouteBase> secureRoutes = [
     name: RouteNames.PROGRAM_MENU,
     path: 'program-menu',
     builder: (BuildContext context, GoRouterState state) {
-      return ProgramsMenuScreen();
+      return const ProgramsMenuScreen();
     },
   ),
   GoRoute(

@@ -26,6 +26,7 @@ class _HomeScreenState extends ConsumerState<MainScreen>
     HomeScreen(),
     MainMenuScreen(),
     ChatScreen(),
+    SettingsScreen()
   ];
 
   @override
@@ -107,7 +108,9 @@ class _HomeScreenState extends ConsumerState<MainScreen>
       // ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Theme.of(context).colorScheme.primary,
+        elevation: 0,
+        selectedItemColor: theme.colorScheme.primary,
+        unselectedItemColor: theme.disabledColor,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_filled),
@@ -120,6 +123,10 @@ class _HomeScreenState extends ConsumerState<MainScreen>
           BottomNavigationBarItem(
             icon: Icon(CustomIcons.chat),
             label: "Ask Nuru",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: "Settings",
           ),
         ],
         currentIndex: _currIndex,

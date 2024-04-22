@@ -33,6 +33,7 @@ class MenuOption extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FloatingActionButton(
+            shape: const CircleBorder(),
             heroTag: null,
             onPressed: onPress,
             backgroundColor: bgColor,

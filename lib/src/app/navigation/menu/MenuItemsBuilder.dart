@@ -15,16 +15,15 @@ class MenuItemsBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: crossAxisCount,
-        ),
-        itemCount: items.length,
-        itemBuilder: (BuildContext context, int currentIndex) {
-          return itemBuilder(items[currentIndex]);
-        },
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
       ),
+      itemCount: items.length,
+      clipBehavior: Clip.antiAlias,
+      itemBuilder: (BuildContext context, int currentIndex) {
+        return itemBuilder(items[currentIndex]);
+      },
     );
   }
 }

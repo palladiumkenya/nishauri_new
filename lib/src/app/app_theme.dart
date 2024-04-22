@@ -6,7 +6,7 @@ import 'package:nishauri/src/utils/constants.dart';
 final mainTheme = Provider<ThemeData>((ref) => ThemeData(
       fontFamily: "Play",
       colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color(0xff2bb6aa),
+        seedColor: const Color(0xff0c1430),
         brightness: ref.watch(settingsNotifierProvider).theme == "dark"
             ? Brightness.dark
             : Brightness.light,
