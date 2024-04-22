@@ -23,7 +23,7 @@ class BMICalculatorScreen extends HookWidget {
     final gender = useState<GenderPickerChoices>(GenderPickerChoices.male);
     final height = useState<double>(180);
     final heightUnits =
-        useState<HeightUnitsPickerOptions>(HeightUnitsPickerOptions.In);
+    useState<HeightUnitsPickerOptions>(HeightUnitsPickerOptions.In);
     final weight = useState<int>(65);
     final age = useState<int>(27);
     return Scaffold(
