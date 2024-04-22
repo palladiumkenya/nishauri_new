@@ -15,14 +15,16 @@ class HeightUnitsPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final color = theme.canvasColor;
-    final bgColor = theme.colorScheme.primary;
+    final colorActive = theme.canvasColor;
+    final colorInactive = theme.colorScheme.onSurface;
+    final bgColorActive = theme.colorScheme.primary;
+    final bgColorInActive = theme.disabledColor;
+
 
     return Row(
       children: [
         Card(
           elevation: 0,
-          color: theme.canvasColor,
           clipBehavior: Clip.antiAlias,
           shape: const CircleBorder(),
           child: InkWell(
@@ -33,13 +35,13 @@ class HeightUnitsPicker extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(Constants.SPACING),
               color:
-                  heightUnits == HeightUnitsPickerOptions.In ? bgColor : color,
+                  heightUnits == HeightUnitsPickerOptions.In ? bgColorActive : bgColorInActive,
               child: Text(
                 "In",
                 style: theme.textTheme.titleSmall?.copyWith(
                   color: heightUnits == HeightUnitsPickerOptions.In
-                      ? color
-                      : bgColor,
+                      ? colorActive
+                      : colorInactive,
                 ),
               ),
             ),
@@ -47,7 +49,6 @@ class HeightUnitsPicker extends StatelessWidget {
         ),
         Card(
           elevation: 0,
-          color: theme.canvasColor,
           clipBehavior: Clip.antiAlias,
           shape: const CircleBorder(),
           child: InkWell(
@@ -58,13 +59,13 @@ class HeightUnitsPicker extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(Constants.SPACING),
               color:
-                  heightUnits == HeightUnitsPickerOptions.Ft ? bgColor : color,
+                  heightUnits == HeightUnitsPickerOptions.Ft ? bgColorActive : bgColorInActive,
               child: Text(
                 "Ft",
                 style: theme.textTheme.titleSmall?.copyWith(
                   color: heightUnits == HeightUnitsPickerOptions.Ft
-                      ? color
-                      : bgColor,
+                      ? colorActive
+                      : colorInactive,
                 ),
               ),
             ),
@@ -72,7 +73,6 @@ class HeightUnitsPicker extends StatelessWidget {
         ),
         Card(
           elevation: 0,
-          color: theme.canvasColor,
           clipBehavior: Clip.antiAlias,
           shape: const CircleBorder(),
           child: InkWell(
@@ -83,13 +83,13 @@ class HeightUnitsPicker extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(Constants.SPACING),
               color:
-                  heightUnits == HeightUnitsPickerOptions.Cm ? bgColor : color,
+                  heightUnits == HeightUnitsPickerOptions.Cm ? bgColorActive : bgColorInActive,
               child: Text(
                 "Cm",
                 style: theme.textTheme.titleSmall?.copyWith(
                   color: heightUnits == HeightUnitsPickerOptions.Cm
-                      ? color
-                      : bgColor,
+                      ? colorActive
+                      : colorInactive,
                 ),
               ),
             ),

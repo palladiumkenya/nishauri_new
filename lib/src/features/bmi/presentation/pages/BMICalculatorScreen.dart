@@ -8,6 +8,8 @@ import 'package:nishauri/src/features/bmi/presentation/widgets/HeightPicker.dart
 import 'package:nishauri/src/features/bmi/presentation/widgets/HeightUnitsPicker.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/input/Button.dart';
+import 'package:nishauri/src/shared/input/QuanterSizer.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 
@@ -19,8 +21,10 @@ class BMICalculatorScreen extends HookWidget {
     final theme = Theme.of(context);
     final gender = useState<GenderPickerChoices>(GenderPickerChoices.male);
     final height = useState<double>(18);
-    final heightUnits = useState<HeightUnitsPickerOptions>(HeightUnitsPickerOptions.In);
-
+    final heightUnits =
+        useState<HeightUnitsPickerOptions>(HeightUnitsPickerOptions.In);
+    final weight = useState<int>(65);
+    final age = useState<int>(27);
     return Scaffold(
       body: Column(
         children: [
@@ -30,8 +34,7 @@ class BMICalculatorScreen extends HookWidget {
               icon: Icons.calculate_outlined),
           Expanded(
             child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(Constants.SPACING),
+              child: AppCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -56,6 +59,26 @@ class BMICalculatorScreen extends HookWidget {
                       },
                     ),
                     const SizedBox(height: Constants.SPACING),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Quantizer(
+                          value: weight.value,
+                          onValueChange: (value) => weight.value = value,
+                          label: "Weight",
+                          units: "Kgs",
+                        ),Quantizer(
+                          value: age.value,
+                          onValueChange: (value) => age.value = value,
+                          label: "Age",
+                          units: "Years",
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: Constants.SPACING),
+                    Button(title: "Calculate", onPress: (){
+
+                    },)
                   ],
                 ),
               ),

@@ -20,7 +20,7 @@ class HeightPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return AppCard(
+    return Card(
       child: Container(
         padding: const EdgeInsets.all(Constants.SPACING),
         child: Column(children: [
@@ -44,7 +44,7 @@ class HeightPicker extends StatelessWidget {
               style: theme.textTheme.displayLarge,
             ),
           ),
-          Slider(value: height, min: 0, max: 100, onChanged: onHeightChange, inactiveColor: theme.canvasColor),
+          Slider(value: height, min: 0, max: 100, onChanged: onHeightChange),
         ]),
       ),
     );

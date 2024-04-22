@@ -32,7 +32,6 @@ class GenderPicker extends StatelessWidget {
               height: screenSize.width * 0.45,
               decoration: BoxDecoration(
                 color: gender == GenderPickerChoices.male ? bgColor : color,
-                border: Border.all(width: 1, color: bgColor),
               ),
               child: Column(
                 children: [
@@ -63,10 +62,7 @@ class GenderPicker extends StatelessWidget {
               width: screenSize.width * 0.45,
               height: screenSize.width * 0.45,
               decoration: BoxDecoration(
-                  color:
-                      gender == GenderPickerChoices.female ? bgColor : color,
-                border: Border.all(width: 1, color: bgColor),
-
+                color: gender == GenderPickerChoices.female ? bgColor : color,
               ),
               child: Column(children: [
                 Icon(
