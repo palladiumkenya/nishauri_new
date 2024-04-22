@@ -63,7 +63,7 @@ class Appointments extends HookConsumerWidget {
           // ),
           CarouselSlider(
             options: CarouselOptions(
-              enableInfiniteScroll: true,
+              enableInfiniteScroll: false,
               // height: screenSize.height * 0.2,
               enlargeCenterPage: true,
               enlargeFactor: 0.1,

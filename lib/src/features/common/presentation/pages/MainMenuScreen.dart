@@ -72,16 +72,18 @@ class MainMenuScreen extends StatelessWidget {
                               children: <Widget>[
                                 Icon(
                                   item.icon,
-                                  size: 70,
+                                  size: 50,
                                   color: theme.colorScheme.primary,
                                 ),
                                 const SizedBox(height: Constants.SPACING),
                                 Text(
                                   item.title ?? "",
-                                  style: theme.textTheme.titleLarge?.copyWith(
-                                      color: theme.canvasColor,
-                                      fontWeight: FontWeight.bold,
-                                      overflow: TextOverflow.ellipsis),
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    color: theme.canvasColor,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: true, // Add this line to enable text wrapping
                                 ),
                               ],
                             ),

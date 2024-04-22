@@ -202,8 +202,10 @@ class _ChatScreenState extends State<ChatScreen> {
             child: TextField(
               controller: _textController,
               onSubmitted: _handleSubmit,
-              decoration: InputDecoration.collapsed(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
                 hintText: hintText,
+                suffixIcon: Icon(Icons.mic_none_outlined),
               ),
             ),
           ),

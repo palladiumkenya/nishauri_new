@@ -27,11 +27,12 @@ class LabResultsScreen extends ConsumerWidget {
             ),
             title: const Text("ART Lab Results"),
             backgroundColor: Theme.of(context).primaryColor,
-            bottom: const TabBar(
-              tabs: [
+            bottom: TabBar(
+              tabs: const [
                 Tab(icon: Icon(Icons.medication), text: "Viral Load Results"),
                 Tab(icon: Icon(Icons.auto_graph_outlined), text: "Viral Load Trend"),
               ],
+              labelColor: theme.colorScheme.onPrimary,
             ),
           ),
           body: FractionallySizedBox(
