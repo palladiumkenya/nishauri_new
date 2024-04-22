@@ -63,6 +63,7 @@ dependencies:
   dropdown_search: ^5.0.6
   flutter_expandable_fab: ^2.0.0
   multi_dropdown: ^2.1.4
+  flutter_markdown: ^0.6.19
 
 dev_dependencies:
   flutter_test:

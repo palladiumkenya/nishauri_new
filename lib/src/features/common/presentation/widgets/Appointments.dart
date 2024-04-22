@@ -64,7 +64,7 @@ class Appointments extends HookConsumerWidget {
           CarouselSlider(
             options: CarouselOptions(
               enableInfiniteScroll: true,
-              height: screenSize.height * 0.2,
+              // height: screenSize.height * 0.2,
               enlargeCenterPage: true,
               enlargeFactor: 0.1,
             ),
@@ -92,13 +92,17 @@ class Appointments extends HookConsumerWidget {
                           extra: artAppointment,
                         );
                       },
-                      child: AppointmentCard(
-                        appointmentType:
-                            artAppointment.appointment_type ?? "Unknown type",
-                        appointmentTime: appointmentDate,
-                        providerImage:
-                            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                        providerName: "Dr John Doe",
+                      child: Wrap(
+                        children: [
+                          AppointmentCard(
+                            appointmentType:
+                                artAppointment.appointment_type ?? "Unknown type",
+                            appointmentTime: appointmentDate,
+                            providerImage:
+                                "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                            providerName: "Dr John Doe",
+                          ),
+                        ],
                       ),
                     );
                     return AppCard(

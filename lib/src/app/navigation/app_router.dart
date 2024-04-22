@@ -17,6 +17,7 @@ import 'package:nishauri/src/features/auth/presentation/pages/VerificationScreen
 import 'package:nishauri/src/features/auth/presentation/pages/VerifiedResetPassword.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/VerifyResetPasswordScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart';
+import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorResultsScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
 import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
 import 'package:nishauri/src/features/clinic_card/presentation/pages/ClinicCardScreen.dart';
@@ -184,12 +185,22 @@ final List<RouteBase> secureRoutes = [
     },
   ),
   GoRoute(
-    name: RouteNames.BMI_CALCULATOR,
-    path: 'bmi-calculator',
-    builder: (BuildContext context, GoRouterState state) {
-      return const BMICalculatorScreen();
-    },
-  ),
+      name: RouteNames.BMI_CALCULATOR,
+      path: 'bmi-calculator',
+      builder: (BuildContext context, GoRouterState state) {
+        return const BMICalculatorScreen();
+      },
+      routes: [
+        GoRoute(
+          name: RouteNames.BMI_CALCULATOR_RESULTS,
+          path: "bmi-calculator-results",
+          builder: (BuildContext context, GoRouterState state){
+            double extra =
+            state.extra! as double;
+            return BMICalculatorResultsScreen(bmi: extra);
+          }
+        )
+      ]),
   GoRoute(
     name: RouteNames.PRIVACY_SETTINGS,
     path: 'privacy-settings',
@@ -345,7 +356,8 @@ final List<RouteBase> openRoutes = [
       final extras = state.extra as String;
       return ResetPasswordVerificationScreen(username: extras);
     },
-  ),GoRoute(
+  ),
+  GoRoute(
     name: RouteNames.VERIFIED_RESET_PASSWORD_SCREEN,
     path: 'verified-reset-password',
     builder: (context, state) {
@@ -425,43 +437,42 @@ final List<RouteBase> hivProgramRoutes = [
       ),
     ],
   ),
-
 ];
 
 final List<RouteBase> dawaDropRoutes = [
   GoRoute(
-    name: RouteNames.REQUEST_DRUGS,
-    path: 'request-drugs',
-    builder: (BuildContext context, GoRouterState state) {
-      return  RequestDrugMenuScreen();
-    },
-    routes: [
-      GoRoute(
-        name: RouteNames.PROGRAM_APPOINTMENT,
-        path: 'program-appointment',
-        builder: (BuildContext context, GoRouterState state) {
-          return  ProgramAppointmentsScreen();
-        },
-      ),
-      GoRoute(
-        name: RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
-        path: "art-drug-request-form",
-        builder: (BuildContext context, GoRouterState state) {
-          final extra = state.extra as Map<String, dynamic>;
-          final payload = extra["payload"];
-          final type = extra["type"] as String?;
-          if (payload is Appointment) {
-            return DrugOrderWizardFormScreen(artAppointment: payload, type: type);
-          }
-          if (payload is ARTEvent) {
-            return DrugOrderWizardFormScreen(artEvent: payload, type: type);
-          }
-          return DrugOrderWizardFormScreen(type: type);
-          return const DrugOrderWizardFormScreen();
-        },
-      ),
-    ]
-  ),
+      name: RouteNames.REQUEST_DRUGS,
+      path: 'request-drugs',
+      builder: (BuildContext context, GoRouterState state) {
+        return RequestDrugMenuScreen();
+      },
+      routes: [
+        GoRoute(
+          name: RouteNames.PROGRAM_APPOINTMENT,
+          path: 'program-appointment',
+          builder: (BuildContext context, GoRouterState state) {
+            return ProgramAppointmentsScreen();
+          },
+        ),
+        GoRoute(
+          name: RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
+          path: "art-drug-request-form",
+          builder: (BuildContext context, GoRouterState state) {
+            final extra = state.extra as Map<String, dynamic>;
+            final payload = extra["payload"];
+            final type = extra["type"] as String?;
+            if (payload is Appointment) {
+              return DrugOrderWizardFormScreen(
+                  artAppointment: payload, type: type);
+            }
+            if (payload is ARTEvent) {
+              return DrugOrderWizardFormScreen(artEvent: payload, type: type);
+            }
+            return DrugOrderWizardFormScreen(type: type);
+            return const DrugOrderWizardFormScreen();
+          },
+        ),
+      ]),
   GoRoute(
     name: RouteNames.HIV_DRUG_ORDERS,
     path: 'drug-order',
@@ -470,29 +481,26 @@ final List<RouteBase> dawaDropRoutes = [
     },
   ),
   GoRoute(
-    name: RouteNames.DISPATCHED_DRUGS,
-    path: 'dispatched-drugs',
-    builder: (BuildContext context, GoRouterState state) {
-      return const DispatchedDrugs();
-    },
-    routes: [
-      GoRoute(
-          name: RouteNames.CONFIRM_DELIVERY,
-          path: "confirm-delivery",
-          builder: (BuildContext context, GoRouterState state) {
-            final extra = state.extra as Map<String, dynamic>;
-            final orderId = extra["OrderId"] as int?;
-            print(orderId);
-            if (orderId == null) {
-              throw "Order with this id was not found";
-            } else {
-              return ConfirmDeliveryScreen(orderId: orderId);
-            }
-          }
-      ),
-    ]
-  ),
-
+      name: RouteNames.DISPATCHED_DRUGS,
+      path: 'dispatched-drugs',
+      builder: (BuildContext context, GoRouterState state) {
+        return const DispatchedDrugs();
+      },
+      routes: [
+        GoRoute(
+            name: RouteNames.CONFIRM_DELIVERY,
+            path: "confirm-delivery",
+            builder: (BuildContext context, GoRouterState state) {
+              final extra = state.extra as Map<String, dynamic>;
+              final orderId = extra["OrderId"] as int?;
+              print(orderId);
+              if (orderId == null) {
+                throw "Order with this id was not found";
+              } else {
+                return ConfirmDeliveryScreen(orderId: orderId);
+              }
+            }),
+      ]),
   GoRoute(
     name: RouteNames.HIV_ART_APPOINTMENT_DETAILS,
     path: "art-appointment",
@@ -503,6 +511,4 @@ final List<RouteBase> dawaDropRoutes = [
       );
     },
   ),
-
-
 ];

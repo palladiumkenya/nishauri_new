@@ -5,28 +5,8 @@ import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 
 // Function to calculate BMI
 double calculateBMI(
-    String heightUnits, String weightUnits, double weight, double height) {
-  double heightValue = height;
-  double weightValue = weight;
-
-  // Convert height and weight to standard units (meters and kilograms)
-  if (heightUnits == 'cm') {
-    heightValue /= 100;
-  } else if (heightUnits == 'in') {
-    heightValue *= 0.0254;
-  } else if (heightUnits == 'ft') {
-    heightValue *= 0.3048;
-  }
-
-  if (weightUnits == 'g') {
-    weightValue /= 1000;
-  } else if (weightUnits == 'lb') {
-    weightValue *= 0.453592;
-  }
-
-  // Calculate BMI
-  double bmi = weightValue / (heightValue * heightValue);
-  return bmi;
+    double heightCm, int weightKgs) {
+  return  weightKgs / ((heightCm/100) * (heightCm/100));
 }
 
 String getBMIStatus(double bmi) {

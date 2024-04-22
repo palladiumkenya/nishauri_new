@@ -6,19 +6,17 @@ import '../../utils/helpers.dart';
 
 class CustomAppBar extends StatelessWidget {
   final String title;
-  final String subTitle;
+  final String? subTitle;
   final IconData icon;
-  const CustomAppBar({super.key, required this.title, required this.subTitle, required this.icon});
+  const CustomAppBar({super.key, required this.title, this.subTitle, required this.icon});
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = getOrientationAwareScreenSize(context);
     final theme = Theme.of(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(
           horizontal: Constants.SPACING, vertical: Constants.SPACING * 3),
-      height: screenSize.height * 0.22,
       decoration: BoxDecoration(
         color: theme.colorScheme.primary,
         borderRadius: const BorderRadius.only(
@@ -33,17 +31,12 @@ class CustomAppBar extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const SizedBox(height: Constants.SPACING),
           InkWell(
             child: Icon(Icons.arrow_back, color: theme.canvasColor),
             onTap: () => context.pop(),
           ),
-          // IconButton(
-          //   onPressed: () => context.pop(),
-          //   icon: Icon(Icons.arrow_back, color: theme.canvasColor),
-          // ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -56,8 +49,11 @@ class CustomAppBar extends StatelessWidget {
               Icon(icon, color: theme.canvasColor,)
             ],
           ),
+          if(subTitle != null)
+          const SizedBox(height: Constants.SPACING * 2),
+          if(subTitle != null)
           Text(
-            subTitle,
+            subTitle!,
             style: theme.textTheme.titleLarge
                 ?.copyWith(color: theme.canvasColor),
           ),

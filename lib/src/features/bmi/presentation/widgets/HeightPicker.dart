@@ -4,8 +4,12 @@ import 'package:nishauri/src/features/bmi/presentation/widgets/HeightUnitsPicker
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
+
+
 class HeightPicker extends StatelessWidget {
   final double height;
+  final double? min;
+  final double? max;
   final HeightUnitsPickerOptions heightUnits;
   final void Function(HeightUnitsPickerOptions heightUnits) onHeightUnitsChange;
   final void Function(double height) onHeightChange;
@@ -15,7 +19,9 @@ class HeightPicker extends StatelessWidget {
       required this.height,
       required this.onHeightChange,
       required this.heightUnits,
-      required this.onHeightUnitsChange});
+      required this.onHeightUnitsChange,
+      this.min = 120,
+      this.max = 270});
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +46,11 @@ class HeightPicker extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(Constants.SPACING),
             child: Text(
-              height.toStringAsFixed(1),
+              convertFromCmTo(heightUnits,height).toStringAsFixed(1),
               style: theme.textTheme.displayLarge,
             ),
           ),
-          Slider(value: height, min: 0, max: 100, onChanged: onHeightChange),
+          Slider(value: height, min: min!, max: max!, onChanged: onHeightChange),
         ]),
       ),
     );

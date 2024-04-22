@@ -16,6 +16,7 @@ class RouteNames {
   static const VERIFY_ACCOUNT = "verify";
   static const UNLOCK_SCREEN = "unlock";
   static const BMI_CALCULATOR = "bmi-calculator";
+  static const BMI_CALCULATOR_RESULTS = "bmi-calculator-results";
   static const PRIVACY_SETTINGS = "privacy";
   static const PROFILE_SETTINGS = "profile";
   static const PROFILE_EDIT_FORM = "profile-edit";

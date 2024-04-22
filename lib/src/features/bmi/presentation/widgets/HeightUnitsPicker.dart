@@ -3,6 +3,18 @@ import 'package:nishauri/src/utils/constants.dart';
 
 enum HeightUnitsPickerOptions { Cm, Ft, In }
 
+double convertFromCmTo(HeightUnitsPickerOptions units, double cm) {
+  switch (units) {
+    case HeightUnitsPickerOptions.Ft:
+      return cm / 30.48; // Convert to feet (1 cm = 0.0328 ft)
+    case HeightUnitsPickerOptions.In:
+      return cm / 2.54; // Convert to inches (1 cm = 0.3937 in)
+    default:
+      return cm; // No conversion needed for centimeters
+  }
+}
+
+
 class HeightUnitsPicker extends StatelessWidget {
   final HeightUnitsPickerOptions heightUnits;
   final void Function(HeightUnitsPickerOptions heightUnits) onHeightUnitsChange;
@@ -38,7 +50,7 @@ class HeightUnitsPicker extends StatelessWidget {
                   heightUnits == HeightUnitsPickerOptions.In ? bgColorActive : bgColorInActive,
               child: Text(
                 "In",
-                style: theme.textTheme.titleSmall?.copyWith(
+                style: theme.textTheme.titleMedium?.copyWith(
                   color: heightUnits == HeightUnitsPickerOptions.In
                       ? colorActive
                       : colorInactive,
@@ -62,7 +74,7 @@ class HeightUnitsPicker extends StatelessWidget {
                   heightUnits == HeightUnitsPickerOptions.Ft ? bgColorActive : bgColorInActive,
               child: Text(
                 "Ft",
-                style: theme.textTheme.titleSmall?.copyWith(
+                style: theme.textTheme.titleMedium?.copyWith(
                   color: heightUnits == HeightUnitsPickerOptions.Ft
                       ? colorActive
                       : colorInactive,
@@ -86,7 +98,7 @@ class HeightUnitsPicker extends StatelessWidget {
                   heightUnits == HeightUnitsPickerOptions.Cm ? bgColorActive : bgColorInActive,
               child: Text(
                 "Cm",
-                style: theme.textTheme.titleSmall?.copyWith(
+                style: theme.textTheme.titleMedium?.copyWith(
                   color: heightUnits == HeightUnitsPickerOptions.Cm
                       ? colorActive
                       : colorInactive,

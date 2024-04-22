@@ -12,6 +12,7 @@ import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/input/QuanterSizer.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class BMICalculatorScreen extends HookWidget {
   const BMICalculatorScreen({super.key});
@@ -20,7 +21,7 @@ class BMICalculatorScreen extends HookWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final gender = useState<GenderPickerChoices>(GenderPickerChoices.male);
-    final height = useState<double>(18);
+    final height = useState<double>(180);
     final heightUnits =
         useState<HeightUnitsPickerOptions>(HeightUnitsPickerOptions.In);
     final weight = useState<int>(65);
@@ -35,51 +36,60 @@ class BMICalculatorScreen extends HookWidget {
           Expanded(
             child: SingleChildScrollView(
               child: AppCard(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Choose your gender",
-                      style: theme.textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: Constants.SPACING),
-                    GenderPicker(
-                      gender: gender.value,
-                      onGenderChange: (gender_) => gender.value = gender_,
-                    ),
-                    const SizedBox(height: Constants.SPACING),
-                    HeightPicker(
-                      height: height.value,
-                      heightUnits: heightUnits.value,
-                      onHeightChange: (height_) {
-                        height.value = height_;
-                      },
-                      onHeightUnitsChange: (units) {
-                        heightUnits.value = units;
-                      },
-                    ),
-                    const SizedBox(height: Constants.SPACING),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Quantizer(
-                          value: weight.value,
-                          onValueChange: (value) => weight.value = value,
-                          label: "Weight",
-                          units: "Kgs",
-                        ),Quantizer(
-                          value: age.value,
-                          onValueChange: (value) => age.value = value,
-                          label: "Age",
-                          units: "Years",
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: Constants.SPACING),
-                    Button(title: "Calculate", onPress: (){
-
-                    },)
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(Constants.SPACING * 0.5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Choose your gender",
+                        style: theme.textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: Constants.SPACING),
+                      GenderPicker(
+                        gender: gender.value,
+                        onGenderChange: (gender_) => gender.value = gender_,
+                      ),
+                      const SizedBox(height: Constants.SPACING),
+                      HeightPicker(
+                        height: height.value,
+                        heightUnits: heightUnits.value,
+                        onHeightChange: (height_) {
+                          height.value = height_;
+                        },
+                        onHeightUnitsChange: (units) {
+                          heightUnits.value = units;
+                        },
+                      ),
+                      const SizedBox(height: Constants.SPACING),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Quantizer(
+                            min: 20,
+                            max: 300,
+                            value: weight.value,
+                            onValueChange: (value) => weight.value = value,
+                            label: "Weight",
+                            units: "Kgs",
+                          ),Quantizer(
+                            min: 5,
+                            max: 100,
+                            value: age.value,
+                            onValueChange: (value) => age.value = value,
+                            label: "Age",
+                            units: "Years",
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: Constants.SPACING),
+                      Button(title: "Calculate", onPress: (){
+                        final bmi = calculateBMI(height.value, weight.value);
+                        context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
+                      },),
+                      const SizedBox(height: Constants.SPACING),
+                    ],
+                  ),
                 ),
               ),
             ),
