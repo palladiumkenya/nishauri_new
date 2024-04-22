@@ -50,8 +50,7 @@ class ShortcutsWidget extends HookConsumerWidget {
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             ...getMenuItemByNames(context, shortcuts).map((item) {
-              return InkWell(
-
+              return GestureDetector(
                   onTap: item.onPressed,
                 onLongPress: (){
                     _showDialog(context);

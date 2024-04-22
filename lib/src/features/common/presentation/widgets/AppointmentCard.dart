@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/helpers.dart';
 
 class AppointmentCard extends StatelessWidget {
   final String providerName;
   final String providerImage;
   final DateTime appointmentTime;
   final String appointmentType;
-  final double width;
-  final double height;
+
 
   const AppointmentCard({
     super.key,
@@ -19,8 +19,6 @@ class AppointmentCard extends StatelessWidget {
     required this.providerImage,
     required this.appointmentTime,
     required this.appointmentType,
-    required this.width,
-    required this.height,
   });
 
   @override
@@ -53,6 +51,7 @@ class AppointmentCard extends StatelessWidget {
               )),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Row(
                     children: [
@@ -93,7 +92,7 @@ class AppointmentCard extends StatelessWidget {
                             Row(
                               children: [
                                 Text(
-                                  DateFormat.jm().format(appointmentTime),
+                                  DateFormat("EEE, MMM dd").format(appointmentTime),
                                   style: theme.textTheme.titleSmall
                                       ?.copyWith(color: theme.canvasColor),
                                 ),
@@ -141,7 +140,7 @@ class AppointmentCard extends StatelessWidget {
           ),
           Positioned(
             bottom: -15,
-            right: 50,
+            right: getOrientationAwareScreenSize(context).width * 0.08,
             child: Container(
               decoration: BoxDecoration(
                 // border: Border.all(width: 2, color: theme.canvasColor),

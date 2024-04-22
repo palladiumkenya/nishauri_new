@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/AppointmentCard.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
+import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 import '../../../../utils/constants.dart';
 
@@ -15,7 +18,7 @@ class Appointments extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appointmentsAsync = ref.watch(appointmentProvider);
-    final screenSize = MediaQuery.of(context).size;
+    final screenSize = getOrientationAwareScreenSize(context);
     final theme = Theme.of(context);
 
     return appointmentsAsync.when(
@@ -32,8 +35,10 @@ class Appointments extends HookConsumerWidget {
                   style: theme.textTheme.titleMedium,
                 ),
                 InkWell(
-                  onTap: (){
-
+                  onTap: () {
+                    context.goNamed(
+                      RouteNames.APPOINTMENTS,
+                    );
                   },
                   child: Text(
                     "View all",
@@ -59,7 +64,7 @@ class Appointments extends HookConsumerWidget {
           CarouselSlider(
             options: CarouselOptions(
               enableInfiniteScroll: true,
-              height: screenSize.height * 0.16,
+              height: screenSize.height * 0.2,
               enlargeCenterPage: true,
               enlargeFactor: 0.1,
             ),
@@ -74,17 +79,27 @@ class Appointments extends HookConsumerWidget {
               (artAppointment) {
                 return Builder(
                   builder: (BuildContext context) {
-                    return AppointmentCard(
-                      appointmentType:
-                          artAppointment.appointment_type ?? "Unknown type",
-                      appointmentTime: DateTime.parse(
-                        // artAppointment.appointment ??
-                            DateTime.now().toIso8601String(),
+                    final appointmentDate = DateTime.parse(artAppointment
+                            .appointment
+                            ?.split("-")
+                            .reversed
+                            .join("-") ??
+                        DateTime.now().toIso8601String());
+                    return GestureDetector(
+                      onTap: () {
+                        context.goNamed(
+                          RouteNames.HIV_ART_APPOINTMENT_DETAILS,
+                          extra: artAppointment,
+                        );
+                      },
+                      child: AppointmentCard(
+                        appointmentType:
+                            artAppointment.appointment_type ?? "Unknown type",
+                        appointmentTime: appointmentDate,
+                        providerImage:
+                            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                        providerName: "Dr John Doe",
                       ),
-                      providerImage:
-                          "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                      providerName: "Dr John Doe",
-                      width: 100,height: 100,
                     );
                     return AppCard(
                       onTap: () {
