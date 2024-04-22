@@ -130,3 +130,13 @@ void handleResponseError(
   //   ),
   // );
 }
+
+
+Size getOrientationAwareScreenSize(BuildContext context) {
+  final media = MediaQuery.of(context);
+  final orientation = media.orientation;
+  if(orientation == Orientation.portrait) {
+    return media.size;
+  }
+  return Size(media.size.height, media.size.width);
+}

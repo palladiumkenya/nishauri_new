@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
+import '../../utils/helpers.dart';
+
 class CustomAppBar extends StatelessWidget {
   final String title;
   final String subTitle;
@@ -10,7 +12,7 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
+    final screenSize = getOrientationAwareScreenSize(context);
     final theme = Theme.of(context);
 
     return Container(

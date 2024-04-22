@@ -1,0 +1,52 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:nishauri/src/features/bmi/presentation/widgets/HeightUnitsPicker.dart';
+import 'package:nishauri/src/shared/display/AppCard.dart';
+import 'package:nishauri/src/utils/constants.dart';
+
+class HeightPicker extends StatelessWidget {
+  final double height;
+  final HeightUnitsPickerOptions heightUnits;
+  final void Function(HeightUnitsPickerOptions heightUnits) onHeightUnitsChange;
+  final void Function(double height) onHeightChange;
+
+  const HeightPicker(
+      {super.key,
+      required this.height,
+      required this.onHeightChange,
+      required this.heightUnits,
+      required this.onHeightUnitsChange});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return AppCard(
+      child: Container(
+        padding: const EdgeInsets.all(Constants.SPACING),
+        child: Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Height",
+                style: theme.textTheme.titleMedium,
+              ),
+              HeightUnitsPicker(
+                heightUnits: heightUnits,
+                onHeightUnitsChange: onHeightUnitsChange,
+              )
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(Constants.SPACING),
+            child: Text(
+              height.toStringAsFixed(1),
+              style: theme.textTheme.displayLarge,
+            ),
+          ),
+          Slider(value: height, min: 0, max: 100, onChanged: onHeightChange, inactiveColor: theme.canvasColor),
+        ]),
+      ),
+    );
+  }
+}
