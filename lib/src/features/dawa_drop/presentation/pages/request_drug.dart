@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuItemsBuilder.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuOption.dart';
 import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
+import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 _menuItems(BuildContext context) => [
@@ -32,15 +33,55 @@ class RequestDrugMenuScreen extends StatelessWidget {
           icon: const Icon(Icons.chevron_left),
           onPressed: () => context.pop(),
         ),
-        title: const Text("Request Medication"),
+        title: const Text("Request Drug"),
       ),
       body: MenuItemsBuilder(
-        crossAxisCount: 3,
-        itemBuilder: (item) => MenuOption(
-          title: item.title ?? "",
-          icon: item.icon,
-          onPress: item.onPressed,
+        crossAxisCount: 2,
+        itemBuilder: (item) => Card(
+          margin: const EdgeInsets.all(Constants.SPACING),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            splashColor: theme.colorScheme.primary,
+            onTap: item.onPressed,
+            child: Container(
+              padding: const EdgeInsets.all(Constants.SPACING),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    theme.colorScheme.inversePrimary,
+                    theme.colorScheme.primary,
+                  ],
+                ),
+                image: const DecorationImage(
+                    image: AssetImage("assets/images/contours.png"),
+                    opacity: 0.2,
+                    fit: BoxFit.cover
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Icon(item.icon,size: 50, color: theme.cardColor,),
+                  const SizedBox(height: Constants.SPACING,),
+                  Text(item.title ?? '',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                        color: theme.canvasColor,
+                        fontWeight: FontWeight.normal,
+                        overflow: TextOverflow.ellipsis
+                    ),)
+                ],
+              ),
+            ),
+          ),
         ),
+        // itemBuilder: (item) => MenuOption(
+        //   title: item.title ?? "",
+        //   icon: item.icon,
+        //   onPress: item.onPressed,
+        // ),
         items: _items,
       ),
     );
