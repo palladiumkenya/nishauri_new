@@ -15,24 +15,12 @@ import '../../../shared/interfaces/HTTPService.dart';
 import '../../auth/data/respositories/auth_repository.dart';
 import '../../auth/data/services/AuthApiService.dart';
 
-class Facility_Directory extends StatelessWidget {
+class FacilityDirectory extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(), // Set the theme to dark
-
-      home: MyHomePage(),
-    );
-  }
+  _FacilityDirectoryState createState() => _FacilityDirectoryState();
 }
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _FacilityDirectoryState extends State<FacilityDirectory> {
   TextEditingController _controller = TextEditingController();
   List<Facility> _facilities = [];
   bool _fetching = false;
@@ -85,24 +73,23 @@ class _MyHomePageState extends State<MyHomePage> {
               const SizedBox(
                 width: Constants.SPACING,
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.3),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(Constants.ROUNDNESS * 0.5),
+              IconButton.filledTonal(
+                color: Colors.white,
+                onPressed: _fetching
+                    ? null
+                    : () {
+                        _fetchFacilities(_controller.text);
+                      },
+                icon: const Icon(Icons.tune),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll<Color>(
+                    Colors.white.withOpacity(0.3),
                   ),
-                ),
-                child: IconButton.filledTonal(
-                  color: Colors.white,
-                  onPressed: _fetching
-                      ? null
-                      : () {
-                          _fetchFacilities(_controller.text);
-                        },
-                  icon: const Icon(Icons.tune),
-                  style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll<Color>(
-                      Colors.white,
+                  shape: const MaterialStatePropertyAll<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(Constants.ROUNDNESS * 0.5),
+                      ),
                     ),
                   ),
                 ),
@@ -130,7 +117,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                       padding: const EdgeInsets.all(
                                           Constants.SPACING),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Column(
                                             crossAxisAlignment:
@@ -182,18 +170,23 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   ),
                                                   Text("MFL Code: ${e.code}"),
                                                 ],
-                                              ),Row(
+                                              ),
+                                              Row(
                                                 children: [
                                                   Icon(
-                                                    Icons
-                                                        .local_hospital,
+                                                    Icons.local_hospital,
                                                     color: theme
                                                         .colorScheme.primary,
                                                   ),
                                                   const SizedBox(
                                                     width: Constants.SPACING,
                                                   ),
-                                                  Text(e.facilityType, style: const TextStyle(overflow: TextOverflow.ellipsis),)
+                                                  Text(
+                                                    e.facilityType,
+                                                    style: const TextStyle(
+                                                        overflow: TextOverflow
+                                                            .ellipsis),
+                                                  )
                                                 ],
                                               ),
                                             ],
