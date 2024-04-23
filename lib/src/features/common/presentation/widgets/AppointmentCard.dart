@@ -86,7 +86,7 @@ class AppointmentCard extends StatelessWidget {
                           children: [
                             Text(
                               providerName,
-                              style: theme.textTheme.titleLarge
+                              style: theme.textTheme.titleSmall
                                   ?.copyWith(color: theme.canvasColor),
                             ),
                             Row(

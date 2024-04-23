@@ -105,7 +105,7 @@ class ProgramCodeNameIds {
       HYPERTENSION: "Hypertension Program",
       CANCER: "Cancer Program",
       DIABETES: "Diabetes Program",
-      ASTHMA: "Asthma Program",
+      ASTHMA: "Cholera Program",
     };
     return map[code];
   }

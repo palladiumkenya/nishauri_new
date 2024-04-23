@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuItemsBuilder.dart';
-import 'package:nishauri/src/app/navigation/menu/MenuOption.dart';
 import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
@@ -12,11 +11,11 @@ _menuItems(BuildContext context) => [
     title: "Appointments",
     onPressed: () => context.goNamed(RouteNames.PROGRAM_APPOINTMENT),
   ),
-  MenuItem(
-    icon: Icons.local_hospital_outlined,
-    title: "Others",
-    // onPressed: () => context.goNamed(RouteNames.HIV_DRUG_ORDERS),
-  ),
+  // MenuItem(
+  //   icon: Icons.local_hospital_outlined,
+  //   title: "Others",
+  //   // onPressed: () => context.goNamed(RouteNames.HIV_DRUG_ORDERS),
+  // ),
 ];
 
 class RequestDrugMenuScreen extends StatelessWidget {

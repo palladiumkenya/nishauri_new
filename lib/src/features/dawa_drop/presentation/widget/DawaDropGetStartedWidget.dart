@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nishauri/src/features/appointments/presentation/pages/Appointments.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/program_appointments.dart';
-import 'package:nishauri/src/shared/input/Button.dart';
 
 class DawaDropGetStartedWidget extends StatefulWidget {
   @override

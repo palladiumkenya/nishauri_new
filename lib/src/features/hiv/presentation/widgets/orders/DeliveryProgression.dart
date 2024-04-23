@@ -58,7 +58,7 @@ class _DeliverProgressionState extends State<DeliverProgression> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text('We have received your drug request'),
-              Text('Date: ${widget.order.date_order_posted != null ? DateFormat('dd-MM-yyyy').format(widget.order.date_order_posted as DateTime) : ''}'),
+              Text('Date: ${widget.order.date_order_posted != null ? DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.order.date_order_posted ?? '')) : ''}'),
             ],
           ),
           content: const Text('Your request has been received and is being reviewed'),
@@ -70,7 +70,7 @@ class _DeliverProgressionState extends State<DeliverProgression> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text('Your request has been confirmed and is being processed'),
-                  Text('Date: ${widget.order.approved_date != null ? DateFormat('dd-MM-yyyy').format(widget.order.approved_date as DateTime) : ''}'),
+                  Text('Date: ${widget.order.approved_date != null ? DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.order.approved_date ?? '')) : ''}'),
                 ],
               ),
               content: Text(''),
@@ -82,7 +82,7 @@ class _DeliverProgressionState extends State<DeliverProgression> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text('Order request has been dispatched'),
-                  Text('Date: ${widget.order.dispatched_date != null ? DateFormat('dd-MM-yyyy').format(widget.order.dispatched_date as DateTime) : ''}'),
+                  Text('Date: ${widget.order.dispatched_date != null ? DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.order.dispatched_date ?? '')) : ''}'),
                 ],
               ),
               content: Text(''),
@@ -94,7 +94,7 @@ class _DeliverProgressionState extends State<DeliverProgression> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text('Request has been received by the patient'),
-                  Text('Date: ${widget.order.fullfilled_date != null ? DateFormat('dd-MM-yyyy').format(widget.order.fullfilled_date as DateTime) : ''}'),
+                  Text('Date: ${widget.order.fullfilled_date != null ? DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.order.fullfilled_date ?? '')) : ''}'),
                 ],
               ),
               content: Text(''),

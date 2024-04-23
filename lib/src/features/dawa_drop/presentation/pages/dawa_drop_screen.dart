@@ -7,17 +7,6 @@ import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/dawa_drop_menu.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/widget/DawaDropGetStartedWidget.dart';
 import 'package:nishauri/src/shared/display/meds.dart';
-import 'package:nishauri/src/utils/routes.dart';
-
-import '../../../user_programs/data/providers/program_provider.dart';
-
-_menuItems(BuildContext context) => [
-  MenuItem(
-    icon: Icons.shopping_cart,
-    title: "Drug Orders",
-    onPressed: () => context.goNamed(RouteNames.HIV_DRUG_ORDERS),
-  ),
-];
 
 class DawaDropScreen extends StatelessWidget {
   const DawaDropScreen({Key? key}) : super(key: key);
