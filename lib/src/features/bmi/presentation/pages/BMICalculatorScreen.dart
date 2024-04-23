@@ -20,6 +20,7 @@ class BMICalculatorScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    const activeColor = Colors.cyan;
     final gender = useState<GenderPickerChoices>(GenderPickerChoices.male);
     final height = useState<double>(180);
     final heightUnits =
@@ -30,9 +31,11 @@ class BMICalculatorScreen extends HookWidget {
       body: Column(
         children: [
           const CustomAppBar(
-              title: "BMI Calculator",
-              subTitle: "Empower Your Health Journey \nWith BMI Insights",
-              icon: Icons.calculate_outlined),
+            title: "BMI Calculator",
+            subTitle: "Empower Your Health Journey \nWith BMI Insights",
+            icon: Icons.calculate_outlined,
+            color: activeColor,
+          ),
           Expanded(
             child: SingleChildScrollView(
               child: AppCard(
@@ -49,9 +52,11 @@ class BMICalculatorScreen extends HookWidget {
                       GenderPicker(
                         gender: gender.value,
                         onGenderChange: (gender_) => gender.value = gender_,
+                        activeColor: activeColor,
                       ),
                       const SizedBox(height: Constants.SPACING),
                       HeightPicker(
+                        activeColor: activeColor,
                         height: height.value,
                         heightUnits: heightUnits.value,
                         onHeightChange: (height_) {
@@ -72,21 +77,30 @@ class BMICalculatorScreen extends HookWidget {
                             onValueChange: (value) => weight.value = value,
                             label: "Weight",
                             units: "Kgs",
-                          ),Quantizer(
+                            activeColor: activeColor,
+                          ),
+                          Quantizer(
                             min: 5,
                             max: 100,
                             value: age.value,
                             onValueChange: (value) => age.value = value,
                             label: "Age",
                             units: "Years",
+                            activeColor: activeColor,
                           ),
                         ],
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      Button(title: "Calculate", onPress: (){
-                        final bmi = calculateBMI(height.value, weight.value);
-                        context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
-                      },),
+                      Button(
+                        title: "Calculate",
+                        backgroundColor: activeColor,
+                        textColor: theme.canvasColor,
+                        onPress: () {
+                          final bmi = calculateBMI(height.value, weight.value);
+                          context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS,
+                              extra: bmi);
+                        },
+                      ),
                       const SizedBox(height: Constants.SPACING),
                     ],
                   ),

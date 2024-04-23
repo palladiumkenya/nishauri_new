@@ -17,19 +17,20 @@ double convertFromCmTo(HeightUnitsPickerOptions units, double cm) {
 
 class HeightUnitsPicker extends StatelessWidget {
   final HeightUnitsPickerOptions heightUnits;
+  final Color? activeColor;
   final void Function(HeightUnitsPickerOptions heightUnits) onHeightUnitsChange;
 
   const HeightUnitsPicker(
       {super.key,
       required this.heightUnits,
-      required this.onHeightUnitsChange});
+      required this.onHeightUnitsChange, this.activeColor,});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorActive = theme.canvasColor;
     final colorInactive = theme.colorScheme.onSurface;
-    final bgColorActive = theme.colorScheme.primary;
+    final bgColorActive = activeColor ?? theme.colorScheme.primary;
     final bgColorInActive = theme.disabledColor;
 
 

@@ -6,17 +6,18 @@ enum GenderPickerChoices { male, female }
 
 class GenderPicker extends StatelessWidget {
   final GenderPickerChoices gender;
+  final Color? activeColor;
   final void Function(GenderPickerChoices gender) onGenderChange;
 
   const GenderPicker(
-      {super.key, required this.gender, required this.onGenderChange});
+      {super.key, required this.gender, required this.onGenderChange, this.activeColor});
 
   @override
   Widget build(BuildContext context) {
     final screenSize = getOrientationAwareScreenSize(context);
     final theme = Theme.of(context);
     final color = theme.canvasColor;
-    final bgColor = theme.colorScheme.primary;
+    final bgColor = activeColor ?? theme.colorScheme.primary;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

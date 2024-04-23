@@ -53,8 +53,8 @@ class MainMenuScreen extends StatelessWidget {
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [
-                                  theme.colorScheme.inversePrimary,
-                                  theme.colorScheme.primary,
+                                  theme.colorScheme.onSurface,
+                                  item.color ?? theme.colorScheme.primary,
                                 ],
                               ),
                               image: const DecorationImage(
@@ -73,15 +73,18 @@ class MainMenuScreen extends StatelessWidget {
                                 Icon(
                                   item.icon,
                                   size: 70,
-                                  color: theme.colorScheme.primary,
+                                  color: theme.canvasColor,
                                 ),
                                 const SizedBox(height: Constants.SPACING),
                                 Text(
                                   item.title ?? "",
+
+                                  maxLines: 2,
                                   style: theme.textTheme.titleLarge?.copyWith(
                                       color: theme.canvasColor,
                                       fontWeight: FontWeight.bold,
-                                      overflow: TextOverflow.ellipsis),
+                                      overflow: TextOverflow.ellipsis
+                                  ),
                                 ),
                               ],
                             ),

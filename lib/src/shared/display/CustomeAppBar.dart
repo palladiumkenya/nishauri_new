@@ -8,7 +8,14 @@ class CustomAppBar extends StatelessWidget {
   final String title;
   final String? subTitle;
   final IconData icon;
-  const CustomAppBar({super.key, required this.title, this.subTitle, required this.icon});
+  final Color? color;
+
+  const CustomAppBar(
+      {super.key,
+      required this.title,
+      this.subTitle,
+      required this.icon,
+      this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +25,13 @@ class CustomAppBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(
           horizontal: Constants.SPACING, vertical: Constants.SPACING * 3),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primary,
+        gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              color ?? theme.colorScheme.primary,
+              theme.colorScheme.onSurface
+            ]),
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(Constants.SPACING),
           bottomRight: Radius.circular(Constants.SPACING),
@@ -46,17 +59,19 @@ class CustomAppBar extends StatelessWidget {
                     ?.copyWith(color: theme.canvasColor),
               ),
               const SizedBox(width: Constants.SPACING),
-              Icon(icon, color: theme.canvasColor,)
+              Icon(
+                icon,
+                color: theme.canvasColor,
+              )
             ],
           ),
-          if(subTitle != null)
-          const SizedBox(height: Constants.SPACING * 2),
-          if(subTitle != null)
-          Text(
-            subTitle!,
-            style: theme.textTheme.titleLarge
-                ?.copyWith(color: theme.canvasColor),
-          ),
+          if (subTitle != null) const SizedBox(height: Constants.SPACING * 2),
+          if (subTitle != null)
+            Text(
+              subTitle!,
+              style: theme.textTheme.titleLarge
+                  ?.copyWith(color: theme.canvasColor),
+            ),
         ],
       ),
     );
