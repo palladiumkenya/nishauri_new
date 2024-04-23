@@ -9,12 +9,14 @@ class CustomAppBar extends StatelessWidget {
   final String? subTitle;
   final IconData icon;
   final Color? color;
+  final Widget? bottom;
 
   const CustomAppBar(
       {super.key,
       required this.title,
       this.subTitle,
       required this.icon,
+      this.bottom,
       this.color});
 
   @override
@@ -72,6 +74,8 @@ class CustomAppBar extends StatelessWidget {
               style: theme.textTheme.titleLarge
                   ?.copyWith(color: theme.canvasColor),
             ),
+          if (bottom != null) const SizedBox(height: Constants.SPACING * 2),
+          if (bottom != null) bottom!
         ],
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Function to calculate BMI
 double calculateBMI(
@@ -119,4 +120,12 @@ Size getOrientationAwareScreenSize(BuildContext context) {
     return media.size;
   }
   return Size(media.size.height, media.size.width);
+}
+
+Future<void> makePhoneCall(String phoneNumber) async {
+  final Uri launchUri = Uri(
+    scheme: 'tel',
+    path: phoneNumber,
+  );
+  await launchUrl(launchUri);
 }
