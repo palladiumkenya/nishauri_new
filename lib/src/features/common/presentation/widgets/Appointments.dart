@@ -24,6 +24,7 @@ class Appointments extends HookConsumerWidget {
     return appointmentsAsync.when(
       data: (data) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: Constants.SPACING),
@@ -58,23 +59,15 @@ class Appointments extends HookConsumerWidget {
           //   providerImage:
           //       "https://www.emeraldgrouppublishing.com/sites/default/files/image/covid-cells.jpg",
           //   providerName: "Dr John Doe",
-          //   height: screenSize.height * 0.25,
-          //   width: screenSize.width,
           // ),
           CarouselSlider(
             options: CarouselOptions(
               enableInfiniteScroll: false,
               // height: screenSize.height * 0.2,
               enlargeCenterPage: true,
-              enlargeFactor: 0.1,
+              enlargeFactor: 0.3,
             ),
             items: data
-                .where((artAppointment) => // Filter only upcoming appointments
-                    DateFormat('EEEE, MMMM d y')
-                        .parse(artAppointment.appointment_date)
-                        .difference(DateTime.now())
-                        .inDays >=
-                    0)
                 .map(
               (artAppointment) {
                 return Builder(

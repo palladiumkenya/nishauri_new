@@ -53,8 +53,8 @@ class MainMenuScreen extends StatelessWidget {
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [
-                                  theme.colorScheme.inversePrimary,
-                                  theme.colorScheme.primary,
+                                  theme.colorScheme.onSurface,
+                                  item.color ?? theme.colorScheme.primary,
                                 ],
                               ),
                               image: const DecorationImage(
@@ -72,8 +72,8 @@ class MainMenuScreen extends StatelessWidget {
                               children: <Widget>[
                                 Icon(
                                   item.icon,
-                                  size: 50,
-                                  color: theme.colorScheme.primary,
+                                  size: 70,
+                                  color: theme.canvasColor,
                                 ),
                                 const SizedBox(height: Constants.SPACING),
                                 Text(

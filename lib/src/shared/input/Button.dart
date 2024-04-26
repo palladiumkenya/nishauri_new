@@ -55,10 +55,21 @@ class Button extends StatelessWidget {
       child: mode == ButtonMode.outline
           ? OutlinedButton(
               onPressed: disabled ? null : onPress,
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStatePropertyAll<Color?>(backgroundColor),
+                  foregroundColor:  MaterialStatePropertyAll<Color?>(textColor)
+              ),
               child: Text(title, style: titleStyle),
             )
           : ElevatedButton(
               onPressed: disabled ? null : onPress,
+
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStatePropertyAll<Color?>(backgroundColor),
+                foregroundColor:  MaterialStatePropertyAll<Color?>(textColor)
+              ),
               child: Text(
                 title,
                 style: titleStyle,

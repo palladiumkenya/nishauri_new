@@ -9,6 +9,7 @@ class Quantizer extends StatelessWidget {
   final int value;
   final int? min;
   final int? max;
+  final Color? activeColor;
   final void Function(int value) onValueChange;
 
   const Quantizer(
@@ -18,14 +19,13 @@ class Quantizer extends StatelessWidget {
       required this.label,
       this.units,
       this.min,
+      this.activeColor,
       this.max});
 
   @override
   Widget build(BuildContext context) {
     final screenSize = getOrientationAwareScreenSize(context);
     final theme = Theme.of(context);
-    final color = theme.canvasColor;
-    final bgColor = theme.colorScheme.primary;
     return Card(
       clipBehavior: Clip.antiAlias,
       shadowColor: theme.colorScheme.primary,
@@ -43,22 +43,35 @@ class Quantizer extends StatelessWidget {
               children: [
                 IconButton.filled(
                   onPressed: () {
-                    if(min != null && value <= min!) {
+                    if (min != null && value <= min!) {
                       return;
                     }
                     onValueChange(value - 1);
                   },
                   icon: const Icon(Icons.remove),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll<Color>(
+                      activeColor ?? theme.colorScheme.primary,
+                    ),
+                  ),
                 ),
-                Text("$value", style: theme.textTheme.headlineLarge ,),
+                Text(
+                  "$value",
+                  style: theme.textTheme.headlineLarge,
+                ),
                 IconButton.filled(
                   onPressed: () {
-                    if(max != null && value >= max!) {
+                    if (max != null && value >= max!) {
                       return;
                     }
                     onValueChange(value + 1);
                   },
                   icon: const Icon(Icons.add),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll<Color>(
+                      activeColor ?? theme.colorScheme.primary,
+                    ),
+                  ),
                 ),
               ],
             ),

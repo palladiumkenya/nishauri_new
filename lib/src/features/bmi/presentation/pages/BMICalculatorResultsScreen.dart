@@ -5,7 +5,6 @@ import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 
-
 class BMICalculatorResultsScreen extends StatelessWidget {
   final double bmi;
 
@@ -16,7 +15,7 @@ class BMICalculatorResultsScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       body: Column(children: [
-        const CustomAppBar(title: "BMI Calculator", icon: Icons.calculate),
+        const CustomAppBar(title: "BMI Calculator", icon: Icons.calculate, color: Colors.cyan),
         Expanded(
           child: SingleChildScrollView(
             child: AppCard(
@@ -88,7 +87,7 @@ class BMICalculatorResultsScreen extends StatelessWidget {
               ),
             ),
           ),
-        )
+        ),
       ]),
     );
   }
