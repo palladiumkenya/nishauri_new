@@ -73,7 +73,6 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
       icon: Icons.file_copy_outlined,
       title: MenuItemNames.PROGRAM_MENU,
       onPressed: () => context.goNamed(RouteNames.PROGRAM_MENU),
-
     ),
 
    

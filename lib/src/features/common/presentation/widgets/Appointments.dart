@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -20,10 +21,9 @@ class Appointments extends HookConsumerWidget {
     final appointmentsAsync = ref.watch(appointmentProvider);
     final screenSize = getOrientationAwareScreenSize(context);
     final theme = Theme.of(context);
-
     return appointmentsAsync.when(
       data: (data) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
@@ -60,6 +60,18 @@ class Appointments extends HookConsumerWidget {
           //       "https://www.emeraldgrouppublishing.com/sites/default/files/image/covid-cells.jpg",
           //   providerName: "Dr John Doe",
           // ),
+          if(data.isEmpty)
+            DecoratedBox(
+
+              decoration: const BoxDecoration(),
+              child: SvgPicture.asset(
+                "assets/images/online_calendar.svg",
+                semanticsLabel: "Doctors",
+                fit: BoxFit.contain,
+                height: 150,
+              ),
+            ),
+          if(data.isNotEmpty)
           CarouselSlider(
             options: CarouselOptions(
               enableInfiniteScroll: false,

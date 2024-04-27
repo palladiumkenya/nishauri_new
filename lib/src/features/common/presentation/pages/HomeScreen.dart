@@ -180,7 +180,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     const Appointments(),
                     const SizedBox(height: Constants.SPACING),
-                    ShortcutsWidget(),
+                    const ShortcutsWidget(),
                     const SizedBox(height: Constants.SPACING),
                     Padding(
                       padding: const EdgeInsets.all(Constants.SPACING),
