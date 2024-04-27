@@ -51,7 +51,7 @@ class CustomTabBar extends StatelessWidget {
                       );
                     },
                     child: Container(
-                      padding: const EdgeInsets.all(Constants.SPACING),
+                      padding: const EdgeInsets.symmetric(horizontal:Constants.SPACING,vertical: Constants.SPACING * 0.5),
                       decoration: BoxDecoration(
                           color: e.key == activeIndex
                               ? activeColor ?? theme.colorScheme.primary

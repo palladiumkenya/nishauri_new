@@ -42,7 +42,6 @@ class MainMenuScreen extends StatelessWidget {
                 Expanded(
                   child: userProgram.when(
                     data: (data) {
-                      log("*****************${data}***********************");
 
                       return MenuItemsBuilder(
                         crossAxisCount: 2,
