@@ -10,12 +10,13 @@ class ViralLoadResults extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.all(Constants.SIDE_SPACE),
           child: Text(
             "Viral Load Results",
-            style: theme.textTheme.headlineMedium,
+            style: theme.textTheme.titleLarge,
           ),
         ),
         Expanded(
