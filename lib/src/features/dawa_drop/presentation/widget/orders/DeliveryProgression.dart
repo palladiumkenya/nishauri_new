@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:nishauri/src/features/hiv/data/models/art_orders/art_drug_order.dart';
+import 'package:nishauri/src/features/dawa_drop/data/models/order_request/drug_order.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 class DeliverProgression extends StatefulWidget {
-  final ARTDrugOrder order;
+  final DrugOrder order;
 
   const DeliverProgression({Key? key, required this.order}) : super(key: key);
 

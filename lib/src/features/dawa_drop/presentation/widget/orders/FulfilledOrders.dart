@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:nishauri/src/features/hiv/data/models/art_orders/art_drug_order.dart';
-import 'package:nishauri/src/features/hiv/presentation/widgets/orders/DeliveryProgression.dart';
+import 'package:nishauri/src/features/dawa_drop/data/models/order_request/drug_order.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/DeliveryProgression.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
-class AllOrders extends StatelessWidget {
-  final List<ARTDrugOrder> orders;
+class FulfilledOrders extends StatelessWidget {
+  final List<DrugOrder> orders;
 
-  const AllOrders({Key? key, required this.orders}) : super(key: key);
+  const FulfilledOrders({Key? key, required this.orders}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class AllOrders extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(Constants.SPACING),
           child: Text(
-            "Active Drug Requests",
+            "Fulfilled Drug Requests",
             style: theme.textTheme.headlineMedium,
           ),
         ),
@@ -34,7 +34,7 @@ class AllOrders extends StatelessWidget {
     );
   }
 
-  Widget buildOrderTile(BuildContext context, ARTDrugOrder order) {
+  Widget buildOrderTile(BuildContext context, DrugOrder order) {
     return GestureDetector(
       onTap: () => navigateToDeliveryProgression(context, order),
       child: Column(
@@ -59,7 +59,7 @@ class AllOrders extends StatelessWidget {
     );
   }
 
-  void navigateToDeliveryProgression(BuildContext context, ARTDrugOrder order) {
+  void navigateToDeliveryProgression(BuildContext context, DrugOrder order) {
     Navigator.push(
       context,
       MaterialPageRoute(
