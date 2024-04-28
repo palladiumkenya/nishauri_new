@@ -5,13 +5,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
-import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
+import 'package:nishauri/src/features/dawa_drop/data/providers/drug_order_provider.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/forms/DeliveryInformation.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/forms/DeliveryPreference.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/forms/GettingStated.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/forms/ReviewAndSubmit.dart';
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
-import 'package:nishauri/src/features/hiv/data/providers/art_drug_order_provider.dart';
-import 'package:nishauri/src/features/hiv/presentation/pages/orders/forms/DeliveryInformation.dart';
-import 'package:nishauri/src/features/hiv/presentation/pages/orders/forms/DeliveryPreference.dart';
-import 'package:nishauri/src/features/hiv/presentation/pages/orders/forms/GettingStated.dart';
-import 'package:nishauri/src/features/hiv/presentation/pages/orders/forms/ReviewAndSubmit.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -113,7 +112,7 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
         loading.value = true;
         final pickupTime = formKey.currentState!.instantValue["delivery_pickup_time"];
         final courierService = formKey.currentState!.instantValue["courier_service"].toString();
-        ref.read(artDrugOrderProvider.notifier).createOrder({
+        ref.read(drugOrderProvider.notifier).createOrder({
           ...formKey.currentState!.instantValue,
           "delivery_pickup_time":
               pickupTime is DateTime ? pickupTime.toIso8601String() : pickupTime,

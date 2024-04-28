@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:nishauri/src/features/hiv/data/models/art_orders/art_drug_order.dart';
-import 'package:nishauri/src/shared/display/AppSearch.dart';
+import 'package:nishauri/src/features/dawa_drop/data/models/order_request/drug_order.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class PendingOrders extends StatelessWidget {
-  final List<ARTDrugOrder> orders;
+  final List<DrugOrder> orders;
 
   const PendingOrders({Key? key, required this.orders}) : super(key: key);
 
