@@ -31,7 +31,6 @@ import 'package:nishauri/src/features/dawa_drop/presentation/pages/dispatched_dr
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/program_appointments.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_drug.dart';
 import 'package:nishauri/src/features/events_calendar/presentation/pages/EventsCalendar.dart';
-import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
 import 'package:nishauri/src/features/hiv/data/models/group/art_group.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/ARTSites.dart';
@@ -44,8 +43,8 @@ import 'package:nishauri/src/features/hiv/presentation/pages/events/ARTEvents.da
 import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroupDetail.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroupFormScreen.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroups.dart';
-import 'package:nishauri/src/features/hiv/presentation/pages/orders/DrugOrderWizardFormScreen.dart';
-import 'package:nishauri/src/features/hiv/presentation/pages/orders/HIVDrugOrders.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/DrugOrderWizardFormScreen.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/DrugOrders.dart';
 import 'package:nishauri/src/features/lab/presentation/pages/LabResultsScreen.dart';
 import 'package:nishauri/src/features/programs/presentation/pages/programs.dart';
 import 'package:nishauri/src/features/treatment_support/presentation/pages/TreatmentSupport.dart';
@@ -477,7 +476,7 @@ final List<RouteBase> dawaDropRoutes = [
     name: RouteNames.HIV_DRUG_ORDERS,
     path: 'drug-order',
     builder: (BuildContext context, GoRouterState state) {
-      return const HIVDrugOrdersScreen();
+      return const DrugOrdersScreen();
     },
   ),
   GoRoute(
