@@ -98,10 +98,10 @@ class DrugOrderService extends HTTPService {
           throw orderData["msg"];
         }
       } else {
-        throw "Something Went Wrong Try Again Later";
+        throw "Something Went Wrong Try Again Later ${response.statusCode}";
       }
     } catch (e) {
-      throw "Something Went Wrong Try Again Later";
+      throw "$e";
     }
   }
 }

@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nishauri/src/features/hiv/data/models/art_orders/art_drug_order.dart';
-import 'package:nishauri/src/features/hiv/data/providers/art_drug_order_provider.dart';
-import 'package:nishauri/src/features/hiv/presentation/widgets/orders/AllOrders.dart';
-import 'package:nishauri/src/features/hiv/presentation/widgets/orders/FulfilledOrders.dart';
-import 'package:nishauri/src/features/hiv/presentation/widgets/orders/PendingOrders.dart';
+import 'package:nishauri/src/features/dawa_drop/data/models/order_request/drug_order.dart';
+import 'package:nishauri/src/features/dawa_drop/data/providers/drug_order_provider.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/AllOrders.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/FulfilledOrders.dart';
 import 'package:nishauri/src/utils/constants.dart';
-import 'package:nishauri/src/utils/routes.dart';
 
-class HIVDrugOrdersScreen extends ConsumerWidget {
-  const HIVDrugOrdersScreen({Key? key}) : super(key: key);
+class DrugOrdersScreen extends ConsumerWidget {
+  const DrugOrdersScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,12 +18,12 @@ class HIVDrugOrdersScreen extends ConsumerWidget {
     return orderAsync.when(
       data: (data) {
         // Separate orders based on their status
-        List<ARTDrugOrder> allOrders = data;
-        List<ARTDrugOrder> pendingOrders =
+        List<DrugOrder> allOrders = data;
+        List<DrugOrder> pendingOrders =
         allOrders.where((order) => order.status != 'Fullfilled').toList();
-        List<ARTDrugOrder> approvedOrders =
+        List<DrugOrder> approvedOrders =
         allOrders.where((order) => order.status == 'Approved').toList();
-        List<ARTDrugOrder> fulfilledOrders =
+        List<DrugOrder> fulfilledOrders =
         allOrders.where((order) => order.status == 'Fullfilled').toList();
 
         return DefaultTabController(
