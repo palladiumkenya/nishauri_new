@@ -41,13 +41,13 @@ _settingsItem(BuildContext context) => [
                   .patchSettings(theme: value ? "dark" : "light"),
             ),
           )),
-      _SettingsItem(
-        title: "Privacy",
-        leadingIcon: Icons.security,
-        onPress: () => context.goNamed(RouteNames.PRIVACY_SETTINGS),
-      ),
-      _SettingsItem(
-          title: "Plugins", leadingIcon: Icons.private_connectivity_outlined),
+      // _SettingsItem(
+      //   title: "Privacy",
+      //   leadingIcon: Icons.security,
+      //   onPress: () => context.goNamed(RouteNames.PRIVACY_SETTINGS),
+      // ),
+      // _SettingsItem(
+      //     title: "Plugins", leadingIcon: Icons.private_connectivity_outlined),
       _SettingsItem(
         title: "Change Password",
         leadingIcon: Icons.key,

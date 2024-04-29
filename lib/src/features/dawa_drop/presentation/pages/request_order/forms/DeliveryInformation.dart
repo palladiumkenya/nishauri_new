@@ -33,6 +33,9 @@ class DeliveryInformation extends HookConsumerWidget {
                 ),
                 validator: FormBuilderValidators.compose([
                   FormBuilderValidators.required(errorText: "Required"),
+                  FormBuilderValidators.min(10),
+                  FormBuilderValidators.minLength(10),
+                  FormBuilderValidators.maxLength(13),
                 ]),
               ),
               const SizedBox(height: Constants.SPACING),
