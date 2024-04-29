@@ -191,10 +191,10 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                   final currentStepFields =
                   stepFieldsToValidate[currentStep.value];
 
-                  if (currentStepFields.any((field) =>
-                  !formKey.currentState!.fields[field]!.validate())) {
-                    return; //Don't move to next step if current step not valid
-                  }
+                  // if (currentStepFields.any((field) =>
+                  // !formKey.currentState!.fields[field]!.validate())) {
+                  //   return; //Don't move to next step if current step not valid
+                  // }
                 }
                 if (isLastStep) {
                   // Submit form
