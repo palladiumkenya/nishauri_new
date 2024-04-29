@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -20,10 +21,10 @@ class Appointments extends HookConsumerWidget {
     final appointmentsAsync = ref.watch(appointmentProvider);
     final screenSize = getOrientationAwareScreenSize(context);
     final theme = Theme.of(context);
-
     return appointmentsAsync.when(
       data: (data) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: Constants.SPACING),
@@ -58,23 +59,27 @@ class Appointments extends HookConsumerWidget {
           //   providerImage:
           //       "https://www.emeraldgrouppublishing.com/sites/default/files/image/covid-cells.jpg",
           //   providerName: "Dr John Doe",
-          //   height: screenSize.height * 0.25,
-          //   width: screenSize.width,
           // ),
+          if(data.isEmpty)
+            DecoratedBox(
+
+              decoration: const BoxDecoration(),
+              child: SvgPicture.asset(
+                "assets/images/online_calendar.svg",
+                semanticsLabel: "Doctors",
+                fit: BoxFit.contain,
+                height: 150,
+              ),
+            ),
+          if(data.isNotEmpty)
           CarouselSlider(
             options: CarouselOptions(
               enableInfiniteScroll: false,
               // height: screenSize.height * 0.2,
               enlargeCenterPage: true,
-              enlargeFactor: 0.1,
+              enlargeFactor: 0.3,
             ),
             items: data
-                .where((artAppointment) => // Filter only upcoming appointments
-                    DateFormat('EEEE, MMMM d y')
-                        .parse(artAppointment.appointment_date)
-                        .difference(DateTime.now())
-                        .inDays >=
-                    0)
                 .map(
               (artAppointment) {
                 return Builder(

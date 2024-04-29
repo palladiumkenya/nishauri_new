@@ -166,7 +166,7 @@ final List<RouteBase> secureRoutes = [
     name: RouteNames.Facility_Directory,
     path: 'Facility-directory',
     builder: (BuildContext context, GoRouterState state) {
-      return Facility_Directory();
+      return FacilityDirectory();
     },
   ),
   GoRoute(

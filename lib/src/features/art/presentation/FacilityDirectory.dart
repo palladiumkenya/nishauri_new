@@ -5,105 +5,213 @@ import 'package:nishauri/src/features/art/FacilityHTTPService.dart';
 
 import 'dart:convert';
 import 'package:nishauri/src/features/art/model/Facility.dart';
+import 'package:nishauri/src/shared/display/AppCard.dart';
+import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/input/Search.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/helpers.dart';
 
 import '../../../shared/interfaces/HTTPService.dart';
 import '../../auth/data/respositories/auth_repository.dart';
 import '../../auth/data/services/AuthApiService.dart';
 
-void main() {
-//  runApp(ProviderScope(child: Art_Directory());
-  ProviderScope(child: Facility_Directory());
-}
-
-class Facility_Directory extends StatelessWidget {
+class FacilityDirectory extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(), // Set the theme to dark
-
-      home: MyHomePage(),
-    );
-  }
+  _FacilityDirectoryState createState() => _FacilityDirectoryState();
 }
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _FacilityDirectoryState extends State<FacilityDirectory> {
   TextEditingController _controller = TextEditingController();
   List<Facility> _facilities = [];
   bool _fetching = false;
 
   final AuthRepository _repository = AuthRepository(AuthApiService());
-  final HTTPService _httpService = FacilityHTTPService(); // Instantiate HTTPService
-
+  final HTTPService _httpService =
+      FacilityHTTPService(); // Instantiate HTTPService
 
   @override
   Widget build(BuildContext context) {
+    const activeColor = Colors.black38;
+    final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
-
-        title: Text('Facility Directory'),
-        // leading: IconButton(
-        //   icon: Icon(Icons.arrow_back),
-        //    onPressed: () {
-        //      Navigator.of(context).pop();
-        //   },
-        //  ),
-      ),
       body: Column(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(
+          CustomAppBar(
+            title: "Facility Directory",
+            icon: Icons.local_hospital,
+            color: activeColor,
+            bottom: Row(children: [
+              Expanded(
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(
+                        Constants.ROUNDNESS * 0.5,
+                      ),
+                    ),
+                  ),
                   child: TextField(
                     controller: _controller,
+                    clipBehavior: Clip.antiAlias,
                     decoration: InputDecoration(
-                      labelText: 'Search by name or MFL code',
-                      border: OutlineInputBorder(),
+                        border: InputBorder.none,
+                        hintText: "Search for facility by name or code",
+                        prefixIcon: const Icon(
+                          Icons.search_outlined,
+                          color: Colors.white,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.3),
+                        hintStyle: const TextStyle(color: Colors.white)),
+                    style: const TextStyle(
+                      color: Colors.white,
                     ),
                   ),
                 ),
-                SizedBox(width: 8.0),
-                ElevatedButton(
-                  onPressed: _fetching ? null : () {
-                    _fetchFacilities(_controller.text);
-                  },
-                  child: Text('Search'),
+              ),
+              const SizedBox(
+                width: Constants.SPACING,
+              ),
+              IconButton.filledTonal(
+                color: Colors.white,
+                onPressed: _fetching
+                    ? null
+                    : () {
+                        _fetchFacilities(_controller.text);
+                      },
+                icon: const Icon(Icons.tune),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll<Color>(
+                    Colors.white.withOpacity(0.3),
+                  ),
+                  shape: const MaterialStatePropertyAll<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(Constants.ROUNDNESS * 0.5),
+                      ),
+                    ),
+                  ),
                 ),
-              ],
-            ),
+              )
+            ]),
           ),
           Expanded(
-            child: _facilities.isEmpty && !_fetching
-                ? Center(child: Text('No facilities found'))
-                : _fetching
-                    ? Center(child: CircularProgressIndicator())
-                    : ListView.builder(
-                        itemCount: _facilities.length,
-                        itemBuilder: (context, index) {
-                          Facility facility = _facilities[index];
-                          return ListTile(
-                            title: Text(facility.name),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Telephone: ${facility.telephone}'),
-                                Text('County: ${facility.county}'),
-                              ],
-                              
-                            ),
-                            
-                          );
-                          
-                        },
-                      ),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(Constants.SPACING),
+                child: _facilities.isEmpty && !_fetching
+                    ? Center(
+                        child: Text(
+                        'No facilities found',
+                        style: theme.textTheme.headlineSmall
+                            ?.copyWith(color: theme.disabledColor),
+                      ))
+                    : _fetching
+                        ? const Center(child: CircularProgressIndicator())
+                        : Column(
+                            children: _facilities
+                                .map(
+                                  (e) => Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(
+                                          Constants.SPACING),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                e.name,
+                                                style:
+                                                    theme.textTheme.titleLarge,
+                                              ),
+                                              SizedBox(
+                                                  height: Constants.SPACING),
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.pin_drop,
+                                                    color: theme
+                                                        .colorScheme.primary,
+                                                  ),
+                                                  const SizedBox(
+                                                    width: Constants.SPACING,
+                                                  ),
+                                                  Text(e.county)
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.phone_forwarded,
+                                                    color: theme
+                                                        .colorScheme.primary,
+                                                  ),
+                                                  const SizedBox(
+                                                    width: Constants.SPACING,
+                                                  ),
+                                                  Text(e.telephone)
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons
+                                                        .location_city_outlined,
+                                                    color: theme
+                                                        .colorScheme.primary,
+                                                  ),
+                                                  const SizedBox(
+                                                    width: Constants.SPACING,
+                                                  ),
+                                                  Text("MFL Code: ${e.code}"),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.local_hospital,
+                                                    color: theme
+                                                        .colorScheme.primary,
+                                                  ),
+                                                  const SizedBox(
+                                                    width: Constants.SPACING,
+                                                  ),
+                                                  Text(
+                                                    e.facilityType,
+                                                    style: const TextStyle(
+                                                        overflow: TextOverflow
+                                                            .ellipsis),
+                                                  )
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                color: theme.colorScheme.primary
+                                                    .withOpacity(0.4),
+                                                shape: BoxShape.circle),
+                                            child: IconButton(
+                                                onPressed: () {
+                                                  makePhoneCall(e.telephone);
+                                                },
+                                                icon: const Icon(
+                                                    Icons.phone_forwarded)),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+              ),
+            ),
           ),
         ],
       ),
@@ -118,13 +226,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final id = await _repository.getUserId();
     final token = await _repository.getAuthToken();
-    final token2 =await _httpService.getCachedToken();
-
-
+    final token2 = await _httpService.getCachedToken();
 
     // var headers = {'Authorization':"Bearer ${token2.accessToken}",
     //   'Content-Type': 'application/json'};
-
 
     // Define headers
     Map<String, String> headers = {
@@ -132,22 +237,18 @@ class _MyHomePageState extends State<MyHomePage> {
       'Content-Type': 'application/json',
     };
 
-
-    String url='https://ushauriapi.kenyahmis.org/nishauri_new/artdirectory?name=$queryParameter&user_id=$id';
+    String url =
+        'https://ushauriapi.kenyahmis.org/nishauri_new/artdirectory?name=$queryParameter&user_id=$id';
 // =======
 //     String baseUrl = 'http://prod.kenyahmis.org:8002/api/facility/directory';
 //     String url = '$baseUrl?name=$queryParameter';
 // >>>>>>> 48aaf36 (:construction: Add dawa drop global)
 
     try {
-     // http.Response response = await http.get(Uri.parse(url));
-      http.Response response = await http.get(
-        Uri.parse(url),
-        headers:headers
-      );
+      // http.Response response = await http.get(Uri.parse(url));
+      http.Response response = await http.get(Uri.parse(url), headers: headers);
 
       print('API Response: ${response.statusCode} ${response.body}');
-
       print('Cached Token: $headers');
       print('userID: $id');
 
@@ -158,9 +259,8 @@ class _MyHomePageState extends State<MyHomePage> {
           List<dynamic> jsonList = messageData;
           if (jsonList != null) {
             setState(() {
-              _facilities = jsonList
-                  .map((json) => Facility.fromJson(json))
-                  .toList();
+              _facilities =
+                  jsonList.map((json) => Facility.fromJson(json)).toList();
               _fetching = false;
             });
           } else {
@@ -212,6 +312,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _showToast(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 }

@@ -12,17 +12,9 @@ class ClinicalDetailsTab extends StatelessWidget {
     final theme = Theme.of(context);
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(Constants.SPACING),
-          child: ListTile(
-            title: Text("${program.name} Program Details"),
-            subtitle: Text('Facility Name: ${program.facility_name}'),
-          ),
-          // child: Text(
-          //
-          //   "Program Details",
-          //   style: theme.textTheme.headlineMedium,
-          // ),
+        ListTile(
+          title: Text("${program.name} Program Details"),
+          subtitle: Text('Facility Name: ${program.facility_name}'),
         ),
         Expanded(
           child: ListView.builder(
@@ -35,7 +27,7 @@ class ClinicalDetailsTab extends StatelessWidget {
                   const Divider(),
                   ListTile(
                     leading: const Icon(Icons.file_present),
-                    title: Text(itemName),
+                    title: Text(itemName, style: theme.textTheme.titleMedium,),
                     subtitle: Text(itemValue),
                   ),
                 ],

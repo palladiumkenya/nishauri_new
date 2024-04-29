@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -20,7 +22,8 @@ class MainMenuScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("App modules", style: theme.textTheme.headlineLarge)),
+        title: Center(
+            child: Text("App modules", style: theme.textTheme.headlineLarge)),
       ),
       body: SafeArea(
         child: Consumer(
@@ -38,86 +41,99 @@ class MainMenuScreen extends StatelessWidget {
                 const SizedBox(height: Constants.SPACING * 2),
                 Expanded(
                   child: userProgram.when(
-                    data: (data) => MenuItemsBuilder(
-                      crossAxisCount: 2,
-                      itemBuilder: (item) => Card(
-                        margin: const EdgeInsets.all(Constants.SPACING),
-                        clipBehavior: Clip.antiAlias,
-                        child: InkWell(
-                          splashColor: theme.colorScheme.primary,
-                          onTap: item.onPressed,
-                          child: Container(
-                            padding: const EdgeInsets.all(Constants.SPACING),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  theme.colorScheme.inversePrimary,
-                                  theme.colorScheme.primary,
+                    data: (data) {
+
+                      return MenuItemsBuilder(
+                        crossAxisCount: 2,
+                        itemBuilder: (item) => Card(
+                          margin: const EdgeInsets.all(Constants.SPACING),
+                          clipBehavior: Clip.antiAlias,
+                          child: InkWell(
+                            splashColor: theme.colorScheme.primary,
+                            onTap: item.onPressed,
+                            child: Container(
+                              padding: const EdgeInsets.all(Constants.SPACING),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    theme.colorScheme.onSurface,
+                                    item.color ?? theme.colorScheme.primary,
+                                  ],
+                                ),
+                                image: const DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/contours.png"),
+                                    opacity: 0.2,
+                                    fit: BoxFit.cover
+
+                                    // image: AssetImage("assets/images/contours.png"),
+                                    ),
+                              ),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Icon(
+                                    item.icon,
+                                    size: 70,
+                                    color: theme.canvasColor,
+                                  ),
+                                  const SizedBox(height: Constants.SPACING),
+                                  Text(
+                                    item.title ?? "",
+                                    style:
+                                        theme.textTheme.titleMedium?.copyWith(
+                                      color: theme.canvasColor,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    softWrap:
+                                        true, // Add this line to enable text wrapping
+                                  ),
                                 ],
                               ),
-                              image: const DecorationImage(
-                                  image:
-                                      AssetImage("assets/images/contours.png"),
-                                  opacity: 0.2,
-                                  fit: BoxFit.cover
-
-                                  // image: AssetImage("assets/images/contours.png"),
-                                  ),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Icon(
-                                  item.icon,
-                                  size: 50,
-                                  color: theme.colorScheme.primary,
-                                ),
-                                const SizedBox(height: Constants.SPACING),
-                                Text(
-                                  item.title ?? "",
-                                  style: theme.textTheme.titleMedium?.copyWith(
-                                    color: theme.canvasColor,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  softWrap: true, // Add this line to enable text wrapping
-                                ),
-                              ],
                             ),
                           ),
                         ),
-                      ),
-                      // itemBuilder: (item) => MenuOption(
-                      //   title: item.title ?? "",
-                      //   icon: item.icon,
-                      //   // iconSize: 50,
-                      //   onPress: item.onPressed,
-                      //   // iconColor: theme.colorScheme.primary,
-                      //   bgColor: item.title == "Add Programme"
-                      //       ? theme.colorScheme.secondary
-                      //       : null,
-                      // ),
-                      items: [
-                        // get generic menu items
-                        ...getGenericMenuItems(context),
-                        // // get program menu items
-                        // ...data.map((e) {
-                        //   final programCode = e.id;
-                        //   print(e.id);
-                        //   return getProgramMenuItemByProgramCode(context, programCode?? '');
-                        // }).toList(),
-                        // Register new program
-                        MenuItem(
-                          icon: Icons.add,
-                          title: "Add Programme",
-                          onPressed: () => context
-                              .goNamed(RouteNames.PROGRAME_REGISTRATION_SCREEN),
-                        ),
-                      ],
-                    ),
+                        // itemBuilder: (item) => MenuOption(
+                        //   title: item.title ?? "",
+                        //   icon: item.icon,
+                        //   // iconSize: 50,
+                        //   onPress: item.onPressed,
+                        //   // iconColor: theme.colorScheme.primary,
+                        //   bgColor: item.title == "Add Programme"
+                        //       ? theme.colorScheme.secondary
+                        //       : null,
+                        // ),
+                        items: [
+                          // get generic menu items
+                          ...getGenericMenuItems(context)
+                            ..removeWhere((element) {
+                              if (data.isEmpty &&
+                                  element.title == MenuItemNames.PROGRAM_MENU) {
+                                return true;
+                              }
+                              return false;
+                            }),
+                          // // get program menu items
+                          // ...data.map((e) {
+                          //   final programCode = e.id;
+                          //   print(e.id);
+                          //   return getProgramMenuItemByProgramCode(context, programCode?? '');
+                          // }).toList(),
+                          // Register new program
+                          MenuItem(
+                            icon: Icons.add,
+                            title: "Add Programme",
+                            onPressed: () => context.goNamed(
+                                RouteNames.PROGRAME_REGISTRATION_SCREEN),
+                          ),
+                        ],
+                      );
+                    },
                     error: (error, _) => Center(child: Text(error.toString())),
                     loading: () => const Center(
                       child: CircularProgressIndicator(),

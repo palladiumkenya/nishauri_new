@@ -6,8 +6,9 @@ class MenuItem {
   final IconData icon;
   final String? title;
   final void Function()? onPressed;
+  final Color? color;
 
-  MenuItem({required this.icon, this.title, this.onPressed});
+  MenuItem({required this.icon, this.title, this.onPressed, this.color});
 }
 
 MenuItem getProgramMenuItemByProgramCode(
@@ -17,12 +18,14 @@ MenuItem getProgramMenuItemByProgramCode(
       icon: Icons.vaccines,
       title: MenuItemNames.HIV_PROGRAM_MENU,
       onPressed: () => context.goNamed(RouteNames.HIV_PROGRAM),
+      color: Colors.green
     );
   } else if (programCode == ProgramCodeNameIds.TB) {
     return MenuItem(
       icon: Icons.sick,
       title: MenuItemNames.TB_PROGRAM_MENU,
       onPressed: () => "",
+
     );
   } else if (programCode == ProgramCodeNameIds.ASTHMA) {
     return MenuItem(
@@ -77,21 +80,25 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
       icon: Icons.calendar_month,
       title: MenuItemNames.APPOINTMENTS,
       onPressed: () => context.goNamed(RouteNames.APPOINTMENTS),
+      color: Colors.green
     ),
     MenuItem(
       icon: Icons.vaccines_sharp,
       title: MenuItemNames.LAB_RESULTS,
       onPressed: () => context.goNamed(RouteNames.LAB_RESULTS),
+      color: Colors.deepOrange
     ),
     MenuItem(
       icon: Icons.file_present,
       title: MenuItemNames.MY_CLINIC_CARD,
       onPressed: () => context.goNamed(RouteNames.MY_CLINIC_CARD),
+      color: Colors.blue
     ),
      MenuItem(
        icon: Icons.event_note,
        title: MenuItemNames.FACILITY_DIRECTORY,
        onPressed: () => context.goNamed(RouteNames.Facility_Directory),
+       color: Colors.black12
      ),
     // MenuItem(
     //   icon: Icons.group,
@@ -107,12 +114,14 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
       icon: Icons.calculate_outlined,
       title: MenuItemNames.BMI_CALCULATOR,
       onPressed: () => context.goNamed(RouteNames.BMI_CALCULATOR),
+      color: Colors.cyan
     ),
 
     MenuItem(
       icon: Icons.vaccines_sharp,
       title: MenuItemNames.DAWA_DROP,
       onPressed: () => context.goNamed(RouteNames.DAWA_DROP),
+      color: Colors.deepPurple
     ),
     // MenuItem(
     //   icon: Icons.move_down,
