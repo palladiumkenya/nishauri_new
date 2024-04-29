@@ -49,9 +49,10 @@ class ReviewAndSubmit extends StatelessWidget {
         ListTile(
           title: const Text("Gender"),
           subtitle: Text(
-            formState['gender'] != null
-                ? (formState['gender'] == "M" ? "Male" : "Female")
-                : "None",
+              "${formState['gender'] ?? "None"}"
+            // formState['gender'] != null
+            //     ? (formState['gender'] == "M" ? "Male" : "Female")
+            //     : "None",
           ),
         ),
         const Divider(),
