@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
+import 'package:nishauri/src/features/appointments/presentation/pages/AppointmentRescheduleScreen.dart';
 import 'package:nishauri/src/features/appointments/presentation/pages/Appointments.dart';
 import 'package:nishauri/src/features/art/presentation/FacilityDirectory.dart';
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
@@ -276,6 +277,15 @@ final List<RouteBase> secureRoutes = [
     builder: (BuildContext context, GoRouterState state) {
       return const Appointments();
     },
+    routes: [
+      GoRoute(
+        name: RouteNames.APPOINTMENTS_RESCHEDULE,
+        path: 'reschedule',
+        builder: (BuildContext context, GoRouterState state) {
+          return const AppointmentRescheduleScreen();
+        },
+      ),
+    ]
   ),
   GoRoute(
     name: RouteNames.LAB_RESULTS,

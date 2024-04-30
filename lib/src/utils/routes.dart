@@ -25,6 +25,7 @@ class RouteNames {
   static const HIV_ART_SITES = "art-sites";
   static const DASHBOARD = "dashboard";
   static const APPOINTMENTS = "appointments";
+  static const APPOINTMENTS_RESCHEDULE = "appointments-reschedule";
   static const TREATMENT_SUPPORT = "treatment-support";
   static const HIV_REGIMEN = "regimen-history";
   static const HIV_ART_GROUPS = "hiv-art-groups";

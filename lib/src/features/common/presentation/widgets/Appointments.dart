@@ -93,6 +93,7 @@ class Appointments extends HookConsumerWidget {
                                 providerImage:
                                     "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
                                 providerName: "Kiseuni Dispensary",
+                                onRescheduleTap: ()=>context.goNamed(RouteNames.APPOINTMENTS_RESCHEDULE),
                               ),
                             ),
                           );
