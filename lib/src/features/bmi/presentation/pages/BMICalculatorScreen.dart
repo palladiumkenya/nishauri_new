@@ -93,6 +93,7 @@ class BMICalculatorScreen extends HookWidget {
                       const SizedBox(height: Constants.SPACING),
                       Button(
                         title: "Calculate",
+                        surfixIcon: const Icon(Icons.refresh),
                         backgroundColor: activeColor,
                         textColor: theme.canvasColor,
                         onPress: () {

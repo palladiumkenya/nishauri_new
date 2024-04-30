@@ -129,3 +129,14 @@ Future<void> makePhoneCall(String phoneNumber) async {
   );
   await launchUrl(launchUri);
 }
+
+List<DateTime> getTimesBetween(DateTime startTime, DateTime endTime, Duration duration) {
+
+  List<DateTime> times = [];
+  DateTime currentTime = startTime;
+  while (currentTime.isBefore(endTime.add(duration))) {
+    times.add(currentTime);
+    currentTime = currentTime.add(duration);
+  }
+  return times;
+}

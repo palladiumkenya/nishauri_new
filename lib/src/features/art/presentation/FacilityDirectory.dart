@@ -126,10 +126,15 @@ class _FacilityDirectoryState extends State<FacilityDirectory> {
                                             children: [
                                               Text(
                                                 e.name,
-                                                style:
-                                                    theme.textTheme.titleLarge,
+                                                style: theme
+                                                    .textTheme.titleMedium
+                                                    ?.copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        overflow: TextOverflow
+                                                            .ellipsis),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                   height: Constants.SPACING),
                                               Row(
                                                 children: [
