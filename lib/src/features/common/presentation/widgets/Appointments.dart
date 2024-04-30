@@ -50,19 +50,8 @@ class Appointments extends HookConsumerWidget {
               ],
             ),
           ),
-          // AppointmentCard(
-          //   appointmentType: "Unknown type",
-          //   appointmentTime: DateTime.parse(
-          //     // artAppointment.appointment ??
-          //     DateTime.now().toIso8601String(),
-          //   ),
-          //   providerImage:
-          //       "https://www.emeraldgrouppublishing.com/sites/default/files/image/covid-cells.jpg",
-          //   providerName: "Dr John Doe",
-          // ),
-          if(data.isEmpty)
+          if (data.isEmpty)
             DecoratedBox(
-
               decoration: const BoxDecoration(),
               child: SvgPicture.asset(
                 "assets/images/online_calendar.svg",
@@ -71,107 +60,91 @@ class Appointments extends HookConsumerWidget {
                 height: 150,
               ),
             ),
-          if(data.isNotEmpty)
-          CarouselSlider(
-            options: CarouselOptions(
-              enableInfiniteScroll: false,
-              // height: screenSize.height * 0.2,
-              enlargeCenterPage: true,
-              enlargeFactor: 0.3,
-            ),
-            items: data
-                .map(
-              (artAppointment) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    final appointmentDate = DateTime.parse(artAppointment
-                            .appointment
-                            ?.split("-")
-                            .reversed
-                            .join("-") ??
-                        DateTime.now().toIso8601String());
-                    return GestureDetector(
-                      onTap: () {
-                        context.goNamed(
-                          RouteNames.HIV_ART_APPOINTMENT_DETAILS,
-                          extra: artAppointment,
-                        );
-                      },
-                      child: Wrap(
-                        children: [
-                          AppointmentCard(
-                            appointmentType:
-                                artAppointment.appointment_type ?? "Unknown type",
-                            appointmentTime: appointmentDate,
-                            providerImage:
-                                "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
-                            providerName: "Kiseuni Dispensary",
-                          ),
-                        ],
-                      ),
-                    );
-                    return AppCard(
-                      onTap: () {
-                        context.goNamed(
-                          RouteNames.HIV_ART_APPOINTMENT_DETAILS,
-                          extra: artAppointment,
-                        );
-                      },
-                      color: theme.colorScheme.onPrimary,
-                      variant: CardVariant.ELEVETED,
-                      child: ListTile(
-                        leading: Container(
-                          padding: const EdgeInsets.all(
-                            Constants.SPACING,
-                          ),
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.background,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(
-                                Constants.ROUNDNESS,
+          if (data.isNotEmpty)
+            SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: data.map(
+                    (artAppointment) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          final appointmentDate = DateTime.parse(artAppointment
+                                  .appointment
+                                  ?.split("-")
+                                  .reversed
+                                  .join("-") ??
+                              DateTime.now().toIso8601String());
+                          final size = getOrientationAwareScreenSize(context);
+
+                          return GestureDetector(
+                            onTap: () {
+                              context.goNamed(
+                                RouteNames.HIV_ART_APPOINTMENT_DETAILS,
+                                extra: artAppointment,
+                              );
+                            },
+                            child: SizedBox(
+                              width: size.width * 0.99,
+                              child: AppointmentCard(
+                                appointmentType:
+                                    artAppointment.appointment_type ??
+                                        "Unknown type",
+                                appointmentTime: appointmentDate,
+                                providerImage:
+                                    "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
+                                providerName: "Kiseuni Dispensary",
                               ),
                             ),
-                          ),
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.calendar_month),
-                            ],
-                          ),
-                        ),
-                        title: Text(artAppointment.appointment_type ?? '',
-                            maxLines: 1),
-                        titleTextStyle: theme.textTheme.titleSmall
-                            ?.copyWith(overflow: TextOverflow.ellipsis),
-                        subtitle: Text(
-                            "${DateFormat('EEEE, MMMM d y').parse(artAppointment.appointment_date).difference(DateTime.now()).inDays} days Remaining"),
-                        subtitleTextStyle: theme.textTheme.bodySmall,
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          );
+                        },
+                      );
+                    },
+                  ).toList(),
+                )),
+          if (false)
+            CarouselSlider(
+              options: CarouselOptions(
+                enableInfiniteScroll: false,
+                // height: screenSize.height * 0.2,
+                enlargeCenterPage: true,
+                enlargeFactor: 0.3,
+              ),
+              items: data.map(
+                (artAppointment) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      final appointmentDate = DateTime.parse(artAppointment
+                              .appointment
+                              ?.split("-")
+                              .reversed
+                              .join("-") ??
+                          DateTime.now().toIso8601String());
+                      return GestureDetector(
+                        onTap: () {
+                          context.goNamed(
+                            RouteNames.HIV_ART_APPOINTMENT_DETAILS,
+                            extra: artAppointment,
+                          );
+                        },
+                        child: Wrap(
                           children: [
-                            Text(
-                              DateFormat('d').format(
-                                  DateFormat('EEEE, MMMM d y')
-                                      .parse(artAppointment.appointment_date)),
-                              style: theme.textTheme.bodySmall
-                                  ?.copyWith(fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              DateFormat("MMM").format(
-                                  DateFormat('EEEE, MMMM d y')
-                                      .parse(artAppointment.appointment_date)),
-                              style: theme.textTheme.bodySmall
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            AppointmentCard(
+                              appointmentType:
+                                  artAppointment.appointment_type ??
+                                      "Unknown type",
+                              appointmentTime: appointmentDate,
+                              providerImage:
+                                  "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
+                              providerName: "Kiseuni Dispensary",
                             ),
                           ],
                         ),
-                      ),
-                    );
-                  },
-                );
-              },
-            ).toList(),
-          ),
+                      );
+                    },
+                  );
+                },
+              ).toList(),
+            ),
         ],
       ),
       error: (error, _) => Container(),
