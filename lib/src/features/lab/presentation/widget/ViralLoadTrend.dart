@@ -2,8 +2,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/lab/data/models/viral_load.dart';
-import 'package:nishauri/src/utils/colors.dart';
-import 'package:nishauri/src/utils/constants.dart';
 
 class ViralLoadTrend extends StatefulWidget {
   final List<ViralLoad> data;
@@ -54,17 +52,20 @@ class _ViralLoadTrendState extends State<ViralLoadTrend> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final lineBarsData = [
       LineChartBarData(
         showingIndicators: showingTooltipOnSpots,
         spots: allSpots(widget.data),
         isCurved: false,
-        barWidth: 2,
+        barWidth: 1,
+        color: theme.colorScheme.primary,
         shadow: const Shadow(
           blurRadius: 8,
         ),
         dotData: const FlDotData(show: true),
         belowBarData: BarAreaData(
+          color: theme.primaryColor.withOpacity(0.1),
           show: true,
         ),
       ),
@@ -88,6 +89,7 @@ class _ViralLoadTrendState extends State<ViralLoadTrend> {
                     tooltipsOnBar,
                     lineBarsData.indexOf(tooltipsOnBar),
                     tooltipsOnBar.spots[index],
+
                   ),
                 ]);
               }).toList(),

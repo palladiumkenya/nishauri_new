@@ -33,6 +33,14 @@ class UserProgramController
     }
   }
 
+  Future<void> updateProgram(Map<String, dynamic> data) async {
+    try {
+      return await _repository.updateProgram(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<String> getVerificationCode(Map<String, dynamic> data) async {
     try {
       return await _repository.getVerificationCode(data);

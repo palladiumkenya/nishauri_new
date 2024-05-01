@@ -25,6 +25,7 @@ class RouteNames {
   static const HIV_ART_SITES = "art-sites";
   static const DASHBOARD = "dashboard";
   static const APPOINTMENTS = "appointments";
+  static const APPOINTMENTS_RESCHEDULE = "appointments-reschedule";
   static const TREATMENT_SUPPORT = "treatment-support";
   static const HIV_REGIMEN = "regimen-history";
   static const HIV_ART_GROUPS = "hiv-art-groups";
@@ -53,6 +54,7 @@ class RouteNames {
   static const DAWA_DROP_MENU = "dawa-drop-menu";
   static const REQUEST_DRUGS = "request-drugs";
   static const DISPATCHED_DRUGS = "dispatched-drugs";
+  static const REMOVE_PROGRAM = "remove-program";
 
 }
 
@@ -79,6 +81,7 @@ class MenuItemNames {
   static const DAWA_DROP_MENU = "Dawa Drop Menu";
   static const REQUEST_DRUGS = "Request Drugs";
   static const DISPATCHED_DRUGS = "Dispached Drugs";
+  static const REMOVE_PROGRAM = "Remove Program";
 }
 
 class ProgramCodeNameIds {

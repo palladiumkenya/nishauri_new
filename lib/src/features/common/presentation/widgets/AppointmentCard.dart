@@ -11,6 +11,7 @@ class AppointmentCard extends StatelessWidget {
   final String providerImage;
   final DateTime appointmentTime;
   final String appointmentType;
+  final void Function()? onRescheduleTap;
 
 
   const AppointmentCard({
@@ -19,6 +20,7 @@ class AppointmentCard extends StatelessWidget {
     required this.providerImage,
     required this.appointmentTime,
     required this.appointmentType,
+    this.onRescheduleTap
   });
 
   @override
@@ -159,7 +161,7 @@ class AppointmentCard extends StatelessWidget {
                 // shape: const OvalBorder(),
                 child: InkWell(
                     splashColor: theme.colorScheme.primary.withAlpha(30),
-                    onTap: () {},
+                    onTap: onRescheduleTap,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: Constants.SPACING * 0.5,
