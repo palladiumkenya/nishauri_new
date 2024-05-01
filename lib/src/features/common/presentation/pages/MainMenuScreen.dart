@@ -54,14 +54,15 @@ class MainMenuScreen extends StatelessWidget {
                             child: Container(
                               padding: const EdgeInsets.all(Constants.SPACING),
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    theme.colorScheme.onSurface,
-                                    item.color ?? theme.colorScheme.primary,
-                                  ],
-                                ),
+                                color: item.color ?? theme.colorScheme.primary,
+                                // gradient: LinearGradient(
+                                //   begin: Alignment.topCenter,
+                                //   end: Alignment.bottomCenter,
+                                //   colors: [
+                                //     theme.colorScheme.onSurface,
+                                //     item.color ?? theme.colorScheme.primary,
+                                //   ],
+                                // ),
                                 image: const DecorationImage(
                                     image: AssetImage(
                                         "assets/images/contours.png"),
@@ -122,7 +123,8 @@ class MainMenuScreen extends StatelessWidget {
                           // }).toList(),
                           // Register new program
                           MenuItem(
-                            icon: Icon(Icons.add),
+                            icon: Icon(Icons.add, size: Constants.iconSize,color: theme.colorScheme.inversePrimary,),
+                            // color: theme.colorScheme.primary,
                             title: "Add Programme",
                             onPressed: () => context.goNamed(
                                 RouteNames.PROGRAME_REGISTRATION_SCREEN),
