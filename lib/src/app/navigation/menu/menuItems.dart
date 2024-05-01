@@ -44,16 +44,10 @@ MenuItem getProgramMenuItemByProgramCode(
       title: MenuItemNames.CANCER_PROGRAM_MENU,
       onPressed: () => "",
     );
-  } else if (programCode == ProgramCodeNameIds.HYPERTENSION) {
+  } else if (programCode == ProgramCodeNameIds.HYPERTENSION ) {
     return MenuItem(
         icon: Icon(Icons.speed),
         title: MenuItemNames.HYPERTENSION_PROGRAM_MENU,
-        onPressed: () {});
-  }
-  else if (programCode.isNotEmpty) {
-    return MenuItem(
-        icon: Icons.remove,
-        title: MenuItemNames.REMOVE_PROGRAM,
         onPressed: () {});
   }
   return MenuItem(

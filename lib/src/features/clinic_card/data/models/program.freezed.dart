@@ -19,7 +19,7 @@ mixin _$Program {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String? get facility_name => throw _privateConstructorUsedError;
-  Map<String, String> get items => throw _privateConstructorUsedError;
+  List<PatientObservation> get obs => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ProgramCopyWith<Program> get copyWith => throw _privateConstructorUsedError;
@@ -34,7 +34,7 @@ abstract class $ProgramCopyWith<$Res> {
       {String id,
       String name,
       String? facility_name,
-      Map<String, String> items});
+      List<PatientObservation> obs});
 }
 
 /// @nodoc
@@ -53,7 +53,7 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
     Object? id = null,
     Object? name = null,
     Object? facility_name = freezed,
-    Object? items = null,
+    Object? obs = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -68,10 +68,10 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
           ? _value.facility_name
           : facility_name // ignore: cast_nullable_to_non_nullable
               as String?,
-      items: null == items
-          ? _value.items
-          : items // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
+      obs: null == obs
+          ? _value.obs
+          : obs // ignore: cast_nullable_to_non_nullable
+              as List<PatientObservation>,
     ) as $Val);
   }
 }
@@ -87,7 +87,7 @@ abstract class _$$ProgramImplCopyWith<$Res> implements $ProgramCopyWith<$Res> {
       {String id,
       String name,
       String? facility_name,
-      Map<String, String> items});
+      List<PatientObservation> obs});
 }
 
 /// @nodoc
@@ -104,7 +104,7 @@ class __$$ProgramImplCopyWithImpl<$Res>
     Object? id = null,
     Object? name = null,
     Object? facility_name = freezed,
-    Object? items = null,
+    Object? obs = null,
   }) {
     return _then(_$ProgramImpl(
       id: null == id
@@ -119,10 +119,10 @@ class __$$ProgramImplCopyWithImpl<$Res>
           ? _value.facility_name
           : facility_name // ignore: cast_nullable_to_non_nullable
               as String?,
-      items: null == items
-          ? _value._items
-          : items // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
+      obs: null == obs
+          ? _value._obs
+          : obs // ignore: cast_nullable_to_non_nullable
+              as List<PatientObservation>,
     ));
   }
 }
@@ -134,8 +134,8 @@ class _$ProgramImpl implements _Program {
       {required this.id,
       required this.name,
       this.facility_name,
-      required final Map<String, String> items})
-      : _items = items;
+      required final List<PatientObservation> obs})
+      : _obs = obs;
 
   @override
   final String id;
@@ -143,17 +143,17 @@ class _$ProgramImpl implements _Program {
   final String name;
   @override
   final String? facility_name;
-  final Map<String, String> _items;
+  final List<PatientObservation> _obs;
   @override
-  Map<String, String> get items {
-    if (_items is EqualUnmodifiableMapView) return _items;
+  List<PatientObservation> get obs {
+    if (_obs is EqualUnmodifiableListView) return _obs;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_items);
+    return EqualUnmodifiableListView(_obs);
   }
 
   @override
   String toString() {
-    return 'Program(id: $id, name: $name, facility_name: $facility_name, items: $items)';
+    return 'Program(id: $id, name: $name, facility_name: $facility_name, obs: $obs)';
   }
 
   @override
@@ -165,12 +165,12 @@ class _$ProgramImpl implements _Program {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.facility_name, facility_name) ||
                 other.facility_name == facility_name) &&
-            const DeepCollectionEquality().equals(other._items, _items));
+            const DeepCollectionEquality().equals(other._obs, _obs));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, id, name, facility_name,
-      const DeepCollectionEquality().hash(_items));
+      const DeepCollectionEquality().hash(_obs));
 
   @JsonKey(ignore: true)
   @override
@@ -184,7 +184,7 @@ abstract class _Program implements Program {
       {required final String id,
       required final String name,
       final String? facility_name,
-      required final Map<String, String> items}) = _$ProgramImpl;
+      required final List<PatientObservation> obs}) = _$ProgramImpl;
 
   @override
   String get id;
@@ -193,7 +193,7 @@ abstract class _Program implements Program {
   @override
   String? get facility_name;
   @override
-  Map<String, String> get items;
+  List<PatientObservation> get obs;
   @override
   @JsonKey(ignore: true)
   _$$ProgramImplCopyWith<_$ProgramImpl> get copyWith =>

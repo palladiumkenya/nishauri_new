@@ -247,7 +247,7 @@ List<DropdownMenuItem<String>> _getUnregisteredPrograms(
   print(programs);
   return ProgramCodeNameIds.SUPPOTED_PROGRAM_CODES
       .where((code) =>
-  !programs.any((program) => program.id == code))
+  !programs.any((program) => program.id == code && program.isActive))
       .map((e) =>
       DropdownMenuItem(
           value: e,
