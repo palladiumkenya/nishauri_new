@@ -55,6 +55,7 @@ import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuth
 import 'package:nishauri/src/features/user_preference/presentation/pages/PrivacySettingsScreen.dart';
 import 'package:nishauri/src/features/user_programs/data/models/program_verification_detail.dart';
 import 'package:nishauri/src/features/user_programs/presentation/pages/ProgramRegistrationScreen.dart';
+import 'package:nishauri/src/features/user_programs/presentation/pages/ProgramUpdateScreen.dart';
 import 'package:nishauri/src/features/user_programs/presentation/pages/ProgramVerificationScreen.dart';
 import 'package:nishauri/src/features/visits/presentations/pages/FacilityVisitDetailScreen.dart';
 import 'package:nishauri/src/features/visits/presentations/pages/FacilityVisitsScreen.dart';
@@ -227,6 +228,14 @@ final List<RouteBase> secureRoutes = [
     path: 'program-menu',
     builder: (BuildContext context, GoRouterState state) {
       return const ProgramsMenuScreen();
+    },
+  ),
+
+GoRoute(
+    name: RouteNames.REMOVE_PROGRAM,
+    path: 'remove-program',
+    builder: (BuildContext context, GoRouterState state) {
+      return const ProgramUpdateScreen();
     },
   ),
   GoRoute(

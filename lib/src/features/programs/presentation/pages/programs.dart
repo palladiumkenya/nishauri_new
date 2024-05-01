@@ -23,6 +23,12 @@ class ProgramsMenuScreen extends StatelessWidget {
         ),
         title: const Center(child: Text("Programs")),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            context.goNamed(RouteNames.REMOVE_PROGRAM,);
+          },
+        label: const Text("Remove program"),
+        icon: const Icon(Icons.remove),),
       body:
         Consumer(
           builder: (context, ref, child) {
