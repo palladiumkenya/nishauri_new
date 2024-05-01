@@ -85,7 +85,7 @@ MenuItem getProgramMenuItemByProgramCode(
       title: MenuItemNames.CANCER_PROGRAM_MENU,
       onPressed: () => "",
     );
-  } else if (programCode == ProgramCodeNameIds.HYPERTENSION) {
+  } else if (programCode == ProgramCodeNameIds.HYPERTENSION ) {
     return MenuItem(
       icon: const Icon(
         Icons.speed,
@@ -97,12 +97,6 @@ MenuItem getProgramMenuItemByProgramCode(
       title: MenuItemNames.HYPERTENSION_PROGRAM_MENU,
       onPressed: () {},
     );
-  }
-  else if (programCode.isNotEmpty) {
-    return MenuItem(
-        icon: Icons.remove,
-        title: MenuItemNames.REMOVE_PROGRAM,
-        onPressed: () {});
   }
   else if (programCode.isNotEmpty) {
     return MenuItem(
