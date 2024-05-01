@@ -7,7 +7,7 @@ import 'package:nishauri/src/utils/routes.dart';
 
 _menuItems(BuildContext context) => [
   MenuItem(
-    icon: Icons.list_alt_rounded,
+    icon: Icon(Icons.list_alt_rounded),
     title: "Appointments",
     onPressed: () => context.goNamed(RouteNames.PROGRAM_APPOINTMENT),
   ),
@@ -63,7 +63,7 @@ class RequestDrugMenuScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Icon(item.icon,size: 50, color: theme.cardColor,),
+                  item.icon,
                   const SizedBox(height: Constants.SPACING,),
                   Text(item.title ?? '',
                     style: theme.textTheme.titleMedium?.copyWith(

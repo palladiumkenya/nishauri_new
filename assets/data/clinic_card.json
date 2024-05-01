@@ -1,36 +1,27 @@
 {
   "programs": [
     {
-      "name": "ART",
-      "facility_name": "Kenyatta",
-      "items": {
-        "currentRegimen": "Regimen ABC+3TC+EFV",
-        "currentViralLoad": "100",
-        "cd4Count": "350",
-        "adherence": "90%",
-        "appointmentDate": "2021-04-13",
-        "nextRefillDate": "2021-04-13"
-      }
+      "name": "Tuberculosis Program",
+      "facility": null,
+      "patient_observations": []
     },
     {
-      "name": "TB",
-      "facility_name": "Mama Lucy",
-      "items": {
-        "treatmentPlan": "Plan X",
-        "drugAdherence": "80%",
-        "treatmentOutcome": "Good",
-        "lastFollowUpDate": "2021-04-13"
-      }
-    },
-    {
-      "name": "Malaria",
-      "facility_name": "Coast General Hospital",
-      "items": {
-        "diagnosis": "Positive",
-        "treatment": "Medication Y",
-        "recoveryStatus": "Improving",
-        "nextCheckupDate": "2021-04-13"
-      }
+      "name": "ART Program",
+      "facility": "Kiseuni Dispensary",
+      "patient_observations": [
+        {
+          "label": "Ccc No",
+          "value": "1234500001"
+        },
+        {
+          "label": "Regimen",
+          "value": "AF2E"
+        },
+        {
+          "label": "Viral Load",
+          "value": "402 copies/ml"
+        }
+      ]
     }
   ]
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/custom_icons.dart';
 import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
@@ -111,20 +112,32 @@ class _HomeScreenState extends ConsumerState<MainScreen>
         elevation: 0,
         selectedItemColor: theme.colorScheme.primary,
         unselectedItemColor: theme.disabledColor,
-        items: const [
-          BottomNavigationBarItem(
+        items: [
+          const BottomNavigationBarItem(
             icon: Icon(Icons.home_filled),
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.apps_rounded),
+            icon: SvgPicture.asset(
+              "assets/images/apps.svg",
+              semanticsLabel: "Doctors",
+              width: 30,
+              height: 30,
+              fit: BoxFit.contain,
+            ),
             label: "Apps",
           ),
           BottomNavigationBarItem(
-            icon: Icon(CustomIcons.chat),
+            icon: SvgPicture.asset(
+              "assets/images/chats.svg",
+              semanticsLabel: "Doctors",
+              width: 30,
+              height: 30,
+              fit: BoxFit.contain,
+            ),
             label: "Ask Nuru",
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: "Settings",
           ),

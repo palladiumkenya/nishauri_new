@@ -184,13 +184,15 @@ class ProgramService extends HTTPService {
       Map<String, dynamic> data) async {
     final tokenPair = await getCachedToken();
     final id = await _repository.getUserId();
+    var user = {'user_id': id};
+    var mergedData = {...data, ...user};
     var headers = {
       'Authorization': 'Bearer ${tokenPair.accessToken}',
       'Content-Type': 'application/json',
     };
     var request = http.Request(
-        'POST', Uri.parse('${Constants.BASE_URL_NEW}/updateprogram/user_id=$id'));
-    request.body = json.encode(data);
+        'POST', Uri.parse('${Constants.BASE_URL_NEW}/updateprogram'));
+    request.body = json.encode(mergedData);
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     return response;

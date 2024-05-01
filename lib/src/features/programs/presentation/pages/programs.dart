@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuItemsBuilder.dart';
@@ -14,9 +15,10 @@ class ProgramsMenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: theme.primaryColor,
+        // backgroundColor: theme.primaryColor,
         leading: IconButton(
           icon: const Icon(Icons.chevron_left),
           onPressed: () => context.pop(),
@@ -44,26 +46,24 @@ class ProgramsMenuScreen extends StatelessWidget {
                 // ),
                 Expanded(
                   child: userProgram.when(
-                    data: (data) => MenuItemsBuilder(
-                      itemBuilder: (item) => MenuOption(
-                        title: item.title ?? "",
-                        icon: item.icon,
-                        // iconSize: 50,
-                        onPress: item.onPressed,
-                        // iconColor: theme.colorScheme.primary,
-                        // bgColor: item.title == "Add Programme"
-                        //     ? theme.colorScheme.secondary
-                        //     : null,
-                      ),
-                      items: [
-                        // get program menu items
-                        ...data.map((e) {
-                          final programCode = e.id;
-                          print(e.id);
-                          return getProgramMenuItemByProgramCode(context, programCode?? '');
-                        }).toList(),
-                      ],
-                    ),
+                    data: (data) {
+                      final activePrograms = data.where((program) => program.isActive == true).toList();
+                      return MenuItemsBuilder(
+                        itemBuilder: (item) => MenuOption(
+                          title: item.title ?? "",
+                          icon: item.icon,
+                          onPress: item.onPressed,
+                        ),
+                        items: [
+                          // get program menu items for active programs only
+                          ...activePrograms.map((e) {
+                            final programCode = e.id;
+                            print(e.isActive);
+                            return getProgramMenuItemByProgramCode(context, programCode ?? '');
+                          }).toList(),
+                        ],
+                      );
+                    },
                     error: (error, _) => Center(child: Text(error.toString())),
                     loading: () => const Center(
                       child: CircularProgressIndicator(),

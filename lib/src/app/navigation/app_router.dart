@@ -229,22 +229,7 @@ final List<RouteBase> secureRoutes = [
     builder: (BuildContext context, GoRouterState state) {
       return const ProgramsMenuScreen();
     },
-  ),
-
-GoRoute(
-    name: RouteNames.REMOVE_PROGRAM,
-    path: 'remove-program',
-    builder: (BuildContext context, GoRouterState state) {
-      return const ProgramUpdateScreen();
-    },
-  ),
-  GoRoute(
-    name: RouteNames.HIV_PROGRAM,
-    path: 'hiv-program',
-    builder: (BuildContext context, GoRouterState state) {
-      return const HIVMenuScreen();
-    },
-    routes: hivProgramRoutes,
+    routes: programMenu,
   ),
   GoRoute(
     name: RouteNames.DAWA_DROP_MENU,
@@ -528,5 +513,23 @@ final List<RouteBase> dawaDropRoutes = [
         artAppointment: extras,
       );
     },
+  ),
+];
+
+final List<RouteBase> programMenu = [
+  GoRoute(
+    name: RouteNames.REMOVE_PROGRAM,
+    path: 'remove-program',
+    builder: (BuildContext context, GoRouterState state) {
+      return const ProgramUpdateScreen();
+    },
+  ),
+  GoRoute(
+    name: RouteNames.HIV_PROGRAM,
+    path: 'hiv-program',
+    builder: (BuildContext context, GoRouterState state) {
+      return const HIVMenuScreen();
+    },
+    routes: hivProgramRoutes,
   ),
 ];

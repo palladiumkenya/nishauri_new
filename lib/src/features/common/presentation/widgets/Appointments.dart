@@ -54,10 +54,17 @@ class Appointments extends HookConsumerWidget {
             DecoratedBox(
               decoration: const BoxDecoration(),
               child: SvgPicture.asset(
-                "assets/images/online_calendar.svg",
+                "assets/images/appointments-empty.svg",
                 semanticsLabel: "Doctors",
                 fit: BoxFit.contain,
                 height: 150,
+              ),
+            ),
+          if (data.isEmpty)
+            Text(
+              "No upcoming appointments today",
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withOpacity(0.5),
               ),
             ),
           if (data.isNotEmpty)
@@ -93,7 +100,8 @@ class Appointments extends HookConsumerWidget {
                                 providerImage:
                                     "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
                                 providerName: "Kiseuni Dispensary",
-                                onRescheduleTap: ()=>context.goNamed(RouteNames.APPOINTMENTS_RESCHEDULE),
+                                onRescheduleTap: () => context.goNamed(
+                                    RouteNames.APPOINTMENTS_RESCHEDULE),
                               ),
                             ),
                           );

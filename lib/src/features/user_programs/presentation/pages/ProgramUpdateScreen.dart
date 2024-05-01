@@ -239,17 +239,16 @@ class _ProgramUpdateScreenState extends State<ProgramUpdateScreen> {
     );
   }
 }
+List<DropdownMenuItem<String>> _getRegisteredPrograms(List<UserProgram> programs) {
+  // Filter out active programs
+  final activePrograms = programs.where((program) => program.isActive == true).toList();
 
-List<DropdownMenuItem<String>> _getRegisteredPrograms(
-    List<UserProgram> programs) {
-  print(programs);
+  // Generate dropdown menu items for active programs
   return ProgramCodeNameIds.SUPPOTED_PROGRAM_CODES
-      .where((code) =>
-  programs.any((program) => program.id == code))
-      .map((e) =>
-      DropdownMenuItem(
-          value: e,
-          child: Text(
-              ProgramCodeNameIds.getProgramNameByCode(e) ?? "Not Supported")))
+      .where((code) => activePrograms.any((program) => program.id == code))
+      .map((e) => DropdownMenuItem(
+    value: e,
+    child: Text(ProgramCodeNameIds.getProgramNameByCode(e) ?? "Not Supported"),
+  ))
       .toList();
 }

@@ -67,7 +67,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.notifications),
+            icon: SvgPicture.asset(
+              "assets/images/notification.svg",
+              semanticsLabel: "Doctors",
+              fit: BoxFit.contain,
+            ),
           ),
           IconButton(
             onPressed: toggleDrawer,

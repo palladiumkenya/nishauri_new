@@ -8,17 +8,17 @@ import 'package:nishauri/src/utils/routes.dart';
 
 _menuItems(BuildContext context) => [
   MenuItem(
-    icon: Icons.shopping_cart,
+    icon: const Icon(Icons.shopping_cart),
     title: "Request Drugs",
     onPressed: () => context.goNamed(RouteNames.REQUEST_DRUGS),
   ),
   MenuItem(
-    icon: Icons.shopping_cart_checkout,
+    icon: const Icon(Icons.shopping_cart_checkout),
     title: "Drug Orders",
     onPressed: () => context.goNamed(RouteNames.HIV_DRUG_ORDERS),
   ),
   MenuItem(
-    icon: Icons.check_outlined,
+    icon: const Icon(Icons.check_outlined),
     title: "Confirm Delivery",
     onPressed: () => context.goNamed(RouteNames.DISPATCHED_DRUGS),
   ),
@@ -75,7 +75,7 @@ class DawaDropMenuScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Icon(item.icon, size: 50, color: theme.cardColor),
+                    item.icon,
                     const SizedBox(height: Constants.SPACING),
                     Text(
                       item.title ?? '',

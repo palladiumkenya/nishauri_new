@@ -76,11 +76,7 @@ class MainMenuScreen extends StatelessWidget {
                                     MainAxisAlignment.spaceEvenly,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Icon(
                                     item.icon,
-                                    size: 70,
-                                    color: theme.canvasColor,
-                                  ),
                                   const SizedBox(height: Constants.SPACING),
                                   Text(
                                     item.title ?? "",
@@ -126,7 +122,7 @@ class MainMenuScreen extends StatelessWidget {
                           // }).toList(),
                           // Register new program
                           MenuItem(
-                            icon: Icons.add,
+                            icon: Icon(Icons.add),
                             title: "Add Programme",
                             onPressed: () => context.goNamed(
                                 RouteNames.PROGRAME_REGISTRATION_SCREEN),

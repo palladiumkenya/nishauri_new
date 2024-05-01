@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/helpers.dart';
 
 class RescheduleDatePicker extends StatelessWidget {
   final DateTime appointmentTime;
@@ -23,7 +24,7 @@ class RescheduleDatePicker extends StatelessWidget {
     final latestDate = appointmentTime.add(durationAllowed);
     final today = DateTime.now();
 
-    final datesAllowed = _findDatesBetween(earliestDate, latestDate)
+    final datesAllowed = getTimesBetween(earliestDate, latestDate, const Duration(days: 1))
         .where((element) => element.isAfter(today));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +64,7 @@ class RescheduleDatePicker extends StatelessWidget {
                           }
                         },
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: Constants.SPACING * 2, vertical: Constants.SPACING),
+                          padding: const EdgeInsets.symmetric(horizontal: Constants.SPACING * 2, vertical: Constants.SPACING * 1.5),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,14 +99,4 @@ class RescheduleDatePicker extends StatelessWidget {
       ],
     );
   }
-}
-
-List<DateTime> _findDatesBetween(DateTime startDate, DateTime endDate) {
-  List<DateTime> dates = [];
-  DateTime currentDate = startDate;
-  while (currentDate.isBefore(endDate.add(const Duration(days: 1)))) {
-    dates.add(currentDate);
-    currentDate = currentDate.add(const Duration(days: 1));
-  }
-  return dates;
 }
