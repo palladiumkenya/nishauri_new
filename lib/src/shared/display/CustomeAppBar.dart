@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
@@ -49,7 +50,13 @@ class CustomAppBar extends StatelessWidget {
         children: [
           const SizedBox(height: Constants.SPACING),
           InkWell(
-            child: Icon(Icons.arrow_back, color: theme.canvasColor),
+            child: SvgPicture.asset(
+              "assets/images/reply.svg",
+              semanticsLabel: "Doctors",
+              fit: BoxFit.contain,
+              width: 40,
+              height: 40,
+            ),
             onTap: () => context.pop(),
           ),
           Row(

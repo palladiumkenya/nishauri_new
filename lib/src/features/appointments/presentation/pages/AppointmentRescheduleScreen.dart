@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/appointments/presentation/widgets/RescheduleDatePicker.dart';
@@ -147,7 +148,11 @@ class AppointmentRescheduleScreen extends HookWidget {
                 backgroundColor: Colors.green,
                 textColor: theme.canvasColor,
                 // prefixIcon: const Icon(Icons.downloading),
-                surfixIcon: const Icon(Icons.upload_outlined),
+                surfixIcon: SvgPicture.asset(
+                  "assets/images/history.svg",
+                  semanticsLabel: "Doctors",
+                  fit: BoxFit.contain,
+                ),
                 onPress: () {
 
                 },

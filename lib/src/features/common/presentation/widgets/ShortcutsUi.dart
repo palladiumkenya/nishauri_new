@@ -67,7 +67,7 @@ class ShortcutsWidget extends HookConsumerWidget {
             if (getMenuItemByNames(context, shortcuts).length < 3)
               MenuOption(
                 title: "",
-                icon: Icons.add,
+                icon: Icon(Icons.add),
                 bgColor: theme.colorScheme.secondary,
                 onPress: () {
                   _showDialog(context);

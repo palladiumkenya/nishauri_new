@@ -12,12 +12,14 @@ _menuItems(BuildContext context) => [
       //   onPressed: () => context.goNamed(RouteNames.HIV_DRUG_ORDERS),
       // ),
       MenuItem(
-          icon: Icons.local_hospital_outlined,
+          icon: const Icon(
+            Icons.local_hospital_outlined,
+          ),
           title: "ART Sites",
           onPressed: () => context.goNamed(RouteNames.HIV_ART_SITES)),
 
       MenuItem(
-          icon: Icons.medication,
+          icon: const Icon(Icons.medication),
           title: "Regimen",
           onPressed: () => context.goNamed(RouteNames.HIV_REGIMEN)),
       // MenuItem(

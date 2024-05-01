@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/bmi/presentation/widgets/GenderPicker.dart';
 import 'package:nishauri/src/features/bmi/presentation/widgets/HeightPicker.dart';
@@ -93,7 +94,11 @@ class BMICalculatorScreen extends HookWidget {
                       const SizedBox(height: Constants.SPACING),
                       Button(
                         title: "Calculate",
-                        surfixIcon: const Icon(Icons.refresh),
+                        surfixIcon: SvgPicture.asset(
+                          "assets/images/refresh-circle.svg",
+                          semanticsLabel: "Doctors",
+                          fit: BoxFit.contain,
+                        ),
                         backgroundColor: activeColor,
                         textColor: theme.canvasColor,
                         onPress: () {
