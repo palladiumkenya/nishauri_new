@@ -162,6 +162,40 @@ class ProgramService extends HTTPService {
     return response;
   }
 
+  Future<void> updateProgram(
+      Map<String, dynamic> data) async {
+    http.StreamedResponse response =
+    await call<Map<String, dynamic>>(updateProgram_, data);
+    if (response.statusCode == 200){
+    final responseString = await response.stream.bytesToString();
+    final responseData = jsonDecode(responseString);
+    if(responseData["success"] == true){
+      throw responseData["msg"];
+    }
+    else {
+      throw responseData["msg"];
+    }
+    } else {
+      throw "Something happened contact admin";
+    }
+  }
+
+  Future<http.StreamedResponse> updateProgram_(
+      Map<String, dynamic> data) async {
+    final tokenPair = await getCachedToken();
+    final id = await _repository.getUserId();
+    var headers = {
+      'Authorization': 'Bearer ${tokenPair.accessToken}',
+      'Content-Type': 'application/json',
+    };
+    var request = http.Request(
+        'POST', Uri.parse('${Constants.BASE_URL_NEW}/updateprogram/user_id=$id'));
+    request.body = json.encode(data);
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    return response;
+  }
+
   Future<String> verifyProgramOTP(Map<String, dynamic> data) async {
     http.StreamedResponse response =
         await call<Map<String, dynamic>>(verifyProgramOTP_, data);
