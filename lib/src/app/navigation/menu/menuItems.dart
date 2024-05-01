@@ -104,6 +104,12 @@ MenuItem getProgramMenuItemByProgramCode(
         title: MenuItemNames.REMOVE_PROGRAM,
         onPressed: () {});
   }
+  else if (programCode.isNotEmpty) {
+    return MenuItem(
+        icon: Icons.remove,
+        title: MenuItemNames.REMOVE_PROGRAM,
+        onPressed: () {});
+  }
   return MenuItem(
     icon: const Icon(
       Icons.more_horiz,
