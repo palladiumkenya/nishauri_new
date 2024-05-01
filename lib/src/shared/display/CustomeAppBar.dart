@@ -28,13 +28,14 @@ class CustomAppBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(
           horizontal: Constants.SPACING, vertical: Constants.SPACING * 3),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              color ?? theme.colorScheme.primary,
-              theme.colorScheme.onSurface
-            ]),
+        color: color ?? theme.colorScheme.primary,
+        // gradient: LinearGradient(
+        //     begin: Alignment.topLeft,
+        //     end: Alignment.bottomRight,
+        //     colors: [
+        //       color ?? theme.colorScheme.primary,
+        //       theme.colorScheme.onSurface
+        //     ]),
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(Constants.SPACING),
           bottomRight: Radius.circular(Constants.SPACING),
@@ -65,7 +66,7 @@ class CustomAppBar extends StatelessWidget {
               Text(
                 title,
                 style: theme.textTheme.headlineLarge
-                    ?.copyWith(color: theme.canvasColor),
+                    ?.copyWith(color: Colors.white),
               ),
               const SizedBox(width: Constants.SPACING),
               Icon(
@@ -79,7 +80,7 @@ class CustomAppBar extends StatelessWidget {
             Text(
               subTitle!,
               style: theme.textTheme.titleLarge
-                  ?.copyWith(color: theme.canvasColor),
+                  ?.copyWith(color: Colors.white),
             ),
           if (bottom != null) const SizedBox(height: Constants.SPACING * 2),
           if (bottom != null) bottom!

@@ -21,7 +21,7 @@ class BMICalculatorScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    const activeColor = Colors.cyan;
+    const activeColor = Constants.activeSelectionColor;
     final gender = useState<GenderPickerChoices>(GenderPickerChoices.male);
     final height = useState<double>(180);
     final heightUnits =
@@ -35,7 +35,7 @@ class BMICalculatorScreen extends HookWidget {
             title: "BMI Calculator",
             subTitle: "Empower Your Health Journey \nWith BMI Insights",
             icon: Icons.calculate_outlined,
-            color: activeColor,
+            color: Constants.bmiCalculatorColor,
           ),
           Expanded(
             child: SingleChildScrollView(

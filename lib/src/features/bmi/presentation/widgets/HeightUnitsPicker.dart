@@ -34,7 +34,7 @@ class HeightUnitsPicker extends StatelessWidget {
     final bgColorInActive = theme.disabledColor;
 
 
-    return Row(
+    return Wrap(
       children: [
         Card(
           elevation: 0,

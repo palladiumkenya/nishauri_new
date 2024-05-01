@@ -11,14 +11,14 @@ class CustomTabBarItem {
 class CustomTabBar extends StatelessWidget {
   final List<CustomTabBarItem> items;
   final void Function(CustomTabBarItem item, int index) onTap;
-  final Color? activeColor;
+  final Color activeColor;
   final int? activeIndex;
 
   const CustomTabBar(
       {super.key,
       this.items = const [],
       required this.onTap,
-      this.activeColor,
+      this.activeColor = Constants.activeSelectionColor,
       this.activeIndex});
 
   @override
@@ -51,7 +51,7 @@ class CustomTabBar extends StatelessWidget {
                       );
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal:Constants.SPACING,vertical: Constants.SPACING * 0.5),
+                      padding: const EdgeInsets.symmetric(horizontal:Constants.SPACING,vertical: Constants.SPACING),
                       decoration: BoxDecoration(
                           color: e.key == activeIndex
                               ? activeColor ?? theme.colorScheme.primary

@@ -31,7 +31,6 @@ class _FacilityDirectoryState extends State<FacilityDirectory> {
 
   @override
   Widget build(BuildContext context) {
-    const activeColor = Colors.black38;
     final theme = Theme.of(context);
     return Scaffold(
       body: Column(
@@ -39,7 +38,7 @@ class _FacilityDirectoryState extends State<FacilityDirectory> {
           CustomAppBar(
             title: "Facility Directory",
             icon: Icons.local_hospital,
-            color: activeColor,
+            color: Constants.facilityDirectoryColor,
             bottom: Row(children: [
               Expanded(
                 child: Container(

@@ -21,6 +21,7 @@ class Constants {
   static const appointmentsColor = Color.fromARGB(255, 75, 127, 117);
   static const bmiCalculatorColor = Color.fromARGB(255,0, 122, 141);
   static const dawaDropColor = Color.fromARGB(255,32, 76, 28);
+  static const activeSelectionColor = Color.fromARGB(255,65, 165, 146);
   static const iconSize = 70.0;
 
 }

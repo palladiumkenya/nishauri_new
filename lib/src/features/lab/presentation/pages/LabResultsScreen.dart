@@ -33,11 +33,10 @@ class LabResultsScreen extends HookConsumerWidget {
                 title: "ART Lab Results",
                 icon: Icons.vaccines,
                 subTitle: "Unlock you health insights with lab results",
-                color: Colors.deepPurple,
+                color: Constants.labResultsColor,
               ),
               CustomTabBar(
                 activeIndex: currIndex.value,
-                activeColor: Colors.green,
                 onTap: (item, index) {
                   currIndex.value = index;
                 },
