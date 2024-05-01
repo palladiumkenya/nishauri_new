@@ -54,6 +54,7 @@ class RouteNames {
   static const DAWA_DROP_MENU = "dawa-drop-menu";
   static const REQUEST_DRUGS = "request-drugs";
   static const DISPATCHED_DRUGS = "dispatched-drugs";
+  static const REMOVE_PROGRAM = "remove-program";
 
 }
 
@@ -80,6 +81,7 @@ class MenuItemNames {
   static const DAWA_DROP_MENU = "Dawa Drop Menu";
   static const REQUEST_DRUGS = "Request Drugs";
   static const DISPATCHED_DRUGS = "Dispached Drugs";
+  static const REMOVE_PROGRAM = "Remove Program";
 }
 
 class ProgramCodeNameIds {
