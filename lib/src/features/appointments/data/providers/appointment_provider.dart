@@ -4,9 +4,12 @@ import 'package:nishauri/src/features/appointments/data/repository/appointment_r
 import 'package:nishauri/src/features/appointments/data/services/appointment_services.dart';
 import 'package:nishauri/src/features/appointments/presentation/controllers/appointment_controller.dart';
 
-final appointmentProvider = StateNotifierProvider<AppointmentController,
-    AsyncValue<List<Appointment>>>((ref) {
+final appointmentProvider = StateNotifierProvider.family<
+    AppointmentController,
+    AsyncValue<List<Appointment>>,
+    bool>((ref, isPrevious) {
   final service = AppointmentService();
-  final repository = AppointmentRepository(service);
-  return AppointmentController(repository);
+  final repository = AppointmentRepository(service, isPrevious);
+  return AppointmentController(repository, isPrevious);
 });
+

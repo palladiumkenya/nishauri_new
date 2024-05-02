@@ -18,7 +18,7 @@ class Appointments extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appointmentsAsync = ref.watch(appointmentProvider);
+    final appointmentsAsync = ref.watch(appointmentProvider(false));
     final screenSize = getOrientationAwareScreenSize(context);
     final theme = Theme.of(context);
     return appointmentsAsync.when(

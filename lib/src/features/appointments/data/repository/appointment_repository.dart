@@ -3,8 +3,11 @@ import 'package:nishauri/src/features/appointments/data/services/appointment_ser
 
 class AppointmentRepository {
   final AppointmentService _service;
-  AppointmentRepository(this._service);
-  Future<List<Appointment>> getAppointments() async{
-    return _service.getAppointments();
+  final bool _isPrevious;
+
+  AppointmentRepository(this._service, this._isPrevious);
+
+  Future<List<Appointment>> getAppointments(bool isPrevious) async {
+    return _service.getAppointments(isPrevious);
   }
 }

@@ -27,6 +27,8 @@ mixin _$Appointment {
   String get appointment_date => throw _privateConstructorUsedError;
   String? get appointment => throw _privateConstructorUsedError;
   String? get nextAppointmentDate => throw _privateConstructorUsedError;
+  String? get appt_status => throw _privateConstructorUsedError;
+  String? get visit_date => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -47,7 +49,9 @@ abstract class $AppointmentCopyWith<$Res> {
       String? appointment_type,
       String appointment_date,
       String? appointment,
-      String? nextAppointmentDate});
+      String? nextAppointmentDate,
+      String? appt_status,
+      String? visit_date});
 }
 
 /// @nodoc
@@ -70,6 +74,8 @@ class _$AppointmentCopyWithImpl<$Res, $Val extends Appointment>
     Object? appointment_date = null,
     Object? appointment = freezed,
     Object? nextAppointmentDate = freezed,
+    Object? appt_status = freezed,
+    Object? visit_date = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -100,6 +106,14 @@ class _$AppointmentCopyWithImpl<$Res, $Val extends Appointment>
           ? _value.nextAppointmentDate
           : nextAppointmentDate // ignore: cast_nullable_to_non_nullable
               as String?,
+      appt_status: freezed == appt_status
+          ? _value.appt_status
+          : appt_status // ignore: cast_nullable_to_non_nullable
+              as String?,
+      visit_date: freezed == visit_date
+          ? _value.visit_date
+          : visit_date // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -119,7 +133,9 @@ abstract class _$$AppointmentImplCopyWith<$Res>
       String? appointment_type,
       String appointment_date,
       String? appointment,
-      String? nextAppointmentDate});
+      String? nextAppointmentDate,
+      String? appt_status,
+      String? visit_date});
 }
 
 /// @nodoc
@@ -140,6 +156,8 @@ class __$$AppointmentImplCopyWithImpl<$Res>
     Object? appointment_date = null,
     Object? appointment = freezed,
     Object? nextAppointmentDate = freezed,
+    Object? appt_status = freezed,
+    Object? visit_date = freezed,
   }) {
     return _then(_$AppointmentImpl(
       id: freezed == id
@@ -170,6 +188,14 @@ class __$$AppointmentImplCopyWithImpl<$Res>
           ? _value.nextAppointmentDate
           : nextAppointmentDate // ignore: cast_nullable_to_non_nullable
               as String?,
+      appt_status: freezed == appt_status
+          ? _value.appt_status
+          : appt_status // ignore: cast_nullable_to_non_nullable
+              as String?,
+      visit_date: freezed == visit_date
+          ? _value.visit_date
+          : visit_date // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -184,7 +210,9 @@ class _$AppointmentImpl implements _Appointment {
       this.appointment_type,
       required this.appointment_date,
       this.appointment,
-      this.nextAppointmentDate});
+      this.nextAppointmentDate,
+      this.appt_status,
+      this.visit_date});
 
   factory _$AppointmentImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppointmentImplFromJson(json);
@@ -203,10 +231,14 @@ class _$AppointmentImpl implements _Appointment {
   final String? appointment;
   @override
   final String? nextAppointmentDate;
+  @override
+  final String? appt_status;
+  @override
+  final String? visit_date;
 
   @override
   String toString() {
-    return 'Appointment(id: $id, ccc_no: $ccc_no, program_name: $program_name, appointment_type: $appointment_type, appointment_date: $appointment_date, appointment: $appointment, nextAppointmentDate: $nextAppointmentDate)';
+    return 'Appointment(id: $id, ccc_no: $ccc_no, program_name: $program_name, appointment_type: $appointment_type, appointment_date: $appointment_date, appointment: $appointment, nextAppointmentDate: $nextAppointmentDate, appt_status: $appt_status, visit_date: $visit_date)';
   }
 
   @override
@@ -225,13 +257,26 @@ class _$AppointmentImpl implements _Appointment {
             (identical(other.appointment, appointment) ||
                 other.appointment == appointment) &&
             (identical(other.nextAppointmentDate, nextAppointmentDate) ||
-                other.nextAppointmentDate == nextAppointmentDate));
+                other.nextAppointmentDate == nextAppointmentDate) &&
+            (identical(other.appt_status, appt_status) ||
+                other.appt_status == appt_status) &&
+            (identical(other.visit_date, visit_date) ||
+                other.visit_date == visit_date));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, ccc_no, program_name,
-      appointment_type, appointment_date, appointment, nextAppointmentDate);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      ccc_no,
+      program_name,
+      appointment_type,
+      appointment_date,
+      appointment,
+      nextAppointmentDate,
+      appt_status,
+      visit_date);
 
   @JsonKey(ignore: true)
   @override
@@ -255,7 +300,9 @@ abstract class _Appointment implements Appointment {
       final String? appointment_type,
       required final String appointment_date,
       final String? appointment,
-      final String? nextAppointmentDate}) = _$AppointmentImpl;
+      final String? nextAppointmentDate,
+      final String? appt_status,
+      final String? visit_date}) = _$AppointmentImpl;
 
   factory _Appointment.fromJson(Map<String, dynamic> json) =
       _$AppointmentImpl.fromJson;
@@ -274,6 +321,10 @@ abstract class _Appointment implements Appointment {
   String? get appointment;
   @override
   String? get nextAppointmentDate;
+  @override
+  String? get appt_status;
+  @override
+  String? get visit_date;
   @override
   @JsonKey(ignore: true)
   _$$AppointmentImplCopyWith<_$AppointmentImpl> get copyWith =>

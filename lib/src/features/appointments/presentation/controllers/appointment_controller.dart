@@ -4,19 +4,20 @@ import 'package:nishauri/src/features/appointments/data/repository/appointment_r
 
 class AppointmentController extends StateNotifier<AsyncValue<List<Appointment>>> {
   final AppointmentRepository _repository;
+  final bool _isPrevious;
 
-  AppointmentController(this._repository):super(const AsyncValue.loading()){
+  AppointmentController(this._repository, this._isPrevious)
+      : super(const AsyncValue.loading()) {
     getAppointments();
   }
 
-  Future<void> getAppointments()async{
+  Future<void> getAppointments() async {
     state = const AsyncValue.loading();
-    try{
-      final appointments = await _repository.getAppointments();
+    try {
+      final appointments = await _repository.getAppointments(_isPrevious);
       state = AsyncValue.data(appointments);
-    }catch(e){
-      state = const AsyncValue.data([]);
-      // state = AsyncValue.error(e, StackTrace.current);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
     }
   }
 }

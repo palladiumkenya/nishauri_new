@@ -2,11 +2,7 @@
   "programs": [
     {
       "name": "Tuberculosis Program",
-<<<<<<< HEAD
-      "facility": null,
-=======
       "facility": "No facility",
->>>>>>> cho-appointment
       "patient_observations": []
     },
     {

@@ -14,7 +14,7 @@ class ReviewAndSubmit extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final asyncAppointments = ref.watch(appointmentProvider);
+    final asyncAppointments = ref.watch(appointmentProvider(false));
     // final asyncARTEvents = ref.watch(art_event_provider);
     // final asyncARTTreatmentSupport = ref.watch(artTreatmentSupportProvider);
     final asyncCourierServices = ref.watch(courierProvider);

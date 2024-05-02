@@ -15,6 +15,8 @@ _$AppointmentImpl _$$AppointmentImplFromJson(Map<String, dynamic> json) =>
       appointment_date: json['appointment_date'] as String,
       appointment: json['appointment'] as String?,
       nextAppointmentDate: json['nextAppointmentDate'] as String?,
+      appt_status: json['appt_status'] as String?,
+      visit_date: json['visit_date'] as String?,
     );
 
 Map<String, dynamic> _$$AppointmentImplToJson(_$AppointmentImpl instance) =>
@@ -26,4 +28,6 @@ Map<String, dynamic> _$$AppointmentImplToJson(_$AppointmentImpl instance) =>
       'appointment_date': instance.appointment_date,
       'appointment': instance.appointment,
       'nextAppointmentDate': instance.nextAppointmentDate,
+      'appt_status': instance.appt_status,
+      'visit_date': instance.visit_date,
     };

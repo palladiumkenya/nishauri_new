@@ -12,7 +12,7 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final appointmentAsync = ref.watch(appointmentProvider);
+    final appointmentAsync = ref.watch(appointmentProvider(false));
 
     return appointmentAsync.when(
       data: (data) {

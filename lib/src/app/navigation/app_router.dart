@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
 import 'package:nishauri/src/features/appointments/presentation/pages/AppointmentRescheduleScreen.dart';
 import 'package:nishauri/src/features/appointments/presentation/pages/Appointments.dart';
+import 'package:nishauri/src/features/appointments/presentation/pages/AppointmentsScreen.dart';
 import 'package:nishauri/src/features/art/presentation/FacilityDirectory.dart';
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
@@ -268,7 +269,7 @@ final List<RouteBase> secureRoutes = [
     name: RouteNames.APPOINTMENTS,
     path: 'appointments',
     builder: (BuildContext context, GoRouterState state) {
-      return const Appointments();
+      return const AppointmentsScreen();
     },
     routes: [
       GoRoute(
