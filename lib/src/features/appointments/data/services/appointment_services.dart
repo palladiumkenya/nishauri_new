@@ -24,7 +24,7 @@ class AppointmentService extends HTTPService {
         throw "Failed to fetch appointments. Please try again later.";
       }
     } catch (e) {
-      throw "Failed to connect. Please check your internet connection.";
+      throw e;
     }
   }
 
