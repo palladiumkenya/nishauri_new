@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Constants {
   // static const String BASE_URL = "http://192.168.2.166:5000/";
   static const String BASE_URL = "https://ushauriapi.kenyahmis.org/nishauri/";
@@ -14,4 +16,16 @@ class Constants {
   static const BUTTON_FONT_SIZE = 20.0;
   static const SIDE_SPACE = 0.0;
   static const TIME_OUT = 300;
+  static const facilityDirectoryColor = Color.fromARGB(255, 106, 121, 141);
+  static const labResultsColor = Color.fromARGB(255, 31, 37, 94);
+  static const appointmentsColor = Color.fromARGB(255, 75, 127, 117);
+  static const bmiCalculatorColor = Color.fromARGB(255,0, 122, 141);
+  static const bmiCalculatorShortcutBgColor = Color.fromARGB(255,198, 228, 223);
+  static const labResultsShortcutBgColor = Color.fromARGB(255,195, 214, 255);
+  static const dawaDropShortcutBgColor = Color.fromARGB(255,190, 203, 189);
+  static const dawaDropColor = Color.fromARGB(255,32, 76, 28);
+  static const activeSelectionColor = Color.fromARGB(255,65, 165, 146);
+  static const iconSize = 70.0;
+  static const shortcutIconSize = 30.0;
+
 }

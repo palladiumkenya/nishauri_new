@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/custom_icons.dart';
 import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
@@ -112,33 +112,21 @@ class _HomeScreenState extends ConsumerState<MainScreen>
         elevation: 0,
         selectedItemColor: theme.colorScheme.primary,
         unselectedItemColor: theme.disabledColor,
-        items: [
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
+        items: const [
+          BottomNavigationBarItem(
+            icon: FaIcon(Icons.home_filled),
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              "assets/images/apps.svg",
-              semanticsLabel: "Doctors",
-              width: 30,
-              height: 30,
-              fit: BoxFit.contain,
-            ),
+            icon: FaIcon(Icons.apps),
             label: "Apps",
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              "assets/images/chats.svg",
-              semanticsLabel: "Doctors",
-              width: 30,
-              height: 30,
-              fit: BoxFit.contain,
-            ),
+            icon: FaIcon(FontAwesomeIcons.comments),
             label: "Ask Nuru",
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
+          BottomNavigationBarItem(
+            icon: FaIcon(FontAwesomeIcons.gear),
             label: "Settings",
           ),
         ],

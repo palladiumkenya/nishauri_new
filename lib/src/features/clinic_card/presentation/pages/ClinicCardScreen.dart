@@ -24,10 +24,10 @@ class ClinicCardScreen extends HookConsumerWidget {
         return Scaffold(
           body: Column(
             children: [
-              const CustomAppBar(
+              CustomAppBar(
                 title: "My Clinic card",
                 icon: Icons.file_present,
-                color: Colors.blue,
+                color: Colors.blue[900],
                 subTitle: "Access medical services using \nyour clinic cards",
               ),
               CustomTabBar(
@@ -43,7 +43,6 @@ class ClinicCardScreen extends HookConsumerWidget {
                     )
                     .toList(),
                 activeIndex: currIndex.value,
-                activeColor: Colors.green,
               ),
               Expanded(child: screens.elementAt(currIndex.value))
             ],

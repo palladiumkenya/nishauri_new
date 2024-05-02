@@ -53,6 +53,11 @@ class Quantizer extends StatelessWidget {
                     backgroundColor: MaterialStatePropertyAll<Color>(
                       activeColor ?? theme.colorScheme.primary,
                     ),
+                    shape: MaterialStatePropertyAll(
+                      RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(Constants.ROUNDNESS)),
+                    ),
                   ),
                 ),
                 Text(
@@ -70,6 +75,12 @@ class Quantizer extends StatelessWidget {
                   style: ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll<Color>(
                       activeColor ?? theme.colorScheme.primary,
+                    ),
+                    shape: MaterialStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(Constants.ROUNDNESS),
+                      ),
                     ),
                   ),
                 ),

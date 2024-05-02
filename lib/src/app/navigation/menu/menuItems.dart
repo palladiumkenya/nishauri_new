@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 class MenuItem {
@@ -8,50 +10,102 @@ class MenuItem {
   final String? title;
   final void Function()? onPressed;
   final Color? color;
+  final Widget shortcutIcon;
+  final Color? shortcutBackgroundColor;
 
-  MenuItem({required this.icon, this.title, this.onPressed, this.color});
+  MenuItem({
+    required this.icon,
+    this.title,
+    this.onPressed,
+    this.color,
+    this.shortcutBackgroundColor,
+    required this.shortcutIcon,
+  });
 }
 
 MenuItem getProgramMenuItemByProgramCode(
     BuildContext context, String programCode) {
   if (programCode == ProgramCodeNameIds.HIV) {
     return MenuItem(
-        icon: Icon(Icons.vaccines),
+        icon: const Icon(
+          Icons.vaccines,
+          size: Constants.iconSize,
+        ),
+        shortcutIcon: const Icon(
+          Icons.vaccines,
+        ),
         title: MenuItemNames.HIV_PROGRAM_MENU,
         onPressed: () => context.goNamed(RouteNames.HIV_PROGRAM),
-        color: Colors.green);
+        color: Constants.appointmentsColor);
   } else if (programCode == ProgramCodeNameIds.TB) {
     return MenuItem(
-      icon: Icon(Icons.sick),
+      icon: const Icon(
+        Icons.sick,
+        size: Constants.iconSize,
+      ),
+      shortcutIcon: const Icon(
+        Icons.sick,
+      ),
       title: MenuItemNames.TB_PROGRAM_MENU,
       onPressed: () => "",
     );
   } else if (programCode == ProgramCodeNameIds.ASTHMA) {
     return MenuItem(
-      icon: Icon(Icons.ac_unit),
+      icon: const Icon(
+        Icons.ac_unit,
+        size: Constants.iconSize,
+      ),
+      shortcutIcon: const Icon(
+        Icons.ac_unit,
+      ),
       title: MenuItemNames.ASTHMA_PROGRAM_MENU,
       onPressed: () => "",
     );
   } else if (programCode == ProgramCodeNameIds.DIABETES) {
     return MenuItem(
-      icon: Icon(Icons.monitor_weight_outlined),
+      icon: const Icon(
+        Icons.monitor_weight_outlined,
+        size: Constants.iconSize,
+      ),
+      shortcutIcon: const Icon(
+        Icons.monitor_weight_outlined,
+      ),
       title: MenuItemNames.DIABETES_PROGRAM_MENU,
       onPressed: () => "",
     );
   } else if (programCode == ProgramCodeNameIds.CANCER) {
     return MenuItem(
-      icon: Icon(Icons.group_work),
+      icon: const Icon(
+        Icons.group_work,
+        size: Constants.iconSize,
+      ),
+      shortcutIcon: const Icon(
+        Icons.group_work,
+      ),
       title: MenuItemNames.CANCER_PROGRAM_MENU,
       onPressed: () => "",
     );
   } else if (programCode == ProgramCodeNameIds.HYPERTENSION ) {
     return MenuItem(
-        icon: Icon(Icons.speed),
-        title: MenuItemNames.HYPERTENSION_PROGRAM_MENU,
-        onPressed: () {});
+      icon: const Icon(
+        Icons.speed,
+        size: Constants.iconSize,
+      ),
+      shortcutIcon: const Icon(
+        Icons.speed,
+      ),
+      title: MenuItemNames.HYPERTENSION_PROGRAM_MENU,
+      onPressed: () {},
+    );
   }
   return MenuItem(
-    icon: Icon(Icons.more_horiz),
+    icon: const Icon(
+      Icons.more_horiz,
+      size: Constants.iconSize,
+    ),
+    shortcutIcon: const Icon(
+      Icons.more_horiz,
+    ),
   );
 }
 
@@ -69,7 +123,14 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
     // ),
 
     MenuItem(
-      icon: Icon(Icons.file_copy_outlined),
+      icon: FaIcon(
+        Icons.file_copy_outlined,
+        size: Constants.iconSize,
+        color: Theme.of(context).colorScheme.inversePrimary,
+      ),
+      shortcutIcon: const FaIcon(
+        Icons.file_copy_outlined,
+      ),
       title: MenuItemNames.PROGRAM_MENU,
       onPressed: () => context.goNamed(RouteNames.PROGRAM_MENU),
     ),
@@ -79,33 +140,69 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
           "assets/images/calendar.svg",
           semanticsLabel: "Doctors",
           fit: BoxFit.contain,
+          height: 80,
+          width: 80,
+        ),
+        shortcutIcon: SvgPicture.asset(
+          "assets/images/calendar.svg",
+          semanticsLabel: "Doctors",
+          fit: BoxFit.contain,
+          width: Constants.shortcutIconSize,
+          height: Constants.shortcutIconSize,
         ),
         title: MenuItemNames.APPOINTMENTS,
         onPressed: () => context.goNamed(RouteNames.APPOINTMENTS),
-        color: Colors.green),
+        color: Constants.appointmentsColor),
     MenuItem(
+        shortcutBackgroundColor: Constants.labResultsShortcutBgColor,
         icon: SvgPicture.asset(
           "assets/images/syringe.svg",
           semanticsLabel: "Doctors",
           fit: BoxFit.contain,
+          height: 80,
+          width: 80,
+        ),
+        shortcutIcon: SvgPicture.asset(
+          "assets/images/syringe.svg",
+          semanticsLabel: "Doctors",
+          fit: BoxFit.contain,
+          width: Constants.shortcutIconSize,
+          height: Constants.shortcutIconSize,
         ),
         title: MenuItemNames.LAB_RESULTS,
         onPressed: () => context.goNamed(RouteNames.LAB_RESULTS),
-        color: Colors.deepOrange),
+        color: Constants.labResultsColor),
     MenuItem(
-        icon: Icon(Icons.file_present),
+        icon: FaIcon(
+          FontAwesomeIcons.addressCard,
+          size: 50.0,
+          color: Colors.blue[400],
+        ),
+        shortcutIcon: FaIcon(
+          FontAwesomeIcons.addressCard,
+          color: Colors.blue[400],
+        ),
         title: MenuItemNames.MY_CLINIC_CARD,
         onPressed: () => context.goNamed(RouteNames.MY_CLINIC_CARD),
-        color: Colors.blue),
+        color: Colors.blue[900]),
     MenuItem(
         icon: SvgPicture.asset(
           "assets/images/house.svg",
           semanticsLabel: "Doctors",
           fit: BoxFit.contain,
+          height: 80,
+          width: 80,
+        ),
+        shortcutIcon: SvgPicture.asset(
+          "assets/images/house.svg",
+          semanticsLabel: "Doctors",
+          fit: BoxFit.contain,
+          width: Constants.shortcutIconSize,
+          height: Constants.shortcutIconSize,
         ),
         title: MenuItemNames.FACILITY_DIRECTORY,
         onPressed: () => context.goNamed(RouteNames.Facility_Directory),
-        color: Colors.black12),
+        color: Constants.facilityDirectoryColor),
     // MenuItem(
     //   icon: Icons.group,
     //   title: MenuItemNames.TREATMENT_SUPPORT,
@@ -117,26 +214,47 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
     //   onPressed: () => "",
     // ),
     MenuItem(
+        shortcutBackgroundColor: Constants.bmiCalculatorShortcutBgColor,
+
         icon: SvgPicture.asset(
           "assets/images/calculator.svg",
           semanticsLabel: "Doctors",
           fit: BoxFit.contain,
+          height: 80,
+          width: 80,
+        ),
+        shortcutIcon: SvgPicture.asset(
+          "assets/images/calculator.svg",
+          semanticsLabel: "Doctors",
+          fit: BoxFit.contain,
+          width: Constants.shortcutIconSize,
+          height: Constants.shortcutIconSize,
         ),
         title: MenuItemNames.BMI_CALCULATOR,
         onPressed: () => context.goNamed(RouteNames.BMI_CALCULATOR),
-        color: Colors.cyan),
+        color: Constants.bmiCalculatorColor),
 
     MenuItem(
-        icon: SvgPicture.asset(
-          "assets/images/pills.svg",
-          semanticsLabel: "Doctors",
-          fit: BoxFit.contain,
-          width: 60,
-          height: 60,
-        ),
-        title: MenuItemNames.DAWA_DROP,
-        onPressed: () => context.goNamed(RouteNames.DAWA_DROP),
-        color: Colors.lightGreenAccent),
+      // icon: FaIcon(FontAwesomeIcons.capsules, size: Constants.iconSize, color: Colors.teal[200],),
+      shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,
+      icon: SvgPicture.asset(
+        "assets/images/pills.svg",
+        semanticsLabel: "Doctors",
+        fit: BoxFit.contain,
+        width: 80,
+        height: 80,
+      ),
+      shortcutIcon: SvgPicture.asset(
+        "assets/images/pills.svg",
+        semanticsLabel: "Doctors",
+        fit: BoxFit.contain,
+        width: Constants.shortcutIconSize,
+        height: Constants.shortcutIconSize,
+      ),
+      title: MenuItemNames.DAWA_DROP,
+      onPressed: () => context.goNamed(RouteNames.DAWA_DROP),
+      color: Constants.dawaDropColor.withOpacity(0.5),
+    ),
     // MenuItem(
     //   icon: Icons.move_down,
     //   title: MenuItemNames.FACILITY_VISITS,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nishauri/src/shared/input/Button.dart';
 
 import '../../../../app/navigation/menu/MenuItemsBuilder.dart';
 import '../../../../app/navigation/menu/MenuOption.dart';
@@ -35,7 +36,7 @@ class ShortcutsWidget extends HookConsumerWidget {
                   style: theme.textTheme.titleSmall
                       ?.copyWith(color: theme.colorScheme.primary),
                 ),
-                onTap: (){
+                onTap: () {
                   _showDialog(context);
                 },
               ),
@@ -46,28 +47,28 @@ class ShortcutsWidget extends HookConsumerWidget {
         const SizedBox(height: Constants.SPACING),
         Padding(
           padding:
-              const EdgeInsets.symmetric(horizontal: Constants.SPACING * 2),
+          const EdgeInsets.symmetric(horizontal: Constants.SPACING * 2),
           child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             ...getMenuItemByNames(context, shortcuts).map((item) {
               return GestureDetector(
-                  onTap: item.onPressed,
-                onLongPress: (){
-                    _showDialog(context);
+                onTap: item.onPressed,
+                onLongPress: () {
+                  _showDialog(context);
                 },
                 child: MenuOption(
                   title: item.title ?? "",
-                  icon: item.icon,
+                  icon: item.shortcutIcon,
                   bgColor: item.title == "Edit Shortcut"
                       ? theme.colorScheme.secondary
-                      : null,
+                      : item.shortcutBackgroundColor,
                 ),
               );
             }).toList(),
             if (getMenuItemByNames(context, shortcuts).length < 3)
               MenuOption(
                 title: "",
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 bgColor: theme.colorScheme.secondary,
                 onPress: () {
                   _showDialog(context);
@@ -84,69 +85,84 @@ _showDialog(BuildContext context) {
   final theme = Theme.of(context);
   return showDialog(
     context: context,
-    builder: (BuildContext context) => AlertDialog(
-      icon: const Icon(Icons.construction),
-      title: Text(
-        "Select Shortcut MenuOptions",
-        style: theme.textTheme.titleMedium,
-      ),
-      content: SizedBox(
-        width: double.maxFinite,
-        height: MediaQuery.of(context).size.height * 0.5,
-        child: Consumer(
-          builder: (context, ref, child) {
-            final userProgram = ref.watch(programProvider);
-            final shortcuts = ref.watch(shortcutProvider);
-            final shortcutsNotifier = ref.watch(shortcutProvider.notifier);
-            return userProgram.when(
-              data: (data) => MenuItemsBuilder(
-                itemBuilder: (item) => MenuOption(
-                  title: item.title ?? "",
-                  icon: item.icon,
-                  onPress: () {
-                    if (shortcuts.any((element) => element == item.title)) {
-                      // Delete shortcut
-                      shortcutsNotifier.deleteShortcut(
-                        item.title ?? "",
-                      );
-                    } else {
-                      // Add shortcut
-                      if (shortcuts.length >= shortcutsNotifier.maxShortcuts) {
-                        context.pop();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content:
-                                    Text("Max number of shortcuts reached")));
-                      } else {
-                        shortcutsNotifier.addShortcut(
-                          item.title ?? "",
-                        );
-                      }
-                    }
-                  },
-                  bgColor: shortcuts.any((element) => element == item.title)
-                      ? theme.colorScheme.secondary
-                      : null,
-                ),
-                items: [
-                  // get generic menu items
-                  ...getGenericMenuItems(context),
-                  // get program menu items
-                  ...data.map((e) {
-                    final programCode = e.id;
-                    return getProgramMenuItemByProgramCode(
-                        context, programCode ?? '');
-                  }).toList(),
-                ],
-              ),
-              error: (error, _) => Center(child: Text(error.toString())),
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          },
+    builder: (BuildContext context) =>
+        AlertDialog(
+          icon: const Icon(Icons.construction),
+          title: Text(
+            "Select Shortcut MenuOptions",
+            style: theme.textTheme.titleMedium,
+          ),
+          content: SizedBox(
+            width: double.maxFinite,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height * 0.5,
+            child: Consumer(
+              builder: (context, ref, child) {
+                final userProgram = ref.watch(programProvider);
+                final shortcuts = ref.watch(shortcutProvider);
+                final shortcutsNotifier = ref.watch(shortcutProvider.notifier);
+                return userProgram.when(
+                  data: (data) =>
+                      MenuItemsBuilder(
+                        itemBuilder: (item) =>
+                            MenuOption(
+                              title: item.title ?? "",
+                              icon: item.shortcutIcon,
+                              onPress: () {
+                                if (shortcuts.any((element) =>
+                                element == item.title)) {
+                                  // Delete shortcut
+                                  shortcutsNotifier.deleteShortcut(
+                                    item.title ?? "",
+                                  );
+                                } else {
+                                  // Add shortcut
+                                  if (shortcuts.length >=
+                                      shortcutsNotifier.maxShortcuts) {
+                                    context.pop();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content:
+                                            Text(
+                                                "Max number of shortcuts reached")));
+                                  } else {
+                                    shortcutsNotifier.addShortcut(
+                                      item.title ?? "",
+                                    );
+                                  }
+                                }
+                              },
+                              bgColor: shortcuts.any((element) =>
+                              element == item.title)
+                                  ? theme.colorScheme.secondary
+                                  : item.shortcutBackgroundColor,
+                            ),
+                        items: [
+                          // get generic menu items
+                          ...getGenericMenuItems(context),
+                          // get program menu items
+                          ...data.map((e) {
+                            final programCode = e.id;
+                            return getProgramMenuItemByProgramCode(
+                                context, programCode ?? '');
+                          }).toList(),
+                        ],
+                      ),
+                  error: (error, _) => Center(child: Text(error.toString())),
+                  loading: () =>
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              },
+            ),
+          ),
+          actions: [Button(title: "Ok", onPress: () {
+            context.pop();
+          },)
+          ],
         ),
-      ),
-    ),
   );
 }

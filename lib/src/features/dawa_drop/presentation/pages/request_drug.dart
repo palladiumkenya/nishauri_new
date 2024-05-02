@@ -8,6 +8,7 @@ import 'package:nishauri/src/utils/routes.dart';
 _menuItems(BuildContext context) => [
   MenuItem(
     icon: Icon(Icons.list_alt_rounded),
+    shortcutIcon: Icon(Icons.list_alt_rounded),
     title: "Appointments",
     onPressed: () => context.goNamed(RouteNames.PROGRAM_APPOINTMENT),
   ),
