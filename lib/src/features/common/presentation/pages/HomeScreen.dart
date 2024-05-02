@@ -19,6 +19,7 @@ import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:nishauri/src/shared/extensions/extensions.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -43,42 +44,43 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final asyncUser = ref.watch(userProvider);
-
+    final size = getOrientationAwareScreenSize(context);
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        // backgroundColor: theme.primaryColor,
-        leading: IconButton(
-          onPressed: () {
-            context.goNamed(RouteNames.PROFILE_SETTINGS);
-          },
-          icon: Container(
-            padding: const EdgeInsets.all(Constants.SPACING * 0.15),
-            decoration: BoxDecoration(
-                border: Border.all(width: 1, color: theme.primaryColor),
-                shape: BoxShape.circle),
-            child: const AppAvatar(
-              alt: Icon(Icons.person),
-              image:
-                  "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            ),
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: SvgPicture.asset(
-              "assets/images/notification.svg",
-              semanticsLabel: "Doctors",
-              fit: BoxFit.contain,
-            ),
-          ),
-          IconButton(
-            onPressed: toggleDrawer,
-            icon: const Icon(Icons.more_vert),
-          ),
-        ],
-      ),
+
+      // appBar: AppBar(
+      //   // backgroundColor: theme.primaryColor,
+      //   leading: IconButton(
+      //     onPressed: () {
+      //       context.goNamed(RouteNames.PROFILE_SETTINGS);
+      //     },
+      //     icon: Container(
+      //       padding: const EdgeInsets.all(Constants.SPACING * 0.15),
+      //       decoration: BoxDecoration(
+      //           border: Border.all(width: 1, color: theme.primaryColor),
+      //           shape: BoxShape.circle),
+      //       child: const AppAvatar(
+      //         alt: Icon(Icons.person),
+      //         image:
+      //             "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      //       ),
+      //     ),
+      //   ),
+      //   actions: [
+      //     IconButton(
+      //       onPressed: () {},
+      //       icon: SvgPicture.asset(
+      //         "assets/images/notification.svg",
+      //         semanticsLabel: "Doctors",
+      //         fit: BoxFit.contain,
+      //       ),
+      //     ),
+      //     IconButton(
+      //       onPressed: toggleDrawer,
+      //       icon: const Icon(Icons.more_vert),
+      //     ),
+      //   ],
+      // ),
       drawer: Drawer(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(0.0)),
@@ -174,37 +176,93 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ],
         ),
       ),
-      body: asyncUser.when(
-          data: (user) => SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Greetings(
-                      name: (user.name ?? "").titleCase,
-                    ),
-                    const Appointments(),
-                    const SizedBox(height: Constants.SPACING),
-                    const ShortcutsWidget(),
-                    const SizedBox(height: Constants.SPACING),
-                    Padding(
-                      padding: const EdgeInsets.all(Constants.SPACING),
-                      child: Text(
-                        "Did you know?",
-                        style: theme.textTheme.titleSmall,
+      body: Stack(
+        children: [
+          Positioned(
+              top: 0,
+              right: 0,
+              child: SvgPicture.asset(
+                "assets/images/rect-bg.svg",
+                semanticsLabel: "Doctors",
+                fit: BoxFit.contain,
+                height: size.width * 0.55,
+                width: size.width * 0.55,
+              )),
+          SafeArea(
+            child: asyncUser.when(
+                data: (user) => SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  context.goNamed(RouteNames.PROFILE_SETTINGS);
+                                },
+                                icon: Container(
+                                  padding: const EdgeInsets.all(
+                                      Constants.SPACING * 0.15),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 1, color: theme.primaryColor),
+                                      shape: BoxShape.circle),
+                                  child: const AppAvatar(
+                                    alt: Icon(Icons.person),
+                                    image:
+                                        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                  ),
+                                ),
+                              ),
+                              Wrap(
+                                children: [
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: SvgPicture.asset(
+                                      "assets/images/notification.svg",
+                                      semanticsLabel: "Doctors",
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: toggleDrawer,
+                                    icon: const Icon(Icons.more_vert),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                          Greetings(
+                            name: (user.name ?? "").titleCase,
+                          ),
+                          const Appointments(),
+                          const SizedBox(height: Constants.SPACING),
+                          const ShortcutsWidget(),
+                          const SizedBox(height: Constants.SPACING),
+                          Padding(
+                            padding: const EdgeInsets.all(Constants.SPACING),
+                            child: Text(
+                              "Did you know?",
+                              style: theme.textTheme.titleSmall,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: Constants.SPACING,
+                          ),
+                          const Announcements(),
+                          const SizedBox(
+                            height: Constants.SPACING,
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(
-                      height: Constants.SPACING,
-                    ),
-                    const Announcements(),
-                    const SizedBox(
-                      height: Constants.SPACING,
-                    ),
-                  ],
-                ),
-              ),
-          error: (error, _) => Center(child: Text(error.toString())),
-          loading: () => const Center(child: CircularProgressIndicator())),
+                error: (error, _) => Center(child: Text(error.toString())),
+                loading: () =>
+                    const Center(child: CircularProgressIndicator())),
+          ),
+        ],
+      ),
     );
   }
 }
