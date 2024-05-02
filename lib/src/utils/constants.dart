@@ -20,8 +20,12 @@ class Constants {
   static const labResultsColor = Color.fromARGB(255, 31, 37, 94);
   static const appointmentsColor = Color.fromARGB(255, 75, 127, 117);
   static const bmiCalculatorColor = Color.fromARGB(255,0, 122, 141);
+  static const bmiCalculatorShortcutBgColor = Color.fromARGB(255,198, 228, 223);
+  static const labResultsShortcutBgColor = Color.fromARGB(255,195, 214, 255);
+  static const dawaDropShortcutBgColor = Color.fromARGB(255,190, 203, 189);
   static const dawaDropColor = Color.fromARGB(255,32, 76, 28);
   static const activeSelectionColor = Color.fromARGB(255,65, 165, 146);
   static const iconSize = 70.0;
+  static const shortcutIconSize = 30.0;
 
 }

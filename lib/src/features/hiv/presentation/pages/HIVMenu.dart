@@ -15,11 +15,15 @@ _menuItems(BuildContext context) => [
           icon: const Icon(
             Icons.local_hospital_outlined,
           ),
+          shortcutIcon: const Icon(
+            Icons.local_hospital_outlined,
+          ),
           title: "ART Sites",
           onPressed: () => context.goNamed(RouteNames.HIV_ART_SITES)),
 
       MenuItem(
           icon: const Icon(Icons.medication),
+          shortcutIcon: const Icon(Icons.medication),
           title: "Regimen",
           onPressed: () => context.goNamed(RouteNames.HIV_REGIMEN)),
       // MenuItem(

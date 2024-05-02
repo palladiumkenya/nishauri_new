@@ -124,6 +124,7 @@ class MainMenuScreen extends StatelessWidget {
                           // Register new program
                           MenuItem(
                             icon: Icon(Icons.add, size: Constants.iconSize,color: theme.colorScheme.inversePrimary,),
+                            shortcutIcon: Icon(Icons.add, color: theme.colorScheme.inversePrimary,),
                             // color: theme.colorScheme.primary,
                             title: "Add Programme",
                             onPressed: () => context.goNamed(
