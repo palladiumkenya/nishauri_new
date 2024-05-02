@@ -56,7 +56,7 @@ class HIVMenuScreen extends StatelessWidget {
         crossAxisCount: 3,
         itemBuilder: (item) => MenuOption(
           title: item.title ?? "",
-          icon: item.icon,
+          icon: item.shortcutIcon,
           onPress: item.onPressed,
         ),
         items: _items,

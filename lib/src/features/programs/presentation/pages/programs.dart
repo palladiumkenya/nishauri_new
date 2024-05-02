@@ -51,14 +51,13 @@ class ProgramsMenuScreen extends StatelessWidget {
                       return MenuItemsBuilder(
                         itemBuilder: (item) => MenuOption(
                           title: item.title ?? "",
-                          icon: item.icon,
+                          icon: item.shortcutIcon,
                           onPress: item.onPressed,
                         ),
                         items: [
                           // get program menu items for active programs only
                           ...activePrograms.map((e) {
                             final programCode = e.id;
-                            print(e.isActive);
                             return getProgramMenuItemByProgramCode(context, programCode ?? '');
                           }).toList(),
                         ],

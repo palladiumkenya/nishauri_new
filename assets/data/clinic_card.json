@@ -2,25 +2,13 @@
   "programs": [
     {
       "name": "Tuberculosis Program",
-      "facility": null,
+      "facility": "No facility",
       "patient_observations": []
     },
     {
       "name": "ART Program",
       "facility": "Kiseuni Dispensary",
       "patient_observations": [
-        {
-          "label": "Firstname",
-          "value": "RIGATHI"
-        },
-        {
-          "label": "Middlename",
-          "value": null
-        },
-        {
-          "label": "Lastname",
-          "value": "GACHIETHA"
-        },
         {
           "label": "Ccc No",
           "value": "1234500001"

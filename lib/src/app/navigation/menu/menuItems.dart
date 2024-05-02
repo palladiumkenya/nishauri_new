@@ -98,12 +98,6 @@ MenuItem getProgramMenuItemByProgramCode(
       onPressed: () {},
     );
   }
-  else if (programCode.isNotEmpty) {
-    return MenuItem(
-        icon: Icons.remove,
-        title: MenuItemNames.REMOVE_PROGRAM,
-        onPressed: () {});
-  }
   return MenuItem(
     icon: const Icon(
       Icons.more_horiz,
@@ -181,7 +175,7 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
     MenuItem(
         icon: FaIcon(
           FontAwesomeIcons.addressCard,
-          size: Constants.iconSize,
+          size: 50.0,
           color: Colors.blue[400],
         ),
         shortcutIcon: FaIcon(
