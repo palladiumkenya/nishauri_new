@@ -25,6 +25,15 @@ String getBMIStatus(double bmi) {
     return "Obese Class 3 (Very Severe)";
   }
 }
+String getBMIStatusSimplified(double bmi) {
+  if (bmi >= 30) {
+    return "Obese";
+  } else if (bmi < 18.5) {
+    return "Malnutrition";
+  } else {
+    return "Normal";
+  }
+}
 
 Future<String> loadJsonData(String path) async {
   final String data = await rootBundle.loadString(path);

@@ -11,17 +11,23 @@ import 'package:nishauri/src/utils/helpers.dart';
 import '../../../../utils/constants.dart';
 
 class AppointmentRescheduleScreen extends HookWidget {
-  const AppointmentRescheduleScreen({super.key});
+  final String appointmentType;
+  final DateTime appointmentTime;
+  final String providerImage;
+  final String providerName;
+
+  const AppointmentRescheduleScreen({
+    super.key,
+    required this.appointmentTime,
+    required this.appointmentType,
+    required this.providerName,
+    required this.providerImage,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = getOrientationAwareScreenSize(context);
-    final providerName = "Dr John Doe";
-    final providerImage =
-        "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg";
-    final appointmentTime = DateTime(2024, 05, 3);
-    final appointmentType = "Re-Fill";
     final selectedDate = useState<DateTime?>(null);
     final selectedTime = useState<DateTime?>(null);
     final rescheduleReason = useState<String>("");
@@ -116,7 +122,7 @@ class AppointmentRescheduleScreen extends HookWidget {
               ),
               const SizedBox(height: Constants.SPACING),
               RescheduleTimePicker(
-                activeColor: Colors.green,
+                activeColor: Constants.activeSelectionColor,
                 selectedTime: selectedTime.value,
                 onSelectedTimeChange: (time) => selectedTime.value = time,
               ),
@@ -145,7 +151,7 @@ class AppointmentRescheduleScreen extends HookWidget {
               const SizedBox(height: Constants.SPACING),
               Button(
                 title: "Submit Request",
-                backgroundColor: Colors.green,
+                backgroundColor: Constants.activeSelectionColor,
                 textColor: theme.canvasColor,
                 // prefixIcon: const Icon(Icons.downloading),
                 surfixIcon: SvgPicture.asset(
@@ -153,9 +159,7 @@ class AppointmentRescheduleScreen extends HookWidget {
                   semanticsLabel: "Doctors",
                   fit: BoxFit.contain,
                 ),
-                onPress: () {
-
-                },
+                onPress: () {},
               ),
               const SizedBox(height: Constants.SPACING),
             ],
