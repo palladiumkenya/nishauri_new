@@ -16,6 +16,7 @@ class Appointments extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appointmentsAsync = ref.watch(appointmentProvider(false));
+    final appointmentsNotifier = ref.watch(appointmentProvider(false).notifier);
     final screenSize = getOrientationAwareScreenSize(context);
     final theme = Theme.of(context);
     return appointmentsAsync.when(
@@ -100,14 +101,22 @@ class Appointments extends HookConsumerWidget {
                                 onRescheduleTap: () => context.goNamed(
                                   RouteNames.APPOINTMENTS_RESCHEDULE,
                                   extra: AppointmentRescheduleScreenProps(
-                                    appointmentTime: appointmentDate,
-                                    appointmentType:
-                                        artAppointment.appointment_type ??
-                                            "Unknown type",
-                                    providerName: "Kiseuni Dispensary",
-                                    providerImage:
-                                        "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
-                                  ),
+                                      appointmentTime: appointmentDate,
+                                      appointmentType:
+                                          artAppointment.appointment_type ??
+                                              "Unknown type",
+                                      providerName: "Kiseuni Dispensary",
+                                      providerImage:
+                                          "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
+                                      onSubmit: (date, reason) async {
+                                        return await appointmentsNotifier
+                                            .rescheduleAppointment({
+                                          "appt_id": artAppointment.id,
+                                          "reason": reason,
+                                          "reschedule_date":
+                                              date.toIso8601String()
+                                        });
+                                      }),
                                 ),
                               ),
                             ),

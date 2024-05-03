@@ -20,4 +20,13 @@ class AppointmentController extends StateNotifier<AsyncValue<List<Appointment>>>
       state = AsyncValue.error(e, StackTrace.current);
     }
   }
+  Future<String> rescheduleAppointment(Map<String, dynamic> data) async {
+    try {
+      final message = await _repository.rescheduleARTAppointment(data);
+      await getAppointments();
+      return message;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

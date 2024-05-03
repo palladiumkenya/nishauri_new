@@ -3,13 +3,17 @@ import 'package:nishauri/src/features/appointments/data/models/appointment.dart'
 import 'package:nishauri/src/features/appointments/data/repository/appointment_repository.dart';
 import 'package:nishauri/src/features/appointments/data/services/appointment_services.dart';
 import 'package:nishauri/src/features/appointments/presentation/controllers/appointment_controller.dart';
+import 'package:nishauri/src/features/hiv/data/repositories/art_appointment_repository.dart';
+import 'package:nishauri/src/features/hiv/data/services/art_appointments.dart';
 
 final appointmentProvider = StateNotifierProvider.family<
     AppointmentController,
     AsyncValue<List<Appointment>>,
     bool>((ref, isPrevious) {
   final service = AppointmentService();
-  final repository = AppointmentRepository(service, isPrevious);
+
+  final artAppointmentRepository = ARTAppointmentRepository(ARTAppointmentService());
+  final repository = AppointmentRepository(service, isPrevious, artAppointmentRepository);
   return AppointmentController(repository, isPrevious);
 });
 

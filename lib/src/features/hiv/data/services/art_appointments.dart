@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:http/http.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
@@ -44,4 +45,35 @@ class ARTAppointmentService extends HTTPService {
     request.headers.addAll(headers);
     return await request.send();
   }
+
+
+  Future<String> rescheduleAppointment(
+      Map<String, dynamic> data) async {
+    StreamedResponse response =
+    await call<Map<String, dynamic>>(rescheduleAppointment_, data);
+    final responseString = await response.stream.bytesToString();
+    // {"success":false,"msg":"Appointment Reschedule Request Record Already Exist"}
+    final responseData = jsonDecode(responseString);
+    if(responseData["success"] == false){
+      throw responseData["msg"];
+    }
+    return responseData["msg"];
+  }
+
+  Future<StreamedResponse> rescheduleAppointment_(
+      Map<String, dynamic> data) async {
+    final tokenPair = await getCachedToken();
+    final id = await _repository.getUserId();
+    var headers = {
+      'Authorization': 'Bearer ${tokenPair.accessToken}',
+      'Content-Type': 'application/json',
+    };
+    var request = Request(
+        'POST', Uri.parse('${Constants.BASE_URL_NEW}reschedule'));
+    request.body = json.encode(data);
+    request.headers.addAll(headers);
+    StreamedResponse response = await request.send();
+    return response;
+  }
+
 }
