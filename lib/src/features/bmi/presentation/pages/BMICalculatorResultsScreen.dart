@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nishauri/src/features/bmi/data/providers/bmi_status_nutrition_provider.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 
-class BMICalculatorResultsScreen extends StatelessWidget {
+class BMICalculatorResultsScreen extends HookConsumerWidget {
   final double bmi;
 
   const BMICalculatorResultsScreen({super.key, required this.bmi});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final bmiStatusNutritionAsync = ref.watch(bmiNutritionProvider);
     return Scaffold(
       body: Column(children: [
-        const CustomAppBar(title: "BMI Calculator", icon: Icons.calculate, color: Colors.cyan),
-        Expanded(
-          child: SingleChildScrollView(
-            child: AppCard(
+        const CustomAppBar(
+            title: "BMI Calculator",
+            icon: Icons.calculate,
+            color: Constants.bmiCalculatorColor),
+        bmiStatusNutritionAsync.when(
+          data: (data) => Expanded(
+            child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(Constants.SPACING),
                 child: Column(
@@ -42,7 +48,7 @@ class BMICalculatorResultsScreen extends StatelessWidget {
                                   Text("Your BMI is",
                                       style: theme.textTheme.titleMedium),
                                   Text(
-                                    getBMIStatus(bmi),
+                                    getBMIStatusSimplified(bmi),
                                     style:
                                         theme.textTheme.titleMedium?.copyWith(
                                       color: Colors.green,
@@ -50,7 +56,8 @@ class BMICalculatorResultsScreen extends StatelessWidget {
                                   ),
                                 ]),
                             Padding(
-                              padding: const EdgeInsets.all(Constants.SPACING),
+                              padding:
+                                  const EdgeInsets.all(Constants.SPACING),
                               child: Text(
                                 bmi.toStringAsFixed(1),
                                 style: theme.textTheme.displayLarge?.copyWith(
@@ -69,7 +76,7 @@ class BMICalculatorResultsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: Constants.SPACING),
                     Text(
-                      getBMIStatus(bmi),
+                      getBMIStatusSimplified(bmi),
                       style: theme.textTheme.titleLarge?.copyWith(
                         color: theme.colorScheme.primary,
                       ),
@@ -81,10 +88,26 @@ class BMICalculatorResultsScreen extends StatelessWidget {
                         color: theme.colorScheme.primary,
                       ),
                     ),
+                    const SizedBox(height: Constants.SPACING),
+                    Text(data
+                            .where((element) =>
+                                element.status == getBMIStatusSimplified(bmi))
+                            .first
+                            .description ??
+                        "", style: theme.textTheme.titleMedium,)
                     // Markdown(data: "data")
                   ],
                 ),
               ),
+            ),
+          ),
+          error: (e, stackTrace) => Expanded(
+              child: Align(
+                  alignment: Alignment.center, child: Text(e.toString()))),
+          loading: () => const Expanded(
+            child: Align(
+              alignment: Alignment.center,
+              child: CircularProgressIndicator(),
             ),
           ),
         ),
