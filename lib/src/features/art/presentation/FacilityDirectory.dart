@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:nishauri/src/features/art/FacilityHTTPService.dart';
 
@@ -7,6 +8,7 @@ import 'dart:convert';
 import 'package:nishauri/src/features/art/model/Facility.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/input/Search.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
@@ -119,81 +121,102 @@ class _FacilityDirectoryState extends State<FacilityDirectory> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                e.name,
-                                                style: theme
-                                                    .textTheme.titleMedium
-                                                    ?.copyWith(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        overflow: TextOverflow
-                                                            .ellipsis),
-                                              ),
-                                              const SizedBox(
-                                                  height: Constants.SPACING),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.pin_drop,
-                                                    color: theme
-                                                        .colorScheme.primary,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: Constants.SPACING,
-                                                  ),
-                                                  Text(e.county)
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.phone_forwarded,
-                                                    color: theme
-                                                        .colorScheme.primary,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: Constants.SPACING,
-                                                  ),
-                                                  Text(e.telephone)
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons
-                                                        .location_city_outlined,
-                                                    color: theme
-                                                        .colorScheme.primary,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: Constants.SPACING,
-                                                  ),
-                                                  Text("MFL Code: ${e.code}"),
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.local_hospital,
-                                                    color: theme
-                                                        .colorScheme.primary,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: Constants.SPACING,
-                                                  ),
-                                                  Text(
-                                                    e.facilityType,
-                                                    style: const TextStyle(
-                                                        overflow: TextOverflow
-                                                            .ellipsis),
-                                                  )
-                                                ],
-                                              ),
-                                            ],
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  e.name,
+                                                  style: theme
+                                                      .textTheme.titleMedium
+                                                      ?.copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          overflow: TextOverflow
+                                                              .ellipsis),
+                                                ),
+                                                const SizedBox(
+                                                    height: Constants.SPACING),
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.pin_drop,
+                                                      color: theme
+                                                          .colorScheme.primary,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: Constants.SPACING,
+                                                    ),
+                                                    Expanded(
+                                                        child: Text(e.county,
+                                                            style: const TextStyle(
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis)))
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.phone_forwarded,
+                                                      color: theme
+                                                          .colorScheme.primary,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: Constants.SPACING,
+                                                    ),
+                                                    Expanded(
+                                                        child: Text(e.telephone,
+                                                            style: const TextStyle(
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis)))
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons
+                                                          .location_city_outlined,
+                                                      color: theme
+                                                          .colorScheme.primary,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: Constants.SPACING,
+                                                    ),
+                                                    Expanded(
+                                                        child: Text(
+                                                            "MFL Code: ${e.code}",
+                                                            style: const TextStyle(
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis))),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.local_hospital,
+                                                      color: theme
+                                                          .colorScheme.primary,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: Constants.SPACING,
+                                                    ),
+                                                    Expanded(
+                                                      child: Text(
+                                                        e.facilityType,
+                                                        style: const TextStyle(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                           Container(
                                             decoration: BoxDecoration(
@@ -201,8 +224,58 @@ class _FacilityDirectoryState extends State<FacilityDirectory> {
                                                     .withOpacity(0.4),
                                                 shape: BoxShape.circle),
                                             child: IconButton(
-                                                onPressed: () {
-                                                  makePhoneCall(e.telephone);
+                                                onPressed: () async {
+                                                  if (e.telephone
+                                                      .replaceAll(" ", "")
+                                                      .isEmpty) {
+                                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${e.name} have no number to call!.")));
+                                                    return;
+                                                  }
+                                                  final numberToCall =
+                                                      await showDialog<String?>(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        AlertDialog(
+                                                      title: const Text(
+                                                          "Call facility"),
+                                                      content:
+                                                          SingleChildScrollView(
+                                                        child: Wrap(
+                                                          children: e.telephone
+                                                              .replaceAll(
+                                                                  "CCC:", "")
+                                                              .replaceAll(
+                                                                  " ", "")
+                                                              .split(",")
+                                                              .map(
+                                                                (el) =>
+                                                                    ListTile(
+                                                                  title:
+                                                                      Text(el),
+                                                                  leading:
+                                                                      const Icon(
+                                                                          Icons
+                                                                              .phone_forwarded_outlined),
+                                                                  onTap: () =>
+                                                                      context.pop(
+                                                                          el),
+                                                                ),
+                                                              )
+                                                              .toList(),
+                                                        ),
+                                                      ),
+                                                      actions: [
+                                                        Button(
+                                                          title: "Cancel",
+                                                          onPress: () =>
+                                                              context.pop(),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  );
+                                                  if (numberToCall != null) {
+                                                    makePhoneCall(numberToCall);
+                                                  }
                                                 },
                                                 icon: const Icon(
                                                     Icons.phone_forwarded)),
