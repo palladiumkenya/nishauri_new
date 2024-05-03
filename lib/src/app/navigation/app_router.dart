@@ -281,6 +281,7 @@ final List<RouteBase> secureRoutes = [
               providerImage: payload["providerImage"] as String,
               appointmentTime: payload["appointmentTime"] as DateTime,
               appointmentType: payload["appointmentType"] as String,
+              onSubmit: payload["onSubmit"],
             );
           },
         ),

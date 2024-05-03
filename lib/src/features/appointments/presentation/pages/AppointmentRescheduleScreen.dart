@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,14 +17,16 @@ class AppointmentRescheduleScreen extends HookWidget {
   final DateTime appointmentTime;
   final String providerImage;
   final String providerName;
+  final Future<dynamic> Function(
+      DateTime rescheduleTime, String rescheduleReason)? onSubmit;
 
-  const AppointmentRescheduleScreen({
-    super.key,
-    required this.appointmentTime,
-    required this.appointmentType,
-    required this.providerName,
-    required this.providerImage,
-  });
+  const AppointmentRescheduleScreen(
+      {super.key,
+      required this.appointmentTime,
+      required this.appointmentType,
+      required this.providerName,
+      required this.providerImage,
+      this.onSubmit});
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +35,7 @@ class AppointmentRescheduleScreen extends HookWidget {
     final selectedDate = useState<DateTime?>(null);
     final selectedTime = useState<DateTime?>(null);
     final rescheduleReason = useState<String>("");
+    final loading = useState(false);
     return Scaffold(
       appBar: AppBar(
           leading: IconButton(
@@ -153,13 +158,34 @@ class AppointmentRescheduleScreen extends HookWidget {
                 title: "Submit Request",
                 backgroundColor: Constants.activeSelectionColor,
                 textColor: theme.canvasColor,
+                loading: loading.value,
                 // prefixIcon: const Icon(Icons.downloading),
                 surfixIcon: SvgPicture.asset(
                   "assets/images/history.svg",
                   semanticsLabel: "Doctors",
                   fit: BoxFit.contain,
                 ),
-                onPress: () {},
+
+                disabled: selectedTime.value == null ||
+                    selectedDate.value == null ||
+                    rescheduleReason.value.isEmpty ||
+                    onSubmit == null,
+                onPress: () {
+                  final time = DateTime(
+                    selectedDate.value!.year,
+                    selectedDate.value!.month,
+                    selectedDate.value!.day,
+                    selectedTime.value!.hour,
+                    selectedTime.value!.minute,
+                  );
+                  loading.value = true;
+                  onSubmit!(time, rescheduleReason.value).then((value) {
+                    context.pop();
+                  }).catchError((e) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text(e.toString())));
+                  }).whenComplete(() => loading.value = false);
+                },
               ),
               const SizedBox(height: Constants.SPACING),
             ],
