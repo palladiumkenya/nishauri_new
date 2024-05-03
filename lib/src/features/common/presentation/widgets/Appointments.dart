@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
+import 'package:nishauri/src/features/appointments/presentation/pages/AppointmentRescheduleScreen.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/AppointmentCard.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
@@ -97,16 +98,17 @@ class Appointments extends HookConsumerWidget {
                                     "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
                                 providerName: "Kiseuni Dispensary",
                                 onRescheduleTap: () => context.goNamed(
-                                    RouteNames.APPOINTMENTS_RESCHEDULE,
-                                    extra: {
-                                      "appointmentType":
-                                          artAppointment.appointment_type ??
-                                              "Unknown type",
-                                      "appointmentTime": appointmentDate,
-                                      "providerImage":
-                                          "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
-                                      "providerName": "Kiseuni Dispensary",
-                                    }),
+                                  RouteNames.APPOINTMENTS_RESCHEDULE,
+                                  extra: AppointmentRescheduleScreenProps(
+                                    appointmentTime: appointmentDate,
+                                    appointmentType:
+                                        artAppointment.appointment_type ??
+                                            "Unknown type",
+                                    providerName: "Kiseuni Dispensary",
+                                    providerImage:
+                                        "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
+                                  ),
+                                ),
                               ),
                             ),
                           );

@@ -12,7 +12,7 @@ import 'package:nishauri/src/utils/helpers.dart';
 
 import '../../../../utils/constants.dart';
 
-class AppointmentRescheduleScreen extends HookWidget {
+class AppointmentRescheduleScreenProps {
   final String appointmentType;
   final DateTime appointmentTime;
   final String providerImage;
@@ -20,16 +20,27 @@ class AppointmentRescheduleScreen extends HookWidget {
   final Future<dynamic> Function(
       DateTime rescheduleTime, String rescheduleReason)? onSubmit;
 
-  const AppointmentRescheduleScreen(
-      {super.key,
-      required this.appointmentTime,
+  AppointmentRescheduleScreenProps(
+      {required this.appointmentTime,
       required this.appointmentType,
       required this.providerName,
       required this.providerImage,
       this.onSubmit});
+}
+
+class AppointmentRescheduleScreen extends HookWidget {
+  final AppointmentRescheduleScreenProps props;
+
+  const AppointmentRescheduleScreen({super.key, required this.props});
 
   @override
   Widget build(BuildContext context) {
+    final String appointmentType = props.appointmentType;
+    final DateTime appointmentTime = props.appointmentTime;
+    final String providerImage = props.providerImage;
+    final String providerName = props.providerName;
+    final Future<dynamic> Function(
+    DateTime rescheduleTime, String rescheduleReason)? onSubmit = props.onSubmit;
     final theme = Theme.of(context);
     final size = getOrientationAwareScreenSize(context);
     final selectedDate = useState<DateTime?>(null);
