@@ -51,7 +51,7 @@ class BMICalculatorResultsScreen extends HookConsumerWidget {
                                     getBMIStatusSimplified(bmi),
                                     style:
                                         theme.textTheme.titleMedium?.copyWith(
-                                      color: Colors.green,
+                                      color: Constants.activeSelectionColor,
                                     ),
                                   ),
                                 ]),

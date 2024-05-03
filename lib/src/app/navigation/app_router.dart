@@ -193,14 +193,12 @@ final List<RouteBase> secureRoutes = [
       },
       routes: [
         GoRoute(
-          name: RouteNames.BMI_CALCULATOR_RESULTS,
-          path: "bmi-calculator-results",
-          builder: (BuildContext context, GoRouterState state){
-            double extra =
-            state.extra! as double;
-            return BMICalculatorResultsScreen(bmi: extra);
-          }
-        )
+            name: RouteNames.BMI_CALCULATOR_RESULTS,
+            path: "bmi-calculator-results",
+            builder: (BuildContext context, GoRouterState state) {
+              double extra = state.extra! as double;
+              return BMICalculatorResultsScreen(bmi: extra);
+            })
       ]),
   GoRoute(
     name: RouteNames.PRIVACY_SETTINGS,
@@ -265,21 +263,27 @@ final List<RouteBase> secureRoutes = [
     },
   ),
   GoRoute(
-    name: RouteNames.APPOINTMENTS,
-    path: 'appointments',
-    builder: (BuildContext context, GoRouterState state) {
-      return const Appointments();
-    },
-    routes: [
-      GoRoute(
-        name: RouteNames.APPOINTMENTS_RESCHEDULE,
-        path: 'reschedule',
-        builder: (BuildContext context, GoRouterState state) {
-          return const AppointmentRescheduleScreen();
-        },
-      ),
-    ]
-  ),
+      name: RouteNames.APPOINTMENTS,
+      path: 'appointments',
+      builder: (BuildContext context, GoRouterState state) {
+        return const Appointments();
+      },
+      routes: [
+        GoRoute(
+          name: RouteNames.APPOINTMENTS_RESCHEDULE,
+          path: 'reschedule',
+          builder: (BuildContext context, GoRouterState state) {
+            final payload = state.extra as Map<String, dynamic>;
+
+            return AppointmentRescheduleScreen(
+              providerName: payload["providerName"] as String,
+              providerImage: payload["providerImage"] as String,
+              appointmentTime: payload["appointmentTime"] as DateTime,
+              appointmentType: payload["appointmentType"] as String,
+            );
+          },
+        ),
+      ]),
   GoRoute(
     name: RouteNames.LAB_RESULTS,
     path: 'lab-results',
