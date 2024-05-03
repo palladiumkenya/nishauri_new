@@ -26,6 +26,7 @@ class AppCard extends StatelessWidget {
     final theme = Theme.of(context);
     if (variant == CardVariant.OUTLINED) {
       return Card(
+
         color: color,
         clipBehavior: clipBehaviour,
         margin: margin,

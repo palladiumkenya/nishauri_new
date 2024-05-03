@@ -20,7 +20,7 @@ class Settings {
     return Settings(
       userToken: '',
       // Provide the initial user token
-      theme: 'dark',
+      theme: 'light',
       // Provide the initial theme ('light' or 'dark', for example)
       pin: '2222',
       // Provide the initial PIN if required

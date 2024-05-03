@@ -40,7 +40,9 @@ dependencies:
   json_annotation: ^4.8.1
   table_calendar: ^3.0.9
   fl_chart: ^0.64.0
-
+  gap: ^3.0.1
+  uuid: ^3.0.4
+  autocomplete_textfield: ^2.0.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -60,6 +62,10 @@ dependencies:
   flutter_web_auth_2: ^3.1.1
   dropdown_search: ^5.0.6
   flutter_expandable_fab: ^2.0.0
+  multi_dropdown: ^2.1.4
+  flutter_markdown: ^0.6.19
+  url_launcher: ^6.2.4
+  font_awesome_flutter: ^10.7.0
 
 dev_dependencies:
   flutter_test:
@@ -113,6 +119,10 @@ flutter:
         - asset: assets/fonts/Play-Regular.ttf
         - asset: assets/fonts/Play-Bold.ttf
           weight: 700
+
+    - family: CustomIcons
+      fonts:
+        - asset: assets/fonts/CustomIcons.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

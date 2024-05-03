@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/custom_icons.dart';
+import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/HomeScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainMenuScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.dart';
@@ -23,7 +26,8 @@ class _HomeScreenState extends ConsumerState<MainScreen>
   final _pages = const [
     HomeScreen(),
     MainMenuScreen(),
-    SettingsScreen(),
+    ChatScreen(),
+    SettingsScreen()
   ];
 
   @override
@@ -95,28 +99,34 @@ class _HomeScreenState extends ConsumerState<MainScreen>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _currIndex = 1;
-          });
-        },
-        child: const Icon(Icons.apps),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     setState(() {
+      //       _currIndex = 1;
+      //     });
+      //   },
+      //   // child: const Icon(Icons.apps),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Theme.of(context).colorScheme.primary,
+        elevation: 0,
+        selectedItemColor: theme.colorScheme.primary,
+        unselectedItemColor: theme.disabledColor,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
+            icon: FaIcon(Icons.home_filled),
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.apps_rounded),
-            label: "",
+            icon: FaIcon(Icons.apps),
+            label: "Apps",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
+            icon: FaIcon(FontAwesomeIcons.comments),
+            label: "Ask Nuru",
+          ),
+          BottomNavigationBarItem(
+            icon: FaIcon(FontAwesomeIcons.gear),
             label: "Settings",
           ),
         ],

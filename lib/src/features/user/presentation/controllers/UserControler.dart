@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/features/user/data/respositories/UserRepository.dart';
+import 'dart:developer' as developer;
 
 class UserController extends StateNotifier<AsyncValue<User>> {
   final UserRepository _repository;
@@ -16,14 +17,17 @@ class UserController extends StateNotifier<AsyncValue<User>> {
       state = AsyncValue.data(user);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
+      developer.log('-->getUser ${e.toString()}');
+      rethrow;
     }
   }
 
-  Future<void> updateUser(User user) async {
+  Future<void> updateUser(Map<String, dynamic> user) async {
     try {
       final user_ = await _repository.updateProfile(user);
       await getUser();
     } catch (e) {
+      developer.log('-->updateUser ${e.toString()}');
       rethrow;
     }
   }
@@ -32,6 +36,7 @@ class UserController extends StateNotifier<AsyncValue<User>> {
     try {
       return await _repository.verifyAccount(data);
     } catch (e) {
+      developer.log('-->Verify ${e.toString()}');
       rethrow;
     }
   }
@@ -39,6 +44,7 @@ class UserController extends StateNotifier<AsyncValue<User>> {
     try {
       return await _repository.getOTPCode(mode);
     } catch (e) {
+      developer.log('-->getOTPCode ${e.toString()}');
       rethrow;
     }
   }

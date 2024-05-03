@@ -9,15 +9,15 @@ part of 'user_program.dart';
 _$UserProgramImpl _$$UserProgramImplFromJson(Map<String, dynamic> json) =>
     _$UserProgramImpl(
       id: json['id'] as String?,
-      program: Program.fromJson(json['program'] as Map<String, dynamic>),
+      program_name: json['program_name'] as String?,
       isActive: json['isActive'] as bool? ?? false,
-      createdAt: json['createdAt'] as String,
+      createdAt: json['createdAt'] as String?,
     );
 
 Map<String, dynamic> _$$UserProgramImplToJson(_$UserProgramImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'program': instance.program,
+      'program_name': instance.program_name,
       'isActive': instance.isActive,
       'createdAt': instance.createdAt,
     };

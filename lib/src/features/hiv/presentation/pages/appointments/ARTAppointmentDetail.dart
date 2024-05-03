@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
 import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 class ARTAppointmentDetailScreen extends StatelessWidget {
-  final ARTAppointment artAppointment;
+  final Appointment artAppointment;
 
   const ARTAppointmentDetailScreen({super.key, required this.artAppointment});
 
@@ -32,7 +33,7 @@ class ARTAppointmentDetailScreen extends StatelessWidget {
         const Divider(),
         ListTile(
           leading: const Icon(Icons.menu),
-          title: Text(artAppointment.appointmentType),
+          title: Text(artAppointment.appointment_type??''),
           subtitle: const Text("Appointment type"),
           trailing: const Icon(Icons.chevron_right),
         ),
@@ -41,9 +42,7 @@ class ARTAppointmentDetailScreen extends StatelessWidget {
           leading: const Icon(Icons.calendar_month_sharp),
           title: Text(
             DateFormat("dd MMM yyy").format(
-              DateTime.parse(
-                artAppointment.appointmentDate,
-              ),
+              DateFormat('EEEE, MMMM d y').parse(artAppointment.appointment_date),
             ),
           ),
           subtitle: const Text("Appointment date"),
@@ -52,7 +51,7 @@ class ARTAppointmentDetailScreen extends StatelessWidget {
         const Divider(),
         ListTile(
           leading: const Icon(Icons.perm_identity),
-          title: Text(artAppointment.cccNumber),
+          title: Text(artAppointment.ccc_no??''),
           subtitle: const Text("CCC Number"),
           trailing: const Icon(Icons.chevron_right),
         ),
@@ -62,16 +61,14 @@ class ARTAppointmentDetailScreen extends StatelessWidget {
             leading: const Icon(Icons.perm_contact_calendar),
             title: Text(
               DateFormat("dd MMM yyy").format(
-                DateTime.parse(
-                  artAppointment.nextAppointmentDate!,
-                ),
+                DateFormat('EEEE, MMMM d y').parse(artAppointment.appointment_date),
               ),
             ),
             subtitle: const Text("Next appointment date"),
             trailing: const Icon(Icons.chevron_right),
           ),
-        if (artAppointment.appointmentType == "Re-Fill") const Divider(),
-        if (artAppointment.appointmentType == "Re-Fill")
+        if (artAppointment.appointment_type == "Re-Fill") const Divider(),
+        if (artAppointment.appointment_type == "Re-Fill")
           Padding(
             padding: const EdgeInsets.all(Constants.SPACING),
             child: Button(

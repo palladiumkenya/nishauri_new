@@ -9,19 +9,19 @@ part of 'program.dart';
 _$ProgramImpl _$$ProgramImplFromJson(Map<String, dynamic> json) =>
     _$ProgramImpl(
       id: json['id'] as String?,
-      programCode: json['programCode'] as String,
-      name: json['name'] as String,
+      program_code: json['program_code'] as String?,
+      name: json['name'] as String?,
       description: json['description'] as String?,
-      isActive: json['isActive'] as bool? ?? false,
+      is_active: json['is_active'] as bool? ?? false,
       createdAt: json['createdAt'] as String,
     );
 
 Map<String, dynamic> _$$ProgramImplToJson(_$ProgramImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'programCode': instance.programCode,
+      'program_code': instance.program_code,
       'name': instance.name,
       'description': instance.description,
-      'isActive': instance.isActive,
+      'is_active': instance.is_active,
       'createdAt': instance.createdAt,
     };

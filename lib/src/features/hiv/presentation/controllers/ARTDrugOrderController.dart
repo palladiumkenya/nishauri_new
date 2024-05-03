@@ -20,7 +20,17 @@ class ARTDrugOrderController
     }
   }
 
-  Future<ARTDrugOrder> createOrder(Map<String, dynamic> data) async {
+  // Future<ARTDrugOrder> createOrder(Map<String, dynamic> data) async {
+  //   try {
+  //     final order = await _repository.createOrder(data);
+  //     await getOrders();
+  //     return order;
+  //   } catch(err) {
+  //     rethrow;
+  //   }
+  // }
+
+  Future<String> createOrder(Map<String, dynamic> data) async {
     try {
       final order = await _repository.createOrder(data);
       await getOrders();

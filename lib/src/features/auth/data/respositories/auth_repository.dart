@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
 import 'package:nishauri/src/local_storage/LocalStorage.dart';
@@ -45,5 +47,13 @@ class AuthRepository {
 
   Future<void> deleteUserId() async {
     await LocalStorage.delete("user");
+  }
+
+  Future<void> saveIsVerified(bool isVerified) async {
+    await LocalStorage.saveIsVerifiedAccount("acc", isVerified);
+  }
+
+  Future<bool> getIsVerified() async {
+    return await LocalStorage.getIsVerified("acc");
   }
 }

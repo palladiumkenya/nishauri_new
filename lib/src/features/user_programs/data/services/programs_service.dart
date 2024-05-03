@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
+import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
 import 'package:nishauri/src/features/user_programs/data/models/program.dart';
 import 'package:nishauri/src/features/user_programs/data/models/program_verification_detail.dart';
 import 'package:nishauri/src/features/user_programs/data/models/program_verificaton_contact.dart';
@@ -9,122 +11,123 @@ import 'package:http/http.dart' as http;
 import 'package:nishauri/src/utils/constants.dart';
 
 class ProgramService extends HTTPService {
-  final List<Program> _programs = [
-    const Program(
-      programCode: "HIV",
-      name: "HIV Program",
-      createdAt: "20th Oct 2023",
-    ),
-    const Program(
-      programCode: "TB",
-      name: "Tuberculosis Program",
-      createdAt: "20th Oct 2023",
-    ),
-    const Program(
-      programCode: "ASTHMA",
-      name: "Asthma Program",
-      createdAt: "20th Oct 2023",
-    ),
-    const Program(
-      programCode: "DIABETES",
-      name: "Diabetes Program",
-      createdAt: "20th Oct 2023",
-    ),
-    const Program(
-      programCode: "CANCER",
-      name: "Cancer Program",
-      createdAt: "20th Oct 2023",
-    ),
-    const Program(
-      programCode: "HBP",
-      name: "Hypertension",
-      createdAt: "20th Oct 2023",
-    ),
-  ];
+  final AuthRepository _repository = AuthRepository(AuthApiService());
+  // final List<Program> _programs = [
+  //   const Program(
+  //     program_code: "HIV",
+  //     name: "HIV Program",
+  //     createdAt: "20th Oct 2023",
+  //   ),
+  //   const Program(
+  //     program_code: "TB",
+  //     name: "Tuberculosis Program",
+  //     createdAt: "20th Oct 2023",
+  //   ),
+  //   const Program(
+  //     program_code: "ASTHMA",
+  //     name: "Asthma Program",
+  //     createdAt: "20th Oct 2023",
+  //   ),
+  //   const Program(
+  //     program_code: "DIABETES",
+  //     name: "Diabetes Program",
+  //     createdAt: "20th Oct 2023",
+  //   ),
+  //   const Program(
+  //     program_code: "CANCER",
+  //     name: "Cancer Program",
+  //     createdAt: "20th Oct 2023",
+  //   ),
+  //   const Program(
+  //     program_code: "HBP",
+  //     name: "Hypertension",
+  //     createdAt: "20th Oct 2023",
+  //   ),
+  // ];
 
-  /*final List<UserProgram> _userPrograms = [
-    // const UserProgram(
-    //   program: Program(
-    //     programCode: "HIV",
-    //     name: "HIV Program",
-    //     createdAt: "20th Oct 2023",
-    //   ),
-    //   user: "u-1",
-    //   createdAt: "20th Oct 2023",
-    // ),
-    // const UserProgram(
-    //   program: Program(
-    //     programCode: "TB",
-    //     name: "Tuberculosis Program",
-    //     createdAt: "20th Oct 2023",
-    //   ),
-    //   user: "u-1",
-    //   createdAt: "20th Oct 2023",
-    // ),
-    // const UserProgram(
-    //   program: Program(
-    //     programCode: "ASTHMA",
-    //     name: "Asthma Program",
-    //     createdAt: "20th Oct 2023",
-    //   ),
-    //   user: "u-1",
-    //   createdAt: "20th Oct 2023",
-    // ),
-    // const UserProgram(
-    //   program: Program(
-    //     programCode: "DIABETES",
-    //     name: "Diabetes Program",
-    //     createdAt: "20th Oct 2023",
-    //   ),
-    //   user: "u-1",
-    //   createdAt: "20th Oct 2023",
-    // ),
-    // const UserProgram(
-    //   program: Program(
-    //     programCode: "CANCER",
-    //     name: "Cancer Program",
-    //     createdAt: "20th Oct 2023",
-    //   ),
-    //   user: "u-1",
-    //   createdAt: "20th Oct 2023",
-    // ),
-    // const UserProgram(
-    //   program: Program(
-    //     programCode: "HBP",
-    //     name: "Hypertension",
-    //     createdAt: "20th Oct 2023",
-    //   ),
-    //   user: "u-1",
-    //   createdAt: "20th Oct 2023",
-    // ),
-  ];
-*/
-  Future<List<Program>> getPrograms() async {
-    await Future.delayed(const Duration(seconds: 3));
-    return _programs;
+  // final List<UserProgram> _userPrograms = [
+  //   const UserProgram(
+  //     program: Program(
+  //       id: "1",
+  //       program_code: "HIV",
+  //       name: "HIV Program",
+  //       createdAt: "20th Oct 2023",
+  //     ),
+  //     // user: "u-1",
+  //     createdAt: "20th Oct 2023",
+  //   ),
+  //   const UserProgram(
+  //     program: Program(
+  //       id: "2",
+  //       program_code: "TB",
+  //       name: "Tuberculosis Program",
+  //       createdAt: "20th Oct 2023",
+  //     ),
+  //     // user: "u-1",
+  //     createdAt: "20th Oct 2023",
+  //   ),
+  //   const UserProgram(
+  //     program: Program(
+  //       id: "3",
+  //       program_code: "ASTHMA",
+  //       name: "Asthma Program",
+  //       createdAt: "20th Oct 2023",
+  //     ),
+  //     // user: "u-1",
+  //     createdAt: "20th Oct 2023",
+  //   ),
+  //   const UserProgram(
+  //     program: Program(
+  //       id: "4",
+  //       program_code: "DIABETES",
+  //       name: "Diabetes Program",
+  //       createdAt: "20th Oct 2023",
+  //     ),
+  //     // user: "u-1",
+  //     createdAt: "20th Oct 2023",
+  //   ),
+  // ];
+
+  // Future<List<Program>> getPrograms() async {
+  //   await Future.delayed(const Duration(seconds: 3));
+  //   return _programs;
+  // }
+  Future<List<UserProgram>> getUserPrograms() async {
+    try {
+      final response = await call(getUserPrograms_, null);
+      if (response.statusCode == 200) {
+        final responseString = await response.stream.bytesToString();
+        final List<dynamic> programData = json.decode(responseString)["programs"];
+        return programData.map((e) => userProgramFromJson(e)).toList();
+      } else {
+        throw "Something Went Wrong Contact Try Again";
+      }
+    } catch (e) {
+      throw "Please check your internet connection";
+    }
   }
 
-  Future<List<UserProgram>> getUserPrograms() async {
-    final response = await call(getUserPrograms_, null);
-    final responseString = await response.stream.bytesToString();
-    final Map<String, dynamic> programData = json.decode(responseString);
-    final programs = (programData["results"] as List<dynamic>)
-        .map((e) => UserProgram.fromJson({
-              ...e,
-              "id": e["_id"],
-              "program": Map<String, dynamic>.from(
-                  {...e["program"][0], "id": e["program"][0]["_id"]})
-            }))
-        .toList();
-    return programs;
+  UserProgram userProgramFromJson(Map<String, dynamic> json) {
+    return UserProgram(
+      id: json['program_id'].toString(),
+      program_name: json['program_name'],
+      isActive: json['is_active'] == "1",
+      // createdAt: json['created_at'],
+    );
   }
 
   Future<http.StreamedResponse> getUserPrograms_(dynamic args) async {
     final tokenPair = await getCachedToken();
-    var headers = {'x-access-token': tokenPair.accessToken};
+    final id = await _repository.getUserId();
+    var headers = {
+      'Authorization': 'Bearer ${tokenPair.accessToken}',
+      'Content-Type': 'application/json',
+    };
     var request = http.Request('GET',
-        Uri.parse('${Constants.BASE_URL}/patients/programs/patient-programs'));
+        Uri.parse('${Constants.BASE_URL_NEW}/user_programs?user_id=$id'));
     request.headers.addAll(headers);
+    print(request.headers);
+    print(request);
     return await request.send();
   }
 
@@ -134,20 +137,62 @@ class ProgramService extends HTTPService {
         await call<Map<String, dynamic>>(registerProgram_, data);
     final responseString = await response.stream.bytesToString();
     final responseData = jsonDecode(responseString);
+    if(responseData["success"] == true && responseData["msg"] == "Program Already Exist Succesfully. Please Login to access personalized data"){
+      throw responseData["msg"];
+    }
     return ProgramVerificationDetail.fromJson(responseData);
   }
 
   Future<http.StreamedResponse> registerProgram_(
       Map<String, dynamic> data) async {
     final tokenPair = await getCachedToken();
+    final id = await _repository.getUserId();
+    var user = {'user_id': id};
+    var mergedData = {...data, ...user};
     var headers = {
-      'x-access-token': tokenPair.accessToken,
+      'Authorization': 'Bearer ${tokenPair.accessToken}',
       'Content-Type': 'application/json',
     };
-    final data_ = Map.from(data)..removeWhere((key, value) => key == "program");
+    final data_ = Map.from(mergedData)..removeWhere((key, value) => key == "program");
     var request = http.Request(
-        'POST', Uri.parse('${Constants.BASE_URL}/patients/programs/register/'));
+        'POST', Uri.parse('${Constants.BASE_URL_NEW}/setprogram'));
     request.body = json.encode(data_);
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    return response;
+  }
+
+  Future<void> updateProgram(
+      Map<String, dynamic> data) async {
+    http.StreamedResponse response =
+    await call<Map<String, dynamic>>(updateProgram_, data);
+    if (response.statusCode == 200){
+    final responseString = await response.stream.bytesToString();
+    final responseData = jsonDecode(responseString);
+    if(responseData["success"] == true){
+      throw responseData["msg"];
+    }
+    else {
+      throw responseData["msg"];
+    }
+    } else {
+      throw "Something happened contact admin";
+    }
+  }
+
+  Future<http.StreamedResponse> updateProgram_(
+      Map<String, dynamic> data) async {
+    final tokenPair = await getCachedToken();
+    final id = await _repository.getUserId();
+    var user = {'user_id': id};
+    var mergedData = {...data, ...user};
+    var headers = {
+      'Authorization': 'Bearer ${tokenPair.accessToken}',
+      'Content-Type': 'application/json',
+    };
+    var request = http.Request(
+        'POST', Uri.parse('${Constants.BASE_URL_NEW}/updateprogram'));
+    request.body = json.encode(mergedData);
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     return response;

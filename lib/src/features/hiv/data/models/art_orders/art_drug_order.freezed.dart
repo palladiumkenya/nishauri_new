@@ -20,17 +20,22 @@ ARTDrugOrder _$ARTDrugOrderFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ARTDrugOrder {
-  String? get id => throw _privateConstructorUsedError;
+  int? get order_id => throw _privateConstructorUsedError;
   ARTEvent? get event => throw _privateConstructorUsedError;
   ARTAppointment? get appointment => throw _privateConstructorUsedError;
-  Address get deliveryAddress => throw _privateConstructorUsedError;
-  String get deliveryMethod => throw _privateConstructorUsedError;
-  String get phoneNumber => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError;
+  Address? get deliveryAddress => throw _privateConstructorUsedError;
+  String? get delivery_method => throw _privateConstructorUsedError;
+  String? get client_phone_no => throw _privateConstructorUsedError;
+  String? get order_type => throw _privateConstructorUsedError;
   Courier? get courierService => throw _privateConstructorUsedError;
   DeliveryPerson? get deliveryPerson => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
   String? get updateAt => throw _privateConstructorUsedError;
+  String? get status => throw _privateConstructorUsedError;
+  String? get approved_date => throw _privateConstructorUsedError;
+  String? get dispatched_date => throw _privateConstructorUsedError;
+  String? get fullfilled_date => throw _privateConstructorUsedError;
+  String? get date_order_posted => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,21 +50,26 @@ abstract class $ARTDrugOrderCopyWith<$Res> {
       _$ARTDrugOrderCopyWithImpl<$Res, ARTDrugOrder>;
   @useResult
   $Res call(
-      {String? id,
+      {int? order_id,
       ARTEvent? event,
       ARTAppointment? appointment,
-      Address deliveryAddress,
-      String deliveryMethod,
-      String phoneNumber,
-      String type,
+      Address? deliveryAddress,
+      String? delivery_method,
+      String? client_phone_no,
+      String? order_type,
       Courier? courierService,
       DeliveryPerson? deliveryPerson,
       String? createdAt,
-      String? updateAt});
+      String? updateAt,
+      String? status,
+      String? approved_date,
+      String? dispatched_date,
+      String? fullfilled_date,
+      String? date_order_posted});
 
   $ARTEventCopyWith<$Res>? get event;
   $ARTAppointmentCopyWith<$Res>? get appointment;
-  $AddressCopyWith<$Res> get deliveryAddress;
+  $AddressCopyWith<$Res>? get deliveryAddress;
   $CourierCopyWith<$Res>? get courierService;
   $DeliveryPersonCopyWith<$Res>? get deliveryPerson;
 }
@@ -77,23 +87,28 @@ class _$ARTDrugOrderCopyWithImpl<$Res, $Val extends ARTDrugOrder>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
+    Object? order_id = freezed,
     Object? event = freezed,
     Object? appointment = freezed,
-    Object? deliveryAddress = null,
-    Object? deliveryMethod = null,
-    Object? phoneNumber = null,
-    Object? type = null,
+    Object? deliveryAddress = freezed,
+    Object? delivery_method = freezed,
+    Object? client_phone_no = freezed,
+    Object? order_type = freezed,
     Object? courierService = freezed,
     Object? deliveryPerson = freezed,
     Object? createdAt = freezed,
     Object? updateAt = freezed,
+    Object? status = freezed,
+    Object? approved_date = freezed,
+    Object? dispatched_date = freezed,
+    Object? fullfilled_date = freezed,
+    Object? date_order_posted = freezed,
   }) {
     return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+      order_id: freezed == order_id
+          ? _value.order_id
+          : order_id // ignore: cast_nullable_to_non_nullable
+              as int?,
       event: freezed == event
           ? _value.event
           : event // ignore: cast_nullable_to_non_nullable
@@ -102,22 +117,22 @@ class _$ARTDrugOrderCopyWithImpl<$Res, $Val extends ARTDrugOrder>
           ? _value.appointment
           : appointment // ignore: cast_nullable_to_non_nullable
               as ARTAppointment?,
-      deliveryAddress: null == deliveryAddress
+      deliveryAddress: freezed == deliveryAddress
           ? _value.deliveryAddress
           : deliveryAddress // ignore: cast_nullable_to_non_nullable
-              as Address,
-      deliveryMethod: null == deliveryMethod
-          ? _value.deliveryMethod
-          : deliveryMethod // ignore: cast_nullable_to_non_nullable
-              as String,
-      phoneNumber: null == phoneNumber
-          ? _value.phoneNumber
-          : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Address?,
+      delivery_method: freezed == delivery_method
+          ? _value.delivery_method
+          : delivery_method // ignore: cast_nullable_to_non_nullable
+              as String?,
+      client_phone_no: freezed == client_phone_no
+          ? _value.client_phone_no
+          : client_phone_no // ignore: cast_nullable_to_non_nullable
+              as String?,
+      order_type: freezed == order_type
+          ? _value.order_type
+          : order_type // ignore: cast_nullable_to_non_nullable
+              as String?,
       courierService: freezed == courierService
           ? _value.courierService
           : courierService // ignore: cast_nullable_to_non_nullable
@@ -133,6 +148,26 @@ class _$ARTDrugOrderCopyWithImpl<$Res, $Val extends ARTDrugOrder>
       updateAt: freezed == updateAt
           ? _value.updateAt
           : updateAt // ignore: cast_nullable_to_non_nullable
+              as String?,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String?,
+      approved_date: freezed == approved_date
+          ? _value.approved_date
+          : approved_date // ignore: cast_nullable_to_non_nullable
+              as String?,
+      dispatched_date: freezed == dispatched_date
+          ? _value.dispatched_date
+          : dispatched_date // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fullfilled_date: freezed == fullfilled_date
+          ? _value.fullfilled_date
+          : fullfilled_date // ignore: cast_nullable_to_non_nullable
+              as String?,
+      date_order_posted: freezed == date_order_posted
+          ? _value.date_order_posted
+          : date_order_posted // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -163,8 +198,12 @@ class _$ARTDrugOrderCopyWithImpl<$Res, $Val extends ARTDrugOrder>
 
   @override
   @pragma('vm:prefer-inline')
-  $AddressCopyWith<$Res> get deliveryAddress {
-    return $AddressCopyWith<$Res>(_value.deliveryAddress, (value) {
+  $AddressCopyWith<$Res>? get deliveryAddress {
+    if (_value.deliveryAddress == null) {
+      return null;
+    }
+
+    return $AddressCopyWith<$Res>(_value.deliveryAddress!, (value) {
       return _then(_value.copyWith(deliveryAddress: value) as $Val);
     });
   }
@@ -203,24 +242,29 @@ abstract class _$$ARTDrugOrderImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? id,
+      {int? order_id,
       ARTEvent? event,
       ARTAppointment? appointment,
-      Address deliveryAddress,
-      String deliveryMethod,
-      String phoneNumber,
-      String type,
+      Address? deliveryAddress,
+      String? delivery_method,
+      String? client_phone_no,
+      String? order_type,
       Courier? courierService,
       DeliveryPerson? deliveryPerson,
       String? createdAt,
-      String? updateAt});
+      String? updateAt,
+      String? status,
+      String? approved_date,
+      String? dispatched_date,
+      String? fullfilled_date,
+      String? date_order_posted});
 
   @override
   $ARTEventCopyWith<$Res>? get event;
   @override
   $ARTAppointmentCopyWith<$Res>? get appointment;
   @override
-  $AddressCopyWith<$Res> get deliveryAddress;
+  $AddressCopyWith<$Res>? get deliveryAddress;
   @override
   $CourierCopyWith<$Res>? get courierService;
   @override
@@ -238,23 +282,28 @@ class __$$ARTDrugOrderImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
+    Object? order_id = freezed,
     Object? event = freezed,
     Object? appointment = freezed,
-    Object? deliveryAddress = null,
-    Object? deliveryMethod = null,
-    Object? phoneNumber = null,
-    Object? type = null,
+    Object? deliveryAddress = freezed,
+    Object? delivery_method = freezed,
+    Object? client_phone_no = freezed,
+    Object? order_type = freezed,
     Object? courierService = freezed,
     Object? deliveryPerson = freezed,
     Object? createdAt = freezed,
     Object? updateAt = freezed,
+    Object? status = freezed,
+    Object? approved_date = freezed,
+    Object? dispatched_date = freezed,
+    Object? fullfilled_date = freezed,
+    Object? date_order_posted = freezed,
   }) {
     return _then(_$ARTDrugOrderImpl(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+      order_id: freezed == order_id
+          ? _value.order_id
+          : order_id // ignore: cast_nullable_to_non_nullable
+              as int?,
       event: freezed == event
           ? _value.event
           : event // ignore: cast_nullable_to_non_nullable
@@ -263,22 +312,22 @@ class __$$ARTDrugOrderImplCopyWithImpl<$Res>
           ? _value.appointment
           : appointment // ignore: cast_nullable_to_non_nullable
               as ARTAppointment?,
-      deliveryAddress: null == deliveryAddress
+      deliveryAddress: freezed == deliveryAddress
           ? _value.deliveryAddress
           : deliveryAddress // ignore: cast_nullable_to_non_nullable
-              as Address,
-      deliveryMethod: null == deliveryMethod
-          ? _value.deliveryMethod
-          : deliveryMethod // ignore: cast_nullable_to_non_nullable
-              as String,
-      phoneNumber: null == phoneNumber
-          ? _value.phoneNumber
-          : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Address?,
+      delivery_method: freezed == delivery_method
+          ? _value.delivery_method
+          : delivery_method // ignore: cast_nullable_to_non_nullable
+              as String?,
+      client_phone_no: freezed == client_phone_no
+          ? _value.client_phone_no
+          : client_phone_no // ignore: cast_nullable_to_non_nullable
+              as String?,
+      order_type: freezed == order_type
+          ? _value.order_type
+          : order_type // ignore: cast_nullable_to_non_nullable
+              as String?,
       courierService: freezed == courierService
           ? _value.courierService
           : courierService // ignore: cast_nullable_to_non_nullable
@@ -295,6 +344,26 @@ class __$$ARTDrugOrderImplCopyWithImpl<$Res>
           ? _value.updateAt
           : updateAt // ignore: cast_nullable_to_non_nullable
               as String?,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String?,
+      approved_date: freezed == approved_date
+          ? _value.approved_date
+          : approved_date // ignore: cast_nullable_to_non_nullable
+              as String?,
+      dispatched_date: freezed == dispatched_date
+          ? _value.dispatched_date
+          : dispatched_date // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fullfilled_date: freezed == fullfilled_date
+          ? _value.fullfilled_date
+          : fullfilled_date // ignore: cast_nullable_to_non_nullable
+              as String?,
+      date_order_posted: freezed == date_order_posted
+          ? _value.date_order_posted
+          : date_order_posted // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -303,35 +372,40 @@ class __$$ARTDrugOrderImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ARTDrugOrderImpl with DiagnosticableTreeMixin implements _ARTDrugOrder {
   const _$ARTDrugOrderImpl(
-      {this.id,
+      {this.order_id,
       this.event,
       this.appointment,
-      required this.deliveryAddress,
-      required this.deliveryMethod,
-      required this.phoneNumber,
-      required this.type,
+      this.deliveryAddress,
+      this.delivery_method,
+      this.client_phone_no,
+      this.order_type,
       this.courierService,
       this.deliveryPerson,
       this.createdAt,
-      this.updateAt});
+      this.updateAt,
+      this.status,
+      this.approved_date,
+      this.dispatched_date,
+      this.fullfilled_date,
+      this.date_order_posted});
 
   factory _$ARTDrugOrderImpl.fromJson(Map<String, dynamic> json) =>
       _$$ARTDrugOrderImplFromJson(json);
 
   @override
-  final String? id;
+  final int? order_id;
   @override
   final ARTEvent? event;
   @override
   final ARTAppointment? appointment;
   @override
-  final Address deliveryAddress;
+  final Address? deliveryAddress;
   @override
-  final String deliveryMethod;
+  final String? delivery_method;
   @override
-  final String phoneNumber;
+  final String? client_phone_no;
   @override
-  final String type;
+  final String? order_type;
   @override
   final Courier? courierService;
   @override
@@ -340,10 +414,20 @@ class _$ARTDrugOrderImpl with DiagnosticableTreeMixin implements _ARTDrugOrder {
   final String? createdAt;
   @override
   final String? updateAt;
+  @override
+  final String? status;
+  @override
+  final String? approved_date;
+  @override
+  final String? dispatched_date;
+  @override
+  final String? fullfilled_date;
+  @override
+  final String? date_order_posted;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ARTDrugOrder(id: $id, event: $event, appointment: $appointment, deliveryAddress: $deliveryAddress, deliveryMethod: $deliveryMethod, phoneNumber: $phoneNumber, type: $type, courierService: $courierService, deliveryPerson: $deliveryPerson, createdAt: $createdAt, updateAt: $updateAt)';
+    return 'ARTDrugOrder(order_id: $order_id, event: $event, appointment: $appointment, deliveryAddress: $deliveryAddress, delivery_method: $delivery_method, client_phone_no: $client_phone_no, order_type: $order_type, courierService: $courierService, deliveryPerson: $deliveryPerson, createdAt: $createdAt, updateAt: $updateAt, status: $status, approved_date: $approved_date, dispatched_date: $dispatched_date, fullfilled_date: $fullfilled_date, date_order_posted: $date_order_posted)';
   }
 
   @override
@@ -351,17 +435,22 @@ class _$ARTDrugOrderImpl with DiagnosticableTreeMixin implements _ARTDrugOrder {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ARTDrugOrder'))
-      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('order_id', order_id))
       ..add(DiagnosticsProperty('event', event))
       ..add(DiagnosticsProperty('appointment', appointment))
       ..add(DiagnosticsProperty('deliveryAddress', deliveryAddress))
-      ..add(DiagnosticsProperty('deliveryMethod', deliveryMethod))
-      ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
-      ..add(DiagnosticsProperty('type', type))
+      ..add(DiagnosticsProperty('delivery_method', delivery_method))
+      ..add(DiagnosticsProperty('client_phone_no', client_phone_no))
+      ..add(DiagnosticsProperty('order_type', order_type))
       ..add(DiagnosticsProperty('courierService', courierService))
       ..add(DiagnosticsProperty('deliveryPerson', deliveryPerson))
       ..add(DiagnosticsProperty('createdAt', createdAt))
-      ..add(DiagnosticsProperty('updateAt', updateAt));
+      ..add(DiagnosticsProperty('updateAt', updateAt))
+      ..add(DiagnosticsProperty('status', status))
+      ..add(DiagnosticsProperty('approved_date', approved_date))
+      ..add(DiagnosticsProperty('dispatched_date', dispatched_date))
+      ..add(DiagnosticsProperty('fullfilled_date', fullfilled_date))
+      ..add(DiagnosticsProperty('date_order_posted', date_order_posted));
   }
 
   @override
@@ -369,17 +458,19 @@ class _$ARTDrugOrderImpl with DiagnosticableTreeMixin implements _ARTDrugOrder {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ARTDrugOrderImpl &&
-            (identical(other.id, id) || other.id == id) &&
+            (identical(other.order_id, order_id) ||
+                other.order_id == order_id) &&
             (identical(other.event, event) || other.event == event) &&
             (identical(other.appointment, appointment) ||
                 other.appointment == appointment) &&
             (identical(other.deliveryAddress, deliveryAddress) ||
                 other.deliveryAddress == deliveryAddress) &&
-            (identical(other.deliveryMethod, deliveryMethod) ||
-                other.deliveryMethod == deliveryMethod) &&
-            (identical(other.phoneNumber, phoneNumber) ||
-                other.phoneNumber == phoneNumber) &&
-            (identical(other.type, type) || other.type == type) &&
+            (identical(other.delivery_method, delivery_method) ||
+                other.delivery_method == delivery_method) &&
+            (identical(other.client_phone_no, client_phone_no) ||
+                other.client_phone_no == client_phone_no) &&
+            (identical(other.order_type, order_type) ||
+                other.order_type == order_type) &&
             (identical(other.courierService, courierService) ||
                 other.courierService == courierService) &&
             (identical(other.deliveryPerson, deliveryPerson) ||
@@ -387,24 +478,38 @@ class _$ARTDrugOrderImpl with DiagnosticableTreeMixin implements _ARTDrugOrder {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updateAt, updateAt) ||
-                other.updateAt == updateAt));
+                other.updateAt == updateAt) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.approved_date, approved_date) ||
+                other.approved_date == approved_date) &&
+            (identical(other.dispatched_date, dispatched_date) ||
+                other.dispatched_date == dispatched_date) &&
+            (identical(other.fullfilled_date, fullfilled_date) ||
+                other.fullfilled_date == fullfilled_date) &&
+            (identical(other.date_order_posted, date_order_posted) ||
+                other.date_order_posted == date_order_posted));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      id,
+      order_id,
       event,
       appointment,
       deliveryAddress,
-      deliveryMethod,
-      phoneNumber,
-      type,
+      delivery_method,
+      client_phone_no,
+      order_type,
       courierService,
       deliveryPerson,
       createdAt,
-      updateAt);
+      updateAt,
+      status,
+      approved_date,
+      dispatched_date,
+      fullfilled_date,
+      date_order_posted);
 
   @JsonKey(ignore: true)
   @override
@@ -422,35 +527,40 @@ class _$ARTDrugOrderImpl with DiagnosticableTreeMixin implements _ARTDrugOrder {
 
 abstract class _ARTDrugOrder implements ARTDrugOrder {
   const factory _ARTDrugOrder(
-      {final String? id,
+      {final int? order_id,
       final ARTEvent? event,
       final ARTAppointment? appointment,
-      required final Address deliveryAddress,
-      required final String deliveryMethod,
-      required final String phoneNumber,
-      required final String type,
+      final Address? deliveryAddress,
+      final String? delivery_method,
+      final String? client_phone_no,
+      final String? order_type,
       final Courier? courierService,
       final DeliveryPerson? deliveryPerson,
       final String? createdAt,
-      final String? updateAt}) = _$ARTDrugOrderImpl;
+      final String? updateAt,
+      final String? status,
+      final String? approved_date,
+      final String? dispatched_date,
+      final String? fullfilled_date,
+      final String? date_order_posted}) = _$ARTDrugOrderImpl;
 
   factory _ARTDrugOrder.fromJson(Map<String, dynamic> json) =
       _$ARTDrugOrderImpl.fromJson;
 
   @override
-  String? get id;
+  int? get order_id;
   @override
   ARTEvent? get event;
   @override
   ARTAppointment? get appointment;
   @override
-  Address get deliveryAddress;
+  Address? get deliveryAddress;
   @override
-  String get deliveryMethod;
+  String? get delivery_method;
   @override
-  String get phoneNumber;
+  String? get client_phone_no;
   @override
-  String get type;
+  String? get order_type;
   @override
   Courier? get courierService;
   @override
@@ -459,6 +569,16 @@ abstract class _ARTDrugOrder implements ARTDrugOrder {
   String? get createdAt;
   @override
   String? get updateAt;
+  @override
+  String? get status;
+  @override
+  String? get approved_date;
+  @override
+  String? get dispatched_date;
+  @override
+  String? get fullfilled_date;
+  @override
+  String? get date_order_posted;
   @override
   @JsonKey(ignore: true)
   _$$ARTDrugOrderImplCopyWith<_$ARTDrugOrderImpl> get copyWith =>

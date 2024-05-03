@@ -8,10 +8,10 @@ part of 'delivery_person.dart';
 
 _$DeliveryPersonImpl _$$DeliveryPersonImplFromJson(Map<String, dynamic> json) =>
     _$DeliveryPersonImpl(
-      fullName: json['fullName'] as String,
-      nationalId: json['nationalId'] as int,
-      phoneNumber: json['phoneNumber'] as String,
-      pickupTime: json['pickupTime'] as String,
+      fullName: json['fullName'] as String?,
+      nationalId: json['nationalId'] as String?,
+      phoneNumber: json['phoneNumber'] as String?,
+      pickupTime: json['pickupTime'] as String?,
     );
 
 Map<String, dynamic> _$$DeliveryPersonImplToJson(

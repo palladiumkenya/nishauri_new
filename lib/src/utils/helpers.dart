@@ -2,31 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Function to calculate BMI
 double calculateBMI(
-    String heightUnits, String weightUnits, double weight, double height) {
-  double heightValue = height;
-  double weightValue = weight;
-
-  // Convert height and weight to standard units (meters and kilograms)
-  if (heightUnits == 'cm') {
-    heightValue /= 100;
-  } else if (heightUnits == 'in') {
-    heightValue *= 0.0254;
-  } else if (heightUnits == 'ft') {
-    heightValue *= 0.3048;
-  }
-
-  if (weightUnits == 'g') {
-    weightValue /= 1000;
-  } else if (weightUnits == 'lb') {
-    weightValue *= 0.453592;
-  }
-
-  // Calculate BMI
-  double bmi = weightValue / (heightValue * heightValue);
-  return bmi;
+    double heightCm, int weightKgs) {
+  return  weightKgs / ((heightCm/100) * (heightCm/100));
 }
 
 String getBMIStatus(double bmi) {
@@ -129,4 +110,33 @@ void handleResponseError(
   //     content: Text(err.toString()),
   //   ),
   // );
+}
+
+
+Size getOrientationAwareScreenSize(BuildContext context) {
+  final media = MediaQuery.of(context);
+  final orientation = media.orientation;
+  if(orientation == Orientation.portrait) {
+    return media.size;
+  }
+  return Size(media.size.height, media.size.width);
+}
+
+Future<void> makePhoneCall(String phoneNumber) async {
+  final Uri launchUri = Uri(
+    scheme: 'tel',
+    path: phoneNumber,
+  );
+  await launchUrl(launchUri);
+}
+
+List<DateTime> getTimesBetween(DateTime startTime, DateTime endTime, Duration duration) {
+
+  List<DateTime> times = [];
+  DateTime currentTime = startTime;
+  while (currentTime.isBefore(endTime.add(duration))) {
+    times.add(currentTime);
+    currentTime = currentTime.add(duration);
+  }
+  return times;
 }

@@ -3,21 +3,36 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
+import 'package:nishauri/src/features/appointments/presentation/pages/AppointmentRescheduleScreen.dart';
 import 'package:nishauri/src/features/appointments/presentation/pages/Appointments.dart';
+import 'package:nishauri/src/features/appointments/presentation/pages/AppointmentsScreen.dart';
+import 'package:nishauri/src/features/art/presentation/FacilityDirectory.dart';
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
-import 'package:nishauri/src/features/auth/presentation/pages/ChangePassword.dart';
+import 'package:nishauri/src/features/auth/presentation/pages/UpdatePassword.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/LoginScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/RegistrationScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/ResetPasswordScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/SplashScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/VerificationScreen.dart';
+import 'package:nishauri/src/features/auth/presentation/pages/VerifiedResetPassword.dart';
+import 'package:nishauri/src/features/auth/presentation/pages/VerifyResetPasswordScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart';
+import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorResultsScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
+import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
+import 'package:nishauri/src/features/clinic_card/presentation/pages/ClinicCardScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart';
+import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.dart';
+import 'package:nishauri/src/features/confirm_delivery/presentation/pages/ConfirmDeliveryScreen.dart';
 import 'package:nishauri/src/features/dashboard/presentation/pages/Dashboard.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/dawa_drop_menu.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/dawa_drop_screen.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/dispatched_drugs.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/program_appointments.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_drug.dart';
 import 'package:nishauri/src/features/events_calendar/presentation/pages/EventsCalendar.dart';
-import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
 import 'package:nishauri/src/features/hiv/data/models/group/art_group.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/ARTSites.dart';
@@ -30,8 +45,10 @@ import 'package:nishauri/src/features/hiv/presentation/pages/events/ARTEvents.da
 import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroupDetail.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroupFormScreen.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroups.dart';
-import 'package:nishauri/src/features/hiv/presentation/pages/orders/DrugOrderWizardFormScreen.dart';
-import 'package:nishauri/src/features/hiv/presentation/pages/orders/HIVDrugOrders.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/DrugOrderWizardFormScreen.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/DrugOrders.dart';
+import 'package:nishauri/src/features/lab/presentation/pages/LabResultsScreen.dart';
+import 'package:nishauri/src/features/programs/presentation/pages/programs.dart';
 import 'package:nishauri/src/features/treatment_support/presentation/pages/TreatmentSupport.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileScreen.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileWizardFormScreen.dart';
@@ -39,10 +56,13 @@ import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuth
 import 'package:nishauri/src/features/user_preference/presentation/pages/PrivacySettingsScreen.dart';
 import 'package:nishauri/src/features/user_programs/data/models/program_verification_detail.dart';
 import 'package:nishauri/src/features/user_programs/presentation/pages/ProgramRegistrationScreen.dart';
+import 'package:nishauri/src/features/user_programs/presentation/pages/ProgramUpdateScreen.dart';
 import 'package:nishauri/src/features/user_programs/presentation/pages/ProgramVerificationScreen.dart';
 import 'package:nishauri/src/features/visits/presentations/pages/FacilityVisitDetailScreen.dart';
 import 'package:nishauri/src/features/visits/presentations/pages/FacilityVisitsScreen.dart';
 import 'package:nishauri/src/utils/routes.dart';
+
+import '../../features/lab/presentation/pages/LabResults.dart';
 
 final routesProvider = Provider<GoRouter>((ref) {
   final router = RouterNotifier(ref);
@@ -146,6 +166,13 @@ final List<RouteBase> secureRoutes = [
     },
   ),
   GoRoute(
+    name: RouteNames.Facility_Directory,
+    path: 'Facility-directory',
+    builder: (BuildContext context, GoRouterState state) {
+      return FacilityDirectory();
+    },
+  ),
+  GoRoute(
     name: RouteNames.UNLOCK_SCREEN,
     path: 'unlock',
     builder: (BuildContext context, GoRouterState state) {
@@ -156,21 +183,38 @@ final List<RouteBase> secureRoutes = [
     name: RouteNames.CHANGE_PASSWORD,
     path: 'change-password',
     builder: (BuildContext context, GoRouterState state) {
-      return const ChangePassword();
+      return const UpdatePassword();
     },
   ),
   GoRoute(
-    name: RouteNames.BMI_CALCULATOR,
-    path: 'bmi-calculator',
-    builder: (BuildContext context, GoRouterState state) {
-      return const BMICalculatorScreen();
-    },
-  ),
+      name: RouteNames.BMI_CALCULATOR,
+      path: 'bmi-calculator',
+      builder: (BuildContext context, GoRouterState state) {
+        return const BMICalculatorScreen();
+      },
+      routes: [
+        GoRoute(
+          name: RouteNames.BMI_CALCULATOR_RESULTS,
+          path: "bmi-calculator-results",
+          builder: (BuildContext context, GoRouterState state){
+            double extra =
+            state.extra! as double;
+            return BMICalculatorResultsScreen(bmi: extra);
+          }
+        )
+      ]),
   GoRoute(
     name: RouteNames.PRIVACY_SETTINGS,
     path: 'privacy-settings',
     builder: (BuildContext context, GoRouterState state) {
       return const PrivacySettingsScreen();
+    },
+  ),
+  GoRoute(
+    name: RouteNames.SETTINGS,
+    path: 'settings',
+    builder: (BuildContext context, GoRouterState state) {
+      return const SettingsScreen();
     },
   ),
   GoRoute(
@@ -181,12 +225,20 @@ final List<RouteBase> secureRoutes = [
     },
   ),
   GoRoute(
-    name: RouteNames.HIV_PROGRAM,
-    path: 'hiv-program',
+    name: RouteNames.PROGRAM_MENU,
+    path: 'program-menu',
     builder: (BuildContext context, GoRouterState state) {
-      return const HIVMenuScreen();
+      return const ProgramsMenuScreen();
     },
-    routes: hivProgramRoutes,
+    routes: programMenu,
+  ),
+  GoRoute(
+    name: RouteNames.DAWA_DROP_MENU,
+    path: 'dawa-drop-menu',
+    builder: (BuildContext context, GoRouterState state) {
+      return const DawaDropMenuScreen();
+    },
+    routes: dawaDropRoutes,
   ),
   GoRoute(
     name: RouteNames.PROGRAME_REGISTRATION_SCREEN,
@@ -217,7 +269,44 @@ final List<RouteBase> secureRoutes = [
     name: RouteNames.APPOINTMENTS,
     path: 'appointments',
     builder: (BuildContext context, GoRouterState state) {
-      return const Appointments();
+      return const AppointmentsScreen();
+    },
+    routes: [
+      GoRoute(
+        name: RouteNames.APPOINTMENTS_RESCHEDULE,
+        path: 'reschedule',
+        builder: (BuildContext context, GoRouterState state) {
+          return const AppointmentRescheduleScreen();
+        },
+      ),
+    ]
+  ),
+  GoRoute(
+    name: RouteNames.LAB_RESULTS,
+    path: 'lab-results',
+    builder: (BuildContext context, GoRouterState state) {
+      return const LabResultsScreen();
+    },
+  ),
+  GoRoute(
+    name: RouteNames.MY_CLINIC_CARD,
+    path: 'clinic-card',
+    builder: (BuildContext context, GoRouterState state) {
+      return const ClinicCardScreen();
+    },
+  ),
+  GoRoute(
+    name: RouteNames.DAWA_DROP,
+    path: 'dawa-drop',
+    builder: (BuildContext context, GoRouterState state) {
+      return const DawaDropScreen();
+    },
+  ),
+  GoRoute(
+    name: RouteNames.CHAT_HCW,
+    path: 'chat-bot',
+    builder: (BuildContext context, GoRouterState state) {
+      return const ChatScreen();
     },
   ),
   GoRoute(
@@ -264,16 +353,25 @@ final List<RouteBase> openRoutes = [
     path: 'reset-password',
     builder: (context, state) => const ResetPasswordScreen(),
   ),
+  GoRoute(
+    name: RouteNames.VERIFY_RESET_PASSWORD_SCREEN,
+    path: 'verify-reset-password',
+    builder: (context, state) {
+      final extras = state.extra as String;
+      return ResetPasswordVerificationScreen(username: extras);
+    },
+  ),
+  GoRoute(
+    name: RouteNames.VERIFIED_RESET_PASSWORD_SCREEN,
+    path: 'verified-reset-password',
+    builder: (context, state) {
+      final extras = state.extra as String;
+      return VerifiedResetPassword(username: extras);
+    },
+  ),
 ];
 
 final List<RouteBase> hivProgramRoutes = [
-  GoRoute(
-    name: RouteNames.HIV_DRUG_ORDERS,
-    path: 'drug-order',
-    builder: (BuildContext context, GoRouterState state) {
-      return const HIVDrugOrdersScreen();
-    },
-  ),
   GoRoute(
     name: RouteNames.HIV_ART_SITES,
     path: 'art-sites',
@@ -343,31 +441,96 @@ final List<RouteBase> hivProgramRoutes = [
       ),
     ],
   ),
+];
+
+final List<RouteBase> dawaDropRoutes = [
+  GoRoute(
+      name: RouteNames.REQUEST_DRUGS,
+      path: 'request-drugs',
+      builder: (BuildContext context, GoRouterState state) {
+        return RequestDrugMenuScreen();
+      },
+      routes: [
+        GoRoute(
+          name: RouteNames.PROGRAM_APPOINTMENT,
+          path: 'program-appointment',
+          builder: (BuildContext context, GoRouterState state) {
+            return ProgramAppointmentsScreen();
+          },
+        ),
+        GoRoute(
+          name: RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
+          path: "art-drug-request-form",
+          builder: (BuildContext context, GoRouterState state) {
+            final extra = state.extra as Map<String, dynamic>;
+            final payload = extra["payload"];
+            final type = extra["type"] as String?;
+            if (payload is Appointment) {
+              return DrugOrderWizardFormScreen(
+                  artAppointment: payload, type: type);
+            }
+            if (payload is ARTEvent) {
+              return DrugOrderWizardFormScreen(artEvent: payload, type: type);
+            }
+            return DrugOrderWizardFormScreen(type: type);
+            return const DrugOrderWizardFormScreen();
+          },
+        ),
+      ]),
+  GoRoute(
+    name: RouteNames.HIV_DRUG_ORDERS,
+    path: 'drug-order',
+    builder: (BuildContext context, GoRouterState state) {
+      return const DrugOrdersScreen();
+    },
+  ),
+  GoRoute(
+      name: RouteNames.DISPATCHED_DRUGS,
+      path: 'dispatched-drugs',
+      builder: (BuildContext context, GoRouterState state) {
+        return const DispatchedDrugs();
+      },
+      routes: [
+        GoRoute(
+            name: RouteNames.CONFIRM_DELIVERY,
+            path: "confirm-delivery",
+            builder: (BuildContext context, GoRouterState state) {
+              final extra = state.extra as Map<String, dynamic>;
+              final orderId = extra["OrderId"] as int?;
+              print(orderId);
+              if (orderId == null) {
+                throw "Order with this id was not found";
+              } else {
+                return ConfirmDeliveryScreen(orderId: orderId);
+              }
+            }),
+      ]),
   GoRoute(
     name: RouteNames.HIV_ART_APPOINTMENT_DETAILS,
     path: "art-appointment",
     builder: (BuildContext context, GoRouterState state) {
-      final extras = state.extra as ARTAppointment;
+      final extras = state.extra as Appointment;
       return ARTAppointmentDetailScreen(
         artAppointment: extras,
       );
     },
   ),
+];
+
+final List<RouteBase> programMenu = [
   GoRoute(
-    name: RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
-    path: "art-drug-request-form",
+    name: RouteNames.REMOVE_PROGRAM,
+    path: 'remove-program',
     builder: (BuildContext context, GoRouterState state) {
-      final extra = state.extra as Map<String, dynamic>;
-      final payload = extra["payload"];
-      final type = extra["type"] as String?;
-      if (payload is ARTAppointment) {
-        return DrugOrderWizardFormScreen(artAppointment: payload, type: type);
-      }
-      if (payload is ARTEvent) {
-        return DrugOrderWizardFormScreen(artEvent: payload, type: type);
-      }
-      return DrugOrderWizardFormScreen(type: type);
-      return const DrugOrderWizardFormScreen();
+      return const ProgramUpdateScreen();
     },
+  ),
+  GoRoute(
+    name: RouteNames.HIV_PROGRAM,
+    path: 'hiv-program',
+    builder: (BuildContext context, GoRouterState state) {
+      return const HIVMenuScreen();
+    },
+    routes: hivProgramRoutes,
   ),
 ];

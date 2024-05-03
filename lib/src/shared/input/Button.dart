@@ -13,7 +13,7 @@ class Button extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? surfixIcon;
   final ButtonMode mode;
-  final int spacing;
+  final double spacing;
   final double borderRadius;
   final MainAxisAlignment mainAxisAlignment;
   final EdgeInsetsGeometry? paddingGeometry;
@@ -30,7 +30,7 @@ class Button extends StatelessWidget {
       this.prefixIcon,
       this.surfixIcon,
       this.loading = false,
-      this.spacing = 15,
+      this.spacing = Constants.SPACING,
       this.borderRadius = Constants.ROUNDNESS,
       this.mode = ButtonMode.contained,
       this.mainAxisAlignment = MainAxisAlignment.center,
@@ -55,13 +55,42 @@ class Button extends StatelessWidget {
       child: mode == ButtonMode.outline
           ? OutlinedButton(
               onPressed: disabled ? null : onPress,
-              child: Text(title, style: titleStyle),
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStatePropertyAll<Color?>(backgroundColor),
+                  foregroundColor:  MaterialStatePropertyAll<Color?>(textColor)
+              ),
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                alignment: WrapAlignment.center,
+                spacing: spacing,
+                children: [
+                  if(prefixIcon != null)
+                    prefixIcon!,
+                  Text(title, style: titleStyle),
+                  if(surfixIcon != null)
+                    surfixIcon!
+                ],
+              ),
             )
           : ElevatedButton(
               onPressed: disabled ? null : onPress,
-              child: Text(
-                title,
-                style: titleStyle,
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStatePropertyAll<Color?>(backgroundColor),
+                foregroundColor:  MaterialStatePropertyAll<Color?>(textColor)
+              ),
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                alignment: WrapAlignment.center,
+                spacing: spacing,
+                children: [
+                  if(prefixIcon != null)
+                    prefixIcon!,
+                  Text(title, style: titleStyle),
+                  if(surfixIcon != null)
+                    surfixIcon!
+                ],
               ),
             ),
     );

@@ -91,8 +91,7 @@ abstract class HTTPService {
     throw UnauthorizedException("Please sign in to continue");
   }
 
-  Future<StreamedResponse> call<T>(
-    Future<StreamedResponse> Function(T args) api,
+  Future<StreamedResponse> call<T>(Future<StreamedResponse> Function(T args) api,
     T args,
   ) async {
     // call api
