@@ -124,14 +124,14 @@ class MainMenuScreen extends StatelessWidget {
                               // get generic menu items
                               ...getGenericMenuItems(context)
                                 ..removeWhere((element) {
-                                  if (data.isEmpty &&
+                                  if (data.where((element) => element.isActive).isEmpty &&
                                       element.title ==
                                           MenuItemNames.PROGRAM_MENU) {
                                     return true;
                                   }
                                   return false;
                                 }),
-                              if (data.isEmpty)
+                              if (data.where((element) => element.isActive).isEmpty)
                                 MenuItem(
                                   icon: Icon(
                                     Icons.add,

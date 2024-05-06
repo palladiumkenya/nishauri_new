@@ -35,7 +35,7 @@ class UserProgramController
     }
   }
 
-  Future<void> updateProgram(Map<String, dynamic> data) async {
+  Future<String> updateProgram(Map<String, dynamic> data) async {
     try {
       final results = await _repository.updateProgram(data);
       await _getUserPrograms();

@@ -195,14 +195,13 @@ class _ProgramUpdateScreenState extends State<ProgramUpdateScreen> {
                                               _formKey.currentState!.value)
                                               .then((value) {
                                             ScaffoldMessenger.of(context).showSnackBar(
-                                              const SnackBar(
+                                              SnackBar(
                                                 content:
-                                                Text('Program Removed successfully!,'),
+                                                Text(value),
                                               ),
                                             );
                                             // context.go("/");
-                                            context.goNamed(
-                                              RouteNames.PROGRAM_MENU);
+                                            context.pop();
                                           }).catchError((err) {
                                             handleResponseError(
                                                 context,

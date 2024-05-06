@@ -162,7 +162,7 @@ class ProgramService extends HTTPService {
     return response;
   }
 
-  Future<void> updateProgram(
+  Future<String> updateProgram(
       Map<String, dynamic> data) async {
     http.StreamedResponse response =
     await call<Map<String, dynamic>>(updateProgram_, data);
@@ -170,7 +170,7 @@ class ProgramService extends HTTPService {
     final responseString = await response.stream.bytesToString();
     final responseData = jsonDecode(responseString);
     if(responseData["success"] == true){
-      throw responseData["msg"];
+      return responseData["msg"];
     }
     else {
       throw responseData["msg"];

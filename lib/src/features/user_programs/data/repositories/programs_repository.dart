@@ -22,7 +22,7 @@ class ProgramsRepository {
   Future<ProgramVerificationDetail> registerProgram(Map<String, dynamic> program)async{
     return await _service.registerProgram(program);
   }
-  Future<void> updateProgram(Map<String, dynamic> data)async{
+  Future<String> updateProgram(Map<String, dynamic> data)async{
     return await _service.updateProgram(data);
   }
 
