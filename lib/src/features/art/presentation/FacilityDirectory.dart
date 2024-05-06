@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:nishauri/src/features/art/FacilityHTTPService.dart';
@@ -81,7 +82,7 @@ class _FacilityDirectoryState extends State<FacilityDirectory> {
                     : () {
                         _fetchFacilities(_controller.text);
                       },
-                icon: const Icon(Icons.tune),
+                icon: const FaIcon(FontAwesomeIcons.magnifyingGlass),
                 style: ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll<Color>(
                     Colors.white.withOpacity(0.3),
