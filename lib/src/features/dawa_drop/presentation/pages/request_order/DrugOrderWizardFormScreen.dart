@@ -35,39 +35,33 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
     final loading = useState<bool>(false);
 
     final stepFieldsToValidate = [
-      ["mode", "type", "event", "appointment", "careReceiver"],
       [
-        "deliveryMethod",
-        "courierService",
-        "deliveryPersonFullName",
-        "deliveryPersonNationalId",
-        "deliveryPersonPhoneNumber",
-        'pickupTime'
+        "delivery_method",
       ],
-      ["phoneNumber", "deliveryAddress"],
+      ["client_phone_no", "delivery_address"],
     ];
 
     List<Step> steps = [
-      Step(
-        // title: const Text("Getting Started"),
-        title: const Text("Appointment Details"),
-        subtitle: const Text(
-          "Please confirm the details",
-        ),
-        content: GettingStarted(
-          artAppointment: artAppointment,
-          artEvent: artEvent,
-          type: type,
-        ),
-        isActive: currentStep.value == 0,
-      ),
+      // Step(
+      //   // title: const Text("Getting Started"),
+      //   title: const Text("Appointment Details"),
+      //   subtitle: const Text(
+      //     "Please confirm the details",
+      //   ),
+      //   content: GettingStarted(
+      //     artAppointment: artAppointment,
+      //     artEvent: artEvent,
+      //     type: type,
+      //   ),
+      //   isActive: currentStep.value == 0,
+      // ),
       Step(
         title: const Text("Delivery preference"),
         subtitle: const Text(
           "These information will help us know how you prefer you drugs delivered",
         ),
         content: const DeliveryPreference(),
-        isActive: currentStep.value == 1,
+        isActive: currentStep.value == 0,
       ),
       Step(
         title: const Text("Delivery Information"),
@@ -75,7 +69,7 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
           "These information will help delivery person locate you and reach out",
         ),
         content: const DeliveryInformation(),
-        isActive: currentStep.value == 2,
+        isActive: currentStep.value == 1,
       ),
       Step(
         title: const Text("Review and Submit"),
@@ -101,7 +95,7 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
             ),
           ),
         ),
-        isActive: currentStep.value == 3,
+        isActive: currentStep.value == 2,
       ),
     ];
 
@@ -119,10 +113,10 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
           "delivery_lat": "",
           "delivery_long": "",
         ...(formKey.currentState?.instantValue["delivery_method"] == "parcel" ? {
-          "delivery_person": "",
-          "delivery_person_id": "",
-          "delivery_person_contact": "",
-          "delivery_pickup_time":"",
+          // "delivery_person": "",
+          // "delivery_person_id": "",
+          // "delivery_person_contact": "",
+          // "delivery_pickup_time":"",
           "courier_service": courierService,
           "delivery_method": "In Parcel",
         } : {
@@ -185,7 +179,7 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
               final currentStepFields = stepFieldsToValidate[currentStep.value];
 
               if (currentStepFields.any((field) =>
-                  formKey.currentState!.fields[field]?.validate() == false)) {
+              !formKey.currentState!.fields[field]!.validate())) {
                 return; //Don't move to next step if current step not valid
               }
             }
@@ -224,18 +218,27 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
                                 ),
                               ),
                               actions: [
-                                Button(
-                                  title: "Submit",
-                                  onPress: () {
-                                    context.pop(1);
-                                  },
-                                ),
-                                Button(
-                                  title: "Cancel",
-                                  onPress: context.pop,
-                                  titleStyle: theme.textTheme.titleLarge
-                                      ?.copyWith(
-                                          color: theme.colorScheme.error),
+                                Row( // Wrap buttons inside a Row
+                                  children: [
+                                    Expanded( // Ensures buttons take equal width
+                                      child: Button(
+                                        title: "Submit",
+                                        onPress: () {
+                                          context.pop(1);
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(width: Constants.SPACING), // Add some space between buttons
+                                    Expanded(
+                                      child: Button(
+                                        title: "Cancel",
+                                        onPress: context.pop,
+                                        titleStyle: theme.textTheme.titleLarge?.copyWith(
+                                          color: theme.colorScheme.error,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),

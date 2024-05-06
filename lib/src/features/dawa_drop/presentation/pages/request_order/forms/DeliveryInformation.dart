@@ -32,10 +32,14 @@ class DeliveryInformation extends HookConsumerWidget {
                   label: "Phone number",
                 ),
                 validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(errorText: "Required"),
-                  FormBuilderValidators.min(10),
-                  FormBuilderValidators.minLength(10),
-                  FormBuilderValidators.maxLength(10),
+                  FormBuilderValidators.minLength(10, errorText: 'Phone number must be 10 digits long'),
+                  FormBuilderValidators.maxLength(10, errorText: 'Phone number must be 10 digits long'),
+                      (value) {
+                    if (value != null && value.isNotEmpty && !value.startsWith('0')) {
+                      return 'Phone number must start with zero';
+                    }
+                    return null;
+                  },
                 ]),
               ),
               const SizedBox(height: Constants.SPACING),

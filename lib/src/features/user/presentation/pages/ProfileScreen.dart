@@ -65,7 +65,8 @@ class ProfileScreen extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.account_circle_outlined),
                   title: const Text("Gender"),
-                  subtitle: Text(user.gender == "M" ? "Male" : "Female"),
+                  subtitle: Text(user.gender??''),
+                  // subtitle: Text(user.gender == "M" ? "Male" : "Female"),
                 ),
                 const Divider(),
                 ListTile(
@@ -73,7 +74,7 @@ class ProfileScreen extends StatelessWidget {
                   title: const Text("Date of birth"),
                   subtitle: Text(
                     DateTime.tryParse(user.dateOfBirth ?? "") != null
-                        ? DateFormat("yyy-MM-dd")
+                        ? DateFormat("dd-MMM-yyyy")
                             .format(DateTime.parse(user.dateOfBirth!))
                         : "None",
                   ),

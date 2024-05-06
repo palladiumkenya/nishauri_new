@@ -33,7 +33,7 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
         "landmark"],
       ["blood_group", "allergies", "disabilities", "chronics"],
       ["weight", "height"],
-      ["marital", "education", "primary_language", "occupation"],
+      ["maritalStatus", "educationLevel", "primaryLanguage", "occupation"],
     ];
 
     List<Step> steps = [
@@ -191,10 +191,10 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                   final currentStepFields =
                   stepFieldsToValidate[currentStep.value];
 
-                  // if (currentStepFields.any((field) =>
-                  // !formKey.currentState!.fields[field]!.validate())) {
-                  //   return; //Don't move to next step if current step not valid
-                  // }
+                  if (currentStepFields.any((field) =>
+                  !formKey.currentState!.fields[field]!.validate())) {
+                    return; //Don't move to next step if current step not valid
+                  }
                 }
                 if (isLastStep) {
                   // Submit form
@@ -223,31 +223,39 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                                   title: const Text("Confirm Details Entered"),
                                   content: SizedBox(
                                     width: double.maxFinite,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.5,
+                                    height: MediaQuery.of(context).size.height * 0.5,
                                     child: SingleChildScrollView(
                                       child: ReviewAndSubmit(
-                                        formState:
-                                        formKey.currentState!.instantValue,
+                                        formState: formKey.currentState!.instantValue,
                                       ),
                                     ),
                                   ),
                                   actions: [
-                                    Button(
-                                      title: "Submit",
-                                      onPress: () {
-                                        context.pop(1);
-                                      },
-                                    ),
-                                    Button(
-                                      title: "Cancel",
-                                      onPress: context.pop,
-                                      titleStyle: theme.textTheme.titleLarge
-                                          ?.copyWith(
-                                          color: theme.colorScheme.error),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Button(
+                                            title: "Submit",
+                                            onPress: () {
+                                              context.pop(1);
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        Expanded(
+                                          child: Button(
+                                            title: "Cancel",
+                                            onPress: context.pop,
+                                            titleStyle: theme.textTheme.titleLarge?.copyWith(
+                                              color: theme.colorScheme.error,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
+
                               );
                               if (results == 1) {
                                 details.onStepContinue!();

@@ -10,6 +10,7 @@ import 'package:nishauri/src/features/lab/presentation/widget/ViralLoadTrend.dar
 import 'package:nishauri/src/shared/display/CustomTabBar.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/shared/display/background_image_widget.dart';
 
 class LabResultsScreen extends HookConsumerWidget {
   const LabResultsScreen({Key? key}) : super(key: key);
@@ -56,18 +57,15 @@ class LabResultsScreen extends HookConsumerWidget {
           ),
         );
       },
-      error: (error, _) => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              error.toString(),
-              style: theme.textTheme.headlineSmall,
-            ),
-            const SizedBox(height: Constants.SPACING * 2),
-          ],
+      error: (error, _) => BackgroundImageWidget(
+        customAppBar: CustomAppBar(
+          title: "ART Lab Results",
+          icon: Icons.vaccines,
+          subTitle: "Unlock your health insights with lab results",
+          color: Constants.labResultsColor,
         ),
+        svgImage: 'assets/images/background.svg',
+        notFoundText: error.toString(),
       ),
       // Text(error.toString())),
       loading: () => Center(

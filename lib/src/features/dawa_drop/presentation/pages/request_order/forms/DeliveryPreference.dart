@@ -131,6 +131,9 @@ class DeliveryPreference extends HookConsumerWidget {
               validator: FormBuilderValidators.compose([
                 if (orderDeliveryMethod.value == "person")
                   FormBuilderValidators.required(errorText: "Required"),
+                FormBuilderValidators.min(10),
+                FormBuilderValidators.minLength(10),
+                FormBuilderValidators.maxLength(10),
               ]),
             ),
           if (orderDeliveryMethod.value == "person")

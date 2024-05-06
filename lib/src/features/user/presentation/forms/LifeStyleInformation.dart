@@ -7,7 +7,7 @@ import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class LifeStyleInformation extends StatelessWidget {
-  const LifeStyleInformation({super.key});
+  const LifeStyleInformation({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class LifeStyleInformation extends StatelessWidget {
         return asyncUser.when(
           data: (user) => Column(
             children: [
-              const SizedBox(height: Constants.SPACING),
+              SizedBox(height: Constants.SPACING),
               FormBuilderDropdown(
                 initialValue: user.maritalStatus,
                 name: "maritalStatus",
@@ -32,11 +32,11 @@ class LifeStyleInformation extends StatelessWidget {
                   DropdownMenuItem(
                       value: "widow-widower", child: Text("Widow/Widower")),
                 ],
-                // validator: FormBuilderValidators.compose([
-                //   FormBuilderValidators.required(),
-                // ]),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.min(0),
+                ]),
               ),
-              const SizedBox(height: Constants.SPACING),
+              SizedBox(height: Constants.SPACING),
               FormBuilderDropdown(
                 initialValue: user.educationLevel,
                 name: "educationLevel",
@@ -57,11 +57,11 @@ class LifeStyleInformation extends StatelessWidget {
                       value: "postgraduate",
                       child: Text("Postgraduate degree")),
                 ],
-                // validator: FormBuilderValidators.compose([
-                //   FormBuilderValidators.required(),
-                // ]),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.min(0),
+                ]),
               ),
-              const SizedBox(height: Constants.SPACING),
+              SizedBox(height: Constants.SPACING),
               FormBuilderDropdown(
                 initialValue: user.primaryLanguage,
                 name: "primaryLanguage",
@@ -75,17 +75,11 @@ class LifeStyleInformation extends StatelessWidget {
                   DropdownMenuItem(
                       value: "english", child: Text("English")),
                 ],
-                // options: const [
-                //   FormBuilderFieldOption(
-                //       value: "swahili", child: Text("Swahili")),
-                //   FormBuilderFieldOption(
-                //       value: "english", child: Text("English")),
-                // ],
-                // validator: FormBuilderValidators.compose([
-                //   FormBuilderValidators.required(),
-                // ]),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.min(0),
+                ]),
               ),
-              const SizedBox(height: Constants.SPACING),
+              SizedBox(height: Constants.SPACING),
               FormBuilderDropdown(
                 initialValue: user.occupation,
                 name: "occupation",
@@ -101,9 +95,9 @@ class LifeStyleInformation extends StatelessWidget {
                   DropdownMenuItem(
                       value: "unemployed", child: Text("Unemployed")),
                 ],
-                // validator: FormBuilderValidators.compose([
-                //   FormBuilderValidators.required(),
-                // ]),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.min(0),
+                ]),
               ),
             ],
           ),

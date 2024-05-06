@@ -73,7 +73,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     name: "user_name",
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(),
-                      FormBuilderValidators.min(10),
+                      FormBuilderValidators.minLength(10, errorText: 'Phone number must be 10 digits long'),
+                      FormBuilderValidators.maxLength(10, errorText: 'Phone number must be 10 digits long'),
+                          (value) {
+                        if (value != null && value.isNotEmpty && !value.startsWith('0')) {
+                          return 'Phone number must start with zero';
+                        }
+                        return null;
+                      },
                     ]),
                     decoration: inputDecoration(
                       prefixIcon: Icons.account_circle,

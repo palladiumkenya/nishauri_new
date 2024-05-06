@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
+import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/shared/display/background_image_widget.dart';
 
 class CurrentAppointments extends HookConsumerWidget {
   const CurrentAppointments({Key? key}) : super(key: key);
@@ -30,10 +32,21 @@ class CurrentAppointments extends HookConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  data[index].appointment_type??'',
+                                  data[index].program_name ?? '',
                                   style: theme.textTheme.headline6,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
+                                ),
+                                const SizedBox(height: Constants.SPACING),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.app_registration_outlined,
+                                      color: theme.colorScheme.primary,
+                                    ),
+                                    const SizedBox(width: Constants.SPACING),
+                                    Text(data[index].appointment_type??''),
+                                  ],
                                 ),
                                 const SizedBox(height: Constants.SPACING),
                                 Row(
@@ -59,18 +72,9 @@ class CurrentAppointments extends HookConsumerWidget {
           ],
         );
       },
-      error: (error, _) => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              error.toString(),
-              style: theme.textTheme.headlineSmall,
-            ),
-            const SizedBox(height: Constants.SPACING * 2),
-          ],
-        ),
+      error: (error, _) => BackgroundImageWidget(
+        svgImage: 'assets/images/background.svg',
+        notFoundText: error.toString(),
       ),
       loading: () => Center(
         child: Column(
