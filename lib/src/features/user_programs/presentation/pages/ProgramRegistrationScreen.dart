@@ -200,7 +200,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                                 Text('Program Added successfully!,'),
                                               ),
                                             );
-                                            context.go("/");
+                                            context.pop();
                                             // context.goNamed(
                                             //   RouteNames.HIV_PROGRAM
                                             //     // RouteNames.VERIFY_PROGRAM_OTP,

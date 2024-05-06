@@ -7,6 +7,7 @@ import 'package:nishauri/src/app/navigation/menu/MenuOption.dart';
 import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
+import '../../../../utils/constants.dart';
 import '../../../user_programs/data/providers/program_provider.dart';
 
 class ProgramsMenuScreen extends StatelessWidget {
@@ -61,6 +62,21 @@ class ProgramsMenuScreen extends StatelessWidget {
 
                             return getProgramMenuItemByProgramCode(context, programCode ?? '');
                           }).toList(),
+                          MenuItem(
+                            icon: Icon(
+                              Icons.add,
+                              size: Constants.iconSize,
+                              color: theme.colorScheme.inversePrimary,
+                            ),
+                            shortcutIcon: Icon(
+                              Icons.add,
+                              color: theme.colorScheme.inversePrimary,
+                            ),
+                            // color: theme.colorScheme.primary,
+                            title: "Add Programme",
+                            onPressed: () => context.goNamed(
+                                RouteNames.PROGRAME_REGISTRATION_SCREEN),
+                          ),
                         ],
                       );
                     },

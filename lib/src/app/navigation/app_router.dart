@@ -238,24 +238,7 @@ final List<RouteBase> secureRoutes = [
     },
     routes: dawaDropRoutes,
   ),
-  GoRoute(
-    name: RouteNames.PROGRAME_REGISTRATION_SCREEN,
-    path: 'program-register',
-    builder: (BuildContext context, GoRouterState state) {
-      return const ProgramRegistrationScreen();
-    },
-    routes: [
-      GoRoute(
-        name: RouteNames.VERIFY_PROGRAM_OTP,
-        path: 'verify',
-        builder: (BuildContext context, GoRouterState state) {
-          ProgramVerificationDetail extra =
-              state.extra! as ProgramVerificationDetail;
-          return ProgramVerificationScreen(verificationDetail: extra);
-        },
-      ),
-    ],
-  ),
+
   GoRoute(
     name: RouteNames.DASHBOARD,
     path: 'dashboard',
@@ -519,6 +502,24 @@ final List<RouteBase> dawaDropRoutes = [
 ];
 
 final List<RouteBase> programMenu = [
+  GoRoute(
+    name: RouteNames.PROGRAME_REGISTRATION_SCREEN,
+    path: 'program-register',
+    builder: (BuildContext context, GoRouterState state) {
+      return const ProgramRegistrationScreen();
+    },
+    routes: [
+      GoRoute(
+        name: RouteNames.VERIFY_PROGRAM_OTP,
+        path: 'verify',
+        builder: (BuildContext context, GoRouterState state) {
+          ProgramVerificationDetail extra =
+          state.extra! as ProgramVerificationDetail;
+          return ProgramVerificationScreen(verificationDetail: extra);
+        },
+      ),
+    ],
+  ),
   GoRoute(
     name: RouteNames.REMOVE_PROGRAM,
     path: 'remove-program',
