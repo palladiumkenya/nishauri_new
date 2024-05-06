@@ -57,16 +57,18 @@ class _ViralLoadTrendState extends State<ViralLoadTrend> {
       LineChartBarData(
         showingIndicators: showingTooltipOnSpots,
         spots: allSpots(widget.data),
-        isCurved: false,
+        isCurved: true,
         barWidth: 1,
         color: theme.colorScheme.primary,
         shadow: const Shadow(
           blurRadius: 8,
         ),
+        isStrokeCapRound: true,
         dotData: const FlDotData(show: true),
         belowBarData: BarAreaData(
           color: theme.primaryColor.withOpacity(0.1),
           show: true,
+
         ),
       ),
     ];

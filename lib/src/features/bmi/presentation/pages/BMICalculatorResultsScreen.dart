@@ -22,92 +22,97 @@ class BMICalculatorResultsScreen extends HookConsumerWidget {
             title: "BMI Calculator",
             icon: Icons.calculate,
             color: Constants.bmiCalculatorColor),
-        bmiStatusNutritionAsync.when(
-          data: (data) => Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(Constants.SPACING),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Results",
-                      style: theme.textTheme.headlineLarge?.copyWith(
-                        color: theme.colorScheme.primary,
-                      ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(Constants.SPACING),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Results",
+                    style: theme.textTheme.headlineLarge?.copyWith(
+                      color: theme.colorScheme.primary,
                     ),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(Constants.SPACING),
-                        child: Column(
-                          children: [
-                            Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Your BMI is",
-                                      style: theme.textTheme.titleMedium),
-                                  Text(
-                                    getBMIStatusSimplified(bmi),
-                                    style:
-                                        theme.textTheme.titleMedium?.copyWith(
-                                      color: Constants.activeSelectionColor,
-                                    ),
+                  ),
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(Constants.SPACING),
+                      child: Column(
+                        children: [
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Your BMI is",
+                                    style: theme.textTheme.titleMedium),
+                                Text(
+                                  getBMIStatusSimplified(bmi),
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    color: Constants.activeSelectionColor,
                                   ),
-                                ]),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.all(Constants.SPACING),
-                              child: Text(
-                                bmi.toStringAsFixed(1),
-                                style: theme.textTheme.displayLarge?.copyWith(
-                                    color: theme.colorScheme.primary),
-                              ),
+                                ),
+                              ]),
+                          Padding(
+                            padding: const EdgeInsets.all(Constants.SPACING),
+                            child: Text(
+                              bmi.toStringAsFixed(1),
+                              style: theme.textTheme.displayLarge
+                                  ?.copyWith(color: theme.colorScheme.primary),
                             ),
-                            Slider(
-                              value: bmi,
-                              onChanged: (value) {},
-                              min: 0,
-                              max: 60,
-                            )
-                          ],
+                          ),
+                          Slider(
+                            value: bmi,
+                            onChanged: (value) {},
+                            min: 0,
+                            max: 60,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: Constants.SPACING),
+                  bmiStatusNutritionAsync.when(
+                    data: (data) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          getBMIStatusSimplified(bmi),
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            color: theme.colorScheme.primary,
+                          ),
                         ),
-                      ),
+                        const SizedBox(height: Constants.SPACING),
+                        Text(
+                          "Diet & Nutrition",
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: theme.colorScheme.primary,
+                          ),
+                        ),
+                        const SizedBox(height: Constants.SPACING),
+                        Text(
+                          data
+                                  .where((element) =>
+                                      element.status ==
+                                      getBMIStatusSimplified(bmi))
+                                  .first
+                                  .description ??
+                              "",
+                          style: theme.textTheme.titleMedium,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: Constants.SPACING),
-                    Text(
-                      getBMIStatusSimplified(bmi),
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        color: theme.colorScheme.primary,
-                      ),
+                    error: (e, stackTrace) => Align(
+                        alignment: Alignment.center,
+                        child: Text(e.toString())),
+                    loading: () => const Align(
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator(),
                     ),
-                    const SizedBox(height: Constants.SPACING),
-                    Text(
-                      "Diet & Nutrition",
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: theme.colorScheme.primary,
-                      ),
-                    ),
-                    const SizedBox(height: Constants.SPACING),
-                    Text(data
-                            .where((element) =>
-                                element.status == getBMIStatusSimplified(bmi))
-                            .first
-                            .description ??
-                        "", style: theme.textTheme.titleMedium,)
-                    // Markdown(data: "data")
-                  ],
-                ),
+                  ),
+
+                  // Markdown(data: "data")
+                ],
               ),
-            ),
-          ),
-          error: (e, stackTrace) => Expanded(
-              child: Align(
-                  alignment: Alignment.center, child: Text(e.toString()))),
-          loading: () => const Expanded(
-            child: Align(
-              alignment: Alignment.center,
-              child: CircularProgressIndicator(),
             ),
           ),
         ),

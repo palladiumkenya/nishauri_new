@@ -41,6 +41,11 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    final bgColor = disabled
+        ? theme.disabledColor
+        : onPress == null
+            ? theme.disabledColor
+            : backgroundColor;
     if (loading) {
       return const Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -56,40 +61,35 @@ class Button extends StatelessWidget {
           ? OutlinedButton(
               onPressed: disabled ? null : onPress,
               style: ButtonStyle(
-                backgroundColor:
-                    MaterialStatePropertyAll<Color?>(backgroundColor),
-                  foregroundColor:  MaterialStatePropertyAll<Color?>(textColor)
-              ),
+                  backgroundColor:
+                      MaterialStatePropertyAll<Color?>(bgColor),
+
+                  foregroundColor: MaterialStatePropertyAll<Color?>(textColor)),
               child: Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 alignment: WrapAlignment.center,
                 spacing: spacing,
                 children: [
-                  if(prefixIcon != null)
-                    prefixIcon!,
+                  if (prefixIcon != null) prefixIcon!,
                   Text(title, style: titleStyle),
-                  if(surfixIcon != null)
-                    surfixIcon!
+                  if (surfixIcon != null) surfixIcon!
                 ],
               ),
             )
           : ElevatedButton(
               onPressed: disabled ? null : onPress,
               style: ButtonStyle(
-                backgroundColor:
-                    MaterialStatePropertyAll<Color?>(backgroundColor),
-                foregroundColor:  MaterialStatePropertyAll<Color?>(textColor)
-              ),
+                  backgroundColor:
+                      MaterialStatePropertyAll<Color?>(bgColor),
+                  foregroundColor: MaterialStatePropertyAll<Color?>(textColor)),
               child: Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 alignment: WrapAlignment.center,
                 spacing: spacing,
                 children: [
-                  if(prefixIcon != null)
-                    prefixIcon!,
+                  if (prefixIcon != null) prefixIcon!,
                   Text(title, style: titleStyle),
-                  if(surfixIcon != null)
-                    surfixIcon!
+                  if (surfixIcon != null) surfixIcon!
                 ],
               ),
             ),

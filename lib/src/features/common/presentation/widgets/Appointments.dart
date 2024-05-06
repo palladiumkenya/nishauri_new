@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
+import 'package:nishauri/src/features/appointments/presentation/pages/AppointmentRescheduleScreen.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/AppointmentCard.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
@@ -15,6 +16,7 @@ class Appointments extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appointmentsAsync = ref.watch(appointmentProvider(false));
+    final appointmentsNotifier = ref.watch(appointmentProvider(false).notifier);
     final screenSize = getOrientationAwareScreenSize(context);
     final theme = Theme.of(context);
     return appointmentsAsync.when(
@@ -97,16 +99,25 @@ class Appointments extends HookConsumerWidget {
                                     "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
                                 providerName: "Kiseuni Dispensary",
                                 onRescheduleTap: () => context.goNamed(
-                                    RouteNames.APPOINTMENTS_RESCHEDULE,
-                                    extra: {
-                                      "appointmentType":
+                                  RouteNames.APPOINTMENTS_RESCHEDULE,
+                                  extra: AppointmentRescheduleScreenProps(
+                                      appointmentTime: appointmentDate,
+                                      appointmentType:
                                           artAppointment.appointment_type ??
                                               "Unknown type",
-                                      "appointmentTime": appointmentDate,
-                                      "providerImage":
+                                      providerName: "Kiseuni Dispensary",
+                                      providerImage:
                                           "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
-                                      "providerName": "Kiseuni Dispensary",
-                                    }),
+                                      onSubmit: (date, reason) async {
+                                        return await appointmentsNotifier
+                                            .rescheduleAppointment({
+                                          "appt_id": artAppointment.id,
+                                          "reason": reason,
+                                          "reschedule_date":
+                                              date.toIso8601String()
+                                        });
+                                      }),
+                                ),
                               ),
                             ),
                           );

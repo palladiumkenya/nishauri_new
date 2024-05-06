@@ -4,9 +4,14 @@ import '../models/appointment/art_appointment.dart';
 
 class ARTAppointmentRepository {
   final ARTAppointmentService _service;
+
   ARTAppointmentRepository(this._service);
-  Future<List<ARTAppointment>> getAppointments() async{
-   return _service.getAppointments();
+
+  Future<List<ARTAppointment>> getAppointments() async {
+    return _service.getAppointments();
   }
 
+  Future<String> rescheduleAppointment(Map<String, dynamic> data) async {
+    return await _service.rescheduleAppointment(data);
+  }
 }

@@ -274,13 +274,10 @@ final List<RouteBase> secureRoutes = [
           name: RouteNames.APPOINTMENTS_RESCHEDULE,
           path: 'reschedule',
           builder: (BuildContext context, GoRouterState state) {
-            final payload = state.extra as Map<String, dynamic>;
+            final payload = state.extra as AppointmentRescheduleScreenProps;
 
             return AppointmentRescheduleScreen(
-              providerName: payload["providerName"] as String,
-              providerImage: payload["providerImage"] as String,
-              appointmentTime: payload["appointmentTime"] as DateTime,
-              appointmentType: payload["appointmentType"] as String,
+              props: payload,
             );
           },
         ),
