@@ -267,7 +267,7 @@ final List<RouteBase> secureRoutes = [
       name: RouteNames.APPOINTMENTS,
       path: 'appointments',
       builder: (BuildContext context, GoRouterState state) {
-        return const Appointments();
+        return const AppointmentsScreen();
       },
       routes: [
         GoRoute(
