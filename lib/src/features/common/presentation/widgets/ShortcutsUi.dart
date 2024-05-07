@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -145,9 +147,14 @@ _showDialog(BuildContext context) {
                           // get program menu items
                           ...data.map((e) {
                             final programCode = e.id;
+                            log("***********************${e.name}-${e.id}****************************");
                             return getProgramMenuItemByProgramCode(
                                 context, programCode ?? '');
-                          }).toList(),
+                          }).where((e) {
+
+                            log("***********************${e.title}****************************");
+                            return true;
+                          })
                         ],
                       ),
                   error: (error, _) => Center(child: Text(error.toString())),
