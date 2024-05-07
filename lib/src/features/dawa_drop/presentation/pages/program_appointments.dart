@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
+import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
@@ -17,62 +19,91 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
     return appointmentAsync.when(
       data: (data) {
         return Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              onPressed: () => context.pop(),
-              icon: const Icon(Icons.chevron_left),
-            ),
-            title: const Text("Upcoming Appointments"),
-            backgroundColor: Theme.of(context).primaryColor,
-          ),
-          body: ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              final appointment = data[index];
-              return ListTile(
-                leading: const Icon(Icons.calendar_month_sharp),
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                 children: [
-                   Text('Program: ${appointment.program_name ?? ''}',
-                   style: theme.textTheme.titleMedium?.merge(TextStyle(color: Colors.green)),),
-                   Text(appointment.appointment_type ?? '',
-                     style: theme.textTheme.titleSmall?.merge(TextStyle(color: Colors.grey)),),
-
-                   Text(
-                     DateFormat("dd MMM yyy").format(
-                       DateFormat("EEEE, MMMM dd yyy").parse(
-                         appointment.appointment_date,
-                       ),
-                     ),
-                    style: theme.textTheme.titleSmall?.merge(TextStyle(color: Colors.grey)),
-                   ),
-                 ],
+          body: Column(
+            children: [
+              CustomAppBar(
+                title: "Appointments",
+                icon: Icons.vaccines_sharp,
+                color: Constants.dawaDropColor.withOpacity(0.5),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    final appointment = data[index];
+                    return Column(
+                      children: [
+                        const Divider(),
+                        ListTile(
+                          title: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(Constants.SPACING),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    data[index].program_name ?? '',
+                                    style: theme.textTheme.headline6,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                  const SizedBox(height: Constants.SPACING),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.app_registration_outlined,
+                                        color: theme.colorScheme.primary,
+                                      ),
+                                      const SizedBox(width: Constants.SPACING),
+                                      Text(data[index].appointment_type??''),
+                                    ],
+                                  ),
+                                  const SizedBox(height: Constants.SPACING),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.calendar_month_outlined,
+                                        color: theme.colorScheme.primary,
+                                      ),
+                                      const SizedBox(width: Constants.SPACING),
+                                      Text(data[index].appointment_date),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            context.goNamed(
+                              RouteNames.HIV_ART_APPOINTMENT_DETAILS,
+                              extra: appointment,
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  },
                 ),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () {
-                  context.goNamed(
-                    RouteNames.HIV_ART_APPOINTMENT_DETAILS,
-                    extra: appointment,
-                  );
-                },
-              );
-            },
+              ),
+              if (data.isEmpty)
+                Expanded(
+                  child: BackgroundImageWidget(
+                    svgImage: 'assets/images/background.svg',
+                    notFoundText: "No Appointments",
+                  ),
+                ),
+            ],
           ),
         );
       },
-      error: (error, _) => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              error.toString(),
-              style: theme.textTheme.headlineSmall,
-            ),
-            const SizedBox(height: Constants.SPACING * 2),
-          ],
+      error: (error, _) => BackgroundImageWidget(
+        customAppBar: CustomAppBar(
+          title: "Appointments",
+          icon: Icons.vaccines_sharp,
+          color: Constants.dawaDropColor.withOpacity(0.5),
         ),
+        svgImage: 'assets/images/background.svg',
+        notFoundText: error.toString(),
       ),
       loading: () => Center(
         child: Column(
