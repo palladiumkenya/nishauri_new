@@ -9,7 +9,7 @@ import '../../../../app/navigation/menu/MenuItemsBuilder.dart';
 import '../../../../app/navigation/menu/MenuOption.dart';
 import '../../../../app/navigation/menu/menuItems.dart';
 import '../../../../utils/constants.dart';
-import '../../../clinic_card/data/providers/programProvider.dart';
+import '../../../user_programs/data/providers/program_provider.dart';
 import '../../data/providers/shortcut_provider.dart';
 
 class ShortcutsWidget extends HookConsumerWidget {
@@ -145,15 +145,10 @@ _showDialog(BuildContext context) {
                           // get generic menu items
                           ...getGenericMenuItems(context),
                           // get program menu items
-                          ...data.map((e) {
+                          ...data.where((element) => element.isActive).map((e) {
                             final programCode = e.id;
-                            log("***********************${e.name}-${e.id}****************************");
                             return getProgramMenuItemByProgramCode(
                                 context, programCode ?? '');
-                          }).where((e) {
-
-                            log("***********************${e.title}****************************");
-                            return true;
                           })
                         ],
                       ),

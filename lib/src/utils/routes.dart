@@ -85,8 +85,8 @@ class MenuItemNames {
 }
 
 class ProgramCodeNameIds {
-  static const HIV = "d02bc5c2-26c4-4e88-a50d-08b9e4c24be1";
-  static const TB = "7c948236-5e3e-4aad-b47a-5eaeea081034";
+  static const HIV = "1";
+  static const TB = "2";
   static const ASTHMA = "3";
   static const DIABETES = "4";
   static const CANCER = "5";
