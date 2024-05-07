@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,7 +9,7 @@ import '../../../../app/navigation/menu/MenuItemsBuilder.dart';
 import '../../../../app/navigation/menu/MenuOption.dart';
 import '../../../../app/navigation/menu/menuItems.dart';
 import '../../../../utils/constants.dart';
-import '../../../clinic_card/data/providers/programProvider.dart';
+import '../../../user_programs/data/providers/program_provider.dart';
 import '../../data/providers/shortcut_provider.dart';
 
 class ShortcutsWidget extends HookConsumerWidget {
@@ -143,11 +145,11 @@ _showDialog(BuildContext context) {
                           // get generic menu items
                           ...getGenericMenuItems(context),
                           // get program menu items
-                          ...data.map((e) {
+                          ...data.where((element) => element.isActive).map((e) {
                             final programCode = e.id;
                             return getProgramMenuItemByProgramCode(
                                 context, programCode ?? '');
-                          }).toList(),
+                          })
                         ],
                       ),
                   error: (error, _) => Center(child: Text(error.toString())),

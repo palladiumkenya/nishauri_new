@@ -126,50 +126,6 @@ class Appointments extends HookConsumerWidget {
                     },
                   ).toList(),
                 )),
-          if (false)
-            CarouselSlider(
-              options: CarouselOptions(
-                enableInfiniteScroll: false,
-                // height: screenSize.height * 0.2,
-                enlargeCenterPage: true,
-                enlargeFactor: 0.3,
-              ),
-              items: data.map(
-                (artAppointment) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      final appointmentDate = DateTime.parse(artAppointment
-                              .appointment
-                              ?.split("-")
-                              .reversed
-                              .join("-") ??
-                          DateTime.now().toIso8601String());
-                      return GestureDetector(
-                        onTap: () {
-                          context.goNamed(
-                            RouteNames.HIV_ART_APPOINTMENT_DETAILS,
-                            extra: artAppointment,
-                          );
-                        },
-                        child: Wrap(
-                          children: [
-                            AppointmentCard(
-                              appointmentType:
-                                  artAppointment.appointment_type ??
-                                      "Unknown type",
-                              appointmentTime: appointmentDate,
-                              providerImage:
-                                  "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
-                              providerName: "Kiseuni Dispensary",
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-              ).toList(),
-            ),
         ],
       ),
       error: (error, _) => Container(),
