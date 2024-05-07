@@ -10,9 +10,3 @@ final drugOrderProvider = StateNotifierProvider<DrugOrderController,
   return DrugOrderController(repo);
 });
 
-final getOrderProvider = FutureProvider<List<DrugOrder>>((ref) async{
-
-  final service = DrugOrderService();
-  final repository = DrugOrderRepository(service);
-  return await repository.getOrders();
-});

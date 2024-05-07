@@ -12,7 +12,7 @@ class DrugOrdersScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final orderAsync = ref.watch(getOrderProvider);
+    final orderAsync = ref.watch(drugOrderProvider);
     final theme = Theme.of(context);
 
     return orderAsync.when(
