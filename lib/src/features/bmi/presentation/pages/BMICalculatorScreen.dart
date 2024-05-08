@@ -54,33 +54,35 @@ class BMICalculatorScreen extends HookWidget {
                       GenderPicker(
                         gender: gender.value,
                         onGenderChange: (gender_) {
-                          if (gender_ == GenderPickerChoices.female) {
+                          if (gender_ == GenderPickerChoices.female && gender_ != gender.value) {
                             showDialog<bool>(
                               context: context,
                               builder: (context) => AlertDialog(
                                   title: const Text("Warning!"),
-                                  content: Wrap(
-                                    children: [
-                                      const Text(
-                                        "BMI Calculation for pregnant lady is highly discouraged and not supported to avoid drastic decisions.Do you here by confirm you aunt pregnant?",
-                                      ),
-                                      RadioGroup(
-                                        // value: pregnant.value ? "no":"yes",
-                                        onValueChanged: (val) {
-                                          context.pop(val == "no");
-                                        },
-                                        items: [
-                                          RadioGroupItem(
-                                              value: "yes",
-                                              title: "Yes am not Pregnant",
-                                              icon: Icons.woman_rounded),
-                                          RadioGroupItem(
-                                              value: "no",
-                                              title: "No am Pregnant",
-                                              icon: Icons.pregnant_woman),
-                                        ],
-                                      )
-                                    ],
+                                  content: SingleChildScrollView(
+                                    child: Wrap(
+                                      children: [
+                                        const Text(
+                                          "BMI Calculation for pregnant lady is highly discouraged and not supported to avoid drastic decisions.Do you here by confirm you aunt pregnant?",
+                                        ),
+                                        RadioGroup(
+                                          // value: pregnant.value ? "no":"yes",
+                                          onValueChanged: (val) {
+                                            context.pop(val == "no");
+                                          },
+                                          items: [
+                                            RadioGroupItem(
+                                                value: "yes",
+                                                title: "Yes am not Pregnant",
+                                                icon: Icons.woman_rounded),
+                                            RadioGroupItem(
+                                                value: "no",
+                                                title: "No am Pregnant",
+                                                icon: Icons.pregnant_woman),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   )),
                             ).then((isPregnant) {
                               if (isPregnant != null) {
