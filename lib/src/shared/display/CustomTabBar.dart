@@ -51,7 +51,7 @@ class CustomTabBar extends StatelessWidget {
                       );
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal:Constants.SPACING,vertical: Constants.SPACING),
+                      padding: const EdgeInsets.symmetric(horizontal:Constants.SPACING ,vertical: Constants.SPACING* 0.5),
                       decoration: BoxDecoration(
                           color: e.key == activeIndex
                               ? activeColor ?? theme.colorScheme.primary
@@ -67,7 +67,7 @@ class CustomTabBar extends StatelessWidget {
                             const SizedBox(width: Constants.SPACING),
                           Text(
                             e.value.title,
-                            style: theme.textTheme.titleMedium?.copyWith(
+                            style: theme.textTheme.labelLarge?.copyWith(
                               color: activeIndex == e.key ? Colors.white : null,
                             ),
                           ),

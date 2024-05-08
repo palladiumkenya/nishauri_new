@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/bmi/data/providers/bmi_status_nutrition_provider.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
+
+import '../../../../shared/input/Button.dart';
 
 class BMICalculatorResultsScreen extends HookConsumerWidget {
   final double bmi;
@@ -98,6 +102,21 @@ class BMICalculatorResultsScreen extends HookConsumerWidget {
                                   .description ??
                               "",
                           style: theme.textTheme.titleMedium,
+                        ),
+                        const SizedBox(height: Constants.SPACING),
+
+                        Button(
+                          title: "Re-Calculate",
+                          surfixIcon: SvgPicture.asset(
+                            "assets/images/refresh-circle.svg",
+                            semanticsLabel: "Doctors",
+                            fit: BoxFit.contain,
+                          ),
+                          backgroundColor: Constants.activeSelectionColor,
+                          textColor: Colors.white,
+                          onPress: () {
+                            context.pop();
+                          },
                         ),
                       ],
                     ),
