@@ -9,6 +9,7 @@ import 'package:nishauri/src/features/bmi/presentation/widgets/HeightPicker.dart
 import 'package:nishauri/src/features/bmi/presentation/widgets/HeightUnitsPicker.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/RadioGroup.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/input/QuanterSizer.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -25,7 +26,7 @@ class BMICalculatorScreen extends HookWidget {
     final gender = useState<GenderPickerChoices>(GenderPickerChoices.male);
     final height = useState<double>(180);
     final heightUnits =
-    useState<HeightUnitsPickerOptions>(HeightUnitsPickerOptions.In);
+        useState<HeightUnitsPickerOptions>(HeightUnitsPickerOptions.In);
     final weight = useState<int>(65);
     final age = useState<int>(27);
     return Scaffold(
@@ -52,7 +53,51 @@ class BMICalculatorScreen extends HookWidget {
                       const SizedBox(height: Constants.SPACING),
                       GenderPicker(
                         gender: gender.value,
-                        onGenderChange: (gender_) => gender.value = gender_,
+                        onGenderChange: (gender_) {
+                          if (gender_ == GenderPickerChoices.female) {
+                            showDialog<bool>(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                  title: const Text("Warning!"),
+                                  content: Wrap(
+                                    children: [
+                                      const Text(
+                                        "BMI Calculation for pregnant lady is highly discouraged and not supported to avoid drastic decisions.Do you here by confirm you aunt pregnant?",
+                                      ),
+                                      RadioGroup(
+                                        // value: pregnant.value ? "no":"yes",
+                                        onValueChanged: (val) {
+                                          context.pop(val == "no");
+                                        },
+                                        items: [
+                                          RadioGroupItem(
+                                              value: "yes",
+                                              title: "Yes am not Pregnant",
+                                              icon: Icons.woman_rounded),
+                                          RadioGroupItem(
+                                              value: "no",
+                                              title: "No am Pregnant",
+                                              icon: Icons.pregnant_woman),
+                                        ],
+                                      )
+                                    ],
+                                  )),
+                            ).then((isPregnant) {
+                              if (isPregnant != null) {
+                                if (isPregnant == false) {
+                                  gender.value = gender_;
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              "BMI calculation for pregnant lady ain't supported")));
+                                }
+                              }
+                            });
+                          } else {
+                            gender.value = gender_;
+                          }
+                        },
                         activeColor: activeColor,
                       ),
                       const SizedBox(height: Constants.SPACING),
