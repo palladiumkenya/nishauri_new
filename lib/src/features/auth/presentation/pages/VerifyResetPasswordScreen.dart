@@ -28,7 +28,7 @@ class ResetPasswordVerificationScreen extends HookConsumerWidget {
       if (formKey.currentState!.saveAndValidate()) {
         loading.value = true;
         final passwordResetStateNotifier =
-        ref.read(resetPasswordProvider.notifier);
+            ref.read(resetPasswordProvider.notifier);
         final authStateNotifier = ref.read(authStateProvider.notifier);
 
         // Form payload
@@ -37,24 +37,22 @@ class ResetPasswordVerificationScreen extends HookConsumerWidget {
           "otp": formKey.currentState!.value['otp'],
         };
 
-        passwordResetStateNotifier
-            .verifyResetPassword(payload)
-            .then((value) {
+        passwordResetStateNotifier.verifyResetPassword(payload).then((value) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(value)),
           );
           context.goNamed(RouteNames.VERIFIED_RESET_PASSWORD_SCREEN,
               extra: username);
           // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ResetPassword(user_name: widget.user_name)));
-
         }).catchError((err) {
           handleResponseError(context, formKey.currentState!.fields, err,
               authStateNotifier.logout);
         }).whenComplete(() {
-         loading.value = false;
+          loading.value = false;
         });
       }
     }
+
     return Scaffold(
       body: ResponsiveWidgetFormLayout(
         buildPageContent: (context, color) => SafeArea(
@@ -62,8 +60,8 @@ class ResetPasswordVerificationScreen extends HookConsumerWidget {
             key: formKey,
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 10, vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 child: Column(
                   children: [
                     const SizedBox(height: Constants.SPACING),
@@ -79,8 +77,8 @@ class ResetPasswordVerificationScreen extends HookConsumerWidget {
                     const SizedBox(height: Constants.SPACING),
                     const Text(
                       "Password Reset Verification",
-                      style: TextStyle(
-                          fontSize: 30, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: Constants.SPACING),
@@ -88,9 +86,8 @@ class ResetPasswordVerificationScreen extends HookConsumerWidget {
                       "Kindly use the OTP Code sent to you\n to complete password reset",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onTertiaryContainer,
+                        color:
+                            Theme.of(context).colorScheme.onTertiaryContainer,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -105,6 +102,7 @@ class ResetPasswordVerificationScreen extends HookConsumerWidget {
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                       ]),
+                      keyboardType: TextInputType.number,
                     ),
                     const SizedBox(height: Constants.SPACING),
                     const SizedBox(height: Constants.SPACING),
@@ -119,9 +117,8 @@ class ResetPasswordVerificationScreen extends HookConsumerWidget {
                         return LinkedRichText(
                           linked: "",
                           unlinked: "Back to login",
-                          onPress: () => ref
-                              .read(authStateProvider.notifier)
-                              .logout(),
+                          onPress: () =>
+                              ref.read(authStateProvider.notifier).logout(),
                         );
                       },
                     )

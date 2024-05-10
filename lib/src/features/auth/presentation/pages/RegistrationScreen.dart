@@ -41,7 +41,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     if (dob == null) return 0;
     var now = DateTime.now();
     var age = now.year - dob.year;
-    if (now.month < dob.month || (now.month == dob.month && now.day < dob.day)) {
+    if (now.month < dob.month ||
+        (now.month == dob.month && now.day < dob.day)) {
       age--;
     }
     return age;
@@ -125,6 +126,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           FormBuilderValidators.required(),
                           FormBuilderValidators.email(),
                         ]),
+                        keyboardType: TextInputType.emailAddress,
                       ),
                       const SizedBox(height: Constants.SMALL_SPACING),
                       FormBuilderDateTimePicker(
@@ -137,16 +139,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           placeholder: "Enter your date of birth",
                           prefixIcon: Icons.calendar_month_rounded,
                           surfixIcon: Text(
-                            _selectedDate != null ? '${calculateAge(_selectedDate!).toString()} years' : '',
+                            _selectedDate != null
+                                ? '${calculateAge(_selectedDate!).toString()} years'
+                                : '',
                             style: TextStyle(fontSize: 16),
                           ),
                           label: "Date of birth",
                         ),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
-                              (date) {
-                            if (date == null) return "Date of birth is required";
-                            if (calculateAge(date) < 12) return "You must be at least 12 years old";
+                          (date) {
+                            if (date == null)
+                              return "Date of birth is required";
+                            if (calculateAge(date) < 12)
+                              return "You must be at least 12 years old";
                             return null;
                           },
                         ]),
@@ -188,15 +194,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
-                          FormBuilderValidators.minLength(10, errorText: 'Phone number must be 10 digits long'),
-                          FormBuilderValidators.maxLength(10, errorText: 'Phone number must be 10 digits long'),
-                              (value) {
-                            if (value != null && value.isNotEmpty && !value.startsWith('0')) {
+                          FormBuilderValidators.minLength(10,
+                              errorText: 'Phone number must be 10 digits long'),
+                          FormBuilderValidators.maxLength(10,
+                              errorText: 'Phone number must be 10 digits long'),
+                          (value) {
+                            if (value != null &&
+                                value.isNotEmpty &&
+                                !value.startsWith('0')) {
                               return 'Phone number must start with zero';
                             }
                             return null;
                           },
                         ]),
+                        keyboardType: TextInputType.phone,
                       ),
                       const SizedBox(height: Constants.SMALL_SPACING),
                       FormBuilderTextField(
@@ -251,22 +262,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             Expanded(
                               child: Text(
                                 "Accept terms and conditions",
-                                overflow: TextOverflow.ellipsis, // Handle overflow by ellipsis if needed
+                                overflow: TextOverflow
+                                    .ellipsis, // Handle overflow by ellipsis if needed
                               ),
                             ),
                             GestureDetector(
-                              onTap: () => showTermsDialog(context), // Show terms dialog on tap
+                              onTap: () => showTermsDialog(
+                                  context), // Show terms dialog on tap
                               child: Text(
                                 " (Terms)",
                                 style: TextStyle(
-                                  color: Colors.blue, // Change color to indicate it's a link
-                                  decoration: TextDecoration.underline, // Add underline to indicate it's a link
+                                  color: Colors
+                                      .blue, // Change color to indicate it's a link
+                                  decoration: TextDecoration
+                                      .underline, // Add underline to indicate it's a link
                                 ),
                               ),
                             ),
                           ],
                         ),
-
                       ),
                       // FormBuilderCheckbox(
                       //   initialValue: false,

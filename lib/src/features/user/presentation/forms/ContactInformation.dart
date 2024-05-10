@@ -44,10 +44,14 @@ class ContactInformation extends StatelessWidget {
                   label: "Phone number",
                 ),
                 validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.minLength(10, errorText: 'Phone number must be 10 digits long'),
-                  FormBuilderValidators.maxLength(10, errorText: 'Phone number must be 10 digits long'),
-                      (value) {
-                    if (value != null && value.isNotEmpty && !value.startsWith('0')) {
+                  FormBuilderValidators.minLength(10,
+                      errorText: 'Phone number must be 10 digits long'),
+                  FormBuilderValidators.maxLength(10,
+                      errorText: 'Phone number must be 10 digits long'),
+                  (value) {
+                    if (value != null &&
+                        value.isNotEmpty &&
+                        !value.startsWith('0')) {
                       return 'Phone number must start with zero';
                     }
                     return null;

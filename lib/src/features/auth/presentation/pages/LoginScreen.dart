@@ -73,10 +73,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     name: "user_name",
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(),
-                      FormBuilderValidators.minLength(10, errorText: 'Phone number must be 10 digits long'),
-                      FormBuilderValidators.maxLength(10, errorText: 'Phone number must be 10 digits long'),
-                          (value) {
-                        if (value != null && value.isNotEmpty && !value.startsWith('0')) {
+                      FormBuilderValidators.minLength(10,
+                          errorText: 'Phone number must be 10 digits long'),
+                      FormBuilderValidators.maxLength(10,
+                          errorText: 'Phone number must be 10 digits long'),
+                      (value) {
+                        if (value != null &&
+                            value.isNotEmpty &&
+                            !value.startsWith('0')) {
                           return 'Phone number must start with zero';
                         }
                         return null;
@@ -87,6 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       label: "Phone Number",
                       placeholder: "e.g 0700000000",
                     ),
+                    keyboardType: TextInputType.phone,
                   ),
                   const SizedBox(height: Constants.SPACING),
                   FormBuilderTextField(
