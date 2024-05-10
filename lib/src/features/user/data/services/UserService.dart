@@ -62,7 +62,8 @@ class UserService extends HTTPService {
     }
   }
 
-  Future<http.StreamedResponse> updateProfile_(Map<String, dynamic> user) async {
+  Future<http.StreamedResponse> updateProfile_(
+      Map<String, dynamic> user) async {
     final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
     final userId = {'user_id': id};
@@ -111,13 +112,12 @@ class UserService extends HTTPService {
     if (response.statusCode == 200) {
       // Update user object if necessary
       // For now, just return the user object unchanged
-      return ;//user;
+      return; //user;
     } else {
       // Handle error appropriately, throw exception or return null
       throw 'Failed to update profile: Try Again in A few Seconds!';
     }
   }
-
 
   Future<User> __getUser() async {
     final tokenPair = await getCachedToken();
@@ -164,7 +164,8 @@ class UserService extends HTTPService {
       "educationLevel": person["profile"]["education"],
       "constituency": person["profile"]["landmark"],
       "image": "image",
-      "username": "${person["profile"]["f_name"]} ${person["profile"]["l_name"]}",
+      "username":
+          "${person["profile"]["f_name"]} ${person["profile"]["l_name"]}",
       "email": person["profile"]["email"],
       "phoneNumber": person["profile"]["phone_no"],
       "dateOfBirth": person["profile"]["dob"],
@@ -181,10 +182,12 @@ class UserService extends HTTPService {
   Future<http.StreamedResponse> getUser_(dynamic args) async {
     final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
-    var headers = {'Authorization':"Bearer ${tokenPair.accessToken}",
-      'Content-Type': 'application/json'};
-    var request =
-        http.Request('GET', Uri.parse('${Constants.BASE_URL_NEW}/get_profile?user_id=$id'));
+    var headers = {
+      'Authorization': "Bearer ${tokenPair.accessToken}",
+      'Content-Type': 'application/json'
+    };
+    var request = http.Request(
+        'GET', Uri.parse('${Constants.BASE_URL_NEW}/get_profile?user_id=$id'));
     request.headers.addAll(headers);
     return await request.send();
   }
@@ -240,6 +243,8 @@ class UserService extends HTTPService {
     if (response.statusCode == 200) {
       final responseString = await response.stream.bytesToString();
       final userData = json.decode(responseString);
+      // print user data to console
+      debugPrint(userData);
       return userData["detail"];
     } else {
       throw await getException(response);
@@ -249,22 +254,20 @@ class UserService extends HTTPService {
   Future<String> accountVerify(Map<String, dynamic> data) async {
     http.StreamedResponse response = await call(accountVerify_, data);
     String message = '';
-    try{
+    try {
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final userData = json.decode(responseString);
         bool messageServer = userData["success"];
 
-        if (messageServer == true){
+        if (messageServer == true) {
           await _repository.saveIsVerified(true);
           message = userData["msg"];
-        }
-        else{
+        } else {
           throw userData["msg"];
         }
       }
-    } catch (e)
-    {
+    } catch (e) {
       rethrow;
     }
     return message;
@@ -307,11 +310,13 @@ class UserService extends HTTPService {
   Future<http.StreamedResponse> requestVerificationCode_(String? mode) async {
     final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
-    var headers = {'Authorization': "Bearer ${tokenPair.accessToken}",
-      'Content-Type': 'application/json',};
+    var headers = {
+      'Authorization': "Bearer ${tokenPair.accessToken}",
+      'Content-Type': 'application/json',
+    };
     var body = {'user_id': id};
-    var request = http.Request(
-        'POST', Uri.parse('${Constants.BASE_URL_NEW}sendotp'));
+    var request =
+        http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}sendotp'));
     request.body = jsonEncode(body);
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();

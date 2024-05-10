@@ -33,7 +33,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     return Consumer(
       builder: (context, ref, child) {
         void handleSubmit() async {
-          if (_formKey.currentState != null && _formKey.currentState!.saveAndValidate()) {
+          if (_formKey.currentState != null &&
+              _formKey.currentState!.saveAndValidate()) {
             final formState = _formKey.currentState!.value;
             setState(() {
               _loading = true;
@@ -41,19 +42,19 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             final authStateNotifier = ref.read(authStateProvider.notifier);
             final userStateNotifier = ref.read(resetPasswordProvider.notifier);
             userStateNotifier.resetPassword(formState).then((value) {
-
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(value)),
               );
-              context.goNamed(RouteNames.VERIFY_RESET_PASSWORD_SCREEN,  extra:formState['user_name'] );
+              context.goNamed(RouteNames.VERIFY_RESET_PASSWORD_SCREEN,
+                  extra: formState['user_name']);
             }).catchError((err) {
-              handleResponseError(context, _formKey.currentState!.fields, err, authStateNotifier.logout);
+              handleResponseError(context, _formKey.currentState!.fields, err,
+                  authStateNotifier.logout);
             }).whenComplete(() {
               setState(() {
                 _loading = false;
               });
             });
-
           }
         }
 
@@ -103,7 +104,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             "Kindly provide your phone number!",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.onTertiaryContainer,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onTertiaryContainer,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -117,15 +120,22 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             ),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(),
-                              FormBuilderValidators.minLength(10, errorText: 'Phone number must be 10 digits long'),
-                              FormBuilderValidators.maxLength(10, errorText: 'Phone number must be 10 digits long'),
-                                  (value) {
-                                if (value != null && value.isNotEmpty && !value.startsWith('0')) {
+                              FormBuilderValidators.minLength(10,
+                                  errorText:
+                                      'Phone number must be 10 digits long'),
+                              FormBuilderValidators.maxLength(10,
+                                  errorText:
+                                      'Phone number must be 10 digits long'),
+                              (value) {
+                                if (value != null &&
+                                    value.isNotEmpty &&
+                                    !value.startsWith('0')) {
                                   return 'Phone number must start with zero';
                                 }
                                 return null;
                               },
                             ]),
+                            keyboardType: TextInputType.phone,
                           ),
                           const SizedBox(height: Constants.SPACING),
                           const SizedBox(height: Constants.SPACING),
@@ -140,7 +150,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           LinkedRichText(
                             linked: "",
                             unlinked: "Back to login",
-                            onPress: () => context.goNamed(RouteNames.LOGIN_SCREEN),
+                            onPress: () =>
+                                context.goNamed(RouteNames.LOGIN_SCREEN),
                           )
                         ],
                       ),
