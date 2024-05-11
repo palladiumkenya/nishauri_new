@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -36,7 +38,9 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
 
     final stepFieldsToValidate = [
       [
-        "delivery_method",
+        "delivery_method","courier_service",
+        "delivery_person","delivery_person_id",
+        "delivery_person_contact", "delivery_pickup_time"
       ],
       ["client_phone_no", "delivery_address"],
     ];
@@ -179,7 +183,7 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
               final currentStepFields = stepFieldsToValidate[currentStep.value];
 
               if (currentStepFields.any((field) =>
-              !formKey.currentState!.fields[field]!.validate())) {
+              formKey.currentState!.fields[field]?.validate() == false)) {
                 return; //Don't move to next step if current step not valid
               }
             }
