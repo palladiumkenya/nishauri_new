@@ -30,7 +30,7 @@ _menuItems(BuildContext context) => [
       MenuItem(
           icon: const Icon(Icons.vaccines_rounded),
           shortcutIcon: const Icon(Icons.vaccines_rounded),
-          title: "ART Groups",
+          title: "VL results",
           onPressed: () => context.goNamed(RouteNames.LAB_RESULTS)),
       // MenuItem(
       //     icon: Icons.event,
