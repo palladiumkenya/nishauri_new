@@ -70,7 +70,7 @@ class FacilityDirectoryScreen extends HookWidget {
                     clipBehavior: Clip.antiAlias,
                     decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: "Search for facility by name or code",
+                        hintText: "Search by name or code ...",
                         prefixIcon: const Icon(
                           Icons.search_outlined,
                           color: Colors.white,
@@ -84,30 +84,30 @@ class FacilityDirectoryScreen extends HookWidget {
                   ),
                 ),
               ),
-              const SizedBox(
-                width: Constants.SPACING,
-              ),
-              IconButton.filledTonal(
-                color: Colors.white,
-                onPressed: loading.value
-                    ? null
-                    : () {
-                        // _fetchFacilities(_controller.text);
-                      },
-                icon: const FaIcon(FontAwesomeIcons.magnifyingGlass),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll<Color>(
-                    Colors.white.withOpacity(0.3),
-                  ),
-                  shape: const MaterialStatePropertyAll<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(Constants.ROUNDNESS * 0.5),
-                      ),
-                    ),
-                  ),
-                ),
-              )
+              // const SizedBox(
+              //   width: Constants.SPACING,
+              // ),
+              // IconButton.filledTonal(
+              //   color: Colors.white,
+              //   onPressed: loading.value
+              //       ? null
+              //       : () {
+              //           // _fetchFacilities(_controller.text);
+              //         },
+              //   icon: const FaIcon(FontAwesomeIcons.magnifyingGlass),
+              //   style: ButtonStyle(
+              //     backgroundColor: MaterialStatePropertyAll<Color>(
+              //       Colors.white.withOpacity(0.3),
+              //     ),
+              //     shape: const MaterialStatePropertyAll<RoundedRectangleBorder>(
+              //       RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.all(
+              //           Radius.circular(Constants.ROUNDNESS * 0.5),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // )
             ]),
           ),
           Expanded(
