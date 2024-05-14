@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/app/navigation/drawer/UserDrawerHeader.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/common/data/providers/announcements_provider.dart';
@@ -14,6 +15,7 @@ import 'package:nishauri/src/features/common/presentation/widgets/Greetings.dart
 import 'package:nishauri/src/features/common/presentation/widgets/ShortcutsUi.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_appointmen_provider.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
+import 'package:nishauri/src/hooks/use_local_avatar.dart';
 import 'package:nishauri/src/shared/display/AppAvatar.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -22,7 +24,7 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
-class HomeScreen extends ConsumerStatefulWidget {
+class HomeScreen extends StatefulHookConsumerWidget {
   const HomeScreen({super.key});
 
   @override
@@ -42,6 +44,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final avatar = useLocalAvatar("images/avatar.jpg");
     final theme = Theme.of(context);
     final asyncUser = ref.watch(userProvider);
     final size = getOrientationAwareScreenSize(context);
@@ -59,7 +62,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   email: asyncUser.value!.email,
                   name: (asyncUser.value?.name ?? "").titleCase,
                   phoneNumber: asyncUser.value!.phoneNumber ?? '',
-                  image: asyncUser.value!.image,
+                  image: avatar,// asyncUser.value!.image,
                 ),
                 onTap: () => context.goNamed(RouteNames.PROFILE_SETTINGS),
               ),
@@ -174,10 +177,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       border: Border.all(
                                           width: 1, color: theme.primaryColor),
                                       shape: BoxShape.circle),
-                                  child: const AppAvatar(
-                                    alt: Icon(Icons.person),
-                                    image:
-                                        "https://static.vecteezy.com/system/resources/previews/000/423/286/original/avatar-icon-vector-illustration.jpg",
+                                  child: AppAvatar(
+                                    alt: const Icon(Icons.person),
+                                    image: avatar,
                                   ),
                                 ),
                               ),

@@ -26,11 +26,16 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
     final loading = useState<bool>(false);
 
     final stepFieldsToValidate = [
-      ["image", "username"],
+      [
+        // "image",
+        "username"
+      ],
       ["f_name", "l_name", "dob", "gender"],
-      ["email", "phone_no",
+      [
+        "email", "phone_no",
         // "county",
-        "landmark"],
+        "landmark"
+      ],
       ["blood_group", "allergies", "disabilities", "chronics"],
       ["weight", "height"],
       ["maritalStatus", "educationLevel", "primaryLanguage", "occupation"],
@@ -113,15 +118,12 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
       if (formKey.currentState!.validate()) {
         loading.value = true;
         final dateOfBirth = formKey.currentState!.instantValue["dob"];
-        ref
-            .read(userProvider.notifier)
-            .updateUser({
+        ref.read(userProvider.notifier).updateUser({
           ...formKey.currentState!.instantValue,
           "dob": dateOfBirth is DateTime
               ? dateOfBirth.toIso8601String()
               : dateOfBirth
-        })
-            .then((value) {
+        }).then((value) {
           //     Update auth state and redirect to home
           return ref.read(authStateProvider.notifier).markProfileAsUpdated();
         }).then((value) {
@@ -130,14 +132,16 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
         }).catchError((e) {
           switch (e) {
             case BadRequestException e:
-              handleResponseError(context, formKey.currentState!.fields, e, ref.read(authStateProvider.notifier).logout);
+              handleResponseError(context, formKey.currentState!.fields, e,
+                  ref.read(authStateProvider.notifier).logout);
               //   Navigate to 1st step with the error
               final fieldStep = stepFieldsToValidate.indexWhere((fields) =>
                   fields.any((field) => e.errors.containsKey(field)));
               currentStep.value = fieldStep;
               break;
             default:
-              handleResponseError(context, formKey.currentState!.fields, e, ref.read(authStateProvider.notifier).logout);
+              handleResponseError(context, formKey.currentState!.fields, e,
+                  ref.read(authStateProvider.notifier).logout);
               debugPrint("[PROFILE-WIZARD]: ${e.toString()}");
           }
         }).whenComplete(() => loading.value = false);
@@ -161,7 +165,7 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
               return IconButton(
                 onPressed: () {
                   try {
-                    authState.whenData((value){
+                    authState.whenData((value) {
                       if (value.isProfileComplete) {
                         context.goNamed(RouteNames.PROFILE_SETTINGS);
                       }
@@ -189,10 +193,10 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                 // 1.validate current step fields and prevent continue encase of any error in current step
                 if (!isLastStep) {
                   final currentStepFields =
-                  stepFieldsToValidate[currentStep.value];
+                      stepFieldsToValidate[currentStep.value];
 
                   if (currentStepFields.any((field) =>
-                  !formKey.currentState!.fields[field]!.validate())) {
+                      !formKey.currentState!.fields[field]!.validate())) {
                     return; //Don't move to next step if current step not valid
                   }
                 }
@@ -213,7 +217,7 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                     Expanded(
                       child: Builder(builder: (context) {
                         bool isLastStep =
-                        (currentStep.value == steps.length - 1);
+                            (currentStep.value == steps.length - 1);
                         if (isLastStep) {
                           return Button(
                             onPress: () async {
@@ -223,10 +227,12 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                                   title: const Text("Confirm Details Entered"),
                                   content: SizedBox(
                                     width: double.maxFinite,
-                                    height: MediaQuery.of(context).size.height * 0.5,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.5,
                                     child: SingleChildScrollView(
                                       child: ReviewAndSubmit(
-                                        formState: formKey.currentState!.instantValue,
+                                        formState:
+                                            formKey.currentState!.instantValue,
                                       ),
                                     ),
                                   ),
@@ -246,7 +252,9 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                                           child: Button(
                                             title: "Cancel",
                                             onPress: context.pop,
-                                            titleStyle: theme.textTheme.titleLarge?.copyWith(
+                                            titleStyle: theme
+                                                .textTheme.titleLarge
+                                                ?.copyWith(
                                               color: theme.colorScheme.error,
                                             ),
                                           ),
@@ -255,7 +263,6 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
                                     ),
                                   ],
                                 ),
-
                               );
                               if (results == 1) {
                                 details.onStepContinue!();

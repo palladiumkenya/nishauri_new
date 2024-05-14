@@ -1,9 +1,12 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
+import 'package:nishauri/src/hooks/use_local_avatar.dart';
 import 'package:nishauri/src/shared/display/AppAvatar.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/display/ProfileCard.dart';
@@ -12,11 +15,13 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends HookWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final avatar = useLocalAvatar("images/avatar.jpg");
+    log("*****************${avatar.toString()}*********************");
     final cardColor = Theme.of(context).colorScheme.onPrimary;
     return Scaffold(
       appBar: AppBar(
@@ -39,7 +44,8 @@ class ProfileScreen extends StatelessWidget {
             data: (user) => ProfileCard(
               height: MediaQuery.of(context).size.height,
               header: Text((user.name ?? "").titleCase),
-              image: user.image,
+              image: avatar,
+              // user.image,
               icon: Icons.person,
               buildItem: (context, item) => item,
               items: [
@@ -47,25 +53,25 @@ class ProfileScreen extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.perm_identity),
                   title: const Text("Username"),
-                  subtitle: Text(user.username??''),
+                  subtitle: Text(user.username ?? ''),
                 ),
                 const Divider(),
                 ListTile(
                   leading: const Icon(Icons.email),
                   title: const Text("Email"),
-                  subtitle: Text(user.email??''),
+                  subtitle: Text(user.email ?? ''),
                 ),
                 const Divider(),
                 ListTile(
                   leading: const Icon(Icons.phone),
                   title: const Text("Phone number"),
-                  subtitle: Text(user.phoneNumber??''),
+                  subtitle: Text(user.phoneNumber ?? ''),
                 ),
                 const Divider(),
                 ListTile(
                   leading: const Icon(Icons.account_circle_outlined),
                   title: const Text("Gender"),
-                  subtitle: Text(user.gender??''),
+                  subtitle: Text(user.gender ?? ''),
                   // subtitle: Text(user.gender == "M" ? "Male" : "Female"),
                 ),
                 const Divider(),
@@ -91,7 +97,6 @@ class ProfileScreen extends StatelessWidget {
                 //   ),
                 // ),
                 const Divider(),
-
               ],
             ),
             error: (error, _) => Center(child: Text(error.toString())),

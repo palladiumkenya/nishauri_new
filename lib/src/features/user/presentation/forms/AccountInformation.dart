@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
+import 'package:nishauri/src/features/user/presentation/widgets/profile_avatar.dart';
 import 'package:nishauri/src/shared/input/ImagePicker.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -19,35 +20,7 @@ class AccountInformation extends StatelessWidget {
           data: (user) => Column(
             children: [
               const SizedBox(height: Constants.SPACING),
-              FormBuilderField<String>(
-                initialValue: user.image,
-                validator: FormBuilderValidators.compose([
-                  // FormBuilderValidators.required(
-                  //     errorText: "You must provide an image"),
-                ]),
-                builder: (FormFieldState<String> state) => Column(
-                  children: [
-                    ImagePickerCustom(
-                      image: state.value,
-                      onImageChange: (image) {
-                        state.didChange(image);
-                      },
-                      size: 120,
-                      onDelete: () {
-                        state.didChange(null);
-                      },
-                    ),
-                    if (state.hasError)
-                      Text(
-                        state.errorText!,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                      )
-                  ],
-                ),
-                name: "image",
-              ),
+              ProfileAvatar(),
               const SizedBox(height: Constants.SPACING),
               FormBuilderTextField(
                 initialValue: user.username,
