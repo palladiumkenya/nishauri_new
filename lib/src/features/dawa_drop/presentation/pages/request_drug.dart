@@ -54,8 +54,8 @@ class RequestDrugMenuScreen extends StatelessWidget {
         children: [
           CustomAppBar(
             title: "Drug Request",
-            icon: Icons.vaccines_sharp,
-            color: Constants.dawaDropColor.withOpacity(0.5),
+           icon: Icons.vaccines_sharp,
+          color: Constants.dawaDropColor.withOpacity(0.5),
           ),
           Expanded(child:          MenuItemsBuilder(
             crossAxisCount: 2,

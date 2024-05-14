@@ -5,6 +5,8 @@ import 'package:nishauri/src/features/dawa_drop/data/models/order_request/drug_o
 import 'package:nishauri/src/features/dawa_drop/data/providers/drug_order_provider.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/AllOrders.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/FulfilledOrders.dart';
+import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class DrugOrdersScreen extends ConsumerWidget {
@@ -20,11 +22,11 @@ class DrugOrdersScreen extends ConsumerWidget {
         // Separate orders based on their status
         List<DrugOrder> allOrders = data;
         List<DrugOrder> pendingOrders =
-        allOrders.where((order) => order.status != 'Fullfilled').toList();
+            allOrders.where((order) => order.status != 'Fullfilled').toList();
         List<DrugOrder> approvedOrders =
-        allOrders.where((order) => order.status == 'Approved').toList();
+            allOrders.where((order) => order.status == 'Approved').toList();
         List<DrugOrder> fulfilledOrders =
-        allOrders.where((order) => order.status == 'Fullfilled').toList();
+            allOrders.where((order) => order.status == 'Fullfilled').toList();
 
         return DefaultTabController(
           length: 2,
@@ -35,7 +37,7 @@ class DrugOrdersScreen extends ConsumerWidget {
                 icon: const Icon(Icons.chevron_left),
               ),
               title: const Text("Drug Request"),
-              backgroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Constants.dawaDropColor.withOpacity(0.5),
               bottom: TabBar(
                 tabs: const [
                   Tab(icon: Icon(Icons.all_inbox), text: "Active Drug Request"),
@@ -69,19 +71,17 @@ class DrugOrdersScreen extends ConsumerWidget {
           ),
         );
       },
-      error: (error, _) => Center(child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            error.toString(),
-            style: theme.textTheme.headlineSmall,
-          ),
-          const SizedBox(height: Constants.SPACING * 2),
-        ],
-      )),
+      error: (error, _) => BackgroundImageWidget(
+        customAppBar: CustomAppBar(
+          title: "Confirm Delivery",
+          icon: Icons.vaccines_sharp,
+          color: Constants.dawaDropColor.withOpacity(0.5),
+        ),
+        svgImage: 'assets/images/background.svg',
+        notFoundText: error.toString(),
+      ),
       // Text(error.toString())),
-      loading: ()  => Center(
+      loading: () => Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,6 +98,5 @@ class DrugOrdersScreen extends ConsumerWidget {
     );
   }
 }
-
 
 final counter = StateProvider<int>((ref) => 0);
