@@ -63,7 +63,7 @@ class BMICalculatorScreen extends HookWidget {
                                     child: Wrap(
                                       children: [
                                         const Text(
-                                          "BMI Calculation for pregnant lady is highly discouraged and not supported to avoid drastic decisions.Kindly confirm your pregnancy status?",
+                                          "BMI Calculation for pregnant lady is highly discouraged and not supported to avoid drastic decisions.Please confirm your pregnancy status",
                                         ),
                                         RadioGroup(
                                           // value: pregnant.value ? "no":"yes",
@@ -72,13 +72,13 @@ class BMICalculatorScreen extends HookWidget {
                                           },
                                           items: [
                                             RadioGroupItem(
-                                                value: "Pregnant",
-                                                title: "Pregnant",
-                                                icon: Icons.pregnant_woman),
-                                            RadioGroupItem(
-                                                value: "no",
+                                                value: "yes",
                                                 title: "Not Pregnant",
                                                 icon: Icons.woman_rounded),
+                                            RadioGroupItem(
+                                                value: "no",
+                                                title: "Pregnant",
+                                                icon: Icons.pregnant_woman),
                                           ],
                                         )
                                       ],

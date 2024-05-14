@@ -47,40 +47,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final size = getOrientationAwareScreenSize(context);
     return Scaffold(
       key: _scaffoldKey,
-
-      // appBar: AppBar(
-      //   // backgroundColor: theme.primaryColor,
-      //   leading: IconButton(
-      //     onPressed: () {
-      //       context.goNamed(RouteNames.PROFILE_SETTINGS);
-      //     },
-      //     icon: Container(
-      //       padding: const EdgeInsets.all(Constants.SPACING * 0.15),
-      //       decoration: BoxDecoration(
-      //           border: Border.all(width: 1, color: theme.primaryColor),
-      //           shape: BoxShape.circle),
-      //       child: const AppAvatar(
-      //         alt: Icon(Icons.person),
-      //         image:
-      //             "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      //       ),
-      //     ),
-      //   ),
-      //   actions: [
-      //     IconButton(
-      //       onPressed: () {},
-      //       icon: SvgPicture.asset(
-      //         "assets/images/notification.svg",
-      //         semanticsLabel: "Doctors",
-      //         fit: BoxFit.contain,
-      //       ),
-      //     ),
-      //     IconButton(
-      //       onPressed: toggleDrawer,
-      //       icon: const Icon(Icons.more_vert),
-      //     ),
-      //   ],
-      // ),
       drawer: Drawer(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(0.0)),
@@ -233,6 +199,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               )
                             ],
                           ),
+
                           Greetings(
                             name: (user.name ?? "").titleCase,
                           ),
