@@ -169,7 +169,7 @@ final List<RouteBase> secureRoutes = [
     name: RouteNames.Facility_Directory,
     path: 'Facility-directory',
     builder: (BuildContext context, GoRouterState state) {
-      return FacilityDirectory();
+      return FacilityDirectoryScreen();
     },
   ),
   GoRoute(

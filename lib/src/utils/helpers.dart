@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -148,4 +150,29 @@ List<DateTime> getTimesBetween(DateTime startTime, DateTime endTime, Duration du
     currentTime = currentTime.add(duration);
   }
   return times;
+}
+
+
+class Debouncer {
+  /// Debouncer class used to limit the frequency of function executions.
+  /// Useful for reducing the number of calls to expensive operations like API calls.
+  ///
+  /// Example Usage:
+  /// ```
+  /// final debouncer = Debouncer(milliseconds: 500);
+  /// debouncer.run(() {
+  ///   // Your function that should be debounced
+  /// });
+  /// ```
+  final int milliseconds;
+  Timer? _timer;
+  Debouncer({required this.milliseconds});
+  /// Runs the provided action after [milliseconds] delay.
+  /// Cancels any previously scheduled action.
+  void run(VoidCallback action) {
+    if (_timer != null) {
+      _timer!.cancel();
+    }
+    _timer = Timer(Duration(milliseconds: milliseconds), action);
+  }
 }
