@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as parser;
 import 'package:html/dom.dart' as dom;
@@ -32,8 +33,8 @@ void showTermsDialog(BuildContext context) async {
               children: [
                 const Text("By signing up, you agree to the following terms:"),
                 const SizedBox(height: 8),
-                // Display the extracted terms content
-                Text(termsContent),
+                // Display the extracted terms content using HtmlWidget
+                HtmlWidget(termsContent),
               ],
             ),
           ),
@@ -72,11 +73,25 @@ void showTermsDialog(BuildContext context) async {
 ///
 /// Returns the extracted terms content as a string.
 String _extractTermsContent(dom.Document document) {
-  final elements = document.querySelectorAll('body > p');
   final content = StringBuffer();
 
+  // Select all elements within the body of the HTML document
+  final elements = document.querySelectorAll('body > *');
+
   for (final element in elements) {
-    content.writeln(element.text.trim());
+    // // Check the tag name and apply appropriate formatting to the text content
+    switch (element.localName) {
+      case 'b':
+      case 'strong':
+        content.write('<b>${element.text.trim()}</b>');
+        break;
+      case 'i':
+      case 'em':
+        content.write('<i>${element.text.trim()}</i>');
+        break;
+      default:
+        content.write(element.text.trim());
+    }
   }
 
   return content.toString();
