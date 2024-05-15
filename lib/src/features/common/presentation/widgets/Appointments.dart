@@ -69,7 +69,7 @@ class Appointments extends HookConsumerWidget {
             SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: data.map(
+                  children: data.where((element) => element.program_status.toString() == "1").map(
                     (artAppointment) {
                       return Builder(
                         builder: (BuildContext context) {
@@ -91,6 +91,16 @@ class Appointments extends HookConsumerWidget {
                             child: SizedBox(
                               width: size.width * 0.99,
                               child: AppointmentCard(
+                                rescheduleButtonText: artAppointment
+                                            .reschedule_status
+                                            .toString() ==
+                                        "0"
+                                    ? "Pending approval"
+                                    : artAppointment.reschedule_status
+                                                .toString() ==
+                                            "1"
+                                        ? "Approved"
+                                        : null,
                                 appointmentType:
                                     artAppointment.appointment_type ??
                                         "Unknown type",
@@ -98,26 +108,46 @@ class Appointments extends HookConsumerWidget {
                                 providerImage:
                                     "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
                                 providerName: "Kiseuni Dispensary",
-                                onRescheduleTap: () => context.goNamed(
-                                  RouteNames.APPOINTMENTS_RESCHEDULE,
-                                  extra: AppointmentRescheduleScreenProps(
-                                      appointmentTime: appointmentDate,
-                                      appointmentType:
-                                          artAppointment.appointment_type ??
-                                              "Unknown type",
-                                      providerName: artAppointment.facility_name ?? "Unknown Facility",
-                                      providerImage:
-                                          "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
-                                      onSubmit: (date, reason) async {
-                                        return await appointmentsNotifier
-                                            .rescheduleAppointment({
-                                          "appt_id": artAppointment.id,
-                                          "reason": reason,
-                                          "reschedule_date":
-                                              date.toIso8601String()
-                                        });
-                                      }),
-                                ),
+                                onRescheduleTap: artAppointment
+                                                .reschedule_status ==
+                                            null ||
+                                        artAppointment.reschedule_status
+                                                .toString() ==
+                                            "2"
+                                    ? () => context.goNamed(
+                                          RouteNames.APPOINTMENTS_RESCHEDULE,
+                                          extra:
+                                              AppointmentRescheduleScreenProps(
+                                            appointmentTime: appointmentDate,
+                                            appointmentType: artAppointment
+                                                    .appointment_type ??
+                                                "Unknown type",
+                                            providerName:
+                                                artAppointment.facility_name ??
+                                                    "Unknown Facility",
+                                            providerImage:
+                                                "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
+                                            onSubmit: artAppointment
+                                                            .reschedule_status ==
+                                                        null ||
+                                                    artAppointment
+                                                            .reschedule_status
+                                                            .toString() ==
+                                                        "2"
+                                                ? (date, reason) async {
+                                                    return await appointmentsNotifier
+                                                        .rescheduleAppointment({
+                                                      "appt_id":
+                                                          artAppointment.id,
+                                                      "reason": reason,
+                                                      "reschedule_date":
+                                                          date.toIso8601String()
+                                                    });
+                                                  }
+                                                : null,
+                                          ),
+                                        )
+                                    : null,
                               ),
                             ),
                           );
