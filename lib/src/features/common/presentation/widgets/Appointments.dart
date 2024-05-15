@@ -105,7 +105,7 @@ class Appointments extends HookConsumerWidget {
                                       appointmentType:
                                           artAppointment.appointment_type ??
                                               "Unknown type",
-                                      providerName: "Kiseuni Dispensary",
+                                      providerName: artAppointment.facility_name ?? "Unknown Facility",
                                       providerImage:
                                           "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
                                       onSubmit: (date, reason) async {
