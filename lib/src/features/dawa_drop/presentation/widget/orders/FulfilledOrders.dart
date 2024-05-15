@@ -14,13 +14,13 @@ class FulfilledOrders extends StatelessWidget {
     final theme = Theme.of(context);
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(Constants.SPACING),
-          child: Text(
-            "Fulfilled Drug Requests",
-            style: theme.textTheme.headlineMedium,
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.all(Constants.SPACING),
+        //   child: Text(
+        //     "Fulfilled Drug Requests",
+        //     style: theme.textTheme.headlineMedium,
+        //   ),
+        // ),
         Expanded(
           child: ListView.builder(
             itemCount: orders.length,
@@ -35,24 +35,85 @@ class FulfilledOrders extends StatelessWidget {
   }
 
   Widget buildOrderTile(BuildContext context, DrugOrder order) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: () => navigateToDeliveryProgression(context, order),
       child: Column(
         children: [
           const Divider(),
           ListTile(
-            title: Text("Delivery Method: ${order.delivery_method ?? ''}"),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Appointment Date: ${DateFormat("dd MMM yyy").format(DateTime.parse(order.appointment?.appointment_date ?? ''))}"),
-                Text("Courier Service: ${order.courierService?.name ?? ''}"),
-                Text("Deliver Person: ${order.deliveryPerson?.fullName ?? ''}"),
-                Text("Deliver Person Phone: ${order.deliveryPerson?.phoneNumber ?? ''}"),
-                Text("Deliver Status: ${order.status ?? ''}"),
-              ],
+            title: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(Constants.SPACING),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Delivery Method: ${order.delivery_method ?? ''}',
+                      style: theme.textTheme.headline6,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                    const SizedBox(height: Constants.SPACING),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.date_range_sharp,
+                          color: Constants.dawaDropColor.withOpacity(0.5),
+                        ),
+                        const SizedBox(width: Constants.SPACING),
+                        Text("Appointment Date: ${DateFormat("dd MMM yyy").format(DateTime.parse(order.appointment?.appointment_date ?? ''))}"),
+                      ],
+                    ),
+                    const SizedBox(height: Constants.SPACING),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.bike_scooter_sharp,
+                          color: Constants.dawaDropColor.withOpacity(0.5),
+                        ),
+                        const SizedBox(width: Constants.SPACING),
+                        Text("Courier Service: ${order.courierService?.name ?? ''}"),
+                      ],
+                    ),
+                    const SizedBox(height: Constants.SPACING),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.person,
+                          color: Constants.dawaDropColor.withOpacity(0.5),
+                        ),
+                        const SizedBox(width: Constants.SPACING),
+                        Text("Deliver Person: ${order.deliveryPerson?.fullName ?? ''}"),
+                      ],
+                    ),
+                    const SizedBox(height: Constants.SPACING),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.phone_android,
+                          color: Constants.dawaDropColor.withOpacity(0.5),
+                        ),
+                        const SizedBox(width: Constants.SPACING),
+                        Text("Deliver Person Phone: ${order.deliveryPerson?.phoneNumber ?? ''}"),
+                      ],
+                    ),
+                    const SizedBox(height: Constants.SPACING),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.rotate_left_outlined,
+                          color: Constants.dawaDropColor.withOpacity(0.5),
+                        ),
+                        const SizedBox(width: Constants.SPACING),
+                        Text("Deliver Status: ${order.status ?? ''}"),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
-            trailing: const Icon(Icons.chevron_right),
+            // trailing: const Icon(Icons.chevron_right),
           ),
         ],
       ),

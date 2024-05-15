@@ -60,7 +60,7 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                                     children: [
                                       Icon(
                                         Icons.app_registration_outlined,
-                                        color: theme.colorScheme.primary,
+                                        color: Constants.dawaDropColor.withOpacity(0.5),
                                       ),
                                       const SizedBox(width: Constants.SPACING),
                                       Text(data[index].appointment_type??''),
@@ -71,7 +71,7 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                                     children: [
                                       Icon(
                                         Icons.calendar_month_outlined,
-                                        color: theme.colorScheme.primary,
+                                        color: Constants.dawaDropColor.withOpacity(0.5),
                                       ),
                                       const SizedBox(width: Constants.SPACING),
                                       Text(data[index].appointment_date),
