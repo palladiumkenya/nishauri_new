@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
+import 'package:nishauri/src/features/dawa_drop/data/providers/drug_order_provider.dart';
 import 'package:nishauri/src/features/hiv/data/models/appointment/art_appointment.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
-class ARTAppointmentDetailScreen extends StatelessWidget {
+class ARTAppointmentDetailScreen extends ConsumerWidget {
   final Appointment artAppointment;
 
   const ARTAppointmentDetailScreen({super.key, required this.artAppointment});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final orderAsync = ref.watch(drugOrderProvider);
+    final bool hasActiveRequest = artAppointment.id != null && orderAsync.when(
+      data: (orders) => orders.any((order) => order.appointment?.id == artAppointment.id),
+      loading: () => false,
+      error: (_, __) => false,
+    );
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -72,11 +80,15 @@ class ARTAppointmentDetailScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(Constants.SPACING),
             child: Button(
-              onPress: () {
+              onPress: hasActiveRequest
+                  ? null
+                  : () {
                 context.goNamed(RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
                     extra: {"payload": artAppointment, "type": "self"});
               },
-              title: "Request Home delivery",
+              title: hasActiveRequest
+                  ? "Active request available for the appointment"
+                  : "Request Home delivery",
             ),
           )
       ]),

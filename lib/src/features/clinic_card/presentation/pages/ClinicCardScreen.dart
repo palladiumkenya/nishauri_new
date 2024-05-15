@@ -6,6 +6,7 @@ import 'package:nishauri/src/features/clinic_card/data/providers/programProvider
 import 'package:nishauri/src/features/clinic_card/presentation/widgets/clinicalDetails.dart';
 import 'package:nishauri/src/shared/display/CustomTabBar.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class ClinicCardScreen extends HookConsumerWidget {
@@ -25,7 +26,7 @@ class ClinicCardScreen extends HookConsumerWidget {
           body: Column(
             children: [
               CustomAppBar(
-                title: "My Clinic card",
+                title: "My Clinic Card",
                 icon: Icons.file_present,
                 color: Colors.blue[900],
                 subTitle: "Access medical services using \nyour clinic cards",
@@ -49,18 +50,9 @@ class ClinicCardScreen extends HookConsumerWidget {
           ),
         );
       },
-      error: (error, _) => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              error.toString(),
-              style: theme.textTheme.headlineSmall,
-            ),
-            const SizedBox(height: Constants.SPACING * 2),
-          ],
-        ),
+      error: (error, _) => BackgroundImageWidget(
+        svgImage: 'assets/images/background.svg',
+        notFoundText: error.toString(),
       ),
       // Text(error.toString())),
       loading: () => Center(

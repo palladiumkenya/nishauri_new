@@ -8,7 +8,7 @@ part of 'courier.dart';
 
 _$CourierImpl _$$CourierImplFromJson(Map<String, dynamic> json) =>
     _$CourierImpl(
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
       description: json['description'] as String?,
     );

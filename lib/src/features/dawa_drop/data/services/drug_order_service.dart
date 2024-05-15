@@ -41,6 +41,7 @@ class DrugOrderService extends HTTPService {
       final List<DrugOrder> programs = programsData.map((json) {
         return DrugOrder(
           appointment: Appointment(
+            id: json("appointment_id"),
             ccc_no: json["ccc_no"],
             appointment_date: json["appointment_date"],
           ),

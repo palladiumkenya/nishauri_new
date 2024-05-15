@@ -8,7 +8,7 @@ part of 'art_drug_order.dart';
 
 _$ARTDrugOrderImpl _$$ARTDrugOrderImplFromJson(Map<String, dynamic> json) =>
     _$ARTDrugOrderImpl(
-      order_id: json['order_id'] as int?,
+      order_id: (json['order_id'] as num?)?.toInt(),
       event: json['event'] == null
           ? null
           : ARTEvent.fromJson(json['event'] as Map<String, dynamic>),

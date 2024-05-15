@@ -32,11 +32,12 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(() => GlobalKey<FormBuilderState>());
-    final currentStep = useState<int>(0);
+    final currentStep = useState<int>(1);
     final theme = Theme.of(context);
     final loading = useState<bool>(false);
 
     final stepFieldsToValidate = [
+      ["mode", "order_type", "appointment"],
       [
         "delivery_method","courier_service",
         "delivery_person","delivery_person_id",
@@ -46,26 +47,26 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
     ];
 
     List<Step> steps = [
-      // Step(
-      //   // title: const Text("Getting Started"),
-      //   title: const Text("Appointment Details"),
-      //   subtitle: const Text(
-      //     "Please confirm the details",
-      //   ),
-      //   content: GettingStarted(
-      //     artAppointment: artAppointment,
-      //     artEvent: artEvent,
-      //     type: type,
-      //   ),
-      //   isActive: currentStep.value == 0,
-      // ),
+      Step(
+        // title: const Text("Getting Started"),
+        title: const Text("Appointment Details"),
+        // subtitle: const Text(
+        //   "Please confirm the details",
+        // ),
+        content: GettingStarted(
+          artAppointment: artAppointment,
+          artEvent: artEvent,
+          type: type,
+        ),
+        isActive: currentStep.value == 0,
+      ),
       Step(
         title: const Text("Delivery preference"),
         subtitle: const Text(
           "These information will help us know how you prefer you drugs delivered",
         ),
         content: const DeliveryPreference(),
-        isActive: currentStep.value == 0,
+        isActive: currentStep.value == 1,
       ),
       Step(
         title: const Text("Delivery Information"),
@@ -73,7 +74,7 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
           "These information will help delivery person locate you and reach out",
         ),
         content: const DeliveryInformation(),
-        isActive: currentStep.value == 1,
+        isActive: currentStep.value == 2,
       ),
       Step(
         title: const Text("Review and Submit"),
@@ -99,12 +100,12 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
             ),
           ),
         ),
-        isActive: currentStep.value == 2,
+        isActive: currentStep.value == 3,
       ),
     ];
 
     void handleSubmit() {
-        debugPrint("=====================>${formKey.currentState?.fields}");
+      debugPrint("=====================>${formKey.currentState?.fields}");
       if (formKey.currentState!.validate()) {
         debugPrint("=====================>${formKey.currentState?.instantValue}");
         loading.value = true;
@@ -113,20 +114,20 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
         ref.read(drugOrderProvider.notifier).createOrder({
           ...formKey.currentState!.instantValue,
           "delivery_pickup_time":
-              pickupTime is DateTime ? pickupTime.toIso8601String() : pickupTime,
+          pickupTime is DateTime ? pickupTime.toIso8601String() : pickupTime,
           "delivery_lat": "",
           "delivery_long": "",
-        ...(formKey.currentState?.instantValue["delivery_method"] == "parcel" ? {
-          // "delivery_person": "",
-          // "delivery_person_id": "",
-          // "delivery_person_contact": "",
-          // "delivery_pickup_time":"",
-          "courier_service": courierService,
-          "delivery_method": "In Parcel",
-        } : {
-          "courier_service": "",
-          "delivery_method": "In Person",
-        }),
+          ...(formKey.currentState?.instantValue["delivery_method"] == "parcel" ? {
+            // "delivery_person": "",
+            // "delivery_person_id": "",
+            // "delivery_person_contact": "",
+            // "delivery_pickup_time":"",
+            "courier_service": courierService,
+            "delivery_method": "In Parcel",
+          } : {
+            "courier_service": "",
+            "delivery_method": "In Person",
+          }),
           ...(formKey.currentState?.instantValue["delivery_method"] == "person" ? {"deliveryPerson": {
             "fullName": formKey.currentState!.instantValue["delivery_person"],
             "nationalId": formKey.currentState!.instantValue["delivery_person_id"],
@@ -159,7 +160,7 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
         currentStep.value = fieldStep;
       }
     }
-  debugPrint("${currentStep.value}");
+    debugPrint("${currentStep.value}");
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -174,7 +175,7 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
           currentStep: currentStep.value,
           steps: steps,
           onStepCancel: () {
-            currentStep.value == 0 ? null : currentStep.value -= 1;
+            currentStep.value == 1 ? null : currentStep.value -= 1;
           },
           onStepContinue: () {
             bool isLastStep = (currentStep.value == steps.length - 1);
@@ -213,11 +214,11 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
                               content: SizedBox(
                                 width: double.maxFinite,
                                 height:
-                                    MediaQuery.of(context).size.height * 0.5,
+                                MediaQuery.of(context).size.height * 0.5,
                                 child: SingleChildScrollView(
                                   child: ReviewAndSubmit(
                                     formState:
-                                        formKey.currentState!.instantValue,
+                                    formKey.currentState!.instantValue,
                                   ),
                                 ),
                               ),

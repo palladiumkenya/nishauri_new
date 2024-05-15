@@ -43,11 +43,11 @@ class AppointmentsScreen extends HookConsumerWidget {
                 },
                 items: const [
                   CustomTabBarItem(
-                    title: "Upcoming Appointments",
+                    title: "Upcoming",
                     icon: Icons.calendar_month,
                   ),
                   CustomTabBarItem(
-                    title: "Previous Appointments",
+                    title: "Previous",
                     icon: Icons.calendar_month,
                   ),
                 ],

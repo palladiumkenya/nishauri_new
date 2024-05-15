@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
+import 'package:nishauri/src/features/dawa_drop/data/providers/drug_order_provider.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -15,6 +15,7 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final appointmentAsync = ref.watch(appointmentProvider(false));
+    final orderAsync = ref.watch(drugOrderProvider);
 
     return appointmentAsync.when(
       data: (data) {
@@ -31,6 +32,13 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                   itemCount: data.length,
                   itemBuilder: (context, index) {
                     final appointment = data[index];
+                    // Check if appointment ID exists and there is an active request for it
+                    final bool hasActiveRequest = appointment.id != null && orderAsync.when(
+                      data: (orders) => orders.any((order) => order.appointment?.id == appointment.id),
+                      loading: () => false,
+                      error: (_, __) => false,
+                    );
+
                     return Column(
                       children: [
                         const Divider(),
@@ -73,11 +81,13 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          onTap: () {
-                            context.goNamed(
-                              RouteNames.HIV_ART_APPOINTMENT_DETAILS,
-                              extra: appointment,
-                            );
+                          onTap: hasActiveRequest ? null : () {
+                            // context.goNamed(
+                            //   RouteNames.HIV_ART_APPOINTMENT_DETAILS,
+                            //   extra: appointment,
+                            // );
+                            context.goNamed(RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
+                                extra: {"payload": appointment, "type": "self"});
                           },
                         ),
                       ],
@@ -87,9 +97,11 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
               ),
               if (data.isEmpty)
                 Expanded(
-                  child: BackgroundImageWidget(
-                    svgImage: 'assets/images/background.svg',
-                    notFoundText: "No Appointments",
+                  child: Center(
+                    child: BackgroundImageWidget(
+                      svgImage: 'assets/images/background.svg',
+                      notFoundText: "No Appointments",
+                    ),
                   ),
                 ),
             ],

@@ -29,8 +29,13 @@ class DawaDropScreen extends StatelessWidget {
           children: <Widget>[
             Container(
               padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
-                color: Constants.dawaDropColor,
+              decoration: BoxDecoration(
+                color: Constants.dawaDropColor.withOpacity(0.5),
+                image: DecorationImage(
+                  image: AssetImage("assets/images/contours.png"),
+                  opacity: 0.1,
+                  fit: BoxFit.cover,
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
