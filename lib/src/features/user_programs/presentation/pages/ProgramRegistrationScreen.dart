@@ -70,6 +70,29 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                           const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                           child: Consumer(
                             builder: (context, ref, child) {
+                              void handleSubmit(){
+                                if (_formKey.currentState!.saveAndValidate()) {
+                                  setState(() {
+                                    _loading = true;
+                                  });
+                                  // final userStateNotifier = ref.read(userProvider.notifier);
+                                  final programsNotifier = ref.read(programProvider.notifier);
+                                  programsNotifier
+                                      .registerProgram(_formKey.currentState!.value)
+                                      .then((value) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text('${value}')),
+                                    );
+                                  }).catchError((err) {
+                                    handleResponseError(context, _formKey.currentState!.fields, err,
+                                        ref.read(authStateProvider.notifier).logout);
+                                  }).whenComplete(() {
+                                    setState(() {
+                                      _loading = false;
+                                    });
+                                  });
+                                }
+                              }
                               final asyncUserPrograms = ref.watch(programProvider);
                               final appointmentsNotifier = ref.watch(appointmentProvider(false).notifier);
                               return asyncUserPrograms.when(
@@ -207,11 +230,9 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                                   .registerProgram(
                                                   _formKey.currentState!.value)
                                                   .then((value) {
+                                                    print('this is new $value');
                                                 ScaffoldMessenger.of(context).showSnackBar(
-                                                  const SnackBar(
-                                                    content:
-                                                    Text('Program Added successfully!,'),
-                                                  ),
+                                                  SnackBar(content: Text('${value}')),
                                                 );
                                                 context.pop();
                                                 appointmentsNotifier.getAppointments();

@@ -24,7 +24,7 @@ class UserProgramController
     }
   }
 
-  Future<ProgramVerificationDetail> registerProgram(
+  Future<String> registerProgram(
       Map<String, dynamic> data) async {
     try {
       final verificationDetail = await _repository.registerProgram(data);

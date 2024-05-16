@@ -127,28 +127,33 @@ class ProgramService extends HTTPService {
         Uri.parse('${Constants.BASE_URL_NEW}/user_programs?user_id=$id'));
     request.headers.addAll(headers);
     print(request.headers);
-    print(request);
     return await request.send();
   }
 
-  Future<ProgramVerificationDetail> registerProgram(
+  Future<String> registerProgram(
       Map<String, dynamic> data) async {
     http.StreamedResponse response =
         await call<Map<String, dynamic>>(registerProgram_, data);
     final responseString = await response.stream.bytesToString();
     final responseData = jsonDecode(responseString);
-    if(responseData["success"] == true && responseData["msg"] == "Program Already Exist Succesfully. Please Login to access personalized data"){
+    if(responseData["success"] == false){
       throw responseData["msg"];
+    } else {
+      return responseData["msg"];
     }
-    return ProgramVerificationDetail.fromJson(responseData);
+    // return ProgramVerificationDetail.fromJson(responseData);
   }
 
   Future<http.StreamedResponse> registerProgram_(
       Map<String, dynamic> data) async {
     final tokenPair = await getCachedToken();
     final id = await _repository.getUserId();
+
+    // Parse program_id to integer
+    final programId = int.parse(data['program_id'].toString());
+
     var user = {'user_id': id};
-    var mergedData = {...data, ...user};
+    var mergedData = {...data, ...user, 'program_id': programId};
     var headers = {
       'Authorization': 'Bearer ${tokenPair.accessToken}',
       'Content-Type': 'application/json',
@@ -158,6 +163,7 @@ class ProgramService extends HTTPService {
         'POST', Uri.parse('${Constants.BASE_URL_NEW}/setprogram'));
     request.body = json.encode(data_);
     request.headers.addAll(headers);
+    print(request.body);
     http.StreamedResponse response = await request.send();
     return response;
   }
