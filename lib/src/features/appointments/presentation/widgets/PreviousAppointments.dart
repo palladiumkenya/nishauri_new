@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
-import 'package:nishauri/src/features/lab/data/models/viral_load.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
 
@@ -14,15 +13,18 @@ class PreviousAppointments extends HookConsumerWidget {
     final currentAppointmentSync = ref.watch(appointmentProvider(true));
     return currentAppointmentSync.when(
       data: (data) {
+        // Filter appointments with program_status == 1
+        final filteredAppointments = data.where((appointment) => appointment.program_status == 1).toList();
+
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
-              child: ListView.builder(
-                itemCount: data.length,
+              child: filteredAppointments.isNotEmpty ? ListView.builder(
+                itemCount: filteredAppointments.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final color = data[index].appt_status == "Missed" ? Colors
-                      .red : theme.colorScheme.primary;
+                  final appointment = filteredAppointments[index];
+                  final color = appointment.appt_status == "Missed" ? Colors.red : theme.colorScheme.primary;
                   return Column(
                     children: [
                       const Divider(),
@@ -34,7 +36,7 @@ class PreviousAppointments extends HookConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  data[index].program_name??'',
+                                  appointment.program_name ?? '',
                                   style: theme.textTheme.headline6,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
@@ -47,7 +49,7 @@ class PreviousAppointments extends HookConsumerWidget {
                                       color: theme.colorScheme.primary,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
-                                    Text(data[index].appointment_type??''),
+                                    Text(appointment.appointment_type ?? ''),
                                   ],
                                 ),
                                 const SizedBox(height: Constants.SPACING),
@@ -58,7 +60,7 @@ class PreviousAppointments extends HookConsumerWidget {
                                       color: theme.colorScheme.primary,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
-                                    Text(data[index].appointment_date),
+                                    Text(appointment.appointment_date),
                                   ],
                                 ),
                                 const SizedBox(height: Constants.SPACING),
@@ -69,7 +71,7 @@ class PreviousAppointments extends HookConsumerWidget {
                                       color: color,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
-                                    Text(data[index].appt_status??''),
+                                    Text(appointment.appt_status ?? ''),
                                   ],
                                 ),
                               ],
@@ -80,6 +82,11 @@ class PreviousAppointments extends HookConsumerWidget {
                     ],
                   );
                 },
+              ) : Center(
+                child: BackgroundImageWidget(
+                  svgImage: 'assets/images/background.svg',
+                  notFoundText: "No appointment found",
+                ),
               ),
             ),
           ],

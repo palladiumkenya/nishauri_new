@@ -19,8 +19,22 @@ class ClinicCardScreen extends HookConsumerWidget {
     final currIndex = useState(0);
     return programAsync.when(
       data: (data) {
+        // Check if the data list is empty
+        if (data.isEmpty) {
+          return BackgroundImageWidget(
+            customAppBar: CustomAppBar(
+              title: "My Clinic Card",
+              icon: Icons.file_present,
+              subTitle: "Access medical services using \nyour clinic cards",
+              color: Colors.blue[900],
+            ),
+            svgImage: 'assets/images/background.svg',
+            notFoundText: "No programs available",
+          );
+        }
+
         final screens =
-            data.map((program) => ClinicalDetailsTab(program: program));
+        data.map((program) => ClinicalDetailsTab(program: program));
 
         return Scaffold(
           body: Column(
@@ -38,10 +52,10 @@ class ClinicCardScreen extends HookConsumerWidget {
                 items: data
                     .map(
                       (program) => CustomTabBarItem(
-                        title: program.name,
-                        icon: Icons.multiple_stop,
-                      ),
-                    )
+                    title: program.name,
+                    icon: Icons.multiple_stop,
+                  ),
+                )
                     .toList(),
                 activeIndex: currIndex.value,
               ),
@@ -54,7 +68,6 @@ class ClinicCardScreen extends HookConsumerWidget {
         svgImage: 'assets/images/background.svg',
         notFoundText: error.toString(),
       ),
-      // Text(error.toString())),
       loading: () => Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
