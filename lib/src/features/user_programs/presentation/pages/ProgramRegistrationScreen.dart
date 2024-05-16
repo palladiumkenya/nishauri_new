@@ -18,6 +18,8 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
+import '../../../appointments/data/providers/appointment_provider.dart';
+
 class ProgramRegistrationScreen extends StatefulWidget {
   const ProgramRegistrationScreen({super.key});
 
@@ -69,6 +71,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                           child: Consumer(
                             builder: (context, ref, child) {
                               final asyncUserPrograms = ref.watch(programProvider);
+                              final appointmentsNotifier = ref.watch(appointmentProvider(false).notifier);
                               return asyncUserPrograms.when(
                                 data: (userPrograms) =>
                                     Column(
@@ -211,6 +214,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                                   ),
                                                 );
                                                 context.pop();
+                                                appointmentsNotifier.getAppointments();
                                                 // context.goNamed(
                                                 //   RouteNames.HIV_PROGRAM
                                                 //     // RouteNames.VERIFY_PROGRAM_OTP,

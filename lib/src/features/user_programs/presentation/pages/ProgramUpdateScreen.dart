@@ -17,6 +17,8 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
+import '../../../appointments/data/providers/appointment_provider.dart';
+
 class ProgramUpdateScreen extends StatefulWidget {
   const ProgramUpdateScreen({super.key});
 
@@ -49,7 +51,6 @@ class _ProgramUpdateScreenState extends State<ProgramUpdateScreen> {
             icon: Icons.remove_done_sharp,
             // color: Colors.white30,
           ),
-
           Expanded(child:       ResponsiveWidgetFormLayout(
             buildPageContent: (context, color) =>
                 SafeArea(
@@ -68,6 +69,7 @@ class _ProgramUpdateScreenState extends State<ProgramUpdateScreen> {
                           child: Consumer(
                             builder: (context, ref, child) {
                               final asyncUserPrograms = ref.watch(programProvider);
+                              final appointmentsNotifier = ref.watch(appointmentProvider(false).notifier);
                               return asyncUserPrograms.when(
                                 data: (userPrograms) =>
                                     Column(
@@ -121,72 +123,75 @@ class _ProgramUpdateScreenState extends State<ProgramUpdateScreen> {
                                             });
                                           },
                                         ),
-                                        // const SizedBox(height: Constants.SPACING),
-                                        // FormBuilderTextField(
-                                        //   name: "mflCode",
-                                        //   decoration: inputDecoration(
-                                        //     prefixIcon: Icons.local_hospital,
-                                        //     label: "Facility code",
-                                        //   ),
-                                        //   validator: FormBuilderValidators.compose([
-                                        //     FormBuilderValidators.required(),
-                                        //   ]),
-                                        // ),
-                                        // const SizedBox(height: Constants.SPACING),
-                                        // Visibility(
-                                        //   visible: _program == ProgramCodeNameIds.HIV, // Show if HIV program is selected
-                                        //   child: FormBuilderTextField(
-                                        //     name: "ccc_no",
-                                        //     decoration: inputDecoration(
-                                        //       placeholder: "e.g 1234567890",
-                                        //       prefixIcon: Icons.verified_user,
-                                        //       label: _getProgramId(_program),
-                                        //     ),
-                                        //     validator: FormBuilderValidators.compose([
-                                        //       FormBuilderValidators.required()
-                                        //     ]),
-                                        //   ),
-                                        // ),
-
-                                        // const SizedBox(height: Constants.SPACING),
-                                        // Visibility(
-                                        //   visible: _program == ProgramCodeNameIds.HIV, // Show if HIV program is selected
-                                        //   child: FormBuilderTextField(
-                                        //     name: "firstname",
-                                        //     decoration: inputDecoration(
-                                        //       placeholder: "e.g John",
-                                        //       prefixIcon: Icons.person,
-                                        //       label: "First Name",
-                                        //     ),
-                                        //     validator: FormBuilderValidators.compose([
-                                        //       FormBuilderValidators.required(),
-                                        //     ]),
-                                        //   ),
-                                        // ),
-
-                                        // FormBuilderTextField(
-                                        //   name: "ccc_no",
-                                        //   decoration: inputDecoration(
-                                        //     placeholder: "e.g 1234567890",
-                                        //     prefixIcon: Icons.verified_user,
-                                        //     label: _getProgramId(_program),
-                                        //   ),
-                                        //   validator: FormBuilderValidators.compose([
-                                        //     FormBuilderValidators.required()
-                                        //   ]),
-                                        // ),
-                                        // const SizedBox(height: Constants.SPACING),
-                                        // FormBuilderTextField(
-                                        //   name: "firstname",
-                                        //   decoration: inputDecoration(
-                                        //     placeholder: "e.g John",
-                                        //     prefixIcon: Icons.person,
-                                        //     label: "First Name",
-                                        //   ),
-                                        //   validator: FormBuilderValidators.compose([
-                                        //     FormBuilderValidators.required(),
-                                        //   ]),
-                                        // ),
+// <<<<<<< HEAD
+//                                         // const SizedBox(height: Constants.SPACING),
+//                                         // FormBuilderTextField(
+//                                         //   name: "mflCode",
+//                                         //   decoration: inputDecoration(
+//                                         //     prefixIcon: Icons.local_hospital,
+//                                         //     label: "Facility code",
+//                                         //   ),
+//                                         //   validator: FormBuilderValidators.compose([
+//                                         //     FormBuilderValidators.required(),
+//                                         //   ]),
+//                                         // ),
+//                                         // const SizedBox(height: Constants.SPACING),
+//                                         // Visibility(
+//                                         //   visible: _program == ProgramCodeNameIds.HIV, // Show if HIV program is selected
+//                                         //   child: FormBuilderTextField(
+//                                         //     name: "ccc_no",
+//                                         //     decoration: inputDecoration(
+//                                         //       placeholder: "e.g 1234567890",
+//                                         //       prefixIcon: Icons.verified_user,
+//                                         //       label: _getProgramId(_program),
+//                                         //     ),
+//                                         //     validator: FormBuilderValidators.compose([
+//                                         //       FormBuilderValidators.required()
+//                                         //     ]),
+//                                         //   ),
+//                                         // ),
+//
+//                                         // const SizedBox(height: Constants.SPACING),
+//                                         // Visibility(
+//                                         //   visible: _program == ProgramCodeNameIds.HIV, // Show if HIV program is selected
+//                                         //   child: FormBuilderTextField(
+//                                         //     name: "firstname",
+//                                         //     decoration: inputDecoration(
+//                                         //       placeholder: "e.g John",
+//                                         //       prefixIcon: Icons.person,
+//                                         //       label: "First Name",
+//                                         //     ),
+//                                         //     validator: FormBuilderValidators.compose([
+//                                         //       FormBuilderValidators.required(),
+//                                         //     ]),
+//                                         //   ),
+//                                         // ),
+//
+//                                         // FormBuilderTextField(
+//                                         //   name: "ccc_no",
+//                                         //   decoration: inputDecoration(
+//                                         //     placeholder: "e.g 1234567890",
+//                                         //     prefixIcon: Icons.verified_user,
+//                                         //     label: _getProgramId(_program),
+//                                         //   ),
+//                                         //   validator: FormBuilderValidators.compose([
+//                                         //     FormBuilderValidators.required()
+//                                         //   ]),
+//                                         // ),
+//                                         // const SizedBox(height: Constants.SPACING),
+//                                         // FormBuilderTextField(
+//                                         //   name: "firstname",
+//                                         //   decoration: inputDecoration(
+//                                         //     placeholder: "e.g John",
+//                                         //     prefixIcon: Icons.person,
+//                                         //     label: "First Name",
+//                                         //   ),
+//                                         //   validator: FormBuilderValidators.compose([
+//                                         //     FormBuilderValidators.required(),
+//                                         //   ]),
+//                                         // ),
+// =======
+// >>>>>>> omosh-appointment
                                         const SizedBox(height: Constants.SPACING),
                                         Button(
                                           title: "Remove Program",
@@ -211,6 +216,7 @@ class _ProgramUpdateScreenState extends State<ProgramUpdateScreen> {
                                                 );
                                                 // context.go("/");
                                                 context.pop();
+                                                appointmentsNotifier.getAppointments();
                                               }).catchError((err) {
                                                 handleResponseError(
                                                     context,

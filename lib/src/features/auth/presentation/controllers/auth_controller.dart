@@ -31,7 +31,6 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
   }
 
   Future<void> login(Map<String, dynamic> credentials) async {
-    try {
       final authResponse = await _repository.authenticate(credentials);
       var msg = authResponse.accessToken ?? '';
       if (msg.isEmpty){
@@ -51,10 +50,6 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
 
         ),
       );
-    } catch (e) {
-      developer.log('-->login ${e.toString()}');
-      rethrow;
-    }
   }
 
   Future<void> register(Map<String, dynamic> data) async {
