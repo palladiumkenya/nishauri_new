@@ -14,17 +14,22 @@ class CurrentAppointments extends HookConsumerWidget {
     final currentAppointmentSync = ref.watch(appointmentProvider(false));
     return currentAppointmentSync.when(
       data: (data) {
-        // Filter appointments with program_status == 1
-        final filteredAppointments = data.where((appointment) => appointment.program_status == 1).toList();
-
+        final activeProgramAppointments =
+        data.where((element) => element.program_status.toString() == "1");
+        if (activeProgramAppointments.isEmpty) {
+          return const BackgroundImageWidget(
+              svgImage: "assets/images/appointments-empty.svg",
+              notFoundText: "No upcoming appointments");
+        }
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
-              child: filteredAppointments.isNotEmpty ? ListView.builder(
-                itemCount: filteredAppointments.length,
+              child: ListView.builder(
+                itemCount: activeProgramAppointments.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final appointment = filteredAppointments[index];
+                  final currAppointment =
+                  activeProgramAppointments.elementAt(index);
                   return Column(
                     children: [
                       const Divider(),
@@ -36,7 +41,7 @@ class CurrentAppointments extends HookConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  appointment.program_name ?? '',
+                                  currAppointment.program_name ?? '',
                                   style: theme.textTheme.headline6,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
@@ -49,7 +54,8 @@ class CurrentAppointments extends HookConsumerWidget {
                                       color: theme.colorScheme.primary,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
-                                    Text(appointment.appointment_type ?? ''),
+                                    Text(
+                                        currAppointment.appointment_type ?? ''),
                                   ],
                                 ),
                                 const SizedBox(height: Constants.SPACING),
@@ -60,7 +66,7 @@ class CurrentAppointments extends HookConsumerWidget {
                                       color: theme.colorScheme.primary,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
-                                    Text(appointment.appointment_date),
+                                    Text(currAppointment.appointment_date),
                                   ],
                                 ),
                               ],
@@ -71,11 +77,6 @@ class CurrentAppointments extends HookConsumerWidget {
                     ],
                   );
                 },
-              ) : Center(
-                child: BackgroundImageWidget(
-                  svgImage: 'assets/images/background.svg',
-                  notFoundText: "No appointment found",
-                ),
               ),
             ),
           ],

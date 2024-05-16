@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
+import 'package:nishauri/src/features/lab/data/models/viral_load.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
 
@@ -13,18 +14,26 @@ class PreviousAppointments extends HookConsumerWidget {
     final currentAppointmentSync = ref.watch(appointmentProvider(true));
     return currentAppointmentSync.when(
       data: (data) {
-        // Filter appointments with program_status == 1
-        final filteredAppointments = data.where((appointment) => appointment.program_status == 1).toList();
+        final activeProgramAppointments =
+        data.where((element) => element.program_status.toString() == "1");
 
+        if (activeProgramAppointments.isEmpty) {
+          return const BackgroundImageWidget(
+              svgImage: "assets/images/appointments-empty.svg",
+              notFoundText: "No Past appointments");
+        }
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
-              child: filteredAppointments.isNotEmpty ? ListView.builder(
-                itemCount: filteredAppointments.length,
+              child: ListView.builder(
+                itemCount: activeProgramAppointments.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final appointment = filteredAppointments[index];
-                  final color = appointment.appt_status == "Missed" ? Colors.red : theme.colorScheme.primary;
+                  final color = data[index].appt_status == "Missed"
+                      ? Colors.red
+                      : theme.colorScheme.primary;
+                  final currAppointment =
+                  activeProgramAppointments.elementAt(index);
                   return Column(
                     children: [
                       const Divider(),
@@ -36,7 +45,7 @@ class PreviousAppointments extends HookConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  appointment.program_name ?? '',
+                                  currAppointment.program_name ?? '',
                                   style: theme.textTheme.headline6,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
@@ -49,7 +58,7 @@ class PreviousAppointments extends HookConsumerWidget {
                                       color: theme.colorScheme.primary,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
-                                    Text(appointment.appointment_type ?? ''),
+                                    Text(currAppointment.appointment_type ?? ''),
                                   ],
                                 ),
                                 const SizedBox(height: Constants.SPACING),
@@ -60,7 +69,7 @@ class PreviousAppointments extends HookConsumerWidget {
                                       color: theme.colorScheme.primary,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
-                                    Text(appointment.appointment_date),
+                                    Text(currAppointment.appointment_date),
                                   ],
                                 ),
                                 const SizedBox(height: Constants.SPACING),
@@ -71,7 +80,7 @@ class PreviousAppointments extends HookConsumerWidget {
                                       color: color,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
-                                    Text(appointment.appt_status ?? ''),
+                                    Text(currAppointment.appt_status ?? ''),
                                   ],
                                 ),
                               ],
@@ -82,11 +91,6 @@ class PreviousAppointments extends HookConsumerWidget {
                     ],
                   );
                 },
-              ) : Center(
-                child: BackgroundImageWidget(
-                  svgImage: 'assets/images/background.svg',
-                  notFoundText: "No appointment found",
-                ),
               ),
             ),
           ],

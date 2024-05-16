@@ -21,6 +21,7 @@ class AppointmentService extends HTTPService {
             .map((e) => Appointment.fromJson({
                   ...e,
                   "id": e["appointment_id"].toString(),
+                  "date_attended": e["visit_date"]
                 }))
             .toList();
       } else {
