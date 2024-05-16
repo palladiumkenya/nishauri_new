@@ -99,6 +99,7 @@ class AllOrders extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: Constants.SPACING),
+
                     Row(
                       children: [
                         Icon(
