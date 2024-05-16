@@ -163,11 +163,13 @@ class _ChatScreenState extends State<ChatScreen> {
               false; // Bot stops typing on failure to receive response
         });
       }
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeOut,
-      );
+      Future.delayed(Duration(milliseconds: 100), () {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+        );
+      });
     } catch (e) {
       setState(() {
         _messages.add(const Message(
@@ -204,9 +206,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   padding: const EdgeInsets.all(Constants.SPACING),
                   child: Row(
                     children: [
-                      Text('Chat with Nuru',style: theme.textTheme.headlineLarge),
+                      Text('Chat with Nuru',
+                          style: theme.textTheme.headlineLarge),
                       const SizedBox(width: Constants.SPACING),
-                      const FaIcon(FontAwesomeIcons.robot)
+                      const FaIcon(FontAwesomeIcons.robot),
                     ],
                   ),
                 ),
@@ -251,8 +254,7 @@ class _ChatScreenState extends State<ChatScreen> {
           decoration: InputDecoration(
             border: InputBorder.none,
             filled: true,
-            fillColor:
-                Theme.of(context).colorScheme.primary.withOpacity(0.2),
+            fillColor: Theme.of(context).colorScheme.primary.withOpacity(0.2),
             hintText: hintText,
             suffixIcon: Wrap(
               children: [
