@@ -53,6 +53,7 @@ class LabResultsScreen extends HookConsumerWidget {
                   onTap: (item, index) {
                     currIndex.value = index;
                   },
+                  activeColor: Constants.labResultsColor,
                   items: const [
                     CustomTabBarItem(
                       title: "Viral Load results",

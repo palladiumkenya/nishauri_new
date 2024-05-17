@@ -55,7 +55,7 @@ class _ViralLoadTrendState extends State<ViralLoadTrend> {
     final theme = Theme.of(context);
     final lineBarsData = [
       LineChartBarData(
-        showingIndicators: showingTooltipOnSpots,
+        // showingIndicators: showingTooltipOnSpots,
         spots: allSpots(widget.data),
         isCurved: true,
         barWidth: 1,
@@ -96,7 +96,7 @@ class _ViralLoadTrendState extends State<ViralLoadTrend> {
                 ]);
               }).toList(),
               lineTouchData: LineTouchData(
-                enabled: true,
+                enabled: false,
                 handleBuiltInTouches: false,
                 touchCallback: (FlTouchEvent event, LineTouchResponse? response) {
                   if (response == null || response.lineBarSpots == null) {
@@ -142,14 +142,14 @@ class _ViralLoadTrendState extends State<ViralLoadTrend> {
 
                 topTitles: const AxisTitles(
                   axisNameWidget: Text(
-                    'Lab Result Trend',
+                    '',
                     textAlign: TextAlign.left,
                   ),
                   axisNameSize: 24,
-                  sideTitles: SideTitles(
-                    showTitles: false,
-                    reservedSize: 0,
-                  ),
+                  // sideTitles: SideTitles(
+                  //   showTitles: false,
+                  //   reservedSize: 0,
+                  // ),
                 ),
               ),
               gridData: const FlGridData(show: false),

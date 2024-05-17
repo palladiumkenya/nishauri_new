@@ -12,13 +12,13 @@ class ViralLoadResults extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(Constants.SIDE_SPACE),
-          child: Text(
-            "Viral Load Results",
-            style: theme.textTheme.headline6,
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.all(Constants.SIDE_SPACE),
+        //   child: Text(
+        //     "Viral Load Results",
+        //     style: theme.textTheme.headline6,
+        //   ),
+        // ),
         Expanded(
           child: ListView.builder(
             itemCount: data.length,

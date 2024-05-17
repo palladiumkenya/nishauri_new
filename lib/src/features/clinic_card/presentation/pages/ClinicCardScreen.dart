@@ -62,6 +62,7 @@ class ClinicCardScreen extends HookConsumerWidget {
                 onTap: (item, index) {
                   currIndex.value = index;
                 },
+                activeColor: Constants.clinicCardColor,
                 items: activePrograms
                     .map(
                       (program) => CustomTabBarItem(

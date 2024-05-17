@@ -55,9 +55,9 @@ class PreviousAppointments extends HookConsumerWidget {
                                 const SizedBox(height: Constants.SPACING),
                                 Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.app_registration_outlined,
-                                      color: theme.colorScheme.primary,
+                                      color: Constants.appointmentsColor,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
                                     Text(currAppointment.appointment_type ?? ''),
@@ -66,9 +66,9 @@ class PreviousAppointments extends HookConsumerWidget {
                                 const SizedBox(height: Constants.SPACING),
                                 Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.calendar_month_outlined,
-                                      color: theme.colorScheme.primary,
+                                      color: Constants.appointmentsColor,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
                                     Text(currAppointment.appointment_date),
