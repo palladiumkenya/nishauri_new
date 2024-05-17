@@ -49,9 +49,9 @@ class CurrentAppointments extends HookConsumerWidget {
                                 const SizedBox(height: Constants.SPACING),
                                 Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.app_registration_outlined,
-                                      color: theme.colorScheme.primary,
+                                      color: Constants.appointmentsColor,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
                                     Text(
@@ -61,12 +61,23 @@ class CurrentAppointments extends HookConsumerWidget {
                                 const SizedBox(height: Constants.SPACING),
                                 Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.calendar_month_outlined,
-                                      color: theme.colorScheme.primary,
+                                      color: Constants.appointmentsColor,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
                                     Text(currAppointment.appointment_date),
+                                  ],
+                                ),
+                                const SizedBox(height: Constants.SPACING),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.local_hospital_sharp,
+                                      color: Constants.appointmentsColor,
+                                    ),
+                                    const SizedBox(width: Constants.SPACING),
+                                    Text(currAppointment.facility_name??''),
                                   ],
                                 ),
                               ],

@@ -21,7 +21,16 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
       data: (data) {
         // Filter appointments based on the condition
         final filteredAppointments = data.where((appointment) => appointment.program_status.toString() == "1").toList();
-
+        if (filteredAppointments.isEmpty) {
+          return BackgroundImageWidget(
+              customAppBar: CustomAppBar(
+                title: "Appointments",
+                icon: Icons.vaccines_sharp,
+                color: Constants.dawaDropColor.withOpacity(0.5),
+              ),
+              svgImage: "assets/images/appointments-empty.svg",
+              notFoundText: "No Appointments");
+        }
         return Scaffold(
           body: Column(
             children: [
@@ -78,6 +87,17 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                                       ),
                                       const SizedBox(width: Constants.SPACING),
                                       Text(filteredAppointments[index].appointment_date),
+                                    ],
+                                  ),
+                                  const SizedBox(height: Constants.SPACING),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.local_hospital_sharp,
+                                        color: Constants.dawaDropColor.withOpacity(0.5),
+                                      ),
+                                      const SizedBox(width: Constants.SPACING),
+                                      Text(filteredAppointments[index].facility_name??''),
                                     ],
                                   ),
                                   const SizedBox(height: Constants.SPACING),

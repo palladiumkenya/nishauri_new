@@ -32,6 +32,7 @@ class AppointmentsScreen extends HookConsumerWidget {
               ),
               CustomTabBar(
                 activeIndex: currIndex.value,
+                activeColor: Constants.appointmentsColor,
                 onTap: (item, index) {
                   currIndex.value = index;
                 },

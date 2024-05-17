@@ -70,7 +70,7 @@ class FacilityDirectoryScreen extends HookWidget {
                     clipBehavior: Clip.antiAlias,
                     decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: "Search by name or code ...",
+                        hintText: "Search by name or MFL code ...",
                         prefixIcon: const Icon(
                           Icons.search_outlined,
                           color: Colors.white,
