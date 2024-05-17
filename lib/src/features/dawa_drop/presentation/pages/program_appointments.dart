@@ -20,7 +20,7 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
     return appointmentAsync.when(
       data: (data) {
         // Filter appointments based on the condition
-        final filteredAppointments = data.where((appointment) => appointment.program_status == 1).toList();
+        final filteredAppointments = data.where((appointment) => appointment.program_status.toString() == "1").toList();
 
         return Scaffold(
           body: Column(
