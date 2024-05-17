@@ -67,7 +67,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: BoxDecoration(),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: Logo(),
+                      child: Logo(
+                        width: 100,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
