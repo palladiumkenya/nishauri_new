@@ -63,7 +63,7 @@ class _ViralLoadTrendState extends State<ViralLoadTrend> {
         shadow: const Shadow(
           blurRadius: 8,
         ),
-        isStrokeCapRound: true,
+        isStrokeCapRound: false,
         dotData: const FlDotData(show: true),
         belowBarData: BarAreaData(
           color: theme.primaryColor.withOpacity(0.1),
@@ -85,16 +85,16 @@ class _ViralLoadTrendState extends State<ViralLoadTrend> {
         child: LayoutBuilder(builder: (context, constraints) {
           return LineChart(
             LineChartData(
-              showingTooltipIndicators: showingTooltipOnSpots.map((index) {
-                return ShowingTooltipIndicators([
-                  LineBarSpot(
-                    tooltipsOnBar,
-                    lineBarsData.indexOf(tooltipsOnBar),
-                    tooltipsOnBar.spots[index],
-
-                  ),
-                ]);
-              }).toList(),
+              // showingTooltipIndicators: showingTooltipOnSpots.map((index) {
+              //   return ShowingTooltipIndicators([
+              //     LineBarSpot(
+              //       tooltipsOnBar,
+              //       lineBarsData.indexOf(tooltipsOnBar),
+              //       tooltipsOnBar.spots[index],
+              //
+              //     ),
+              //   ]);
+              // }).toList(),
               lineTouchData: LineTouchData(
                 enabled: false,
                 handleBuiltInTouches: false,
@@ -125,27 +125,29 @@ class _ViralLoadTrendState extends State<ViralLoadTrend> {
               titlesData: FlTitlesData(
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
-                    showTitles: true,
-                    interval: 1,
-                    getTitlesWidget: (value, meta) {
-                      return bottomTitleWidgets(
-                        value,
-                        meta,
-                        constraints.maxWidth,
-                        widget.data,
-                      );
-                    },
-                    reservedSize: 20,
+                    showTitles: false,
+                    // interval: 1,
+                    // getTitlesWidget: (value, meta) {
+                    //   return bottomTitleWidgets(
+                    //     value,
+                    //     meta,
+                    //     constraints.maxWidth,
+                    //     widget.data,
+                    //   );
+                    // },
+                    // reservedSize: 20,
                   ),
                 ),
                 rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
 
                 topTitles: const AxisTitles(
-                  axisNameWidget: Text(
-                    '',
-                    textAlign: TextAlign.left,
-                  ),
-                  axisNameSize: 24,
+                  sideTitles: SideTitles(showTitles: false),
+                  // axisNameWidget: Text(
+                  //   'VL Trend',
+                  //   textAlign: TextAlign.left,
+                  // ),
+                  // axisNameSize: 24,
                   // sideTitles: SideTitles(
                   //   showTitles: false,
                   //   reservedSize: 0,

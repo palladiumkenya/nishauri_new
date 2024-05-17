@@ -7,6 +7,9 @@ class BackgroundImageWidget extends StatelessWidget {
   final String notFoundText;
   final CustomAppBar? customAppBar;
   final Color? backgroundColor;
+  final double? svgWidth;
+  final double? svgHeight;
+  // final BoxFit? svgFit;
 
   const BackgroundImageWidget({
     Key? key,
@@ -14,6 +17,9 @@ class BackgroundImageWidget extends StatelessWidget {
     required this.svgImage,
     required this.notFoundText,
     this.backgroundColor,
+    this.svgWidth,
+    this.svgHeight,
+    // this.svgFit,
   }) : super(key: key);
 
   @override
@@ -24,7 +30,9 @@ class BackgroundImageWidget extends StatelessWidget {
         children: [
           SvgPicture.asset(
             svgImage,
-            // fit: BoxFit.cover,
+            width: svgWidth,
+            height: svgHeight,
+            fit: BoxFit.scaleDown,
           ),
           if (customAppBar != null)
             Positioned(
@@ -49,4 +57,3 @@ class BackgroundImageWidget extends StatelessWidget {
     );
   }
 }
-

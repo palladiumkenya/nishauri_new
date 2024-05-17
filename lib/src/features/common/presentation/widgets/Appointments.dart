@@ -111,7 +111,7 @@ class Appointments extends HookConsumerWidget {
                                   appointmentTime: appointmentDate,
                                   providerImage:
                                       "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
-                                  providerName: "Kiseuni Dispensary",
+                                  providerName: artAppointment.facility_name??'',
                                   onRescheduleTap: artAppointment
                                                   .reschedule_status ==
                                               null ||
