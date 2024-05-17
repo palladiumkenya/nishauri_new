@@ -27,8 +27,6 @@ class ClinicCardScreen extends HookConsumerWidget {
       data: (data) {
         final activePrograms = data.where((element) {
           if (userPrograms.hasValue) {
-            log("________________|${element.name}|____________________");
-            log("________________|${userPrograms}|____________________");
             return userPrograms.value!
                 .where((e) => element.name == e.program_name && e.isActive)
                 .isNotEmpty;

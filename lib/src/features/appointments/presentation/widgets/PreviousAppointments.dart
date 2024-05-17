@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
@@ -11,8 +13,8 @@ class PreviousAppointments extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final currentAppointmentSync = ref.watch(appointmentProvider(true));
-    return currentAppointmentSync.when(
+    final previousAppointmentsAsync = ref.watch(appointmentProvider(true));
+    return previousAppointmentsAsync.when(
       data: (data) {
         final activeProgramAppointments =
         data.where((element) => element.program_status.toString() == "1");

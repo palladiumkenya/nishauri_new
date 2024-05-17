@@ -95,6 +95,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                               }
                               final asyncUserPrograms = ref.watch(userProgramProvider);
                               final appointmentsNotifier = ref.watch(appointmentProvider(false).notifier);
+                              final previousAppointmentsNotifier = ref.watch(appointmentProvider(true).notifier);
                               return asyncUserPrograms.when(
                                 data: (userPrograms) =>
                                     Column(
@@ -236,6 +237,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                                 );
                                                 context.pop();
                                                 appointmentsNotifier.getAppointments();
+                                                previousAppointmentsNotifier.getAppointments();
                                                 // context.goNamed(
                                                 //   RouteNames.HIV_PROGRAM
                                                 //     // RouteNames.VERIFY_PROGRAM_OTP,

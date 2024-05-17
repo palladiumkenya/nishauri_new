@@ -70,6 +70,8 @@ class _ProgramUpdateScreenState extends State<ProgramUpdateScreen> {
                             builder: (context, ref, child) {
                               final asyncUserPrograms = ref.watch(userProgramProvider);
                               final appointmentsNotifier = ref.watch(appointmentProvider(false).notifier);
+                              final previousAppointmentsNotifier = ref.watch(appointmentProvider(true).notifier);
+
                               return asyncUserPrograms.when(
                                 data: (userPrograms) =>
                                     Column(
@@ -217,6 +219,7 @@ class _ProgramUpdateScreenState extends State<ProgramUpdateScreen> {
                                                 // context.go("/");
                                                 context.pop();
                                                 appointmentsNotifier.getAppointments();
+                                                previousAppointmentsNotifier.getAppointments();
                                               }).catchError((err) {
                                                 handleResponseError(
                                                     context,
