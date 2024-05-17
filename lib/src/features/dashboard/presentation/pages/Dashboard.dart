@@ -18,7 +18,7 @@ class Dashboard extends ConsumerStatefulWidget {
 class _DashboardState extends ConsumerState<Dashboard> {
   @override
   Widget build(BuildContext context) {
-    final userPrograms = ref.watch(programProvider);
+    final userPrograms = ref.watch(userProgramProvider);
 
     return userPrograms.when(
       data: (data) => DefaultTabController(

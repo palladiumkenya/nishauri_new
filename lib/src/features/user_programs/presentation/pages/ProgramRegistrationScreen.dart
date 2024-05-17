@@ -76,7 +76,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                     _loading = true;
                                   });
                                   // final userStateNotifier = ref.read(userProvider.notifier);
-                                  final programsNotifier = ref.read(programProvider.notifier);
+                                  final programsNotifier = ref.read(userProgramProvider.notifier);
                                   programsNotifier
                                       .registerProgram(_formKey.currentState!.value)
                                       .then((value) {
@@ -93,7 +93,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                   });
                                 }
                               }
-                              final asyncUserPrograms = ref.watch(programProvider);
+                              final asyncUserPrograms = ref.watch(userProgramProvider);
                               final appointmentsNotifier = ref.watch(appointmentProvider(false).notifier);
                               return asyncUserPrograms.when(
                                 data: (userPrograms) =>
@@ -220,7 +220,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                           loading: _loading,
                                           onPress: () {
                                             final programsNotifier =
-                                            ref.read(programProvider.notifier);
+                                            ref.read(userProgramProvider.notifier);
                                             if (_formKey.currentState!
                                                 .saveAndValidate()) {
                                               setState(() {

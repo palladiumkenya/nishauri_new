@@ -152,7 +152,7 @@ _showDialog(BuildContext context) {
         height: MediaQuery.of(context).size.height * 0.5,
         child: Consumer(
           builder: (context, ref, child) {
-            final userProgram = ref.watch(programProvider);
+            final userProgram = ref.watch(userProgramProvider);
             final shortcuts = ref.watch(shortcutProvider);
             final shortcutsNotifier = ref.watch(shortcutProvider.notifier);
             return userProgram.when(

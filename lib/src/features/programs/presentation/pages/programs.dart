@@ -39,7 +39,7 @@ class ProgramsMenuScreen extends StatelessWidget {
       body:
         Consumer(
           builder: (context, ref, child) {
-            final userProgram = ref.watch(programProvider);
+            final userProgram = ref.watch(userProgramProvider);
             return Column(
               children: [
                 CustomAppBar(

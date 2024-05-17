@@ -27,13 +27,13 @@ class ProgramVerificationScreen extends HookConsumerWidget {
     final loading = useState<bool>(false);
     final sent = useState<bool>(false);
     final submittingRequest = useState<bool>(false);
-    final programNotifier = ref.watch(programProvider.notifier);
+    final programNotifier = ref.watch(userProgramProvider.notifier);
 
     handleSubmit() {
       if (formKey.currentState != null &&
           formKey.currentState!.saveAndValidate()) {
         loading.value = true;
-        final programNotifier = ref.watch(programProvider.notifier);
+        final programNotifier = ref.watch(userProgramProvider.notifier);
         programNotifier.verifyProgramOTP({
           ...formKey.currentState!.value,
           "programCode": verificationDetail.programCode

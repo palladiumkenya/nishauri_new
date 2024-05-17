@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +11,8 @@ import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
+import '../../../user_programs/data/providers/program_provider.dart';
+
 class ClinicCardScreen extends HookConsumerWidget {
   const ClinicCardScreen({Key? key}) : super(key: key);
 
@@ -16,11 +20,23 @@ class ClinicCardScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final programAsync = ref.watch(programProvider);
+    final userPrograms = ref.watch(userProgramProvider);
+
     final currIndex = useState(0);
     return programAsync.when(
       data: (data) {
+        final activePrograms = data.where((element) {
+          if (userPrograms.hasValue) {
+            log("________________|${element.name}|____________________");
+            log("________________|${userPrograms}|____________________");
+            return userPrograms.value!
+                .where((e) => element.name == e.program_name && e.isActive)
+                .isNotEmpty;
+          }
+          return false;
+        });
         // Check if the data list is empty
-        if (data.isEmpty) {
+        if (activePrograms.isEmpty) {
           return BackgroundImageWidget(
             customAppBar: CustomAppBar(
               title: "My Clinic Card",
@@ -32,9 +48,8 @@ class ClinicCardScreen extends HookConsumerWidget {
             notFoundText: "No programs available",
           );
         }
-
         final screens =
-        data.map((program) => ClinicalDetailsTab(program: program));
+            activePrograms.map((program) => ClinicalDetailsTab(program: program));
 
         return Scaffold(
           body: Column(
@@ -49,13 +64,13 @@ class ClinicCardScreen extends HookConsumerWidget {
                 onTap: (item, index) {
                   currIndex.value = index;
                 },
-                items: data
+                items: activePrograms
                     .map(
                       (program) => CustomTabBarItem(
-                    title: program.name,
-                    icon: Icons.multiple_stop,
-                  ),
-                )
+                        title: program.name,
+                        icon: Icons.multiple_stop,
+                      ),
+                    )
                     .toList(),
                 activeIndex: currIndex.value,
               ),

@@ -23,7 +23,7 @@ class LabResultsScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final labAsync = ref.watch(viralLoadProvider);
-    final userPrograms = ref.watch(programProvider);
+    final userPrograms = ref.watch(userProgramProvider);
     final currIndex = useState(0);
     final isHivStatusActive = userPrograms.hasValue &&
         userPrograms.value!

@@ -12,7 +12,7 @@ class TreatmentSupport extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userPrograms = ref.watch(programProvider);
+    final userPrograms = ref.watch(userProgramProvider);
 
     return userPrograms.when(
       data: (data) {
