@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nishauri/src/features/hiv/presentation/pages/lab_results/art_lab_results.dart';
 import 'package:nishauri/src/features/lab/data/providers/VirolLoadprovider.dart';
 import 'package:nishauri/src/features/lab/presentation/pages/LabResults.dart';
 import 'package:nishauri/src/features/lab/presentation/widget/ViralLoadResult.dart';
@@ -42,7 +43,7 @@ class LabResultsScreen extends HookConsumerWidget {
           body: Column(
             children: [
               const CustomAppBar(
-                title: "ART Lab Results",
+                title: "Lab Results",
                 icon: Icons.vaccines,
                 subTitle: "Unlock you health insights with lab results",
                 color: Constants.labResultsColor,
@@ -77,8 +78,8 @@ class LabResultsScreen extends HookConsumerWidget {
         );
       },
       error: (error, _) => BackgroundImageWidget(
-        customAppBar: CustomAppBar(
-          title: "ART Lab Results",
+        customAppBar: const CustomAppBar(
+          title: "Lab Results",
           icon: Icons.vaccines,
           subTitle: "Unlock your health insights with lab results",
           color: Constants.labResultsColor,
