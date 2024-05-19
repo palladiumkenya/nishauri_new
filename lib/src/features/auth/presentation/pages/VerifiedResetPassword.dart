@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nishauri/src/shared/display/label_input_container.dart';
+import 'package:nishauri/src/shared/display/scafold_stack_body.dart';
 
+import '../../../../shared/display/Logo.dart';
 import '../../../../shared/input/Button.dart';
 import '../../../../shared/layouts/ResponsiveWidgetFormLayout.dart';
 import '../../../../shared/styles/input_styles.dart';
@@ -54,57 +58,57 @@ class VerifiedResetPassword extends HookConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Reset Password"),
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: const Icon(Icons.chevron_left),
-        ),
-      ),
-      body: ResponsiveWidgetFormLayout(
-        buildPageContent: (context, color) => SafeArea(
-          child: Container(
-            padding: const EdgeInsets.all(Constants.SPACING * 2),
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
+        body: ScaffoldStackedBody(
+      body: Column(
+        children: [
+          AppBar(
+            // title: const Text("Sign Up"),
+            backgroundColor: Colors.transparent,
+            leading: IconButton(
+              onPressed: () => context.pop(),
+              icon: SvgPicture.asset(
+                "assets/images/reply-dark.svg",
+                semanticsLabel: "Doctors",
+                fit: BoxFit.contain,
+                width: 40,
+                height: 40,
+              ),
             ),
-            child: FormBuilder(
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: Constants.SPACING),
-                      DecoratedBox(
-                        decoration: const BoxDecoration(),
-                        child: Image.asset(
-                          "assets/images/reset_password.png",
-                          // semanticsLabel: "Doctors",
-                          fit: BoxFit.contain,
-                          height: 150,
-                        ),
+          ),
+          Expanded(
+              child: FormBuilder(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: Constants.SMALL_SPACING),
+                    const DecoratedBox(
+                      decoration: BoxDecoration(),
+                      child: Logo(
+                        size: 100,
                       ),
-                      const SizedBox(height: Constants.SPACING),
-                      const Text(
-                        "Reset password",
-                        style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: Constants.SPACING),
-                      const SizedBox(height: Constants.SPACING),
-                      FormBuilderTextField(
+                    ),
+                    const SizedBox(height: Constants.SMALL_SPACING),
+                    const Text(
+                      "Reset Password 🔒",
+                      style: TextStyle(fontSize: 40),
+                    ),
+                    const SizedBox(height: Constants.SPACING * 3),
+                    LabelInputContainer(
+                      label: "Password",
+                      child: FormBuilderTextField(
                         name: "new_password",
                         obscureText: hidePassword.value,
-                        decoration: inputDecoration(
-                            placeholder: "********",
-                            prefixIcon: Icons.lock,
-                            label: "Password",
+                        decoration: outLineInputDecoration(
+                            placeholder: "Enter you password",
+
                             surfixIcon: hidePassword.value
-                                ? Icons.visibility
-                                : Icons.visibility_off,
+                                ? const Icon(Icons.visibility)
+                                : const Icon(Icons.visibility_off),
                             onSurfixIconPressed: () =>
                                 hidePassword.value = !hidePassword.value),
                         validator: FormBuilderValidators.compose([
@@ -113,17 +117,18 @@ class VerifiedResetPassword extends HookConsumerWidget {
                           FormBuilderValidators.minLength(8),
                         ]),
                       ),
-                      const SizedBox(height: Constants.SPACING),
-                      FormBuilderTextField(
+                    ),
+                    const SizedBox(height: Constants.SPACING),
+                    LabelInputContainer(
+                      label: "Confirm New Password",
+                      child: FormBuilderTextField(
                         obscureText: hidePassword.value,
                         name: "confirm_password",
-                        decoration: inputDecoration(
-                            placeholder: "********",
-                            prefixIcon: Icons.lock,
-                            label: "Confirm Password",
+                        decoration: outLineInputDecoration(
+                            placeholder: "Confirm your password",
                             surfixIcon: hidePassword.value
-                                ? Icons.visibility
-                                : Icons.visibility_off,
+                                ? const Icon(Icons.visibility)
+                                : const Icon(Icons.visibility_off),
                             onSurfixIconPressed: () =>
                                 hidePassword.value = !hidePassword.value),
                         validator: FormBuilderValidators.compose([
@@ -137,19 +142,21 @@ class VerifiedResetPassword extends HookConsumerWidget {
                                   : null
                         ]),
                       ),
-                      const SizedBox(height: Constants.SPACING),
-                      Button(
-                        title: "Reset Password",
-                        onPress: handleSubmit,
-                      )
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: Constants.SPACING * 6),
+                    Button(
+                      title: "Reset Password",
+                      backgroundColor: theme.colorScheme.primary,
+                      textColor: Colors.white,
+                      onPress: handleSubmit,
+                    )
+                  ],
                 ),
               ),
             ),
-          ),
-        ),
+          ))
+        ],
       ),
-    );
+    ));
   }
 }

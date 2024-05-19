@@ -8,6 +8,14 @@ class ScaffoldStackedBody extends StatelessWidget {
 
   const ScaffoldStackedBody({super.key, required this.body});
 
+  factory ScaffoldStackedBody.withSafeArea({required Widget body}) {
+    return ScaffoldStackedBody(
+      body: SafeArea(
+        child: body,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = getOrientationAwareScreenSize(context);

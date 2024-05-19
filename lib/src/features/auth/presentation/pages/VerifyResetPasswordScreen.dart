@@ -8,16 +8,20 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
+import 'package:nishauri/src/shared/display/label_input_container.dart';
+import 'package:nishauri/src/shared/display/scafold_stack_body.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 
+import '../../../../shared/display/Logo.dart';
 import '../../../../utils/routes.dart';
 
 class ResetPasswordVerificationScreen extends HookConsumerWidget {
   final String username;
+
   const ResetPasswordVerificationScreen({super.key, required this.username});
 
   @override
@@ -53,61 +57,85 @@ class ResetPasswordVerificationScreen extends HookConsumerWidget {
       }
     }
 
+    var theme = Theme.of(context);
+
     return Scaffold(
-      body: ResponsiveWidgetFormLayout(
-        buildPageContent: (context, color) => SafeArea(
-          child: FormBuilder(
+        body: ScaffoldStackedBody(
+      body: Column(
+        children: [
+          AppBar(
+            // title: const Text("Sign Up"),
+            backgroundColor: Colors.transparent,
+            leading: IconButton(
+              onPressed: () => context.pop(),
+              icon: SvgPicture.asset(
+                "assets/images/reply-dark.svg",
+                semanticsLabel: "Doctors",
+                fit: BoxFit.contain,
+                width: 40,
+                height: 40,
+              ),
+            ),
+          ),
+          Expanded(
+              child: FormBuilder(
             key: formKey,
             child: SingleChildScrollView(
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: Constants.SPACING),
-                    DecoratedBox(
-                      decoration: const BoxDecoration(),
-                      child: SvgPicture.asset(
-                        "assets/images/security.svg",
-                        semanticsLabel: "Security",
-                        fit: BoxFit.contain,
-                        height: 150,
+                    const SizedBox(height: Constants.SMALL_SPACING),
+                    const DecoratedBox(
+                      decoration: BoxDecoration(),
+                      child: Logo(
+                        size: 100,
                       ),
                     ),
-                    const SizedBox(height: Constants.SPACING),
+                    const SizedBox(height: Constants.SMALL_SPACING),
                     const Text(
-                      "Password Reset Verification",
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
+                      "Verify Account ✅",
+                      style: TextStyle(fontSize: 40),
                     ),
                     const SizedBox(height: Constants.SPACING),
-                    Text(
-                      "Kindly use the OTP Code sent to you\n to complete password reset",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color:
-                            Theme.of(context).colorScheme.onTertiaryContainer,
+                    RichText(
+                      text: TextSpan(
+                        text: "Code has been sent to ",
+                        style: TextStyle(color: theme.colorScheme.onSurface),
+                        children: [
+                          TextSpan(
+                            text: username,
+                            style: TextStyle(
+                              color: theme.colorScheme.primary,
+                            ),
+                          ),
+                          const TextSpan(
+                            text: "\n\nEnter the code to verify account",
+                          ),
+                        ],
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: Constants.SPACING),
-                    FormBuilderTextField(
-                      name: "otp",
-                      decoration: widgetSurfixIconDecoration(
-                        placeholder: "Enter OTP Verification code",
-                        prefixIcon: Icons.abc,
-                        label: "OTP verification code",
+                    const SizedBox(height: Constants.SPACING * 3),
+                    LabelInputContainer(
+                      label: "Enter Code",
+                      child: FormBuilderTextField(
+                        name: "otp",
+                        decoration: outLineInputDecoration(
+                          placeholder: "5 Digit Code",
+                        ),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
+                        keyboardType: TextInputType.number,
                       ),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(),
-                      ]),
-                      keyboardType: TextInputType.number,
                     ),
-                    const SizedBox(height: Constants.SPACING),
-                    const SizedBox(height: Constants.SPACING),
+                    const SizedBox(height: Constants.SPACING * 6),
                     Button(
-                      title: "Verify",
+                      title: "Verify Account",
+                      backgroundColor: theme.colorScheme.primary,
+                      textColor: Colors.white,
                       onPress: handleSubmit,
                       loading: loading.value,
                     ),
@@ -126,9 +154,9 @@ class ResetPasswordVerificationScreen extends HookConsumerWidget {
                 ),
               ),
             ),
-          ),
-        ),
+          ))
+        ],
       ),
-    );
+    ));
   }
 }
