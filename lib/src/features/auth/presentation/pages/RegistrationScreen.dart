@@ -96,7 +96,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               fontSize: 40),
                         ),
                         const SizedBox(height: Constants.SPACING),
-                        const SizedBox(height: Constants.SMALL_SPACING),
                         Row(
                           children: [
                             Expanded(
