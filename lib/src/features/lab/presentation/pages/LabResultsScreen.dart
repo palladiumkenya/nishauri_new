@@ -62,6 +62,7 @@ class LabResultsScreen extends HookConsumerWidget {
           onTap: (item, index) {
             currIndex.value = index;
           },
+          activeColor: Constants.labResultsColor,
           activeIndex: currIndex.value,
           items: [
             ..._getProgramSpecificTestTabBarItem(userPrograms.valueOrNull ?? []),
