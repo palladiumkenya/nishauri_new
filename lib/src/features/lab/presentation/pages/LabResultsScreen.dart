@@ -71,45 +71,9 @@ class LabResultsScreen extends HookConsumerWidget {
           ],
         ),
         Expanded(child: screen[currIndex.value]),
-        // if (!isHivStatusActive)
-        //   const Expanded(
-        //     child: BackgroundImageWidget(
-        //         svgImage: 'assets/images/background.svg',
-        //         notFoundText: "No Lab results"),
-        //   )
+
       ],
     ));
-
-    return userPrograms.when(
-      data: (data) {
-        return const Text("data");
-      },
-      error: (error, _) => BackgroundImageWidget(
-        customAppBar: const CustomAppBar(
-          title: "Lab Results",
-          icon: Icons.vaccines,
-          subTitle: "Unlock your health insights with lab results",
-          color: Constants.labResultsColor,
-        ),
-        svgImage: 'assets/images/background.svg',
-        notFoundText: error.toString(),
-      ),
-      // Text(error.toString())),
-      loading: () => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "Loading Lab Results",
-              style: theme.textTheme.headline6,
-            ),
-            const SizedBox(height: Constants.SPACING * 2),
-            const CircularProgressIndicator(),
-          ],
-        ),
-      ),
-    );
   }
 }
 
