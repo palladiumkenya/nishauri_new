@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/hiv/presentation/pages/lab_results/art_lab_results.dart';
@@ -17,65 +18,71 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
+import '../../../user_programs/data/models/user_program.dart';
+
 class LabResultsScreen extends HookConsumerWidget {
   const LabResultsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final labAsync = ref.watch(viralLoadProvider);
     final userPrograms = ref.watch(userProgramProvider);
     final currIndex = useState(0);
-    final isHivStatusActive = userPrograms.hasValue &&
-        userPrograms.value!
-            .where((element) =>
-                element.id.toString() == ProgramCodeNameIds.HIV &&
-                element.isActive)
-            .isNotEmpty;
 
-    return labAsync.when(
+    final screen = [
+      ..._getProgramSpecificLabTest(userPrograms.valueOrNull ?? []),
+
+      const Center(
+        child: BackgroundImageWidget(
+            svgImage: 'assets/images/background.svg',
+            notFoundText: "No Stool Lab tests"),
+      ),
+      const Center(
+        child: BackgroundImageWidget(
+            svgImage: 'assets/images/background.svg',
+            notFoundText: "No Blood lab Tests"),
+      ),
+      const Center(
+        child: BackgroundImageWidget(
+            svgImage: 'assets/images/background.svg',
+            notFoundText: "No Urine lab Test"),
+      ),
+    ];
+
+    return Scaffold(
+        body: Column(
+      children: [
+        const CustomAppBar(
+          title: "Lab Results",
+          icon: FontAwesomeIcons.vial,
+          subTitle: "Unlock you health insights with lab results",
+          color: Constants.labResultsColor,
+        ),
+        CustomTabBar(
+          onTap: (item, index) {
+            currIndex.value = index;
+          },
+          activeIndex: currIndex.value,
+          items: [
+            ..._getProgramSpecificTestTabBarItem(userPrograms.valueOrNull ?? []),
+            const CustomTabBarItem(title: "Stool Test"),
+            const CustomTabBarItem(title: "Blood Test"),
+            const CustomTabBarItem(title: "Urine Test"),
+          ],
+        ),
+        Expanded(child: screen[currIndex.value]),
+        // if (!isHivStatusActive)
+        //   const Expanded(
+        //     child: BackgroundImageWidget(
+        //         svgImage: 'assets/images/background.svg',
+        //         notFoundText: "No Lab results"),
+        //   )
+      ],
+    ));
+
+    return userPrograms.when(
       data: (data) {
-        final screens = [
-          ViralLoadResults(data: data),
-          ViralLoadTrend(data: data),
-        ];
-        return Scaffold(
-          body: Column(
-            children: [
-              const CustomAppBar(
-                title: "Lab Results",
-                icon: Icons.vaccines,
-                subTitle: "Unlock you health insights with lab results",
-                color: Constants.labResultsColor,
-              ),
-              if (isHivStatusActive)
-                CustomTabBar(
-                  activeIndex: currIndex.value,
-                  onTap: (item, index) {
-                    currIndex.value = index;
-                  },
-                  activeColor: Constants.labResultsColor,
-                  items: const [
-                    CustomTabBarItem(
-                      title: "Viral Load results",
-                      icon: Icons.medication,
-                    ),
-                    CustomTabBarItem(
-                      title: "Viral Load Trend",
-                      icon: Icons.auto_graph_outlined,
-                    ),
-                  ],
-                ),
-              if (isHivStatusActive) Expanded(child: screens[currIndex.value]),
-              if (!isHivStatusActive)
-                const Expanded(
-                  child: BackgroundImageWidget(
-                      svgImage: 'assets/images/background.svg',
-                      notFoundText: "No Lab results"),
-                )
-            ],
-          ),
-        );
+        return const Text("data");
       },
       error: (error, _) => BackgroundImageWidget(
         customAppBar: const CustomAppBar(
@@ -104,4 +111,25 @@ class LabResultsScreen extends HookConsumerWidget {
       ),
     );
   }
+}
+
+List<CustomTabBarItem> _getProgramSpecificTestTabBarItem(
+    List<UserProgram> programs) {
+  final List<CustomTabBarItem> tabs = [];
+  programs.where((element) => element.isActive).forEach((e) {
+    if (e.id == ProgramCodeNameIds.HIV) {
+      tabs.add(const CustomTabBarItem(title: "Viral Load Test"));
+    }
+  });
+  return tabs;
+}
+
+List<Widget> _getProgramSpecificLabTest(List<UserProgram> programs) {
+  final List<Widget> screens = [];
+  programs.where((element) => element.isActive).forEach((e) {
+    if (e.id == ProgramCodeNameIds.HIV) {
+      screens.add(const ARTLabResults());
+    }
+  });
+  return screens;
 }
