@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
-import 'package:nishauri/src/shared/display/CustomButton.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
+import 'package:nishauri/src/shared/display/label_input_container.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
@@ -36,12 +36,20 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(""),
+        // title: const Text("Sign Up"),
+        backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () => context.pop(),
-          icon: const Icon(Icons.chevron_left),
+          icon: SvgPicture.asset(
+            "assets/images/reply-dark.svg",
+            semanticsLabel: "Doctors",
+            fit: BoxFit.contain,
+            width: 40,
+            height: 40,
+          ),
         ),
       ),
       body: ResponsiveWidgetFormLayout(
@@ -49,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: FormBuilder(
           key: _formKey,
           child: Container(
-            // padding: const EdgeInsets.all(Constants.SPACING * 2),
+            padding: const EdgeInsets.all(Constants.SPACING * 2),
             decoration: BoxDecoration(
               color: color,
               borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
@@ -59,97 +67,72 @@ class _LoginScreenState extends State<LoginScreen> {
                 horizontal: 10,
               ),
               child: Column(
-                // mainAxisAlignment: MainAxisAlignment.start,
-                // crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: Constants.SPACING),
                   const DecoratedBox(
                     decoration: BoxDecoration(),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Logo(
-                        width: 100,
-                      ),
-                    ),
+                    child: Logo(size: 100),
                   ),
                   const SizedBox(height: 20),
-                  const Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Hello, Welcome back 👋",
-                      style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 50),
-                  const Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Phone Number",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  FormBuilderTextField(
-                    name: "user_name",
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                      FormBuilderValidators.minLength(10,
-                          errorText: 'Phone number must be 10 digits long'),
-                      FormBuilderValidators.maxLength(10,
-                          errorText: 'Phone number must be 10 digits long'),
-                      (value) {
-                        if (value != null &&
-                            value.isNotEmpty &&
-                            !value.startsWith('0')) {
-                          return 'Phone number must start with zero';
-                        }
-                        return null;
-                      },
-                    ]),
-                    decoration: inputDecoration(
-                      prefixIcon: Icons.account_circle,
-                      label: "Enter your number",
-                      placeholder: "e.g 0700000000",
-                    ),
-                    keyboardType: TextInputType.phone,
+                  const Text(
+                    "Hello, Welcome back 👋",
+                    style: TextStyle(fontSize: 40),
                   ),
                   const SizedBox(height: Constants.SPACING),
-                  const Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Password",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
+                  LabelInputContainer(
+                    label: "Phone Number",
+                    child: FormBuilderTextField(
+                      name: "user_name",
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        FormBuilderValidators.minLength(10,
+                            errorText: 'Phone number must be 10 digits long'),
+                        FormBuilderValidators.maxLength(10,
+                            errorText: 'Phone number must be 10 digits long'),
+                        (value) {
+                          if (value != null &&
+                              value.isNotEmpty &&
+                              !value.startsWith('0')) {
+                            return 'Phone number must start with zero';
+                          }
+                          return null;
+                        },
+                      ]),
+                      decoration: outLineInputDecoration(
+                        // prefixIcon: Icons.account_circle,
+                        // label: "Phone Number",
+                        placeholder: "Enter your number",
                       ),
+                      keyboardType: TextInputType.phone,
                     ),
                   ),
-                  FormBuilderTextField(
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                    ]),
-                    name: "Password",
-                    obscureText: _hidePassword,
-                    decoration: inputDecoration(
-                        prefixIcon: Icons.lock,
-                        label: "Password",
-                        placeholder: "********",
-                        onSurfixIconPressed: _togglePassword,
-                        surfixIcon: _hidePassword
-                            ? Icons.visibility
-                            : Icons.visibility_off),
+                  const SizedBox(height: Constants.SPACING),
+                  LabelInputContainer(
+                    label: "Password",
+                    child: FormBuilderTextField(
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                      ]),
+                      name: "password",
+                      obscureText: _hidePassword,
+                      decoration: outLineInputDecoration(
+                          // prefixIcon: Icons.lock,
+                          // label: "Password",
+                          placeholder: "Enter your password",
+                          onSurfixIconPressed: _togglePassword,
+                          surfixIcon: _hidePassword
+                              ? const Icon(Icons.visibility)
+                              : const Icon(Icons.visibility_off)),
+                    ),
                   ),
+                  const SizedBox(height: Constants.SPACING * 2),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       LinkedRichText(
-                        linked: "",
                         unlinked: "Forgot password ? ",
+                        linked: "",
                         onPress: () =>
                             context.goNamed(RouteNames.RESET_PASSWORD_SCREEN),
                       ),
@@ -158,63 +141,56 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: Constants.SPACING),
                   Consumer(
                     builder: (context, ref, child) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CustomButton(
-                          title: "Login",
-                          loading: _loading,
-                          backgroundColor: const Color.fromRGBO(64, 87, 162, 1),
-                          textColor: Colors.white,
-                          titleStyle: const TextStyle(
-                            fontWeight: FontWeight.w200,
-                          ),
-                          onPress: () {
-                            if (_formKey.currentState != null &&
-                                _formKey.currentState!.saveAndValidate()) {
-                              setState(() {
-                                _loading = true;
-                              });
-                              final authNotifier =
-                                  ref.read(authStateProvider.notifier);
-                              authNotifier
-                                  .login(_formKey.currentState!.value)
-                                  .then((_) {
-                                //     Update user state
-                                ref.read(userProvider.notifier).getUser();
-                              }).then(
-                                (_) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Login successful!'),
-                                    ),
-                                  );
-                                },
-                              ).catchError((error) {
-                                handleResponseError(
-                                  context,
-                                  _formKey.currentState!.fields,
-                                  error,
-                                  authNotifier.logout,
+                      return Button(
+                        title: "LOGIN",
+                        loading: _loading,
+                        backgroundColor: theme.colorScheme.primary,
+                        textColor: Colors.white,
+                        onPress: () {
+                          if (_formKey.currentState != null &&
+                              _formKey.currentState!.saveAndValidate()) {
+                            setState(() {
+                              _loading = true;
+                            });
+                            final authNotifier =
+                                ref.read(authStateProvider.notifier);
+                            authNotifier
+                                .login(_formKey.currentState!.value)
+                                .then((_) {
+                              //     Update user state
+                              ref.read(userProvider.notifier).getUser();
+                            }).then(
+                              (_) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Login successful!'),
+                                  ),
                                 );
-                              }).whenComplete(
-                                () {
-                                  if (mounted) {
-                                    setState(() {
-                                      _loading = false;
-                                    });
-                                  }
-                                },
+                              },
+                            ).catchError((error) {
+                              handleResponseError(
+                                context,
+                                _formKey.currentState!.fields,
+                                error,
+                                authNotifier.logout,
                               );
-                            }
-                          },
-                        ),
+                            }).whenComplete(
+                              () {
+                                if (mounted) {
+                                  setState(() {
+                                    _loading = false;
+                                  });
+                                }
+                              },
+                            );
+                          }
+                        },
                       );
                     },
                   ),
                   const SizedBox(
-                    height: Constants.SPACING,
+                    height: Constants.SPACING * 2,
                   ),
-                  const SizedBox(height: Constants.SPACING),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -225,9 +201,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             context.goNamed(RouteNames.REGISTER_SCREEN),
                       ),
                     ],
-                  ),
-                  const SizedBox(
-                    height: Constants.SPACING * 6,
                   ),
                 ],
               ),
