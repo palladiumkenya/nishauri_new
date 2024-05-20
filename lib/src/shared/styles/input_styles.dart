@@ -27,7 +27,6 @@ InputDecoration inputDecoration({
           : null);
 }
 
-
 InputDecoration outLineInputDecoration({
   double? borderRadius,
   Widget? surfixIcon,
@@ -40,14 +39,11 @@ InputDecoration outLineInputDecoration({
           Radius.circular(borderRadius ?? Constants.ROUNDNESS),
         ),
       ),
-
       hintText: placeholder,
       suffixIcon: surfixIcon != null
           ? IconButton(onPressed: onSurfixIconPressed, icon: surfixIcon)
           : null);
 }
-
-
 
 InputDecoration widgetSurfixIconDecoration({
   double? borderRadius,

@@ -69,7 +69,12 @@ class _ChatScreenState extends State<ChatScreen> {
   final ScrollController _scrollController = ScrollController();
   final ChatbotRepository _repository = ChatbotRepository(ChatbotService());
 
-  final List<Message> _messages = [];
+  final List<Message> _messages = [
+    const Message(
+      question: "Welcome to Nuru \nHow can I assist you today?",
+      isSentByUser: false,
+    ),
+  ];
   bool _isBotTyping = false;
 
   Widget _buildMessage(Message message) {
