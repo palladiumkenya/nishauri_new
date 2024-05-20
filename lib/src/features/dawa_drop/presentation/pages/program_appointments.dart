@@ -9,7 +9,7 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 class ProgramAppointmentsScreen extends ConsumerWidget {
-  const ProgramAppointmentsScreen({Key? key});
+  const ProgramAppointmentsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,13 +23,14 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
         final filteredAppointments = data.where((appointment) => appointment.program_status.toString() == "1").toList();
         if (filteredAppointments.isEmpty) {
           return BackgroundImageWidget(
-              customAppBar: CustomAppBar(
-                title: "Appointments",
-                icon: Icons.vaccines_sharp,
-                color: Constants.dawaDropColor.withOpacity(0.5),
-              ),
-              svgImage: "assets/images/appointments-empty.svg",
-              notFoundText: "No Appointments");
+            customAppBar: CustomAppBar(
+              title: "Appointments",
+              icon: Icons.vaccines_sharp,
+              color: Constants.dawaDropColor.withOpacity(0.5),
+            ),
+            svgImage: "assets/images/appointments-empty.svg",
+            notFoundText: "No Appointments",
+          );
         }
         return Scaffold(
           body: Column(
@@ -47,6 +48,12 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                     // Check if appointment ID exists and there is an active request for it
                     final bool hasActiveRequest = appointment.id != null && orderAsync.when(
                       data: (orders) => orders.any((order) => order.appointment?.id == appointment.id),
+                      loading: () => false,
+                      error: (_, __) => false,
+                    );
+
+                    final bool eligibleAppointment = appointment.id != null && orderAsync.when(
+                      data: (orders) => orders.any((order) => order.appointment?.appointment_type == "Re-fill"),
                       loading: () => false,
                       error: (_, __) => false,
                     );
@@ -97,43 +104,47 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                                         color: Constants.dawaDropColor.withOpacity(0.5),
                                       ),
                                       const SizedBox(width: Constants.SPACING),
-                                      Text(filteredAppointments[index].facility_name??''),
+                                      Text(filteredAppointments[index].facility_name ?? ''),
                                     ],
                                   ),
                                   const SizedBox(height: Constants.SPACING),
                                   // Display text based on whether there is an active request
                                   Text(
-                                    hasActiveRequest ? "Appointment has an active request" : "Touch to Request Home delivery",
+                                    hasActiveRequest
+                                        ? "Appointment has an active request"
+                                        : eligibleAppointment
+                                        ? "Request Home delivery"
+                                        : "",
                                     style: TextStyle(
-                                      color: hasActiveRequest ? Colors.grey : Colors.green,
+                                      color: hasActiveRequest ? Constants.appointmentsColor : Constants.labResultsColor,
                                     ),
                                   ),
+                                  const SizedBox(height: Constants.SPACING),
+                                  // Conditionally display the container with the button
+                                  if (!hasActiveRequest && eligibleAppointment)
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: theme.primaryColor.withOpacity(0.5),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          context.goNamed(RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
+                                              extra: {"payload": appointment, "type": "self"});
+                                        },
+                                        icon: const Icon(Icons.forward),
+                                      ),
+                                    ),
                                 ],
                               ),
                             ),
                           ),
-                          // Disable onTap if there is an active request
-                          onTap: hasActiveRequest
-                              ? null
-                              : () {
-                            context.goNamed(RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
-                                extra: {"payload": appointment, "type": "self"});
-                          },
                         ),
                       ],
                     );
                   },
                 ),
               ),
-              // if (filteredAppointments.isEmpty)
-              //   Expanded(
-              //     child: Center(
-              //       child: BackgroundImageWidget(
-              //         svgImage: 'assets/images/background.svg',
-              //         notFoundText: "No Appointments",
-              //       ),
-              //     ),
-              //   ),
             ],
           ),
         );
