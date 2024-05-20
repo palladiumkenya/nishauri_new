@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
@@ -11,18 +13,29 @@ class PreviousAppointments extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final currentAppointmentSync = ref.watch(appointmentProvider(true));
-    return currentAppointmentSync.when(
+    final previousAppointmentsAsync = ref.watch(appointmentProvider(true));
+    return previousAppointmentsAsync.when(
       data: (data) {
+        final activeProgramAppointments =
+        data.where((element) => element.program_status.toString() == "1");
+
+        if (activeProgramAppointments.isEmpty) {
+          return const BackgroundImageWidget(
+              svgImage: "assets/images/appointments-empty.svg",
+              notFoundText: "No Past appointments");
+        }
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: data.length,
+                itemCount: activeProgramAppointments.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final color = data[index].appt_status == "Missed" ? Colors
-                      .red : theme.colorScheme.primary;
+                  final color = data[index].appt_status == "Missed"
+                      ? Colors.red
+                      : theme.colorScheme.primary;
+                  final currAppointment =
+                  activeProgramAppointments.elementAt(index);
                   return Column(
                     children: [
                       const Divider(),
@@ -34,7 +47,7 @@ class PreviousAppointments extends HookConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  data[index].program_name??'',
+                                  currAppointment.program_name ?? '',
                                   style: theme.textTheme.headline6,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
@@ -42,23 +55,23 @@ class PreviousAppointments extends HookConsumerWidget {
                                 const SizedBox(height: Constants.SPACING),
                                 Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.app_registration_outlined,
-                                      color: theme.colorScheme.primary,
+                                      color: Constants.appointmentsColor,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
-                                    Text(data[index].appointment_type??''),
+                                    Text(currAppointment.appointment_type ?? ''),
                                   ],
                                 ),
                                 const SizedBox(height: Constants.SPACING),
                                 Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.calendar_month_outlined,
-                                      color: theme.colorScheme.primary,
+                                      color: Constants.appointmentsColor,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
-                                    Text(data[index].appointment_date),
+                                    Text(currAppointment.appointment_date),
                                   ],
                                 ),
                                 const SizedBox(height: Constants.SPACING),
@@ -69,7 +82,7 @@ class PreviousAppointments extends HookConsumerWidget {
                                       color: color,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
-                                    Text(data[index].appt_status??''),
+                                    Text(currAppointment.appt_status ?? ''),
                                   ],
                                 ),
                               ],

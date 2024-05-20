@@ -27,6 +27,28 @@ InputDecoration inputDecoration({
           : null);
 }
 
+
+InputDecoration outLineInputDecoration({
+  double? borderRadius,
+  Widget? surfixIcon,
+  String? placeholder,
+  final Function()? onSurfixIconPressed,
+}) {
+  return InputDecoration(
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(borderRadius ?? Constants.ROUNDNESS),
+        ),
+      ),
+
+      hintText: placeholder,
+      suffixIcon: surfixIcon != null
+          ? IconButton(onPressed: onSurfixIconPressed, icon: surfixIcon)
+          : null);
+}
+
+
+
 InputDecoration widgetSurfixIconDecoration({
   double? borderRadius,
   required IconData prefixIcon,

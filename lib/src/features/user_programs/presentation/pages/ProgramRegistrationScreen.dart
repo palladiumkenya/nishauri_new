@@ -70,8 +70,32 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                           const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                           child: Consumer(
                             builder: (context, ref, child) {
-                              final asyncUserPrograms = ref.watch(programProvider);
+                              void handleSubmit(){
+                                if (_formKey.currentState!.saveAndValidate()) {
+                                  setState(() {
+                                    _loading = true;
+                                  });
+                                  // final userStateNotifier = ref.read(userProvider.notifier);
+                                  final programsNotifier = ref.read(userProgramProvider.notifier);
+                                  programsNotifier
+                                      .registerProgram(_formKey.currentState!.value)
+                                      .then((value) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text('${value}')),
+                                    );
+                                  }).catchError((err) {
+                                    handleResponseError(context, _formKey.currentState!.fields, err,
+                                        ref.read(authStateProvider.notifier).logout);
+                                  }).whenComplete(() {
+                                    setState(() {
+                                      _loading = false;
+                                    });
+                                  });
+                                }
+                              }
+                              final asyncUserPrograms = ref.watch(userProgramProvider);
                               final appointmentsNotifier = ref.watch(appointmentProvider(false).notifier);
+                              final previousAppointmentsNotifier = ref.watch(appointmentProvider(true).notifier);
                               return asyncUserPrograms.when(
                                 data: (userPrograms) =>
                                     Column(
@@ -197,7 +221,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                           loading: _loading,
                                           onPress: () {
                                             final programsNotifier =
-                                            ref.read(programProvider.notifier);
+                                            ref.read(userProgramProvider.notifier);
                                             if (_formKey.currentState!
                                                 .saveAndValidate()) {
                                               setState(() {
@@ -207,14 +231,13 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                                   .registerProgram(
                                                   _formKey.currentState!.value)
                                                   .then((value) {
+                                                    print('this is new $value');
                                                 ScaffoldMessenger.of(context).showSnackBar(
-                                                  const SnackBar(
-                                                    content:
-                                                    Text('Program Added successfully!,'),
-                                                  ),
+                                                  SnackBar(content: Text('${value}')),
                                                 );
                                                 context.pop();
                                                 appointmentsNotifier.getAppointments();
+                                                previousAppointmentsNotifier.getAppointments();
                                                 // context.goNamed(
                                                 //   RouteNames.HIV_PROGRAM
                                                 //     // RouteNames.VERIFY_PROGRAM_OTP,

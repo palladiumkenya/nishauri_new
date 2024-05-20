@@ -43,7 +43,7 @@ class MainMenuScreen extends StatelessWidget {
           SafeArea(
             child: Consumer(
               builder: (context, ref, child) {
-                final userProgram = ref.watch(programProvider);
+                final userProgram = ref.watch(userProgramProvider);
                 return Column(
                   children: [
                     const SizedBox(height: Constants.SPACING),

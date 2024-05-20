@@ -68,8 +68,10 @@ class _ProgramUpdateScreenState extends State<ProgramUpdateScreen> {
                           const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                           child: Consumer(
                             builder: (context, ref, child) {
-                              final asyncUserPrograms = ref.watch(programProvider);
+                              final asyncUserPrograms = ref.watch(userProgramProvider);
                               final appointmentsNotifier = ref.watch(appointmentProvider(false).notifier);
+                              final previousAppointmentsNotifier = ref.watch(appointmentProvider(true).notifier);
+
                               return asyncUserPrograms.when(
                                 data: (userPrograms) =>
                                     Column(
@@ -198,7 +200,7 @@ class _ProgramUpdateScreenState extends State<ProgramUpdateScreen> {
                                           loading: _loading,
                                           onPress: () {
                                             final programsNotifier =
-                                            ref.read(programProvider.notifier);
+                                            ref.read(userProgramProvider.notifier);
                                             if (_formKey.currentState!
                                                 .saveAndValidate()) {
                                               setState(() {
@@ -217,6 +219,7 @@ class _ProgramUpdateScreenState extends State<ProgramUpdateScreen> {
                                                 // context.go("/");
                                                 context.pop();
                                                 appointmentsNotifier.getAppointments();
+                                                previousAppointmentsNotifier.getAppointments();
                                               }).catchError((err) {
                                                 handleResponseError(
                                                     context,

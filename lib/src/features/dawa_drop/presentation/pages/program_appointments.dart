@@ -19,6 +19,18 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
 
     return appointmentAsync.when(
       data: (data) {
+        // Filter appointments based on the condition
+        final filteredAppointments = data.where((appointment) => appointment.program_status.toString() == "1").toList();
+        if (filteredAppointments.isEmpty) {
+          return BackgroundImageWidget(
+              customAppBar: CustomAppBar(
+                title: "Appointments",
+                icon: Icons.vaccines_sharp,
+                color: Constants.dawaDropColor.withOpacity(0.5),
+              ),
+              svgImage: "assets/images/appointments-empty.svg",
+              notFoundText: "No Appointments");
+        }
         return Scaffold(
           body: Column(
             children: [
@@ -29,9 +41,9 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: data.length,
+                  itemCount: filteredAppointments.length,
                   itemBuilder: (context, index) {
-                    final appointment = data[index];
+                    final appointment = filteredAppointments[index];
                     // Check if appointment ID exists and there is an active request for it
                     final bool hasActiveRequest = appointment.id != null && orderAsync.when(
                       data: (orders) => orders.any((order) => order.appointment?.id == appointment.id),
@@ -50,7 +62,7 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    data[index].program_name ?? '',
+                                    filteredAppointments[index].program_name ?? '',
                                     style: theme.textTheme.headline6,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
@@ -63,7 +75,7 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                                         color: Constants.dawaDropColor.withOpacity(0.5),
                                       ),
                                       const SizedBox(width: Constants.SPACING),
-                                      Text(data[index].appointment_type??''),
+                                      Text(filteredAppointments[index].appointment_type ?? ''),
                                     ],
                                   ),
                                   const SizedBox(height: Constants.SPACING),
@@ -74,18 +86,36 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                                         color: Constants.dawaDropColor.withOpacity(0.5),
                                       ),
                                       const SizedBox(width: Constants.SPACING),
-                                      Text(data[index].appointment_date),
+                                      Text(filteredAppointments[index].appointment_date),
                                     ],
+                                  ),
+                                  const SizedBox(height: Constants.SPACING),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.local_hospital_sharp,
+                                        color: Constants.dawaDropColor.withOpacity(0.5),
+                                      ),
+                                      const SizedBox(width: Constants.SPACING),
+                                      Text(filteredAppointments[index].facility_name??''),
+                                    ],
+                                  ),
+                                  const SizedBox(height: Constants.SPACING),
+                                  // Display text based on whether there is an active request
+                                  Text(
+                                    hasActiveRequest ? "Appointment has an active request" : "Touch to Request Home delivery",
+                                    style: TextStyle(
+                                      color: hasActiveRequest ? Colors.grey : Colors.green,
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
                           ),
-                          onTap: hasActiveRequest ? null : () {
-                            // context.goNamed(
-                            //   RouteNames.HIV_ART_APPOINTMENT_DETAILS,
-                            //   extra: appointment,
-                            // );
+                          // Disable onTap if there is an active request
+                          onTap: hasActiveRequest
+                              ? null
+                              : () {
                             context.goNamed(RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
                                 extra: {"payload": appointment, "type": "self"});
                           },
@@ -95,15 +125,15 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                   },
                 ),
               ),
-              if (data.isEmpty)
-                Expanded(
-                  child: Center(
-                    child: BackgroundImageWidget(
-                      svgImage: 'assets/images/background.svg',
-                      notFoundText: "No Appointments",
-                    ),
-                  ),
-                ),
+              // if (filteredAppointments.isEmpty)
+              //   Expanded(
+              //     child: Center(
+              //       child: BackgroundImageWidget(
+              //         svgImage: 'assets/images/background.svg',
+              //         notFoundText: "No Appointments",
+              //       ),
+              //     ),
+              //   ),
             ],
           ),
         );

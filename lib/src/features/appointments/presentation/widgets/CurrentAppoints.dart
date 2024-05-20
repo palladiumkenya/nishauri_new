@@ -14,13 +14,22 @@ class CurrentAppointments extends HookConsumerWidget {
     final currentAppointmentSync = ref.watch(appointmentProvider(false));
     return currentAppointmentSync.when(
       data: (data) {
+        final activeProgramAppointments =
+        data.where((element) => element.program_status.toString() == "1");
+        if (activeProgramAppointments.isEmpty) {
+          return const BackgroundImageWidget(
+              svgImage: "assets/images/appointments-empty.svg",
+              notFoundText: "No upcoming appointments");
+        }
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: data.length,
+                itemCount: activeProgramAppointments.length,
                 itemBuilder: (BuildContext context, int index) {
+                  final currAppointment =
+                  activeProgramAppointments.elementAt(index);
                   return Column(
                     children: [
                       const Divider(),
@@ -32,7 +41,7 @@ class CurrentAppointments extends HookConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  data[index].program_name ?? '',
+                                  currAppointment.program_name ?? '',
                                   style: theme.textTheme.headline6,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
@@ -40,23 +49,35 @@ class CurrentAppointments extends HookConsumerWidget {
                                 const SizedBox(height: Constants.SPACING),
                                 Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.app_registration_outlined,
-                                      color: theme.colorScheme.primary,
+                                      color: Constants.appointmentsColor,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
-                                    Text(data[index].appointment_type??''),
+                                    Text(
+                                        currAppointment.appointment_type ?? ''),
                                   ],
                                 ),
                                 const SizedBox(height: Constants.SPACING),
                                 Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.calendar_month_outlined,
-                                      color: theme.colorScheme.primary,
+                                      color: Constants.appointmentsColor,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
-                                    Text(data[index].appointment_date),
+                                    Text(currAppointment.appointment_date),
+                                  ],
+                                ),
+                                const SizedBox(height: Constants.SPACING),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.local_hospital_sharp,
+                                      color: Constants.appointmentsColor,
+                                    ),
+                                    const SizedBox(width: Constants.SPACING),
+                                    Text(currAppointment.facility_name??''),
                                   ],
                                 ),
                               ],

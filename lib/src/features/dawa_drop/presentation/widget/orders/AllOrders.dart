@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/dawa_drop/data/models/order_request/drug_order.dart';
@@ -12,6 +14,7 @@ class AllOrders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    log("===============================$orders");
     return Column(
       children: [
         // Padding(
@@ -54,7 +57,8 @@ class AllOrders extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
-                    const SizedBox(height: Constants.SPACING),
+                    if (order.appointment?.appointment_date != null && order.appointment?.appointment_date != '')
+                      const SizedBox(height: Constants.SPACING),
                     Row(
                       children: [
                         Icon(
@@ -65,7 +69,8 @@ class AllOrders extends StatelessWidget {
                         Text("Appointment Date: ${DateFormat("dd MMM yyy").format(DateTime.parse(order.appointment?.appointment_date ?? ''))}"),
                       ],
                     ),
-                    const SizedBox(height: Constants.SPACING),
+                    if (order.courierService?.name != null && order.courierService?.name != '')
+                      const SizedBox(height: Constants.SPACING),
                     Row(
                       children: [
                         Icon(
@@ -76,7 +81,8 @@ class AllOrders extends StatelessWidget {
                         Text("Courier Service: ${order.courierService?.name ?? ''}"),
                       ],
                     ),
-                    const SizedBox(height: Constants.SPACING),
+                    if (order.deliveryPerson?.fullName != null && order.deliveryPerson?.fullName != '')
+                      const SizedBox(height: Constants.SPACING),
                     Row(
                       children: [
                         Icon(
@@ -87,7 +93,8 @@ class AllOrders extends StatelessWidget {
                         Text("Deliver Person: ${order.deliveryPerson?.fullName ?? ''}"),
                       ],
                     ),
-                    const SizedBox(height: Constants.SPACING),
+                    if (order.deliveryPerson?.phoneNumber != null && order.deliveryPerson?.phoneNumber != '')
+                      const SizedBox(height: Constants.SPACING),
                     Row(
                       children: [
                         Icon(
@@ -98,7 +105,8 @@ class AllOrders extends StatelessWidget {
                         Text("Deliver Person Phone: ${order.deliveryPerson?.phoneNumber ?? ''}"),
                       ],
                     ),
-                    const SizedBox(height: Constants.SPACING),
+                    if (order.status != null && order.status != '')
+                      const SizedBox(height: Constants.SPACING),
                     Row(
                       children: [
                         Icon(
@@ -113,24 +121,11 @@ class AllOrders extends StatelessWidget {
                 ),
               ),
             ),
-            // title: Text("Delivery Method: ${order.delivery_method ?? ''}"),
-            // subtitle: Column(
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: [
-            //     Text("Appointment Date: ${DateFormat("dd MMM yyy").format(DateTime.parse(order.appointment?.appointment_date ?? ''))}"),
-            //     Text("Courier Service: ${order.courierService?.name ?? ''}"),
-            //     Text("Deliver Person: ${order.deliveryPerson?.fullName ?? ''}"),
-            //     Text("Deliver Person Phone: ${order.deliveryPerson?.phoneNumber ?? ''}"),
-            //     Text("Deliver Status: ${order.status ?? ''}"),
-            //   ],
-            // ),
-            // trailing: const Icon(Icons.chevron_right),
           ),
         ],
       ),
     );
   }
-
   void navigateToDeliveryProgression(BuildContext context, DrugOrder order) {
     Navigator.push(
       context,

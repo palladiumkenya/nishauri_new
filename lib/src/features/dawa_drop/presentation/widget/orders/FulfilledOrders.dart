@@ -54,7 +54,8 @@ class FulfilledOrders extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
-                    const SizedBox(height: Constants.SPACING),
+                    if (order.appointment?.appointment_date != null && order.appointment?.appointment_date != '')
+                      const SizedBox(height: Constants.SPACING),
                     Row(
                       children: [
                         Icon(
@@ -65,7 +66,8 @@ class FulfilledOrders extends StatelessWidget {
                         Text("Appointment Date: ${DateFormat("dd MMM yyy").format(DateTime.parse(order.appointment?.appointment_date ?? ''))}"),
                       ],
                     ),
-                    const SizedBox(height: Constants.SPACING),
+                    if (order.courierService?.name != null && order.courierService?.name != '')
+                      const SizedBox(height: Constants.SPACING),
                     Row(
                       children: [
                         Icon(
@@ -76,7 +78,8 @@ class FulfilledOrders extends StatelessWidget {
                         Text("Courier Service: ${order.courierService?.name ?? ''}"),
                       ],
                     ),
-                    const SizedBox(height: Constants.SPACING),
+                    if (order.deliveryPerson?.fullName != null && order.deliveryPerson?.fullName != '')
+                      const SizedBox(height: Constants.SPACING),
                     Row(
                       children: [
                         Icon(
@@ -87,7 +90,8 @@ class FulfilledOrders extends StatelessWidget {
                         Text("Deliver Person: ${order.deliveryPerson?.fullName ?? ''}"),
                       ],
                     ),
-                    const SizedBox(height: Constants.SPACING),
+                    if (order.deliveryPerson?.phoneNumber != null && order.deliveryPerson?.phoneNumber != '')
+                      const SizedBox(height: Constants.SPACING),
                     Row(
                       children: [
                         Icon(
@@ -98,7 +102,8 @@ class FulfilledOrders extends StatelessWidget {
                         Text("Deliver Person Phone: ${order.deliveryPerson?.phoneNumber ?? ''}"),
                       ],
                     ),
-                    const SizedBox(height: Constants.SPACING),
+                    if (order.status != null && order.status != '')
+                      const SizedBox(height: Constants.SPACING),
                     Row(
                       children: [
                         Icon(
@@ -113,7 +118,6 @@ class FulfilledOrders extends StatelessWidget {
                 ),
               ),
             ),
-            // trailing: const Icon(Icons.chevron_right),
           ),
         ],
       ),
