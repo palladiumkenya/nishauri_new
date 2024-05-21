@@ -18,6 +18,7 @@ class Appointment with _$Appointment {
     String? appointment,
     String? nextAppointmentDate,
     String? appt_status,
+    int? appointment_status,
     String? date_attended,
   }) = _Appointment;
 

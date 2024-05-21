@@ -83,8 +83,8 @@ class ARTAppointmentDetailScreen extends ConsumerWidget {
                 subtitle: const Text("Next appointment date"),
                 trailing: const Icon(Icons.chevron_right),
               ),
-            if (artAppointment.appointment_type == "Re-Fill") const Divider(),
-            if (artAppointment.appointment_type == "Re-Fill")
+            if (artAppointment.appointment_status == 1) const Divider(),
+            if (artAppointment.appointment_status == 1)
               Padding(
                 padding: const EdgeInsets.all(Constants.SPACING),
                 child: Button(
