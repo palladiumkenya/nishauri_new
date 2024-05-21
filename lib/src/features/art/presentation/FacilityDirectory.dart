@@ -6,39 +6,36 @@ import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/art/model/Facility.dart';
 import 'package:nishauri/src/features/art/services/FacilityDirectorySerivice.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
-
 
 class FacilityDirectoryScreen extends HookWidget {
   const FacilityDirectoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     final loading = useState(false);
     final facilities = useState<List<Facility>>([]);
     final facilityService = FacilityDirectoryService();
     final theme = Theme.of(context);
     final debouncer = Debouncer(milliseconds: 500);
 
-
     onSearchChanged(String query) {
-      debouncer.run(() async{
-        if(query.length < 3) {
+      debouncer.run(() async {
+        if (query.length < 3) {
           facilities.value = [];
           return;
         }
-        try{
+        try {
           loading.value = true;
           final results = await facilityService.getfacilities(query);
           facilities.value = results;
-        }catch(e){
+        } catch (e) {
           facilities.value = [];
           log("*******************$e***********************");
-        }
-        finally {
+        } finally {
           loading.value = false;
         }
       });
@@ -82,30 +79,6 @@ class FacilityDirectoryScreen extends HookWidget {
                   ),
                 ),
               ),
-              // const SizedBox(
-              //   width: Constants.SPACING,
-              // ),
-              // IconButton.filledTonal(
-              //   color: Colors.white,
-              //   onPressed: loading.value
-              //       ? null
-              //       : () {
-              //           // _fetchFacilities(_controller.text);
-              //         },
-              //   icon: const FaIcon(FontAwesomeIcons.magnifyingGlass),
-              //   style: ButtonStyle(
-              //     backgroundColor: MaterialStatePropertyAll<Color>(
-              //       Colors.white.withOpacity(0.3),
-              //     ),
-              //     shape: const MaterialStatePropertyAll<RoundedRectangleBorder>(
-              //       RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.all(
-              //           Radius.circular(Constants.ROUNDNESS * 0.5),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // )
             ]),
           ),
           Expanded(
@@ -113,12 +86,14 @@ class FacilityDirectoryScreen extends HookWidget {
               child: Padding(
                 padding: const EdgeInsets.all(Constants.SPACING),
                 child: facilities.value.isEmpty && !loading.value
-                    ? Center(
-                        child: Text(
-                        'No facilities found',
-                        style: theme.textTheme.headlineSmall
-                            ?.copyWith(color: theme.disabledColor),
-                      ))
+                    ? SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                        child: const Center(
+                            child: BackgroundImageWidget(
+                          notFoundText: "Search Facility",
+                          svgImage: 'assets/images/background.svg',
+                        )),
+                      )
                     : loading.value
                         ? const Center(child: CircularProgressIndicator())
                         : Column(
