@@ -43,7 +43,7 @@ class ARTLabResults extends HookConsumerWidget {
         );
       },
       error: (error, _) => BackgroundImageWidget(
-        svgImage: 'assets/images/background.svg',
+        svgImage: 'assets/images/lab-empty-state.svg',
         notFoundText: error.toString(),
       ),
       // Text(error.toString())),

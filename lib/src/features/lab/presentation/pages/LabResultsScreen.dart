@@ -34,18 +34,18 @@ class LabResultsScreen extends HookConsumerWidget {
 
       const Center(
         child: BackgroundImageWidget(
-            svgImage: 'assets/images/background.svg',
-            notFoundText: "No Stool Lab tests"),
+            svgImage: 'assets/images/lab-empty-state.svg',
+            notFoundText: "No laboratory stool test uploaded yet. Check again"),
       ),
       const Center(
         child: BackgroundImageWidget(
-            svgImage: 'assets/images/background.svg',
-            notFoundText: "No Blood lab Tests"),
+            svgImage: 'assets/images/lab-empty-state.svg',
+            notFoundText: "No laboratory blood test uploaded yet. Check again"),
       ),
       const Center(
         child: BackgroundImageWidget(
-            svgImage: 'assets/images/background.svg',
-            notFoundText: "No Urine lab Test"),
+            svgImage: 'assets/images/lab-empty-state.svg',
+            notFoundText: "No laboratory urine test uploaded yet. Check again"),
       ),
     ];
 
