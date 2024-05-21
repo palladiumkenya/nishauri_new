@@ -93,15 +93,16 @@ class BMICalculatorResultsScreen extends HookConsumerWidget {
                           ),
                         ),
                         const SizedBox(height: Constants.SPACING),
-                        Text(
-                          data
+                        Markdown(data:                           data
                                   .where((element) =>
                                       element.status ==
                                       getBMIStatusSimplified(bmi))
                                   .first
                                   .description ??
                               "",
-                          style: theme.textTheme.titleMedium,
+                          // style: theme.textTheme.titleMedium,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
                         ),
                         const SizedBox(height: Constants.SPACING),
 
