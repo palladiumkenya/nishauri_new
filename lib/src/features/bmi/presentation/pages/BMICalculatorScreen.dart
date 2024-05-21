@@ -24,6 +24,7 @@ class BMICalculatorScreen extends HookWidget {
     final theme = Theme.of(context);
     const activeColor = Constants.activeSelectionColor;
     final gender = useState<GenderPickerChoices>(GenderPickerChoices.male);
+    final isPregnant = useState(false);
     final height = useState<double>(180);
     final heightUnits =
         useState<HeightUnitsPickerOptions>(HeightUnitsPickerOptions.In);
@@ -54,7 +55,7 @@ class BMICalculatorScreen extends HookWidget {
                       GenderPicker(
                         gender: gender.value,
                         onGenderChange: (gender_) {
-                          if (gender_ == GenderPickerChoices.female && gender_ != gender.value) {
+                          if (gender_ == GenderPickerChoices.female) {
                             showDialog<bool>(
                               context: context,
                               builder: (context) => AlertDialog(
@@ -84,11 +85,15 @@ class BMICalculatorScreen extends HookWidget {
                                       ],
                                     ),
                                   )),
-                            ).then((isPregnant) {
-                              if (isPregnant != null) {
-                                if (isPregnant == false) {
+                            ).then((isPregnant_) {
+                              if (isPregnant_ != null) {
+                                if (isPregnant_ == false) {
                                   gender.value = gender_;
+                                  isPregnant.value = false;
+
                                 } else {
+                                  gender.value = gender_;
+                                  isPregnant.value = true;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                           content: Text(
@@ -146,6 +151,7 @@ class BMICalculatorScreen extends HookWidget {
                           semanticsLabel: "Doctors",
                           fit: BoxFit.contain,
                         ),
+                        disabled: isPregnant.value,
                         backgroundColor: activeColor,
                         textColor: theme.canvasColor,
                         onPress: () {
