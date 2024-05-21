@@ -12,7 +12,7 @@ class ClinicalDetailsTab extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          title: Text("${program.name}"),
+          title: Text(program.name),
           subtitle: Text('Facility Name: ${program.facility_name}'),
         ),
         Expanded(

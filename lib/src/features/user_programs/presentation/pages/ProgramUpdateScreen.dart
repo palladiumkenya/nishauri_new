@@ -7,9 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/user_programs/data/models/user_program.dart';
 import 'package:nishauri/src/features/user_programs/data/providers/program_provider.dart';
-import 'package:nishauri/src/features/user_programs/presentation/forms/HIVProgramRegistration.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
-import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
@@ -17,7 +15,6 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
-import '../../../appointments/data/providers/appointment_provider.dart';
 
 class ProgramUpdateScreen extends StatefulWidget {
   const ProgramUpdateScreen({super.key});
@@ -69,8 +66,6 @@ class _ProgramUpdateScreenState extends State<ProgramUpdateScreen> {
                           child: Consumer(
                             builder: (context, ref, child) {
                               final asyncUserPrograms = ref.watch(userProgramProvider);
-                              final appointmentsNotifier = ref.watch(appointmentProvider(false).notifier);
-                              final previousAppointmentsNotifier = ref.watch(appointmentProvider(true).notifier);
 
                               return asyncUserPrograms.when(
                                 data: (userPrograms) =>
@@ -218,8 +213,7 @@ class _ProgramUpdateScreenState extends State<ProgramUpdateScreen> {
                                                 );
                                                 // context.go("/");
                                                 context.pop();
-                                                appointmentsNotifier.getAppointments();
-                                                previousAppointmentsNotifier.getAppointments();
+
                                               }).catchError((err) {
                                                 handleResponseError(
                                                     context,

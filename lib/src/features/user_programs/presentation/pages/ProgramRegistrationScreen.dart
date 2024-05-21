@@ -7,10 +7,8 @@ import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/user_programs/data/models/user_program.dart';
 import 'package:nishauri/src/features/user_programs/data/providers/program_provider.dart';
-import 'package:nishauri/src/features/user_programs/presentation/forms/HIVProgramRegistration.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
-import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
@@ -18,7 +16,6 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
-import '../../../appointments/data/providers/appointment_provider.dart';
 
 class ProgramRegistrationScreen extends StatefulWidget {
   const ProgramRegistrationScreen({super.key});
@@ -94,8 +91,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                 }
                               }
                               final asyncUserPrograms = ref.watch(userProgramProvider);
-                              final appointmentsNotifier = ref.watch(appointmentProvider(false).notifier);
-                              final previousAppointmentsNotifier = ref.watch(appointmentProvider(true).notifier);
+                              
                               return asyncUserPrograms.when(
                                 data: (userPrograms) =>
                                     Column(
@@ -231,17 +227,11 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                                   .registerProgram(
                                                   _formKey.currentState!.value)
                                                   .then((value) {
-                                                    print('this is new $value');
                                                 ScaffoldMessenger.of(context).showSnackBar(
-                                                  SnackBar(content: Text('${value}')),
+                                                  SnackBar(content: Text(value)),
                                                 );
                                                 context.pop();
-                                                appointmentsNotifier.getAppointments();
-                                                previousAppointmentsNotifier.getAppointments();
-                                                // context.goNamed(
-                                                //   RouteNames.HIV_PROGRAM
-                                                //     // RouteNames.VERIFY_PROGRAM_OTP,
-                                                //     extra: value);
+
                                               }).catchError((err) {
                                                 handleResponseError(
                                                     context,
