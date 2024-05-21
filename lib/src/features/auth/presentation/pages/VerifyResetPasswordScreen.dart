@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
+import 'package:nishauri/src/hooks/uset_timer.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/label_input_container.dart';
 import 'package:nishauri/src/shared/display/scafold_stack_body.dart';
@@ -27,13 +28,13 @@ class ResetPasswordVerificationScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(() => GlobalKey<FormBuilderState>());
+    final passwordResetStateNotifier = ref.read(resetPasswordProvider.notifier);
+    final authStateNotifier = ref.read(authStateProvider.notifier);
+    final timer = useTime(const Duration(seconds: 60));
     final loading = useState(false);
     void handleSubmit() {
       if (formKey.currentState!.saveAndValidate()) {
         loading.value = true;
-        final passwordResetStateNotifier =
-            ref.read(resetPasswordProvider.notifier);
-        final authStateNotifier = ref.read(authStateProvider.notifier);
 
         // Form payload
         final payload = {
@@ -139,17 +140,39 @@ class ResetPasswordVerificationScreen extends HookConsumerWidget {
                       onPress: handleSubmit,
                       loading: loading.value,
                     ),
+                    const SizedBox(height: Constants.SPACING * 2),
+                    if(timer.remainingTime == 0)
+                    LinkedRichText(
+                        linked: "Don't receive code?",
+                        unlinked: "Resend code",
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        onPress: () {
+                          timer.reset();
+                          loading.value =true;
+                          passwordResetStateNotifier
+                              .resetPassword({"user_name": username}).then(
+                            (value) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(value)),
+                              );
+                            },
+                          ).whenComplete(() {
+                            loading.value = false;
+                          });
+                        }),
                     const SizedBox(height: Constants.SPACING),
-                    Consumer(
-                      builder: (context, ref, child) {
-                        return LinkedRichText(
-                          linked: "",
-                          unlinked: "Back to login",
-                          onPress: () =>
-                              ref.read(authStateProvider.notifier).logout(),
-                        );
-                      },
-                    )
+                    LinkedRichText(linked: "Send code in ", unlinked: "00:${timer.remainingTime}", mainAxisAlignment: MainAxisAlignment.start),
+                    const SizedBox(height: Constants.SPACING),
+                    // Consumer(
+                    //   builder: (context, ref, child) {
+                    //     return LinkedRichText(
+                    //       linked: "",
+                    //       unlinked: "Back to login",
+                    //       onPress: () =>
+                    //           ref.read(authStateProvider.notifier).logout(),
+                    //     );
+                    //   },
+                    // )
                   ],
                 ),
               ),
