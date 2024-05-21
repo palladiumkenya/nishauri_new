@@ -53,7 +53,7 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                     );
 
                     final bool eligibleAppointment = appointment.id != null && orderAsync.when(
-                      data: (orders) => orders.any((order) => order.appointment?.appointment_type == "Re-fill"),
+                      data: (orders) => orders.any((order) => order.appointment?.appointment_status == 1),
                       loading: () => false,
                       error: (_, __) => false,
                     );
@@ -65,67 +65,77 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                           title: Card(
                             child: Padding(
                               padding: const EdgeInsets.all(Constants.SPACING),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Row(
                                 children: [
-                                  Text(
-                                    filteredAppointments[index].program_name ?? '',
-                                    style: theme.textTheme.headline6,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                  const SizedBox(height: Constants.SPACING),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.app_registration_outlined,
-                                        color: Constants.dawaDropColor.withOpacity(0.5),
-                                      ),
-                                      const SizedBox(width: Constants.SPACING),
-                                      Text(filteredAppointments[index].appointment_type ?? ''),
-                                    ],
-                                  ),
-                                  const SizedBox(height: Constants.SPACING),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.calendar_month_outlined,
-                                        color: Constants.dawaDropColor.withOpacity(0.5),
-                                      ),
-                                      const SizedBox(width: Constants.SPACING),
-                                      Text(filteredAppointments[index].appointment_date),
-                                    ],
-                                  ),
-                                  const SizedBox(height: Constants.SPACING),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.local_hospital_sharp,
-                                        color: Constants.dawaDropColor.withOpacity(0.5),
-                                      ),
-                                      const SizedBox(width: Constants.SPACING),
-                                      Text(filteredAppointments[index].facility_name ?? ''),
-                                    ],
-                                  ),
-                                  const SizedBox(height: Constants.SPACING),
-                                  // Display text based on whether there is an active request
-                                  Text(
-                                    hasActiveRequest
-                                        ? "Appointment has an active request"
-                                        : eligibleAppointment
-                                        ? "Request Home delivery"
-                                        : "",
-                                    style: TextStyle(
-                                      color: hasActiveRequest ? Constants.appointmentsColor : Constants.labResultsColor,
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          filteredAppointments[index].program_name ?? '',
+                                          style: theme.textTheme.headline6,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                        const SizedBox(height: Constants.SPACING),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.app_registration_outlined,
+                                              color: Constants.dawaDropColor.withOpacity(0.5),
+                                            ),
+                                            const SizedBox(width: Constants.SPACING),
+                                            Text(filteredAppointments[index].appointment_type ?? ''),
+                                          ],
+                                        ),
+                                        const SizedBox(height: Constants.SPACING),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.calendar_month_outlined,
+                                              color: Constants.dawaDropColor.withOpacity(0.5),
+                                            ),
+                                            const SizedBox(width: Constants.SPACING),
+                                            Text(filteredAppointments[index].appointment_date),
+                                          ],
+                                        ),
+                                        const SizedBox(height: Constants.SPACING),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.local_hospital_sharp,
+                                              color: Constants.dawaDropColor.withOpacity(0.5),
+                                            ),
+                                            const SizedBox(width: Constants.SPACING),
+                                            Text(filteredAppointments[index].facility_name ?? ''),
+                                          ],
+                                        ),
+                                        const SizedBox(height: Constants.SPACING),
+                                        // Display text based on whether there is an active request
+                                        Text(
+                                          hasActiveRequest
+                                              ? "Appointment has an active request"
+                                              : appointment.appointment_status == 1
+                                              ? "Request Home delivery"
+                                              : "",
+                                          style: TextStyle(
+                                            color: hasActiveRequest
+                                                ? Constants.appointmentsColor
+                                                : appointment.appointment_status == 1
+                                                ? Constants.clinicCardColor
+                                                : Colors.transparent,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  const SizedBox(height: Constants.SPACING),
                                   // Conditionally display the container with the button
-                                  if (!hasActiveRequest && eligibleAppointment)
+                                  if (!hasActiveRequest && appointment.appointment_status == 1)
                                     Container(
                                       decoration: BoxDecoration(
                                         color: theme.primaryColor.withOpacity(0.5),
-                                        shape: BoxShape.circle,
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: IconButton(
                                         onPressed: () {
