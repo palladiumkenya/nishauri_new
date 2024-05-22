@@ -37,26 +37,34 @@ class ChatFeedbackForm extends HookWidget {
           runSpacing: Constants.SPACING,
           children: <Widget>[
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              const Expanded(child: Text("How was your conversation with Nuru?")),
-              IconButton(icon: FaIcon(FontAwesomeIcons.circleXmark, color: theme.colorScheme.error,), onPressed: ()=>context.pop(),)
+              const Expanded(
+                  child: Text("How was your conversation with Nuru?")),
+              IconButton(
+                icon: FaIcon(
+                  FontAwesomeIcons.circleXmark,
+                  color: theme.colorScheme.error,
+                ),
+                onPressed: () => context.pop(),
+              )
             ]),
             LabelInputContainer(
-              label: "Rating",
-              child: FormBuilderField<int>(
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
-                builder: (state){
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      RatingBar(rating: state.value, onRatingChange: (rating)=>state.didChange(rating),),
-                    ],
-                  );
-                },
-                name: "rating",
-              )
-            ),
+                label: "Rating",
+                child: FormBuilderField<int>(
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                  ]),
+                  builder: (state) {
+                    return RatingBar(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      maxRating: 6,
+                      rating: state.value,
+                      onRatingChange: (rating) => state.didChange(rating),
+                      decoration:
+                          InputDecoration(errorText: state.errorText, border: InputBorder.none),
+                    );
+                  },
+                  name: "rating",
+                )),
             LabelInputContainer(
               label: "Review",
               child: Container(
