@@ -185,14 +185,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               ),
                               Wrap(
                                 children: [
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: SvgPicture.asset(
-                                      "assets/images/notification.svg",
-                                      semanticsLabel: "Doctors",
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
+                                  // IconButton(
+                                  //   onPressed: () {},
+                                  //   icon: SvgPicture.asset(
+                                  //     "assets/images/notification.svg",
+                                  //     semanticsLabel: "Doctors",
+                                  //     fit: BoxFit.contain,
+                                  //   ),
+                                  // ),
                                   IconButton(
                                     onPressed: toggleDrawer,
                                     icon: const Icon(Icons.more_vert),
