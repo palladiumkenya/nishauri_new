@@ -8,7 +8,6 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 
-
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
@@ -29,7 +28,7 @@ class WelcomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Center(
-                child: Logo(),
+                child: Logo(size: 100),
               ),
               const SizedBox(height: Constants.SPACING),
               const Text(

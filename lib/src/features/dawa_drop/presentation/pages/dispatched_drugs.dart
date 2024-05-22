@@ -92,7 +92,7 @@ class DispatchedDrugs extends ConsumerWidget {
           color: Constants.dawaDropColor.withOpacity(0.5),
         ),
         svgImage: 'assets/images/lab-empty-state.svg',
-        notFoundText: error.toString(),
+        notFoundText: "No Dispatched order",
       ),
       loading: () => Center(
         child: Column(

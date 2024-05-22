@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -58,7 +59,8 @@ class _TypingAnimationState extends State<TypingAnimation>
 }
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  final Function(int chatsCount)? onChatsChange;
+  const ChatScreen({Key? key, this.onChatsChange}) : super(key: key);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -168,7 +170,7 @@ class _ChatScreenState extends State<ChatScreen> {
               false; // Bot stops typing on failure to receive response
         });
       }
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
           duration: const Duration(milliseconds: 200),
@@ -181,6 +183,9 @@ class _ChatScreenState extends State<ChatScreen> {
             question: 'Failed to send message to Nuru..', isSentByUser: false));
         _isBotTyping = false; // Bot stops typing on failure to send message
       });
+    }
+    finally{
+      widget.onChatsChange!= null ? widget.onChatsChange!(_messages.length):null;
     }
   }
 

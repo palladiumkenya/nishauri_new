@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,6 +9,7 @@ import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/HomeScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainMenuScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.dart';
+import 'package:nishauri/src/features/common/presentation/pages/chat_feeback_form.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
 
@@ -21,14 +24,9 @@ class _HomeScreenState extends ConsumerState<MainScreen>
     with WidgetsBindingObserver {
   OverlayEntry? _overlayEntry;
   AppLifecycleState state = AppLifecycleState.inactive;
+  int _messagesCount = 0;
   int rebuild = 0;
   var _currIndex = 0;
-  final _pages = const [
-    HomeScreen(),
-    MainMenuScreen(),
-    ChatScreen(),
-    SettingsScreen()
-  ];
 
   @override
   void initState() {
@@ -98,6 +96,18 @@ class _HomeScreenState extends ConsumerState<MainScreen>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    final pages = [
+      const HomeScreen(),
+      const MainMenuScreen(),
+      ChatScreen(onChatsChange: (count) {
+        setState(() {
+          _messagesCount = count;
+        });
+      }),
+      const SettingsScreen()
+    ];
+
     return Scaffold(
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {
@@ -131,13 +141,23 @@ class _HomeScreenState extends ConsumerState<MainScreen>
           ),
         ],
         currentIndex: _currIndex,
-        onTap: (index) {
+        onTap: (index) async {
+          if (_currIndex == 2 && index != 2 && _messagesCount > 2) {
+            await showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => const AlertDialog(
+                content: ChatFeedbackForm(),
+              ),
+            );
+          }
           setState(() {
             _currIndex = index;
+            _messagesCount = 0;
           });
         },
       ),
-      body: _pages.elementAt(_currIndex),
+      body: pages.elementAt(_currIndex),
     );
   }
 }

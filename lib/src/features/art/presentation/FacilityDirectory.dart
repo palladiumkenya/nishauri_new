@@ -18,6 +18,7 @@ class FacilityDirectoryScreen extends HookWidget {
   Widget build(BuildContext context) {
     final loading = useState(false);
     final facilities = useState<List<Facility>>([]);
+    final textController = useTextEditingController();
     final facilityService = FacilityDirectoryService();
     final theme = Theme.of(context);
     final debouncer = Debouncer(milliseconds: 500);
@@ -60,6 +61,7 @@ class FacilityDirectoryScreen extends HookWidget {
                     ),
                   ),
                   child: TextField(
+                    controller: textController,
                     // controller: _controller,
                     onChanged: onSearchChanged,
                     clipBehavior: Clip.antiAlias,
@@ -87,11 +89,13 @@ class FacilityDirectoryScreen extends HookWidget {
                 padding: const EdgeInsets.all(Constants.SPACING),
                 child: facilities.value.isEmpty && !loading.value
                     ? SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.5,
-                        child: const Center(
+                    height: MediaQuery.of(context).size.height * 0.67,
+                        child: Center(
                             child: BackgroundImageWidget(
-                          notFoundText: "Search Facility",
-                          svgImage: 'assets/images/background.svg',
+
+                              svgImage: 'assets/images/facility-dir-empty-state.svg',
+                            notFoundText: textController.text.length >= 3 ? "Facility not found": "Search Facility",
+
                         )),
                       )
                     : loading.value
