@@ -6,6 +6,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/shared/display/label_input_container.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
+import 'package:nishauri/src/shared/input/rating_bar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class ChatFeedbackForm extends HookWidget {
@@ -36,27 +37,25 @@ class ChatFeedbackForm extends HookWidget {
           runSpacing: Constants.SPACING,
           children: <Widget>[
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              const Expanded(child: Text("How was your coversation with Nuru?")),
+              const Expanded(child: Text("How was your conversation with Nuru?")),
               IconButton(icon: FaIcon(FontAwesomeIcons.circleXmark, color: theme.colorScheme.error,), onPressed: ()=>context.pop(),)
             ]),
             LabelInputContainer(
               label: "Rating",
-              child: FormBuilderChoiceChip<int>(
+              child: FormBuilderField<int>(
                 validator: FormBuilderValidators.compose([
                   FormBuilderValidators.required(),
                 ]),
+                builder: (state){
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      RatingBar(rating: state.value, onRatingChange: (rating)=>state.didChange(rating),),
+                    ],
+                  );
+                },
                 name: "rating",
-                decoration: const InputDecoration(border: InputBorder.none),
-                options: List.generate(
-                  5,
-                  (index) => FormBuilderChipOption(
-                    value: index + 1,
-                    child: Text(
-                      "${index + 1}",
-                    ),
-                  ),
-                ),
-              ),
+              )
             ),
             LabelInputContainer(
               label: "Review",
@@ -78,9 +77,9 @@ class ChatFeedbackForm extends HookWidget {
                   ),
                   maxLines: 3,
                   minLines: 3,
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                  ]),
+                  // validator: FormBuilderValidators.compose([
+                  //   FormBuilderValidators.required(),
+                  // ]),
                 ),
               ),
             ),
