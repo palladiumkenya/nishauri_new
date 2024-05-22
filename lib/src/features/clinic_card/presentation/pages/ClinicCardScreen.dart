@@ -42,7 +42,7 @@ class ClinicCardScreen extends HookConsumerWidget {
               subTitle: "Access medical services using \nyour clinic cards",
               color: Colors.blue[900],
             ),
-            svgImage: 'assets/images/background.svg',
+            svgImage: 'assets/images/lab-empty-state.svg',
             notFoundText: "No programs available",
           );
         }
@@ -79,7 +79,7 @@ class ClinicCardScreen extends HookConsumerWidget {
         );
       },
       error: (error, _) => BackgroundImageWidget(
-        svgImage: 'assets/images/background.svg',
+        svgImage: 'assets/images/lab-empty-state.svg',
         notFoundText: error.toString(),
       ),
       loading: () => Center(
