@@ -98,7 +98,7 @@ class ProgramService extends HTTPService {
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final List<dynamic> programData = json.decode(responseString)["programs"];
-        return programData.map((e) => userProgramFromJson(e)).toList();
+        return programData.map((e) => userProgramFromJson({...e, "createdAt":e["enrolled_date"]})).toList();
       } else {
         throw "Something Went Wrong Contact Try Again";
       }

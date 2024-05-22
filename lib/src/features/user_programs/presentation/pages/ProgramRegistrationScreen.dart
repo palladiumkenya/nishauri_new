@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
@@ -44,11 +45,12 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
       // ),
       body: Column(
         children: [
-          CustomAppBar(
-            title: "Register a program",
+          const CustomAppBar(
+            title: "Add program",
             icon: Icons.add_task_sharp,
             // color: Colors.white30,
-            subTitle: "Add programs you would like to track",
+            subTitle: "Kindly provide program details \n bellow to verify yourself",
+            color: Constants.programsColor,
           ),
           Expanded(child:       ResponsiveWidgetFormLayout(
             buildPageContent: (context, color) =>
@@ -100,34 +102,14 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                         DecoratedBox(
                                           decoration: const BoxDecoration(),
                                           child: SvgPicture.asset(
-                                            "assets/images/patient.svg",
+                                            "assets/images/add-appointment-large.svg",
                                             semanticsLabel: "Doctors",
                                             fit: BoxFit.contain,
-                                            height: 150,
+                                            // height: 150,
                                           ),
                                         ),
-                                        const SizedBox(height: Constants.SPACING),
-                                        const Text(
-                                          "Add program",
-                                          style: TextStyle(
-                                            fontSize: 40,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(height: Constants.SPACING),
-                                        Text(
-                                          "Kindly provide program details bellow to verify yourself.",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Theme
-                                                .of(context)
-                                                .colorScheme
-                                                .onTertiaryContainer,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        const SizedBox(height: Constants.SPACING),
-                                        const SizedBox(height: Constants.SPACING),
+                                        const SizedBox(height: Constants.SPACING*3),
+
                                         FormBuilderDropdown<String>(
                                           name: "program_id",
                                           decoration: inputDecoration(
@@ -214,6 +196,9 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                         const SizedBox(height: Constants.SPACING),
                                         Button(
                                           title: "Add Program",
+                                          backgroundColor: Constants.programsColor,
+                                          textColor: Colors.white,
+                                          surfixIcon: const FaIcon(FontAwesomeIcons.plus),
                                           loading: _loading,
                                           onPress: () {
                                             final programsNotifier =
