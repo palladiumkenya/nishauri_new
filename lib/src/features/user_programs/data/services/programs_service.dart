@@ -12,6 +12,7 @@ import 'package:nishauri/src/utils/constants.dart';
 
 class ProgramService extends HTTPService {
   final AuthRepository _repository = AuthRepository(AuthApiService());
+
   // final List<Program> _programs = [
   //   const Program(
   //     program_code: "HIV",
@@ -97,23 +98,22 @@ class ProgramService extends HTTPService {
       final response = await call(getUserPrograms_, null);
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
-        final List<dynamic> programData = json.decode(responseString)["programs"];
-        return programData.map((e) => userProgramFromJson({...e, "createdAt":e["enrolled_date"]})).toList();
+        final List<dynamic> programData =
+            json.decode(responseString)["programs"];
+        return programData
+            .map((e) => UserProgram.fromJson({
+                  ...e,
+                  "createdAt": e["enrolled_date"],
+                  "id": e['program_id'].toString(),
+                  "isActive": e['is_active'] == "1",
+                }))
+            .toList();
       } else {
         throw "Something Went Wrong Contact Try Again";
       }
     } catch (e) {
       throw "Please check your internet connection";
     }
-  }
-
-  UserProgram userProgramFromJson(Map<String, dynamic> json) {
-    return UserProgram(
-      id: json['program_id'].toString(),
-      program_name: json['program_name'],
-      isActive: json['is_active'] == "1",
-      // createdAt: json['created_at'],
-    );
   }
 
   Future<http.StreamedResponse> getUserPrograms_(dynamic args) async {
@@ -130,13 +130,12 @@ class ProgramService extends HTTPService {
     return await request.send();
   }
 
-  Future<String> registerProgram(
-      Map<String, dynamic> data) async {
+  Future<String> registerProgram(Map<String, dynamic> data) async {
     http.StreamedResponse response =
         await call<Map<String, dynamic>>(registerProgram_, data);
     final responseString = await response.stream.bytesToString();
     final responseData = jsonDecode(responseString);
-    if(responseData["success"] == false){
+    if (responseData["success"] == false) {
       throw responseData["msg"];
     } else {
       return responseData["msg"];
@@ -158,9 +157,10 @@ class ProgramService extends HTTPService {
       'Authorization': 'Bearer ${tokenPair.accessToken}',
       'Content-Type': 'application/json',
     };
-    final data_ = Map.from(mergedData)..removeWhere((key, value) => key == "program");
-    var request = http.Request(
-        'POST', Uri.parse('${Constants.BASE_URL_NEW}/setprogram'));
+    final data_ = Map.from(mergedData)
+      ..removeWhere((key, value) => key == "program");
+    var request =
+        http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}/setprogram'));
     request.body = json.encode(data_);
     request.headers.addAll(headers);
     print(request.body);
@@ -168,19 +168,17 @@ class ProgramService extends HTTPService {
     return response;
   }
 
-  Future<String> updateProgram(
-      Map<String, dynamic> data) async {
+  Future<String> updateProgram(Map<String, dynamic> data) async {
     http.StreamedResponse response =
-    await call<Map<String, dynamic>>(updateProgram_, data);
-    if (response.statusCode == 200){
-    final responseString = await response.stream.bytesToString();
-    final responseData = jsonDecode(responseString);
-    if(responseData["success"] == true){
-      return responseData["msg"];
-    }
-    else {
-      throw responseData["msg"];
-    }
+        await call<Map<String, dynamic>>(updateProgram_, data);
+    if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+      final responseData = jsonDecode(responseString);
+      if (responseData["success"] == true) {
+        return responseData["msg"];
+      } else {
+        throw responseData["msg"];
+      }
     } else {
       throw "Something happened contact admin";
     }

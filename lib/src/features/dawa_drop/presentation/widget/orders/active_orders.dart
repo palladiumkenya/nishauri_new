@@ -6,10 +6,10 @@ import 'package:nishauri/src/features/dawa_drop/data/models/order_request/drug_o
 import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/DeliveryProgression.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
-class AllOrders extends StatelessWidget {
+class ActiveOrders extends StatelessWidget {
   final List<DrugOrder> orders;
 
-  const AllOrders({Key? key, required this.orders}) : super(key: key);
+  const ActiveOrders({Key? key, required this.orders}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

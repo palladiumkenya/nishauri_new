@@ -11,7 +11,9 @@ _$UserProgramImpl _$$UserProgramImplFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String?,
       program_name: json['program_name'] as String?,
       isActive: json['isActive'] as bool? ?? false,
-      createdAt: json['createdAt'] as String?,
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
     );
 
 Map<String, dynamic> _$$UserProgramImplToJson(_$UserProgramImpl instance) =>
@@ -19,5 +21,5 @@ Map<String, dynamic> _$$UserProgramImplToJson(_$UserProgramImpl instance) =>
       'id': instance.id,
       'program_name': instance.program_name,
       'isActive': instance.isActive,
-      'createdAt': instance.createdAt,
+      'createdAt': instance.createdAt?.toIso8601String(),
     };

@@ -10,7 +10,7 @@ class UserProgram with _$UserProgram {
     String? id,
     String? program_name,
     @Default(false) bool isActive,
-    String? createdAt,
+    DateTime? createdAt,
 
   }) = _UserProgram;
 

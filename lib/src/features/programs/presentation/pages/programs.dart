@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuItemsBuilder.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuOption.dart';
 import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
@@ -65,7 +66,7 @@ class ProgramsMenuScreen extends StatelessWidget {
                                 style: theme.textTheme.titleLarge
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),
-                              subtitle: const Text("Date enrolled: 16/05/2024"),
+                              subtitle: Text("Date enrolled: ${DateFormat("dd/MM/yyyy").format(item.createdAt!)}"),
                               leading: const FaIcon(
                                 FontAwesomeIcons.layerGroup,
                                 color: Constants.programsColor,
