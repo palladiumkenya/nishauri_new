@@ -123,6 +123,7 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
     // ),
 
     MenuItem(
+      color: Constants.programsColor,
       icon: FaIcon(
         Icons.file_copy_outlined,
         size: Constants.iconSize,
