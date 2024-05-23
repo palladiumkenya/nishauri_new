@@ -105,6 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         placeholder: "Enter your number",
                       ),
                       keyboardType: TextInputType.phone,
+                      maxLength: 10,
                     ),
                   ),
                   const SizedBox(height: Constants.SPACING),

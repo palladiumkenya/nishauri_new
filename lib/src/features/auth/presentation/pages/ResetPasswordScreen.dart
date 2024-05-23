@@ -110,7 +110,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         ),
                         const SizedBox(height: Constants.SPACING),
                         Text(
-                          "No worries!Enter your phone number bellow \nand we will send you code to reset \npassword",
+                          "No worries! Enter your phone number below and we will send you code to reset password",
                           style: theme.textTheme.titleMedium,
                         ),
                         const SizedBox(height: Constants.SPACING * 3),

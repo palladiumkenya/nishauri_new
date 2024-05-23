@@ -38,6 +38,7 @@ class ContactInformation extends StatelessWidget {
                 name: "phone_no",
                 initialValue: user.phoneNumber,
                 keyboardType: TextInputType.phone,
+                maxLength: 10,
                 decoration: inputDecoration(
                   placeholder: "Enter your phone number",
                   prefixIcon: Icons.phone,

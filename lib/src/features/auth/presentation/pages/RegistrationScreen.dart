@@ -64,7 +64,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               backgroundColor: Colors.transparent,
               leading: IconButton(
                 onPressed: () => context.pop(),
-                icon:SvgPicture.asset(
+                icon: SvgPicture.asset(
                   "assets/images/reply-dark.svg",
                   semanticsLabel: "Doctors",
                   fit: BoxFit.contain,
@@ -78,22 +78,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 key: _formKey,
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-
                       children: [
                         const SizedBox(height: Constants.SMALL_SPACING),
                         const DecoratedBox(
                           decoration: BoxDecoration(),
-                          child: Logo(size: 100,),
+                          child: Logo(
+                            size: 100,
+                          ),
                         ),
                         const SizedBox(height: Constants.SMALL_SPACING),
                         const Text(
                           "Create Account 👋",
-                          style: TextStyle(
-                              fontSize: 40),
+                          style: TextStyle(fontSize: 40),
                         ),
                         const SizedBox(height: Constants.SPACING),
                         Row(
@@ -108,7 +108,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   ),
                                   validator: FormBuilderValidators.compose([
                                     FormBuilderValidators.required(),
-                                    FormBuilderValidators.minLength(4),
+                                    FormBuilderValidators.minLength(2),
                                   ]),
                                 ),
                               ),
@@ -124,14 +124,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   ),
                                   validator: FormBuilderValidators.compose([
                                     FormBuilderValidators.required(),
-                                    FormBuilderValidators.minLength(4),
+                                    FormBuilderValidators.minLength(2),
                                   ]),
                                 ),
                               ),
                             ),
                           ],
-                        )
-                        ,
+                        ),
 
                         const SizedBox(height: Constants.SMALL_SPACING),
                         LabelInputContainer(
@@ -168,7 +167,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(),
-                                  (date) {
+                              (date) {
                                 if (date == null)
                                   return "Date of birth is required";
                                 if (calculateAge(date) < 12)
@@ -190,8 +189,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           child: FormBuilderDropdown(
                             name: "gender",
                             decoration: outLineInputDecoration(
-                              placeholder: "Select your gender"
-                            ),
+                                placeholder: "Select your gender"),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(),
                             ]),
@@ -218,10 +216,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(),
                               FormBuilderValidators.minLength(10,
-                                  errorText: 'Phone number must be 10 digits long'),
+                                  errorText:
+                                      'Phone number must be 10 digits long'),
                               FormBuilderValidators.maxLength(10,
-                                  errorText: 'Phone number must be 10 digits long'),
-                                  (value) {
+                                  errorText:
+                                      'Phone number must be 10 digits long'),
+                              (value) {
                                 if (value != null &&
                                     value.isNotEmpty &&
                                     !value.startsWith('0')) {
@@ -231,6 +231,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               },
                             ]),
                             keyboardType: TextInputType.phone,
+                            maxLength: 10,
                           ),
                         ),
                         const SizedBox(height: Constants.SMALL_SPACING),
@@ -260,7 +261,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             name: "confirmPassword",
                             decoration: outLineInputDecoration(
                                 placeholder: "Confirm your password",
-
                                 surfixIcon: _hidePassword
                                     ? const Icon(Icons.visibility)
                                     : const Icon(Icons.visibility_off),
@@ -269,10 +269,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               FormBuilderValidators.required(),
                               FormBuilderValidators.min(8),
                               FormBuilderValidators.minLength(8),
-                                  (value) =>
-                              _formKey.currentState!.value["password"] != value
-                                  ? "Password didn't match"
-                                  : null
+                              (value) =>
+                                  _formKey.currentState!.value["password"] !=
+                                          value
+                                      ? "Password didn't match"
+                                      : null
                             ]),
                           ),
                         ),
@@ -333,20 +334,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               onPress: () {
                                 if (_formKey.currentState != null &&
                                     _formKey.currentState!.saveAndValidate()) {
-                                  final formState = _formKey.currentState!.value;
+                                  final formState =
+                                      _formKey.currentState!.value;
                                   setState(() {
                                     _loading = true;
                                   });
                                   final authNotifier =
-                                  ref.read(authStateProvider.notifier);
-                                  authNotifier.register(formState).then((value) {
+                                      ref.read(authStateProvider.notifier);
+                                  authNotifier
+                                      .register(formState)
+                                      .then((value) {
                                     //     Update user state
                                     ref.read(userProvider.notifier).getUser();
                                   }).then((_) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content:
-                                        Text('Registration successful!,'),
+                                            Text('Registration successful!,'),
                                       ),
                                     );
                                     // context.goNamed(RouteNames.VERIFY_ACCOUNT);
@@ -374,7 +378,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           linked: "Already have account? ",
                           unlinked: "Login",
-                          onPress: () => context.goNamed(RouteNames.LOGIN_SCREEN),
+                          onPress: () =>
+                              context.goNamed(RouteNames.LOGIN_SCREEN),
                         ),
                       ],
                     ),

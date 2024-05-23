@@ -177,12 +177,29 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                       prefixIcon: Icons.account_circle,
                                       surfixIcon: _requestLoading
                                           ? const CircularProgressIndicator()
-                                          : Text(
-                                              _sent
-                                                  ? (_countdownSeconds > 0
-                                                      ? "Resend Code ($_countdownSeconds)"
-                                                      : "Resend Code")
-                                                  : "Get code",
+                                          : Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(3.0),
+                                                color:
+                                                    theme.colorScheme.primary,
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: Text(
+                                                  _sent
+                                                      ? (_countdownSeconds > 0
+                                                          ? "Resend Code ($_countdownSeconds)"
+                                                          : "Resend Code")
+                                                      : "Get code",
+                                                  style: TextStyle(
+                                                    backgroundColor: theme
+                                                        .colorScheme.primary,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                       onSurfixIconPressed: () {
                                         if (!_sent || _countdownSeconds <= 0) {
@@ -233,6 +250,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                     title: "Verify",
                                     onPress: handleSubmit,
                                     loading: _loading,
+                                    backgroundColor: theme.colorScheme.primary,
+                                    textColor: Colors.white,
                                   ),
                                   const SizedBox(height: Constants.SPACING),
                                   Consumer(
