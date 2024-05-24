@@ -69,103 +69,112 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         }
 
         return Scaffold(
-          body: ScaffoldStackedBody(
-              body: Column(
-            children: [
-              AppBar(
-                // title: const Text("Sign Up"),
-                backgroundColor: Colors.transparent,
-                leading: IconButton(
-                  onPressed: () => context.pop(),
-                  icon: SvgPicture.asset(
-                    "assets/images/reply-dark.svg",
-                    semanticsLabel: "Doctors",
-                    fit: BoxFit.contain,
-                    width: 40,
-                    height: 40,
-                  ),
+          appBar: AppBar(
+            // title: const Text("Sign Up"),
+            backgroundColor: Colors.transparent,
+            leading: IconButton(
+              onPressed: () => context.pop(),
+              icon: SvgPicture.asset(
+                "assets/images/reply-dark.svg",
+                semanticsLabel: "Doctors",
+                fit: BoxFit.contain,
+                width: 40,
+                height: 40,
+              ),
+            ),
+          ),
+          body: ResponsiveWidgetFormLayout(
+            buildPageContent: (BuildContext context, Color? color) => SafeArea(
+              child: Container(
+                padding: const EdgeInsets.all(Constants.SPACING * 2),
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
+                ),
+                child: Column(
+                  children: [
+                    FormBuilder(
+                      key: _formKey,
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: Constants.SMALL_SPACING),
+                              const DecoratedBox(
+                                decoration: BoxDecoration(),
+                                child: Logo(
+                                  size: 100,
+                                ),
+                              ),
+                              const SizedBox(height: Constants.SMALL_SPACING),
+                              const Text(
+                                "Forgot Password 😯",
+                                style: TextStyle(fontSize: 40),
+                              ),
+                              const SizedBox(height: Constants.SPACING),
+                              Text(
+                                "No worries! Enter your phone number below and we will send you code to reset password",
+                                style: theme.textTheme.titleMedium,
+                              ),
+                              const SizedBox(height: Constants.SPACING * 3),
+                              LabelInputContainer(
+                                label: "Phone number",
+                                child: FormBuilderTextField(
+                                  name: "user_name",
+                                  decoration: outLineInputDecoration(
+                                    placeholder: "Enter your phone number",
+                                  ),
+                                  validator: FormBuilderValidators.compose([
+                                    FormBuilderValidators.required(),
+                                    FormBuilderValidators.minLength(10,
+                                        errorText:
+                                            'Phone number must be 10 digits long'),
+                                    FormBuilderValidators.maxLength(10,
+                                        errorText:
+                                            'Phone number must be 10 digits long'),
+                                    (value) {
+                                      if (value != null &&
+                                          value.isNotEmpty &&
+                                          !value.startsWith('0')) {
+                                        return 'Phone number must start with zero';
+                                      }
+                                      return null;
+                                    },
+                                  ]),
+                                  keyboardType: TextInputType.phone,
+                                  maxLength: 10,
+                                ),
+                              ),
+                              const SizedBox(height: Constants.SPACING * 6),
+                              Button(
+                                title: "Submit Request",
+                                backgroundColor: theme.colorScheme.primary,
+                                textColor: Colors.white,
+                                onPress: handleSubmit,
+                                loading: _loading,
+                              ),
+                              const SizedBox(
+                                height: Constants.SPACING,
+                              ),
+                              LinkedRichText(
+                                linked: "",
+                                unlinked: "Back to login",
+                                onPress: () =>
+                                    context.goNamed(RouteNames.LOGIN_SCREEN),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
-              Expanded(
-                  child: FormBuilder(
-                key: _formKey,
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: Constants.SMALL_SPACING),
-                        const DecoratedBox(
-                          decoration: BoxDecoration(),
-                          child: Logo(
-                            size: 100,
-                          ),
-                        ),
-                        const SizedBox(height: Constants.SMALL_SPACING),
-                        const Text(
-                          "Forgot Password 😯",
-                          style: TextStyle(fontSize: 40),
-                        ),
-                        const SizedBox(height: Constants.SPACING),
-                        Text(
-                          "No worries! Enter your phone number below and we will send you code to reset password",
-                          style: theme.textTheme.titleMedium,
-                        ),
-                        const SizedBox(height: Constants.SPACING * 3),
-                        LabelInputContainer(
-                          label: "Phone number",
-                          child: FormBuilderTextField(
-                            name: "user_name",
-                            decoration: outLineInputDecoration(
-                              placeholder: "Enter your phone number",
-                            ),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                              FormBuilderValidators.minLength(10,
-                                  errorText:
-                                      'Phone number must be 10 digits long'),
-                              FormBuilderValidators.maxLength(10,
-                                  errorText:
-                                      'Phone number must be 10 digits long'),
-                              (value) {
-                                if (value != null &&
-                                    value.isNotEmpty &&
-                                    !value.startsWith('0')) {
-                                  return 'Phone number must start with zero';
-                                }
-                                return null;
-                              },
-                            ]),
-                            keyboardType: TextInputType.phone,
-                            maxLength: 10,
-                          ),
-                        ),
-                        const SizedBox(height: Constants.SPACING * 6),
-                        Button(
-                          title: "Submit Request",
-                          backgroundColor: theme.colorScheme.primary,
-                          textColor: Colors.white,
-                          onPress: handleSubmit,
-                          loading: _loading,
-                        ),
-                        const SizedBox(
-                          height: Constants.SPACING,
-                        ),
-                        LinkedRichText(
-                          linked: "",
-                          unlinked: "Back to login",
-                          onPress: () =>
-                              context.goNamed(RouteNames.LOGIN_SCREEN),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ))
-            ],
-          )),
+            ),
+          ),
         );
       },
     );
