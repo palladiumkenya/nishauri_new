@@ -11,19 +11,20 @@ import 'package:nishauri/src/app/navigation/menu/MenuOption.dart';
 import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
+import 'package:nishauri/src/shared/display/dialogs.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 import '../../../../utils/constants.dart';
 import '../../../user_programs/data/providers/program_provider.dart';
 
-class ProgramsMenuScreen extends StatelessWidget {
+class ProgramsMenuScreen extends HookWidget {
   const ProgramsMenuScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    final loading = useState(false);
     return Scaffold(
       body: Consumer(
         builder: (context, ref, child) {
@@ -66,12 +67,54 @@ class ProgramsMenuScreen extends StatelessWidget {
                                 style: theme.textTheme.titleLarge
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),
-                              subtitle: Text("Date enrolled: ${DateFormat("dd/MM/yyyy").format(item.createdAt!)}"),
+                              subtitle: Text(
+                                  "Date enrolled: ${DateFormat("dd/MM/yyyy").format(item.createdAt!)}"),
                               leading: const FaIcon(
                                 FontAwesomeIcons.layerGroup,
                                 color: Constants.programsColor,
                               ),
-                              onTap: getProgramMenuItemByProgramCode(context,item.id ?? "").onPressed,
+                              trailing: IconButton(
+                                onPressed: () {
+                                  showConfirmDeleteDialog(context, "Are you sure you want to remove ${item.program_name}?").then((value) {
+                                    if(value == true){
+                                      final programsNotifier =
+                                      ref.read(userProgramProvider.notifier);
+                                      loading.value = true;
+
+
+
+                                      programsNotifier
+                                          .updateProgram({"program_id": item.id})
+                                          .then((value) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(value),
+                                          ),
+                                        );
+                                      }).catchError((err) {
+                                        // handleResponseError(
+                                        //   context,
+                                        //   _formKey.currentState!.fields,
+                                        //   err,
+                                        //   ref
+                                        //       .read(authStateProvider.notifier)
+                                        //       .logout,
+                                        // );
+                                      }).whenComplete(() => loading.value = false);
+                                    }
+                                  });
+
+                                },
+                                icon: FaIcon(
+                                  FontAwesomeIcons.trashCan,
+                                  color: theme.colorScheme.error,
+                                ),
+                              ),
+                              onTap: getProgramMenuItemByProgramCode(
+                                context,
+                                item.id ?? "",
+                              ).onPressed,
                             ),
                           );
                         },
@@ -89,41 +132,17 @@ class ProgramsMenuScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: Constants.SPACING,
-                    vertical: Constants.SPACING * 2),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Button(
-                        textColor: Colors.white,
-                        backgroundColor: Constants.programsColor,
-                        title: "Add Program",
-                        surfixIcon: const FaIcon(FontAwesomeIcons.plus),
-                        onPress: () => context.goNamed(
-                          RouteNames.PROGRAME_REGISTRATION_SCREEN,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: Constants.SPACING),
-                    if (userProgram.valueOrNull
-                            ?.where((program) => program.isActive == true)
-                            .isNotEmpty ==
-                        true)
-                      Expanded(
-                        child: Button(
-                          textColor: Colors.white,
-                          backgroundColor: Constants.programsColor,
-                          title: "Remove program",
-                          surfixIcon:
-                              const FaIcon(FontAwesomeIcons.solidTrashCan),
-                          onPress: () {
-                            context.goNamed(
-                              RouteNames.REMOVE_PROGRAM,
-                            );
-                          },
-                        ),
-                      )
-                  ],
+                  horizontal: Constants.SPACING,
+                  vertical: Constants.SPACING * 2,
+                ),
+                child: Button(
+                  textColor: Colors.white,
+                  backgroundColor: Constants.programsColor,
+                  title: "Add Program",
+                  surfixIcon: const FaIcon(FontAwesomeIcons.plus),
+                  onPress: () => context.goNamed(
+                    RouteNames.PROGRAME_REGISTRATION_SCREEN,
+                  ),
                 ),
               )
             ],
