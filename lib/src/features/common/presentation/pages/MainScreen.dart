@@ -142,12 +142,27 @@ class _HomeScreenState extends ConsumerState<MainScreen>
         ],
         currentIndex: _currIndex,
         onTap: (index) async {
-          if (_currIndex == 2 && index != 2 && _messagesCount > 2) {
+          if (true) {
+            // if (_currIndex == 2 && index != 2 && _messagesCount > 2) {
             await showDialog(
               context: context,
               barrierDismissible: false,
-              builder: (context) => const AlertDialog(
-                content: ChatFeedbackForm(),
+              builder: (context) => AlertDialog(
+                content: Stack(
+                  children: [
+                    const ChatFeedbackForm(),
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: IconButton(
+                        onPressed: () => context.pop(),
+                        icon: const FaIcon(
+                          FontAwesomeIcons.xmark,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }

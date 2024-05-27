@@ -75,17 +75,16 @@ class ProgramsMenuScreen extends HookWidget {
                               ),
                               trailing: IconButton(
                                 onPressed: () {
-                                  showConfirmDeleteDialog(context, "Are you sure you want to remove ${item.program_name}?").then((value) {
-                                    if(value == true){
-                                      final programsNotifier =
-                                      ref.read(userProgramProvider.notifier);
+                                  showConfirmDeleteDialog(context,
+                                          "Are you sure you want to remove ${item.program_name}?")
+                                      .then((value) {
+                                    if (value == true) {
+                                      final programsNotifier = ref
+                                          .read(userProgramProvider.notifier);
                                       loading.value = true;
-
-
-
-                                      programsNotifier
-                                          .updateProgram({"program_id": item.id})
-                                          .then((value) {
+                                      programsNotifier.updateProgram({
+                                        "program_id": item.id
+                                      }).then((value) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           SnackBar(
@@ -101,10 +100,10 @@ class ProgramsMenuScreen extends HookWidget {
                                         //       .read(authStateProvider.notifier)
                                         //       .logout,
                                         // );
-                                      }).whenComplete(() => loading.value = false);
+                                      }).whenComplete(
+                                          () => loading.value = false);
                                     }
                                   });
-
                                 },
                                 icon: FaIcon(
                                   FontAwesomeIcons.trashCan,
