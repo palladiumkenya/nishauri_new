@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -58,7 +59,8 @@ class _TypingAnimationState extends State<TypingAnimation>
 }
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  final Function(int chatsCount)? onChatsChange;
+  const ChatScreen({Key? key, this.onChatsChange}) : super(key: key);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -69,7 +71,12 @@ class _ChatScreenState extends State<ChatScreen> {
   final ScrollController _scrollController = ScrollController();
   final ChatbotRepository _repository = ChatbotRepository(ChatbotService());
 
-  final List<Message> _messages = [];
+  final List<Message> _messages = [
+    const Message(
+      question: "Welcome to Nuru \nHow can I assist you today?",
+      isSentByUser: false,
+    ),
+  ];
   bool _isBotTyping = false;
 
   Widget _buildMessage(Message message) {
@@ -163,17 +170,22 @@ class _ChatScreenState extends State<ChatScreen> {
               false; // Bot stops typing on failure to receive response
         });
       }
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeOut,
-      );
+      Future.delayed(const Duration(milliseconds: 100), () {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+        );
+      });
     } catch (e) {
       setState(() {
         _messages.add(const Message(
             question: 'Failed to send message to Nuru..', isSentByUser: false));
         _isBotTyping = false; // Bot stops typing on failure to send message
       });
+    }
+    finally{
+      widget.onChatsChange!= null ? widget.onChatsChange!(_messages.length):null;
     }
   }
 
@@ -204,9 +216,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   padding: const EdgeInsets.all(Constants.SPACING),
                   child: Row(
                     children: [
-                      Text('Chat with Nuru',style: theme.textTheme.headlineLarge),
+                      Text('Chat with Nuru',
+                          style: theme.textTheme.headlineLarge),
                       const SizedBox(width: Constants.SPACING),
-                      const FaIcon(FontAwesomeIcons.robot)
+                      const FaIcon(FontAwesomeIcons.robot),
                     ],
                   ),
                 ),
@@ -251,8 +264,7 @@ class _ChatScreenState extends State<ChatScreen> {
           decoration: InputDecoration(
             border: InputBorder.none,
             filled: true,
-            fillColor:
-                Theme.of(context).colorScheme.primary.withOpacity(0.2),
+            fillColor: Theme.of(context).colorScheme.primary.withOpacity(0.2),
             hintText: hintText,
             suffixIcon: Wrap(
               children: [

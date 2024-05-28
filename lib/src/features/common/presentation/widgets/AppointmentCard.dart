@@ -11,7 +11,9 @@ class AppointmentCard extends StatelessWidget {
   final String providerImage;
   final DateTime appointmentTime;
   final String appointmentType;
+  final String? rescheduleButtonText;
   final void Function()? onRescheduleTap;
+
 
 
   const AppointmentCard({
@@ -20,7 +22,8 @@ class AppointmentCard extends StatelessWidget {
     required this.providerImage,
     required this.appointmentTime,
     required this.appointmentType,
-    this.onRescheduleTap
+    this.onRescheduleTap,
+    this.rescheduleButtonText = "Reschedule"
   });
 
   @override
@@ -160,17 +163,18 @@ class AppointmentCard extends StatelessWidget {
                 ),
                 // shape: const OvalBorder(),
                 child: InkWell(
+
                     splashColor: theme.colorScheme.primary.withAlpha(30),
                     onTap: onRescheduleTap,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: Constants.SPACING * 0.5,
                           horizontal: Constants.SPACING * 2),
-                      child: const Row(
+                      child: Row(
                         children: [
-                          Icon(Icons.schedule),
-                          SizedBox(width: Constants.SPACING),
-                          Text("Reschedule"),
+                          const Icon(Icons.schedule),
+                          const SizedBox(width: Constants.SPACING),
+                          Text(rescheduleButtonText ?? "Reschedule"),
                         ],
                       ),
                     )),

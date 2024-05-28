@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/dawa_drop/data/models/order_request/drug_order.dart';
 import 'package:nishauri/src/features/dawa_drop/data/providers/drug_order_provider.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/AllOrders.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/FulfilledOrders.dart';
+import 'package:nishauri/src/shared/display/CustomTabBar.dart';
+import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
-class DrugOrdersScreen extends ConsumerWidget {
+class DrugOrdersScreen extends HookConsumerWidget {
   const DrugOrdersScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final orderAsync = ref.watch(getOrderProvider);
+    final orderAsync = ref.watch(drugOrderProvider);
     final theme = Theme.of(context);
+    final currIndex = useState(0);
 
     return orderAsync.when(
       data: (data) {
@@ -25,63 +31,55 @@ class DrugOrdersScreen extends ConsumerWidget {
         allOrders.where((order) => order.status == 'Approved').toList();
         List<DrugOrder> fulfilledOrders =
         allOrders.where((order) => order.status == 'Fullfilled').toList();
+        final screens = [
+          AllOrders(orders: pendingOrders),
+          // PendingOrders(orders: pendingOrders),
+          // ApprovedOrders(orders: approvedOrders),
+          FulfilledOrders(orders: fulfilledOrders),
+        ];
 
-        return DefaultTabController(
-          length: 2,
-          child: Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                onPressed: () => context.pop(),
-                icon: const Icon(Icons.chevron_left),
-              ),
-              title: const Text("Drug Request"),
-              backgroundColor: Theme.of(context).primaryColor,
-              bottom: TabBar(
-                tabs: const [
-                  Tab(icon: Icon(Icons.all_inbox), text: "Active Drug Request"),
-                  // Tab(icon: Icon(Icons.pending), text: "Pending"),
-                  // Tab(icon: Icon(Icons.pending), text: "Approved"),
-                  Tab(icon: Icon(Icons.done_all), text: "FullFilled Request"),
-                ],
-                labelColor: theme.colorScheme.onPrimary,
-              ),
-            ),
-            // floatingActionButton: FloatingActionButton.extended(
-            //   onPressed: () {
-            //     context.goNamed(RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
-            //         extra: {"payload": null, "type": null});
-            //   },
-            //   label: const Text("Order now"),
-            //   icon: const Icon(Icons.add),
-            // ),
-            body: FractionallySizedBox(
-              heightFactor: 1,
-              child: TabBarView(
-                children: [
-                  // Populate tab views with respective orders
-                  AllOrders(orders: pendingOrders),
-                  // PendingOrders(orders: pendingOrders),
-                  // ApprovedOrders(orders: approvedOrders),
-                  FulfilledOrders(orders: fulfilledOrders),
-                ],
-              ),
-            ),
-          ),
+        return Scaffold(
+            body: Column(
+              children: [
+                CustomAppBar(
+                  title: "Drug Requests",
+                  icon: Icons.shopping_cart_checkout_sharp,
+                  color: Constants.dawaDropColor.withOpacity(0.5),
+                ),
+                CustomTabBar(
+                  activeIndex: currIndex.value,
+                  onTap: (item, index) {
+                    currIndex.value = index;
+                  },
+                  activeColor: Constants.dawaDropColor.withOpacity(0.5),
+                  items: const [
+                    CustomTabBarItem(
+                      title: "Active Request",
+                      icon: Icons.all_inbox,
+                    ),
+                    CustomTabBarItem(
+                      title: "Fulfilled Request",
+                      icon: Icons.done_all,
+                    ),
+                  ],
+                ),
+                Expanded(child: screens[currIndex.value]
+                ),
+              ],
+            )
         );
       },
-      error: (error, _) => Center(child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            error.toString(),
-            style: theme.textTheme.headlineSmall,
-          ),
-          const SizedBox(height: Constants.SPACING * 2),
-        ],
-      )),
+      error: (error, _) => BackgroundImageWidget(
+        customAppBar: CustomAppBar(
+          title: "Confirm Delivery",
+          icon: Icons.vaccines_sharp,
+          color: Constants.dawaDropColor.withOpacity(0.5),
+        ),
+        svgImage: 'assets/images/background.svg',
+        notFoundText: error.toString(),
+      ),
       // Text(error.toString())),
-      loading: ()  => Center(
+      loading: () => Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,6 +96,3 @@ class DrugOrdersScreen extends ConsumerWidget {
     );
   }
 }
-
-
-final counter = StateProvider<int>((ref) => 0);

@@ -7,10 +7,10 @@ part 'art_regimen.g.dart';
 class ARTRegimen with _$ARTRegimen {
   const factory ARTRegimen({
     String? id,
-    required String name,
+    required String regimen,
     String? description,
+    String? ccc_no,
     @Default(false) bool isCurrent,
-    required String createdAt,
   }) = _ARTRegimen;
 
   factory ARTRegimen.fromJson(Map<String, dynamic> json)=> _$ARTRegimenFromJson(json);

@@ -34,12 +34,12 @@ class DrugOrderService extends HTTPService {
     final response = await call(getOrders_, null);
     final responseString = await response.stream.bytesToString();
     final Map<String, dynamic> responseData = json.decode(responseString);
-
     if (responseData.containsKey("programs")) {
       final List<dynamic> programsData = responseData["programs"];
       final List<DrugOrder> programs = programsData.map((json) {
         return DrugOrder(
           appointment: Appointment(
+            id: json["appointment_id"].toString(),
             ccc_no: json["ccc_no"],
             appointment_date: json["appointment_date"],
           ),
@@ -56,6 +56,10 @@ class DrugOrderService extends HTTPService {
           client_phone_no: json['client_phone_no'],
           order_type: json['order_type'],
           status: json['status'],
+          approved_date: json['approved_date'],
+          dispatched_date: json['dispatched_date'],
+          fullfilled_date: json['fullfilled_date'],
+          date_order_posted: json['date_order_posted'],
           order_id: json['order_id'],
           courierService: Courier(
             name: json['courier_service'],

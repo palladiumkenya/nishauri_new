@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +10,8 @@ import 'package:nishauri/src/features/auth/data/services/Terms.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
+import 'package:nishauri/src/shared/display/label_input_container.dart';
+import 'package:nishauri/src/shared/display/scafold_stack_body.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
@@ -41,7 +44,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     if (dob == null) return 0;
     var now = DateTime.now();
     var age = now.year - dob.year;
-    if (now.month < dob.month || (now.month == dob.month && now.day < dob.day)) {
+    if (now.month < dob.month ||
+        (now.month == dob.month && now.day < dob.day)) {
       age--;
     }
     return age;
@@ -52,286 +56,333 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     var theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Sign Up"),
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: const Icon(Icons.chevron_left),
-        ),
-      ),
-      body: ResponsiveWidgetFormLayout(
-        buildPageContent: (context, color) => SafeArea(
-          child: Container(
-            padding: const EdgeInsets.all(Constants.SPACING * 2),
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
+      body: ScaffoldStackedBody(
+        body: Column(
+          children: [
+            AppBar(
+              // title: const Text("Sign Up"),
+              backgroundColor: Colors.transparent,
+              leading: IconButton(
+                onPressed: () => context.pop(),
+                icon:SvgPicture.asset(
+                  "assets/images/reply-dark.svg",
+                  semanticsLabel: "Doctors",
+                  fit: BoxFit.contain,
+                  width: 40,
+                  height: 40,
+                ),
+              ),
             ),
-            child: FormBuilder(
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: Constants.SMALL_SPACING),
-                      const DecoratedBox(
-                        decoration: BoxDecoration(),
-                        child: Logo(),
-                      ),
-                      const SizedBox(height: Constants.SMALL_SPACING),
-                      const Text(
-                        "Sign Up",
-                        style: TextStyle(
-                            fontSize: 40, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: Constants.SPACING),
-                      const SizedBox(height: Constants.SMALL_SPACING),
-                      FormBuilderTextField(
-                        name: "f_name",
-                        decoration: inputDecoration(
-                          placeholder: "e.g john",
-                          prefixIcon: Icons.account_circle_outlined,
-                          label: "First Name",
+            Expanded(
+              child: FormBuilder(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+
+                      children: [
+                        const SizedBox(height: Constants.SMALL_SPACING),
+                        const DecoratedBox(
+                          decoration: BoxDecoration(),
+                          child: Logo(size: 100,),
                         ),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.minLength(4),
-                        ]),
-                      ),
-                      const SizedBox(height: Constants.SMALL_SPACING),
-                      FormBuilderTextField(
-                        name: "l_name",
-                        decoration: inputDecoration(
-                          placeholder: "e.g Doe",
-                          prefixIcon: Icons.account_circle_outlined,
-                          label: "Last Name",
+                        const SizedBox(height: Constants.SMALL_SPACING),
+                        const Text(
+                          "Create Account 👋",
+                          style: TextStyle(
+                              fontSize: 40),
                         ),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.minLength(4),
-                        ]),
-                      ),
-                      const SizedBox(height: Constants.SMALL_SPACING),
-                      FormBuilderTextField(
-                        name: "email",
-                        decoration: inputDecoration(
-                          placeholder: "e.g abc@gmail.com",
-                          prefixIcon: Icons.email,
-                          label: "Email address",
-                        ),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.email(),
-                        ]),
-                      ),
-                      const SizedBox(height: Constants.SMALL_SPACING),
-                      FormBuilderDateTimePicker(
-                        firstDate: DateTime(1920),
-                        lastDate: DateTime.now(),
-                        name: "dob",
-                        format: DateFormat('yyy MMM dd'),
-                        inputType: InputType.date,
-                        decoration: widgetSurfixIconDecoration(
-                          placeholder: "Enter your date of birth",
-                          prefixIcon: Icons.calendar_month_rounded,
-                          surfixIcon: Text(
-                            _selectedDate != null ? '${calculateAge(_selectedDate!).toString()} years' : '',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          label: "Date of birth",
-                        ),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                              (date) {
-                            if (date == null) return "Date of birth is required";
-                            if (calculateAge(date) < 12) return "You must be at least 12 years old";
-                            return null;
-                          },
-                        ]),
-                        onChanged: (date) {
-                          setState(() {
-                            _selectedDate = date;
-                          });
-                        },
-                        valueTransformer: (date) => date?.toIso8601String(),
-                      ),
-                      const SizedBox(height: Constants.SMALL_SPACING),
-                      FormBuilderDropdown(
-                        name: "gender",
-                        decoration: inputDecoration(
-                          prefixIcon: Icons.accessibility,
-                          label: "Gender",
-                        ),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                        ]),
-                        items: const [
-                          DropdownMenuItem(
-                            value: "Male",
-                            child: Text("Male"),
-                          ),
-                          DropdownMenuItem(
-                            value: "Female",
-                            child: Text("Female"),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: Constants.SMALL_SPACING),
-                      FormBuilderTextField(
-                        name: "msisdn",
-                        decoration: inputDecoration(
-                          placeholder: "e.g 0712345678",
-                          prefixIcon: Icons.phone,
-                          label: "Phone number",
-                        ),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.min(10),
-                          FormBuilderValidators.minLength(10),
-                          FormBuilderValidators.maxLength(13),
-                        ]),
-                      ),
-                      const SizedBox(height: Constants.SMALL_SPACING),
-                      FormBuilderTextField(
-                        name: "password",
-                        obscureText: _hidePassword,
-                        decoration: inputDecoration(
-                            placeholder: "********",
-                            prefixIcon: Icons.lock,
-                            label: "Password",
-                            surfixIcon: _hidePassword
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            onSurfixIconPressed: _toggleShowPassword),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.min(8),
-                          FormBuilderValidators.minLength(8),
-                        ]),
-                      ),
-                      const SizedBox(height: Constants.SMALL_SPACING),
-                      FormBuilderTextField(
-                        obscureText: _hidePassword,
-                        name: "confirmPassword",
-                        decoration: inputDecoration(
-                            placeholder: "********",
-                            prefixIcon: Icons.lock,
-                            label: "Confirm Password",
-                            surfixIcon: _hidePassword
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            onSurfixIconPressed: _toggleShowPassword),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.min(8),
-                          FormBuilderValidators.minLength(8),
-                          (value) =>
-                              _formKey.currentState!.value["password"] != value
-                                  ? "Password didn't match"
-                                  : null
-                        ]),
-                      ),
-                      FormBuilderCheckbox(
-                        initialValue: _termsAccepted,
-                        name: "termsAccepted",
-                        onChanged: (value) {
-                          setState(() {
-                            _termsAccepted = value!;
-                          });
-                        },
-                        title: Row(
+                        const SizedBox(height: Constants.SPACING),
+                        Row(
                           children: [
                             Expanded(
-                              child: Text(
-                                "Accept terms and conditions",
-                                overflow: TextOverflow.ellipsis, // Handle overflow by ellipsis if needed
+                              child: LabelInputContainer(
+                                label: "First Name",
+                                child: FormBuilderTextField(
+                                  name: "f_name",
+                                  decoration: outLineInputDecoration(
+                                    placeholder: "John",
+                                  ),
+                                  validator: FormBuilderValidators.compose([
+                                    FormBuilderValidators.required(),
+                                    FormBuilderValidators.minLength(4),
+                                  ]),
+                                ),
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () => showTermsDialog(context), // Show terms dialog on tap
-                              child: Text(
-                                " (Terms)",
-                                style: TextStyle(
-                                  color: Colors.blue, // Change color to indicate it's a link
-                                  decoration: TextDecoration.underline, // Add underline to indicate it's a link
+                            const SizedBox(width: Constants.SMALL_SPACING),
+                            Expanded(
+                              child: LabelInputContainer(
+                                label: "Last Name",
+                                child: FormBuilderTextField(
+                                  name: "l_name",
+                                  decoration: outLineInputDecoration(
+                                    placeholder: "Doe",
+                                  ),
+                                  validator: FormBuilderValidators.compose([
+                                    FormBuilderValidators.required(),
+                                    FormBuilderValidators.minLength(4),
+                                  ]),
                                 ),
                               ),
                             ),
                           ],
-                        ),
+                        )
+                        ,
 
-                      ),
-                      // FormBuilderCheckbox(
-                      //   initialValue: false,
-                      //   name: "termsAccepted",
-                      //   validator: FormBuilderValidators.compose([
-                      //     FormBuilderValidators.required(),
-                      //     (value) => value == false
-                      //         ? "You must accept terms and conditions"
-                      //         : null
-                      //   ]),
-                      //   title: const Text("Accept terms and conditions"),
-                      // ),
-                      const SizedBox(height: Constants.SPACING),
-                      LinkedRichText(
-                        linked: "Already have account? ",
-                        unlinked: "Login",
-                        onPress: () => context.goNamed(RouteNames.LOGIN_SCREEN),
-                      ),
-                      const SizedBox(height: Constants.SPACING),
-                      Consumer(
-                        builder: (context, ref, child) {
-                          final authState = ref.watch(authStateProvider);
-                          return Button(
-                            loading: _loading,
-                            title: "Register",
-                            onPress: () {
-                              if (_formKey.currentState != null &&
-                                  _formKey.currentState!.saveAndValidate()) {
-                                final formState = _formKey.currentState!.value;
-                                setState(() {
-                                  _loading = true;
-                                });
-                                final authNotifier =
-                                    ref.read(authStateProvider.notifier);
-                                authNotifier.register(formState).then((value) {
-                                  //     Update user state
-                                  ref.read(userProvider.notifier).getUser();
-                                }).then((_) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content:
-                                          Text('Registration successful!,'),
-                                    ),
-                                  );
-                                  // context.goNamed(RouteNames.VERIFY_ACCOUNT);
-                                }).catchError((error) {
-                                  handleResponseError(
-                                    context,
-                                    _formKey.currentState!.fields,
-                                    error,
-                                    authNotifier.logout,
-                                  );
-                                }).whenComplete(() {
-                                  if (mounted) {
-                                    setState(() {
-                                      _loading = false;
-                                    });
-                                  }
-                                });
-                              }
+                        const SizedBox(height: Constants.SMALL_SPACING),
+                        LabelInputContainer(
+                          label: "Email",
+                          child: FormBuilderTextField(
+                            name: "email",
+                            decoration: outLineInputDecoration(
+                              placeholder: "e.g abc@gmail.com",
+                            ),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(),
+                              FormBuilderValidators.email(),
+                            ]),
+                            keyboardType: TextInputType.emailAddress,
+                          ),
+                        ),
+                        const SizedBox(height: Constants.SMALL_SPACING),
+                        LabelInputContainer(
+                          label: "Date of Birth",
+                          child: FormBuilderDateTimePicker(
+                            firstDate: DateTime(1920),
+                            lastDate: DateTime.now(),
+                            name: "dob",
+                            format: DateFormat('yyy MMM dd'),
+                            inputType: InputType.date,
+                            decoration: outLineInputDecoration(
+                              placeholder: "Enter your date of birth",
+                              surfixIcon: Text(
+                                _selectedDate != null
+                                    ? '${calculateAge(_selectedDate!).toString()} years'
+                                    : '',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(),
+                                  (date) {
+                                if (date == null)
+                                  return "Date of birth is required";
+                                if (calculateAge(date) < 12)
+                                  return "You must be at least 12 years old";
+                                return null;
+                              },
+                            ]),
+                            onChanged: (date) {
+                              setState(() {
+                                _selectedDate = date;
+                              });
                             },
-                          );
-                        },
-                      )
-                    ],
+                            valueTransformer: (date) => date?.toIso8601String(),
+                          ),
+                        ),
+                        const SizedBox(height: Constants.SMALL_SPACING),
+                        LabelInputContainer(
+                          label: "Gender",
+                          child: FormBuilderDropdown(
+                            name: "gender",
+                            decoration: outLineInputDecoration(
+                              placeholder: "Select your gender"
+                            ),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(),
+                            ]),
+                            items: const [
+                              DropdownMenuItem(
+                                value: "Male",
+                                child: Text("Male"),
+                              ),
+                              DropdownMenuItem(
+                                value: "Female",
+                                child: Text("Female"),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: Constants.SMALL_SPACING),
+                        LabelInputContainer(
+                          label: "Phone number",
+                          child: FormBuilderTextField(
+                            name: "msisdn",
+                            decoration: outLineInputDecoration(
+                              placeholder: "e.g 0712345678",
+                            ),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(),
+                              FormBuilderValidators.minLength(10,
+                                  errorText: 'Phone number must be 10 digits long'),
+                              FormBuilderValidators.maxLength(10,
+                                  errorText: 'Phone number must be 10 digits long'),
+                                  (value) {
+                                if (value != null &&
+                                    value.isNotEmpty &&
+                                    !value.startsWith('0')) {
+                                  return 'Phone number must start with zero';
+                                }
+                                return null;
+                              },
+                            ]),
+                            keyboardType: TextInputType.phone,
+                          ),
+                        ),
+                        const SizedBox(height: Constants.SMALL_SPACING),
+                        LabelInputContainer(
+                          label: "Password",
+                          child: FormBuilderTextField(
+                            name: "password",
+                            obscureText: _hidePassword,
+                            decoration: outLineInputDecoration(
+                                placeholder: "Enter your password",
+                                surfixIcon: _hidePassword
+                                    ? const Icon(Icons.visibility)
+                                    : const Icon(Icons.visibility_off),
+                                onSurfixIconPressed: _toggleShowPassword),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(),
+                              FormBuilderValidators.min(8),
+                              FormBuilderValidators.minLength(8),
+                            ]),
+                          ),
+                        ),
+                        const SizedBox(height: Constants.SMALL_SPACING),
+                        LabelInputContainer(
+                          label: "Confirm password",
+                          child: FormBuilderTextField(
+                            obscureText: _hidePassword,
+                            name: "confirmPassword",
+                            decoration: outLineInputDecoration(
+                                placeholder: "Confirm your password",
+
+                                surfixIcon: _hidePassword
+                                    ? const Icon(Icons.visibility)
+                                    : const Icon(Icons.visibility_off),
+                                onSurfixIconPressed: _toggleShowPassword),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(),
+                              FormBuilderValidators.min(8),
+                              FormBuilderValidators.minLength(8),
+                                  (value) =>
+                              _formKey.currentState!.value["password"] != value
+                                  ? "Password didn't match"
+                                  : null
+                            ]),
+                          ),
+                        ),
+                        FormBuilderCheckbox(
+                          initialValue: _termsAccepted,
+                          name: "termsAccepted",
+                          onChanged: (value) {
+                            setState(() {
+                              _termsAccepted = value!;
+                            });
+                          },
+                          title: Row(
+                            children: [
+                              const Expanded(
+                                child: Text(
+                                  "Accept terms and conditions",
+                                  overflow: TextOverflow
+                                      .ellipsis, // Handle overflow by ellipsis if needed
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () => showTermsDialog(
+                                    context), // Show terms dialog on tap
+                                child: const Text(
+                                  " (Terms)",
+                                  style: TextStyle(
+                                    color: Colors
+                                        .blue, // Change color to indicate it's a link
+                                    decoration: TextDecoration
+                                        .underline, // Add underline to indicate it's a link
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // FormBuilderCheckbox(
+                        //   initialValue: false,
+                        //   name: "termsAccepted",
+                        //   validator: FormBuilderValidators.compose([
+                        //     FormBuilderValidators.required(),
+                        //     (value) => value == false
+                        //         ? "You must accept terms and conditions"
+                        //         : null
+                        //   ]),
+                        //   title: const Text("Accept terms and conditions"),
+                        // ),
+
+                        const SizedBox(height: Constants.SPACING),
+                        Consumer(
+                          builder: (context, ref, child) {
+                            final authState = ref.watch(authStateProvider);
+                            return Button(
+                              loading: _loading,
+                              title: "Register",
+                              backgroundColor: theme.colorScheme.primary,
+                              textColor: Colors.white,
+                              onPress: () {
+                                if (_formKey.currentState != null &&
+                                    _formKey.currentState!.saveAndValidate()) {
+                                  final formState = _formKey.currentState!.value;
+                                  setState(() {
+                                    _loading = true;
+                                  });
+                                  final authNotifier =
+                                  ref.read(authStateProvider.notifier);
+                                  authNotifier.register(formState).then((value) {
+                                    //     Update user state
+                                    ref.read(userProvider.notifier).getUser();
+                                  }).then((_) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content:
+                                        Text('Registration successful!,'),
+                                      ),
+                                    );
+                                    // context.goNamed(RouteNames.VERIFY_ACCOUNT);
+                                  }).catchError((error) {
+                                    handleResponseError(
+                                      context,
+                                      _formKey.currentState!.fields,
+                                      error,
+                                      authNotifier.logout,
+                                    );
+                                  }).whenComplete(() {
+                                    if (mounted) {
+                                      setState(() {
+                                        _loading = false;
+                                      });
+                                    }
+                                  });
+                                }
+                              },
+                            );
+                          },
+                        ),
+                        const SizedBox(height: Constants.SPACING),
+                        LinkedRichText(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          linked: "Already have account? ",
+                          unlinked: "Login",
+                          onPress: () => context.goNamed(RouteNames.LOGIN_SCREEN),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

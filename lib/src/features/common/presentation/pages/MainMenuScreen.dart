@@ -43,7 +43,7 @@ class MainMenuScreen extends StatelessWidget {
           SafeArea(
             child: Consumer(
               builder: (context, ref, child) {
-                final userProgram = ref.watch(programProvider);
+                final userProgram = ref.watch(userProgramProvider);
                 return Column(
                   children: [
                     const SizedBox(height: Constants.SPACING),
@@ -124,35 +124,29 @@ class MainMenuScreen extends StatelessWidget {
                               // get generic menu items
                               ...getGenericMenuItems(context)
                                 ..removeWhere((element) {
-                                  if (data.isEmpty &&
+                                  if (data.where((element) => element.isActive).isEmpty &&
                                       element.title ==
                                           MenuItemNames.PROGRAM_MENU) {
                                     return true;
                                   }
                                   return false;
                                 }),
-                              // // get program menu items
-                              // ...data.map((e) {
-                              //   final programCode = e.id;
-                              //   print(e.id);
-                              //   return getProgramMenuItemByProgramCode(context, programCode?? '');
-                              // }).toList(),
-                              // Register new program
-                              MenuItem(
-                                icon: Icon(
-                                  Icons.add,
-                                  size: Constants.iconSize,
-                                  color: theme.colorScheme.inversePrimary,
+                              if (data.where((element) => element.isActive).isEmpty)
+                                MenuItem(
+                                  icon: Icon(
+                                    Icons.add,
+                                    size: Constants.iconSize,
+                                    color: theme.colorScheme.inversePrimary,
+                                  ),
+                                  shortcutIcon: Icon(
+                                    Icons.add,
+                                    color: theme.colorScheme.inversePrimary,
+                                  ),
+                                  // color: theme.colorScheme.primary,
+                                  title: "Add Programme",
+                                  onPressed: () => context.goNamed(
+                                      RouteNames.PROGRAME_REGISTRATION_SCREEN),
                                 ),
-                                shortcutIcon: Icon(
-                                  Icons.add,
-                                  color: theme.colorScheme.inversePrimary,
-                                ),
-                                // color: theme.colorScheme.primary,
-                                title: "Add Programme",
-                                onPressed: () => context.goNamed(
-                                    RouteNames.PROGRAME_REGISTRATION_SCREEN),
-                              ),
                             ],
                           );
                         },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/features/lab/data/providers/VirolLoadprovider.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/shared/display/background_image_widget.dart';
 
 class LabResults extends StatelessWidget {
   const LabResults({Key? key}) : super(key: key);
@@ -102,7 +103,10 @@ class LabResults extends StatelessWidget {
                 ),
               ],
             ),
-            error: (error, _) => Center(child: Text(error.toString())),
+              error: (error, _) => BackgroundImageWidget(
+                svgImage: 'assets/images/background.svg',
+                notFoundText: error.toString(),
+              ),
             loading: () => Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

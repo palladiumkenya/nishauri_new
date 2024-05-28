@@ -55,18 +55,20 @@ class _ViralLoadTrendState extends State<ViralLoadTrend> {
     final theme = Theme.of(context);
     final lineBarsData = [
       LineChartBarData(
-        showingIndicators: showingTooltipOnSpots,
+        // showingIndicators: showingTooltipOnSpots,
         spots: allSpots(widget.data),
-        isCurved: false,
+        isCurved: true,
         barWidth: 1,
         color: theme.colorScheme.primary,
         shadow: const Shadow(
           blurRadius: 8,
         ),
+        isStrokeCapRound: false,
         dotData: const FlDotData(show: true),
         belowBarData: BarAreaData(
           color: theme.primaryColor.withOpacity(0.1),
           show: true,
+
         ),
       ),
     ];
@@ -83,18 +85,18 @@ class _ViralLoadTrendState extends State<ViralLoadTrend> {
         child: LayoutBuilder(builder: (context, constraints) {
           return LineChart(
             LineChartData(
-              showingTooltipIndicators: showingTooltipOnSpots.map((index) {
-                return ShowingTooltipIndicators([
-                  LineBarSpot(
-                    tooltipsOnBar,
-                    lineBarsData.indexOf(tooltipsOnBar),
-                    tooltipsOnBar.spots[index],
-
-                  ),
-                ]);
-              }).toList(),
+              // showingTooltipIndicators: showingTooltipOnSpots.map((index) {
+              //   return ShowingTooltipIndicators([
+              //     LineBarSpot(
+              //       tooltipsOnBar,
+              //       lineBarsData.indexOf(tooltipsOnBar),
+              //       tooltipsOnBar.spots[index],
+              //
+              //     ),
+              //   ]);
+              // }).toList(),
               lineTouchData: LineTouchData(
-                enabled: true,
+                enabled: false,
                 handleBuiltInTouches: false,
                 touchCallback: (FlTouchEvent event, LineTouchResponse? response) {
                   if (response == null || response.lineBarSpots == null) {
@@ -123,31 +125,33 @@ class _ViralLoadTrendState extends State<ViralLoadTrend> {
               titlesData: FlTitlesData(
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
-                    showTitles: true,
-                    interval: 1,
-                    getTitlesWidget: (value, meta) {
-                      return bottomTitleWidgets(
-                        value,
-                        meta,
-                        constraints.maxWidth,
-                        widget.data,
-                      );
-                    },
-                    reservedSize: 20,
+                    showTitles: false,
+                    // interval: 1,
+                    // getTitlesWidget: (value, meta) {
+                    //   return bottomTitleWidgets(
+                    //     value,
+                    //     meta,
+                    //     constraints.maxWidth,
+                    //     widget.data,
+                    //   );
+                    // },
+                    // reservedSize: 20,
                   ),
                 ),
                 rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
 
                 topTitles: const AxisTitles(
-                  axisNameWidget: Text(
-                    'Lab Result Trend',
-                    textAlign: TextAlign.left,
-                  ),
-                  axisNameSize: 24,
-                  sideTitles: SideTitles(
-                    showTitles: false,
-                    reservedSize: 0,
-                  ),
+                  sideTitles: SideTitles(showTitles: false),
+                  // axisNameWidget: Text(
+                  //   'VL Trend',
+                  //   textAlign: TextAlign.left,
+                  // ),
+                  // axisNameSize: 24,
+                  // sideTitles: SideTitles(
+                  //   showTitles: false,
+                  //   reservedSize: 0,
+                  // ),
                 ),
               ),
               gridData: const FlGridData(show: false),

@@ -11,28 +11,34 @@ import 'dart:developer' as developer;
 class AuthApiService extends HTTPService {
 
   Future<AuthResponse> authenticate(Map<String, dynamic> credentials) async {
-    var headers = {'Content-Type': 'application/json'};
-    var request =
-        http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}/signin'));
-    request.body = json.encode(credentials);
-    request.headers.addAll(headers);
+    try {
+      var headers = {'Content-Type': 'application/json'};
+      var request = http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}/signin'));
+      request.body = json.encode(credentials);
+      request.headers.addAll(headers);
 
-    http.StreamedResponse response = await request.send();
-    if (response.statusCode == 200) {
-      final responseString = await response.stream.bytesToString();
-      final data = jsonDecode(responseString);
-      final authState = AuthResponse(
-          accessToken: data["data"]?["token"]?? ''!,
-          refreshToken: data["data"]?["token"]?? ''!,
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        final responseString = await response.stream.bytesToString();
+        final data = jsonDecode(responseString);
+        final authState = AuthResponse(
+          accessToken: data["data"]?["token"] ?? '',
+          refreshToken: data["data"]?["token"] ?? '',
           accountVerified: data["data"]?["account_verified"] == "1"!,
           profileUpdated: data["data"]?["account_verified"] == "1"!,
           userId: data["data"]?["user_id"]!,
-          message: data["msg"]!
-      );
-      return authState;
-    } else {
-      developer.log('-->authenticate ${await getException(response)}');
-      throw await getException(response);
+          message: data["msg"]!,
+        );
+        return authState;
+      } else {
+        developer.log('-->authenticate ${await getException(response)}');
+        throw await getException(response);
+      }
+    } catch (e) {
+      // Handle internet errors here
+      developer.log('Internet error: $e');
+      throw 'Internet error occurred';
     }
   }
 

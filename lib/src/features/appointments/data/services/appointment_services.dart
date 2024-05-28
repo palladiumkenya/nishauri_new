@@ -16,9 +16,13 @@ class AppointmentService extends HTTPService {
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final List<dynamic> appointmentData =
-        json.decode(responseString)["data"];
+            json.decode(responseString)["data"];
         return appointmentData
-            .map((e) => userAppointmentsFromJson(e))
+            .map((e) => Appointment.fromJson({
+                  ...e,
+                  "id": e["appointment_id"].toString(),
+                  "date_attended": e["visit_date"]
+                }))
             .toList();
       } else {
         throw "Failed to fetch appointments. Please try again later.";
@@ -28,24 +32,14 @@ class AppointmentService extends HTTPService {
     }
   }
 
-  Appointment userAppointmentsFromJson(Map<String, dynamic> json) {
-    return Appointment(
-      id: json["appointment_id"].toString(),
-      ccc_no: json["ccc_no"],
-      appointment_type: json["appointment_type"],
-      appointment_date: json["appointment_date"],
-      appointment: json["appointment"],
-      program_name: json["program_name"],
-      appt_status: json["appt_status"],
-    );
-  }
-
   Future<StreamedResponse> getAppointments_(dynamic args) async {
     final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
     final headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
-    final request = Request('GET',
-        Uri.parse('${Constants.BASE_URL_NEW}/upcoming_appointment?user_id=$id'));
+    final request = Request(
+        'GET',
+        Uri.parse(
+            '${Constants.BASE_URL_NEW}/upcoming_appointment?user_id=$id'));
     request.headers.addAll(headers);
     return await request.send();
   }
@@ -54,8 +48,10 @@ class AppointmentService extends HTTPService {
     final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
     final headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
-    final request = Request('GET',
-        Uri.parse('${Constants.BASE_URL_NEW}/appointment_previous?user_id=$id'));
+    final request = Request(
+        'GET',
+        Uri.parse(
+            '${Constants.BASE_URL_NEW}/appointment_previous?user_id=$id'));
     request.headers.addAll(headers);
     return await request.send();
   }

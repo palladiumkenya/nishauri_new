@@ -67,13 +67,13 @@ class _PersonalInformationState extends State<PersonalInformation> {
                 firstDate: DateTime(1950),
                 lastDate: DateTime.now(),
                 name: "dob",
-                format: DateFormat('yyyy-MM-dd'),
+                format: DateFormat("dd-MMM-yyyy"),
                 inputType: InputType.date,
                 decoration: widgetSurfixIconDecoration(
                   placeholder: "Enter your date of birth",
                   prefixIcon: Icons.calendar_month_rounded,
                   surfixIcon: Text(
-                    _selectedDate != null ? '${calculateAge(_selectedDate!).toString()} years' : 'some',
+                    _selectedDate != null ? '${calculateAge(_selectedDate!).toString()} years' : '',
                     style: TextStyle(fontSize: 16),
                   ),
                   label: "Date of birth",

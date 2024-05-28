@@ -1,37 +1,47 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
-import 'package:nishauri/src/features/art/FacilityHTTPService.dart';
+import 'dart:developer';
 
-import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/art/model/Facility.dart';
-import 'package:nishauri/src/shared/display/AppCard.dart';
+import 'package:nishauri/src/features/art/services/FacilityDirectorySerivice.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
-import 'package:nishauri/src/shared/input/Search.dart';
+import 'package:nishauri/src/shared/display/background_image_widget.dart';
+import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 
-import '../../../shared/interfaces/HTTPService.dart';
-import '../../auth/data/respositories/auth_repository.dart';
-import '../../auth/data/services/AuthApiService.dart';
-
-class FacilityDirectory extends StatefulWidget {
-  @override
-  _FacilityDirectoryState createState() => _FacilityDirectoryState();
-}
-
-class _FacilityDirectoryState extends State<FacilityDirectory> {
-  TextEditingController _controller = TextEditingController();
-  List<Facility> _facilities = [];
-  bool _fetching = false;
-
-  final AuthRepository _repository = AuthRepository(AuthApiService());
-  final HTTPService _httpService =
-      FacilityHTTPService(); // Instantiate HTTPService
+class FacilityDirectoryScreen extends HookWidget {
+  const FacilityDirectoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final loading = useState(false);
+    final facilities = useState<List<Facility>>([]);
+    final textController = useTextEditingController();
+    final facilityService = FacilityDirectoryService();
     final theme = Theme.of(context);
+    final debouncer = Debouncer(milliseconds: 500);
+
+    onSearchChanged(String query) {
+      debouncer.run(() async {
+        if (query.length < 3) {
+          facilities.value = [];
+          return;
+        }
+        try {
+          loading.value = true;
+          final results = await facilityService.getfacilities(query);
+          facilities.value = results;
+        } catch (e) {
+          facilities.value = [];
+          log("*******************$e***********************");
+        } finally {
+          loading.value = false;
+        }
+      });
+    }
+
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -51,11 +61,13 @@ class _FacilityDirectoryState extends State<FacilityDirectory> {
                     ),
                   ),
                   child: TextField(
-                    controller: _controller,
+                    controller: textController,
+                    // controller: _controller,
+                    onChanged: onSearchChanged,
                     clipBehavior: Clip.antiAlias,
                     decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: "Search for facility by name or code",
+                        hintText: "Search by name or MFL code ...",
                         prefixIcon: const Icon(
                           Icons.search_outlined,
                           color: Colors.white,
@@ -69,47 +81,27 @@ class _FacilityDirectoryState extends State<FacilityDirectory> {
                   ),
                 ),
               ),
-              const SizedBox(
-                width: Constants.SPACING,
-              ),
-              IconButton.filledTonal(
-                color: Colors.white,
-                onPressed: _fetching
-                    ? null
-                    : () {
-                        _fetchFacilities(_controller.text);
-                      },
-                icon: const Icon(Icons.tune),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll<Color>(
-                    Colors.white.withOpacity(0.3),
-                  ),
-                  shape: const MaterialStatePropertyAll<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(Constants.ROUNDNESS * 0.5),
-                      ),
-                    ),
-                  ),
-                ),
-              )
             ]),
           ),
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(Constants.SPACING),
-                child: _facilities.isEmpty && !_fetching
-                    ? Center(
-                        child: Text(
-                        'No facilities found',
-                        style: theme.textTheme.headlineSmall
-                            ?.copyWith(color: theme.disabledColor),
-                      ))
-                    : _fetching
+                child: facilities.value.isEmpty && !loading.value
+                    ? SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.67,
+                        child: Center(
+                            child: BackgroundImageWidget(
+
+                              svgImage: 'assets/images/facility-dir-empty-state.svg',
+                            notFoundText: textController.text.length >= 3 ? "Facility not found": "Search Facility",
+
+                        )),
+                      )
+                    : loading.value
                         ? const Center(child: CircularProgressIndicator())
                         : Column(
-                            children: _facilities
+                            children: facilities.value
                                 .map(
                                   (e) => Card(
                                     child: Padding(
@@ -119,81 +111,102 @@ class _FacilityDirectoryState extends State<FacilityDirectory> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                e.name,
-                                                style: theme
-                                                    .textTheme.titleMedium
-                                                    ?.copyWith(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        overflow: TextOverflow
-                                                            .ellipsis),
-                                              ),
-                                              const SizedBox(
-                                                  height: Constants.SPACING),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.pin_drop,
-                                                    color: theme
-                                                        .colorScheme.primary,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: Constants.SPACING,
-                                                  ),
-                                                  Text(e.county)
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.phone_forwarded,
-                                                    color: theme
-                                                        .colorScheme.primary,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: Constants.SPACING,
-                                                  ),
-                                                  Text(e.telephone)
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons
-                                                        .location_city_outlined,
-                                                    color: theme
-                                                        .colorScheme.primary,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: Constants.SPACING,
-                                                  ),
-                                                  Text("MFL Code: ${e.code}"),
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.local_hospital,
-                                                    color: theme
-                                                        .colorScheme.primary,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: Constants.SPACING,
-                                                  ),
-                                                  Text(
-                                                    e.facilityType,
-                                                    style: const TextStyle(
-                                                        overflow: TextOverflow
-                                                            .ellipsis),
-                                                  )
-                                                ],
-                                              ),
-                                            ],
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  e.name,
+                                                  style: theme
+                                                      .textTheme.titleMedium
+                                                      ?.copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          overflow: TextOverflow
+                                                              .ellipsis),
+                                                ),
+                                                const SizedBox(
+                                                    height: Constants.SPACING),
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.pin_drop,
+                                                      color: theme
+                                                          .colorScheme.primary,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: Constants.SPACING,
+                                                    ),
+                                                    Expanded(
+                                                        child: Text(e.county,
+                                                            style: const TextStyle(
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis)))
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.phone_forwarded,
+                                                      color: theme
+                                                          .colorScheme.primary,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: Constants.SPACING,
+                                                    ),
+                                                    Expanded(
+                                                        child: Text(e.telephone,
+                                                            style: const TextStyle(
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis)))
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons
+                                                          .location_city_outlined,
+                                                      color: theme
+                                                          .colorScheme.primary,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: Constants.SPACING,
+                                                    ),
+                                                    Expanded(
+                                                        child: Text(
+                                                            "MFL Code: ${e.code}",
+                                                            style: const TextStyle(
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis))),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.local_hospital,
+                                                      color: theme
+                                                          .colorScheme.primary,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: Constants.SPACING,
+                                                    ),
+                                                    Expanded(
+                                                      child: Text(
+                                                        e.facilityType,
+                                                        style: const TextStyle(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                           Container(
                                             decoration: BoxDecoration(
@@ -201,8 +214,62 @@ class _FacilityDirectoryState extends State<FacilityDirectory> {
                                                     .withOpacity(0.4),
                                                 shape: BoxShape.circle),
                                             child: IconButton(
-                                                onPressed: () {
-                                                  makePhoneCall(e.telephone);
+                                                onPressed: () async {
+                                                  if (e.telephone
+                                                      .replaceAll(" ", "")
+                                                      .isEmpty) {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
+                                                            content: Text(
+                                                                "${e.name} have no number to call!.")));
+                                                    return;
+                                                  }
+                                                  final numberToCall =
+                                                      await showDialog<String?>(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        AlertDialog(
+                                                      title: const Text(
+                                                          "Call facility"),
+                                                      content:
+                                                          SingleChildScrollView(
+                                                        child: Wrap(
+                                                          children: e.telephone
+                                                              .replaceAll(
+                                                                  "CCC:", "")
+                                                              .replaceAll(
+                                                                  " ", "")
+                                                              .split(",")
+                                                              .map(
+                                                                (el) =>
+                                                                    ListTile(
+                                                                  title:
+                                                                      Text(el),
+                                                                  leading:
+                                                                      const Icon(
+                                                                          Icons
+                                                                              .phone_forwarded_outlined),
+                                                                  onTap: () =>
+                                                                      context.pop(
+                                                                          el),
+                                                                ),
+                                                              )
+                                                              .toList(),
+                                                        ),
+                                                      ),
+                                                      actions: [
+                                                        Button(
+                                                          title: "Cancel",
+                                                          onPress: () =>
+                                                              context.pop(),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  );
+                                                  if (numberToCall != null) {
+                                                    makePhoneCall(numberToCall);
+                                                  }
                                                 },
                                                 icon: const Icon(
                                                     Icons.phone_forwarded)),
@@ -220,103 +287,5 @@ class _FacilityDirectoryState extends State<FacilityDirectory> {
         ],
       ),
     );
-  }
-
-  Future<void> _fetchFacilities(String queryParameter) async {
-    setState(() {
-      _facilities.clear();
-      _fetching = true;
-    });
-
-    final id = await _repository.getUserId();
-    final token = await _repository.getAuthToken();
-    final token2 = await _httpService.getCachedToken();
-
-    // var headers = {'Authorization':"Bearer ${token2.accessToken}",
-    //   'Content-Type': 'application/json'};
-
-    // Define headers
-    Map<String, String> headers = {
-      'Authorization': 'Bearer ${token2.accessToken}',
-      'Content-Type': 'application/json',
-    };
-
-    String url =
-        'https://ushauriapi.kenyahmis.org/nishauri_new/artdirectory?name=$queryParameter&user_id=$id';
-// =======
-//     String baseUrl = 'http://prod.kenyahmis.org:8002/api/facility/directory';
-//     String url = '$baseUrl?name=$queryParameter';
-// >>>>>>> 48aaf36 (:construction: Add dawa drop global)
-
-    try {
-      // http.Response response = await http.get(Uri.parse(url));
-      http.Response response = await http.get(Uri.parse(url), headers: headers);
-
-      print('API Response: ${response.statusCode} ${response.body}');
-      print('Cached Token: $headers');
-      print('userID: $id');
-
-      dynamic responseBody = jsonDecode(response.body);
-      if (responseBody.containsKey('message')) {
-        dynamic messageData = responseBody['message'];
-        if (messageData is List) {
-          List<dynamic> jsonList = messageData;
-          if (jsonList != null) {
-            setState(() {
-              _facilities =
-                  jsonList.map((json) => Facility.fromJson(json)).toList();
-              _fetching = false;
-            });
-          } else {
-            print('Failed to load facilities: ${response.statusCode}');
-            setState(() {
-              _fetching = false;
-            });
-            _showToast('No facilities found');
-          }
-        } else if (messageData is String) {
-          // Handle the case where 'message' is a string
-          print('Response message: $messageData');
-          // Display or handle the string message accordingly
-        } else {
-          print('Unexpected message format: $messageData');
-          // Handle unexpected format accordingly
-        }
-      } else {
-        print('Response does not contain message key');
-        // Handle the case where 'message' key is missing from the response
-      }
-
-      //if (response.statusCode == 200) {
-      //   List<dynamic> jsonList = jsonDecode(response.body)['message'];
-      //   if (jsonList != null) {
-      //     setState(() {
-      //       _facilities = jsonList.map((json) => Facility.fromJson(json)).toList();
-      //       _fetching = false;
-      //     });
-      //   } else {
-      //     print('Failed to load facilities: ${response.statusCode}');
-      //     setState(() {
-      //       _fetching = false;
-      //     });
-      //     _showToast('No facilities found');
-      //   }
-      // } else {
-      //   print('Failed to load facilities. Error: ${response.statusCode}');
-      //   setState(() {
-      //     _fetching = false;
-      //   });
-      // }
-    } catch (e) {
-      print('Exception while fetching facilities: $e');
-      setState(() {
-        _fetching = false;
-      });
-    }
-  }
-
-  void _showToast(String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
   }
 }

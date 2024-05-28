@@ -24,18 +24,22 @@ class UserProgramController
     }
   }
 
-  Future<ProgramVerificationDetail> registerProgram(
+  Future<String> registerProgram(
       Map<String, dynamic> data) async {
     try {
-      return await _repository.registerProgram(data);
+      final verificationDetail = await _repository.registerProgram(data);
+      await _getUserPrograms();
+      return verificationDetail;
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<void> updateProgram(Map<String, dynamic> data) async {
+  Future<String> updateProgram(Map<String, dynamic> data) async {
     try {
-      return await _repository.updateProgram(data);
+      final results = await _repository.updateProgram(data);
+      await _getUserPrograms();
+      return results;
     } catch (e) {
       rethrow;
     }

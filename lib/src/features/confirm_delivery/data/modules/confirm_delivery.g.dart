@@ -10,9 +10,9 @@ _$ConfirmDeliveryImpl _$$ConfirmDeliveryImplFromJson(
         Map<String, dynamic> json) =>
     _$ConfirmDeliveryImpl(
       id: json['id'] as String?,
-      order_id: json['order_id'] as int?,
+      order_id: (json['order_id'] as num?)?.toInt(),
       confirmation_code: json['confirmation_code'] as String,
-      is_received: json['is_received'] as int,
+      is_received: (json['is_received'] as num).toInt(),
       comment: json['comment'] as String?,
     );
 

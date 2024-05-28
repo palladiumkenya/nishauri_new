@@ -7,6 +7,7 @@ import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/dawa_drop_menu.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/widget/DawaDropGetStartedWidget.dart';
 import 'package:nishauri/src/shared/display/meds.dart';
+import 'package:nishauri/src/utils/constants.dart';
 
 class DawaDropScreen extends StatelessWidget {
   const DawaDropScreen({Key? key}) : super(key: key);
@@ -28,8 +29,13 @@ class DawaDropScreen extends StatelessWidget {
           children: <Widget>[
             Container(
               padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
-                color: Colors.blueGrey,
+              decoration: BoxDecoration(
+                color: Constants.dawaDropColor.withOpacity(0.5),
+                image: DecorationImage(
+                  image: AssetImage("assets/images/contours.png"),
+                  opacity: 0.1,
+                  fit: BoxFit.cover,
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

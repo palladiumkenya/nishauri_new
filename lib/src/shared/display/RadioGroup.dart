@@ -28,7 +28,7 @@ class RadioGroup extends StatelessWidget {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(e.title),
+                  Expanded(child: Text(e.title, overflow: TextOverflow.ellipsis,)),
                   Icon(e.icon),
                 ],
               ),

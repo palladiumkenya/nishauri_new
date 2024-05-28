@@ -1,78 +1,172 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
+import 'package:nishauri/src/features/dawa_drop/data/providers/drug_order_provider.dart';
+import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 class ProgramAppointmentsScreen extends ConsumerWidget {
-  const ProgramAppointmentsScreen({Key? key});
+  const ProgramAppointmentsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final appointmentAsync = ref.watch(appointmentProvider(false));
+    final orderAsync = ref.watch(drugOrderProvider);
 
     return appointmentAsync.when(
       data: (data) {
-        return Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              onPressed: () => context.pop(),
-              icon: const Icon(Icons.chevron_left),
+        // Filter appointments based on the condition
+        final filteredAppointments = data.where((appointment) => appointment.program_status.toString() == "1").toList();
+        if (filteredAppointments.isEmpty) {
+          return BackgroundImageWidget(
+            customAppBar: CustomAppBar(
+              title: "Appointments",
+              icon: Icons.vaccines_sharp,
+              color: Constants.dawaDropColor.withOpacity(0.5),
             ),
-            title: const Text("Upcoming Appointments"),
-            backgroundColor: Theme.of(context).primaryColor,
-          ),
-          body: ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              final appointment = data[index];
-              return ListTile(
-                leading: const Icon(Icons.calendar_month_sharp),
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                 children: [
-                   Text('Program: ${appointment.program_name ?? ''}',
-                   style: theme.textTheme.titleMedium?.merge(TextStyle(color: Colors.green)),),
-                   Text(appointment.appointment_type ?? '',
-                     style: theme.textTheme.titleSmall?.merge(TextStyle(color: Colors.grey)),),
+            svgImage: "assets/images/appointments-empty.svg",
+            notFoundText: "No Appointments",
+          );
+        }
+        return Scaffold(
+          body: Column(
+            children: [
+              CustomAppBar(
+                title: "Appointments",
+                icon: Icons.vaccines_sharp,
+                color: Constants.dawaDropColor.withOpacity(0.5),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: filteredAppointments.length,
+                  itemBuilder: (context, index) {
+                    final appointment = filteredAppointments[index];
+                    // Check if appointment ID exists and there is an active request for it
+                    final bool hasActiveRequest = appointment.id != null && orderAsync.when(
+                      data: (orders) => orders.any((order) => order.appointment?.id == appointment.id),
+                      loading: () => false,
+                      error: (_, __) => false,
+                    );
 
-                   Text(
-                     DateFormat("dd MMM yyy").format(
-                       DateFormat("EEEE, MMMM dd yyy").parse(
-                         appointment.appointment_date,
-                       ),
-                     ),
-                    style: theme.textTheme.titleSmall?.merge(TextStyle(color: Colors.grey)),
-                   ),
-                 ],
+                    final bool eligibleAppointment = appointment.id != null && orderAsync.when(
+                      data: (orders) => orders.any((order) => order.appointment?.appointment_status == 1),
+                      loading: () => false,
+                      error: (_, __) => false,
+                    );
+
+                    return Column(
+                      children: [
+                        const Divider(),
+                        ListTile(
+                          title: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(Constants.SPACING),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          filteredAppointments[index].program_name ?? '',
+                                          style: theme.textTheme.headline6,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                        const SizedBox(height: Constants.SPACING),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.app_registration_outlined,
+                                              color: Constants.dawaDropColor.withOpacity(0.5),
+                                            ),
+                                            const SizedBox(width: Constants.SPACING),
+                                            Text(filteredAppointments[index].appointment_type ?? ''),
+                                          ],
+                                        ),
+                                        const SizedBox(height: Constants.SPACING),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.calendar_month_outlined,
+                                              color: Constants.dawaDropColor.withOpacity(0.5),
+                                            ),
+                                            const SizedBox(width: Constants.SPACING),
+                                            Text(filteredAppointments[index].appointment_date),
+                                          ],
+                                        ),
+                                        const SizedBox(height: Constants.SPACING),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.local_hospital_sharp,
+                                              color: Constants.dawaDropColor.withOpacity(0.5),
+                                            ),
+                                            const SizedBox(width: Constants.SPACING),
+                                            Text(filteredAppointments[index].facility_name ?? ''),
+                                          ],
+                                        ),
+                                        const SizedBox(height: Constants.SPACING),
+                                        // Display text based on whether there is an active request
+                                        Text(
+                                          hasActiveRequest
+                                              ? "Appointment has an active request"
+                                              : appointment.appointment_status == 1
+                                              ? "Request Home delivery"
+                                              : "",
+                                          style: TextStyle(
+                                            color: hasActiveRequest
+                                                ? Constants.appointmentsColor
+                                                : appointment.appointment_status == 1
+                                                ? Constants.clinicCardColor
+                                                : Colors.transparent,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  // Conditionally display the container with the button
+                                  if (!hasActiveRequest && appointment.appointment_status == 1)
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: theme.primaryColor.withOpacity(0.5),
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          context.goNamed(RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
+                                              extra: {"payload": appointment, "type": "self"});
+                                        },
+                                        icon: const Icon(Icons.forward),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () {
-                  context.goNamed(
-                    RouteNames.HIV_ART_APPOINTMENT_DETAILS,
-                    extra: appointment,
-                  );
-                },
-              );
-            },
+              ),
+            ],
           ),
         );
       },
-      error: (error, _) => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              error.toString(),
-              style: theme.textTheme.headlineSmall,
-            ),
-            const SizedBox(height: Constants.SPACING * 2),
-          ],
+      error: (error, _) => BackgroundImageWidget(
+        customAppBar: CustomAppBar(
+          title: "Appointments",
+          icon: Icons.vaccines_sharp,
+          color: Constants.dawaDropColor.withOpacity(0.5),
         ),
+        svgImage: 'assets/images/background.svg',
+        notFoundText: error.toString(),
       ),
       loading: () => Center(
         child: Column(

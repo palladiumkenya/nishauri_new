@@ -8,7 +8,7 @@ part of 'drug_order.dart';
 
 _$DrugOrderImpl _$$DrugOrderImplFromJson(Map<String, dynamic> json) =>
     _$DrugOrderImpl(
-      order_id: json['order_id'] as int?,
+      order_id: (json['order_id'] as num?)?.toInt(),
       appointment: json['appointment'] == null
           ? null
           : Appointment.fromJson(json['appointment'] as Map<String, dynamic>),

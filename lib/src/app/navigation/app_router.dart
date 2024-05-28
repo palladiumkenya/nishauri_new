@@ -169,7 +169,7 @@ final List<RouteBase> secureRoutes = [
     name: RouteNames.Facility_Directory,
     path: 'Facility-directory',
     builder: (BuildContext context, GoRouterState state) {
-      return FacilityDirectory();
+      return FacilityDirectoryScreen();
     },
   ),
   GoRoute(
@@ -194,14 +194,12 @@ final List<RouteBase> secureRoutes = [
       },
       routes: [
         GoRoute(
-          name: RouteNames.BMI_CALCULATOR_RESULTS,
-          path: "bmi-calculator-results",
-          builder: (BuildContext context, GoRouterState state){
-            double extra =
-            state.extra! as double;
-            return BMICalculatorResultsScreen(bmi: extra);
-          }
-        )
+            name: RouteNames.BMI_CALCULATOR_RESULTS,
+            path: "bmi-calculator-results",
+            builder: (BuildContext context, GoRouterState state) {
+              double extra = state.extra! as double;
+              return BMICalculatorResultsScreen(bmi: extra);
+            })
       ]),
   GoRoute(
     name: RouteNames.PRIVACY_SETTINGS,
@@ -240,24 +238,7 @@ final List<RouteBase> secureRoutes = [
     },
     routes: dawaDropRoutes,
   ),
-  GoRoute(
-    name: RouteNames.PROGRAME_REGISTRATION_SCREEN,
-    path: 'program-register',
-    builder: (BuildContext context, GoRouterState state) {
-      return const ProgramRegistrationScreen();
-    },
-    routes: [
-      GoRoute(
-        name: RouteNames.VERIFY_PROGRAM_OTP,
-        path: 'verify',
-        builder: (BuildContext context, GoRouterState state) {
-          ProgramVerificationDetail extra =
-              state.extra! as ProgramVerificationDetail;
-          return ProgramVerificationScreen(verificationDetail: extra);
-        },
-      ),
-    ],
-  ),
+
   GoRoute(
     name: RouteNames.DASHBOARD,
     path: 'dashboard',
@@ -266,21 +247,24 @@ final List<RouteBase> secureRoutes = [
     },
   ),
   GoRoute(
-    name: RouteNames.APPOINTMENTS,
-    path: 'appointments',
-    builder: (BuildContext context, GoRouterState state) {
-      return const AppointmentsScreen();
-    },
-    routes: [
-      GoRoute(
-        name: RouteNames.APPOINTMENTS_RESCHEDULE,
-        path: 'reschedule',
-        builder: (BuildContext context, GoRouterState state) {
-          return const AppointmentRescheduleScreen();
-        },
-      ),
-    ]
-  ),
+      name: RouteNames.APPOINTMENTS,
+      path: 'appointments',
+      builder: (BuildContext context, GoRouterState state) {
+        return const AppointmentsScreen();
+      },
+      routes: [
+        GoRoute(
+          name: RouteNames.APPOINTMENTS_RESCHEDULE,
+          path: 'reschedule',
+          builder: (BuildContext context, GoRouterState state) {
+            final payload = state.extra as AppointmentRescheduleScreenProps;
+
+            return AppointmentRescheduleScreen(
+              props: payload,
+            );
+          },
+        ),
+      ]),
   GoRoute(
     name: RouteNames.LAB_RESULTS,
     path: 'lab-results',
@@ -518,6 +502,24 @@ final List<RouteBase> dawaDropRoutes = [
 ];
 
 final List<RouteBase> programMenu = [
+  GoRoute(
+    name: RouteNames.PROGRAME_REGISTRATION_SCREEN,
+    path: 'program-register',
+    builder: (BuildContext context, GoRouterState state) {
+      return const ProgramRegistrationScreen();
+    },
+    routes: [
+      GoRoute(
+        name: RouteNames.VERIFY_PROGRAM_OTP,
+        path: 'verify',
+        builder: (BuildContext context, GoRouterState state) {
+          ProgramVerificationDetail extra =
+          state.extra! as ProgramVerificationDetail;
+          return ProgramVerificationScreen(verificationDetail: extra);
+        },
+      ),
+    ],
+  ),
   GoRoute(
     name: RouteNames.REMOVE_PROGRAM,
     path: 'remove-program',

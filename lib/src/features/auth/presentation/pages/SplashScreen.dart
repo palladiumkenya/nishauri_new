@@ -10,7 +10,9 @@ class SplashScreen extends StatelessWidget {
         body: Column(
       children: [
         Expanded(child: Container()),
-        const Logo(),
+        const Logo(
+          size: 100,
+        ),
         const Text(
           "Nishauri",
           style: TextStyle(
@@ -30,7 +32,9 @@ class SplashScreen extends StatelessWidget {
         CircularProgressIndicator(
           color: Theme.of(context).colorScheme.primary,
         ),
-        const SizedBox(height: 20,)
+        const SizedBox(
+          height: 20,
+        )
       ],
     ));
   }

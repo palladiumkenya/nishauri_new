@@ -7,8 +7,7 @@ import 'dart:developer' as developer;
 class ResetPasswordController extends StateNotifier<AsyncValue<PasswordReset>>{
   final ResetPasswordRepository _repository;
 
-  ResetPasswordController(this._repository) : super (const AsyncValue.loading()){
-  }
+  ResetPasswordController(this._repository) : super (const AsyncValue.loading());
 
   Future<String> resetPassword(Map<String, dynamic> data) async{
     try {

@@ -67,7 +67,7 @@ class MenuItemNames {
   static const BMI_CALCULATOR = "BMI Calculator";
   static const HIV_PROGRAM_MENU = "ART Program";
   static const TB_PROGRAM_MENU = "TB Program";
-  static const ASTHMA_PROGRAM_MENU = "Hypertension";
+  static const ASTHMA_PROGRAM_MENU = "Asthma";
   static const DIABETES_PROGRAM_MENU = "Diabetes";
   static const CANCER_PROGRAM_MENU = "Cancer";
   static const HYPERTENSION_PROGRAM_MENU = "Hypertension";

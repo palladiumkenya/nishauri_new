@@ -9,6 +9,7 @@ import 'package:nishauri/src/features/bmi/presentation/widgets/HeightPicker.dart
 import 'package:nishauri/src/features/bmi/presentation/widgets/HeightUnitsPicker.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/RadioGroup.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/input/QuanterSizer.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -23,9 +24,10 @@ class BMICalculatorScreen extends HookWidget {
     final theme = Theme.of(context);
     const activeColor = Constants.activeSelectionColor;
     final gender = useState<GenderPickerChoices>(GenderPickerChoices.male);
+    final isPregnant = useState(false);
     final height = useState<double>(180);
     final heightUnits =
-    useState<HeightUnitsPickerOptions>(HeightUnitsPickerOptions.In);
+        useState<HeightUnitsPickerOptions>(HeightUnitsPickerOptions.In);
     final weight = useState<int>(65);
     final age = useState<int>(27);
     return Scaffold(
@@ -52,7 +54,57 @@ class BMICalculatorScreen extends HookWidget {
                       const SizedBox(height: Constants.SPACING),
                       GenderPicker(
                         gender: gender.value,
-                        onGenderChange: (gender_) => gender.value = gender_,
+                        onGenderChange: (gender_) {
+                          if (gender_ == GenderPickerChoices.female) {
+                            showDialog<bool>(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                  title: const Text("Warning!"),
+                                  content: SingleChildScrollView(
+                                    child: Wrap(
+                                      children: [
+                                        const Text(
+                                          "BMI Calculation for pregnant lady is highly discouraged and not supported to avoid drastic decisions.Please confirm your pregnancy status",
+                                        ),
+                                        RadioGroup(
+                                          // value: pregnant.value ? "no":"yes",
+                                          onValueChanged: (val) {
+                                            context.pop(val == "no");
+                                          },
+                                          items: [
+                                            RadioGroupItem(
+                                                value: "yes",
+                                                title: "Not Pregnant",
+                                                icon: Icons.woman_rounded),
+                                            RadioGroupItem(
+                                                value: "no",
+                                                title: "Pregnant",
+                                                icon: Icons.pregnant_woman),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  )),
+                            ).then((isPregnant_) {
+                              if (isPregnant_ != null) {
+                                if (isPregnant_ == false) {
+                                  gender.value = gender_;
+                                  isPregnant.value = false;
+
+                                } else {
+                                  gender.value = gender_;
+                                  isPregnant.value = true;
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              "BMI calculation for pregnant lady ain't supported")));
+                                }
+                              }
+                            });
+                          } else {
+                            gender.value = gender_;
+                          }
+                        },
                         activeColor: activeColor,
                       ),
                       const SizedBox(height: Constants.SPACING),
@@ -99,6 +151,7 @@ class BMICalculatorScreen extends HookWidget {
                           semanticsLabel: "Doctors",
                           fit: BoxFit.contain,
                         ),
+                        disabled: isPregnant.value,
                         backgroundColor: activeColor,
                         textColor: theme.canvasColor,
                         onPress: () {

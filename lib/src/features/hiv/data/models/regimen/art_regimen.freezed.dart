@@ -12,7 +12,7 @@ part of 'art_regimen.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 ARTRegimen _$ARTRegimenFromJson(Map<String, dynamic> json) {
   return _ARTRegimen.fromJson(json);
@@ -21,10 +21,10 @@ ARTRegimen _$ARTRegimenFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ARTRegimen {
   String? get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  String get regimen => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
+  String? get ccc_no => throw _privateConstructorUsedError;
   bool get isCurrent => throw _privateConstructorUsedError;
-  String get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,10 +40,10 @@ abstract class $ARTRegimenCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
-      String name,
+      String regimen,
       String? description,
-      bool isCurrent,
-      String createdAt});
+      String? ccc_no,
+      bool isCurrent});
 }
 
 /// @nodoc
@@ -60,32 +60,32 @@ class _$ARTRegimenCopyWithImpl<$Res, $Val extends ARTRegimen>
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = null,
+    Object? regimen = null,
     Object? description = freezed,
+    Object? ccc_no = freezed,
     Object? isCurrent = null,
-    Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      regimen: null == regimen
+          ? _value.regimen
+          : regimen // ignore: cast_nullable_to_non_nullable
               as String,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      ccc_no: freezed == ccc_no
+          ? _value.ccc_no
+          : ccc_no // ignore: cast_nullable_to_non_nullable
+              as String?,
       isCurrent: null == isCurrent
           ? _value.isCurrent
           : isCurrent // ignore: cast_nullable_to_non_nullable
               as bool,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
     ) as $Val);
   }
 }
@@ -100,10 +100,10 @@ abstract class _$$ARTRegimenImplCopyWith<$Res>
   @useResult
   $Res call(
       {String? id,
-      String name,
+      String regimen,
       String? description,
-      bool isCurrent,
-      String createdAt});
+      String? ccc_no,
+      bool isCurrent});
 }
 
 /// @nodoc
@@ -118,32 +118,32 @@ class __$$ARTRegimenImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = null,
+    Object? regimen = null,
     Object? description = freezed,
+    Object? ccc_no = freezed,
     Object? isCurrent = null,
-    Object? createdAt = null,
   }) {
     return _then(_$ARTRegimenImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      regimen: null == regimen
+          ? _value.regimen
+          : regimen // ignore: cast_nullable_to_non_nullable
               as String,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      ccc_no: freezed == ccc_no
+          ? _value.ccc_no
+          : ccc_no // ignore: cast_nullable_to_non_nullable
+              as String?,
       isCurrent: null == isCurrent
           ? _value.isCurrent
           : isCurrent // ignore: cast_nullable_to_non_nullable
               as bool,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -153,10 +153,10 @@ class __$$ARTRegimenImplCopyWithImpl<$Res>
 class _$ARTRegimenImpl with DiagnosticableTreeMixin implements _ARTRegimen {
   const _$ARTRegimenImpl(
       {this.id,
-      required this.name,
+      required this.regimen,
       this.description,
-      this.isCurrent = false,
-      required this.createdAt});
+      this.ccc_no,
+      this.isCurrent = false});
 
   factory _$ARTRegimenImpl.fromJson(Map<String, dynamic> json) =>
       _$$ARTRegimenImplFromJson(json);
@@ -164,18 +164,18 @@ class _$ARTRegimenImpl with DiagnosticableTreeMixin implements _ARTRegimen {
   @override
   final String? id;
   @override
-  final String name;
+  final String regimen;
   @override
   final String? description;
   @override
+  final String? ccc_no;
+  @override
   @JsonKey()
   final bool isCurrent;
-  @override
-  final String createdAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ARTRegimen(id: $id, name: $name, description: $description, isCurrent: $isCurrent, createdAt: $createdAt)';
+    return 'ARTRegimen(id: $id, regimen: $regimen, description: $description, ccc_no: $ccc_no, isCurrent: $isCurrent)';
   }
 
   @override
@@ -184,31 +184,30 @@ class _$ARTRegimenImpl with DiagnosticableTreeMixin implements _ARTRegimen {
     properties
       ..add(DiagnosticsProperty('type', 'ARTRegimen'))
       ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('regimen', regimen))
       ..add(DiagnosticsProperty('description', description))
-      ..add(DiagnosticsProperty('isCurrent', isCurrent))
-      ..add(DiagnosticsProperty('createdAt', createdAt));
+      ..add(DiagnosticsProperty('ccc_no', ccc_no))
+      ..add(DiagnosticsProperty('isCurrent', isCurrent));
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ARTRegimenImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
+            (identical(other.regimen, regimen) || other.regimen == regimen) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            (identical(other.ccc_no, ccc_no) || other.ccc_no == ccc_no) &&
             (identical(other.isCurrent, isCurrent) ||
-                other.isCurrent == isCurrent) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+                other.isCurrent == isCurrent));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, name, description, isCurrent, createdAt);
+      Object.hash(runtimeType, id, regimen, description, ccc_no, isCurrent);
 
   @JsonKey(ignore: true)
   @override
@@ -227,10 +226,10 @@ class _$ARTRegimenImpl with DiagnosticableTreeMixin implements _ARTRegimen {
 abstract class _ARTRegimen implements ARTRegimen {
   const factory _ARTRegimen(
       {final String? id,
-      required final String name,
+      required final String regimen,
       final String? description,
-      final bool isCurrent,
-      required final String createdAt}) = _$ARTRegimenImpl;
+      final String? ccc_no,
+      final bool isCurrent}) = _$ARTRegimenImpl;
 
   factory _ARTRegimen.fromJson(Map<String, dynamic> json) =
       _$ARTRegimenImpl.fromJson;
@@ -238,13 +237,13 @@ abstract class _ARTRegimen implements ARTRegimen {
   @override
   String? get id;
   @override
-  String get name;
+  String get regimen;
   @override
   String? get description;
   @override
-  bool get isCurrent;
+  String? get ccc_no;
   @override
-  String get createdAt;
+  bool get isCurrent;
   @override
   @JsonKey(ignore: true)
   _$$ARTRegimenImplCopyWith<_$ARTRegimenImpl> get copyWith =>
