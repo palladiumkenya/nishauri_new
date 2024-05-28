@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nishauri/src/features/user_programs/data/models/program.dart';
 import 'package:nishauri/src/features/user_programs/data/models/user_program.dart';
 import 'package:nishauri/src/features/user_programs/data/repositories/programs_repository.dart';
 
@@ -45,9 +46,9 @@ class UserProgramController
     }
   }
 
-  Future<String> getVerificationCode(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> programVerification(Map<String, dynamic> data) async {
     try {
-      return await _repository.getVerificationCode(data);
+      return await _repository.programVerification(data);
     } catch (e) {
       rethrow;
     }

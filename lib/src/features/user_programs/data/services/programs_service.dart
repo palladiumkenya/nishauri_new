@@ -93,6 +93,34 @@ class ProgramService extends HTTPService {
   //   await Future.delayed(const Duration(seconds: 3));
   //   return _programs;
   // }
+  Future<List<Program>> getPrograms() async {
+
+      final response = await call(getPrograms_, null);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        final responseString = await response.stream.bytesToString();
+        final List<dynamic> programData = json.decode(responseString)["programs"];
+        return programData.map((e) {
+          return Program.fromJson({
+            ...e,
+          });
+        }).toList();
+      } else {
+        throw Exception("Failed to load programs, please try again.");
+      }
+  }
+
+  Future<http.StreamedResponse> getPrograms_(dynamic args) async {
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+    var request = http.Request('GET',
+        Uri.parse('${Constants.BASE_URL_NEW}/get_program'));
+    request.headers.addAll(headers);
+    print(request.headers);
+    return await request.send();
+  }
+
   Future<List<UserProgram>> getUserPrograms() async {
     try {
       final response = await call(getUserPrograms_, null);
@@ -227,27 +255,41 @@ class ProgramService extends HTTPService {
     return response;
   }
 
-  Future<String> requestVerificationCode(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> programVerification(Map<String, dynamic> data) async {
     http.StreamedResponse response =
-        await call<Map<String, dynamic>>(requestVerificationCode_, data);
-    final responseString = await response.stream.bytesToString();
-    final responseData = jsonDecode(responseString);
-    return responseData["detail"];
+        await call<Map<String, dynamic>>(programVerification_, data);
+    if(response.statusCode == 200){
+      final responseString = await response.stream.bytesToString();
+      final responseData = jsonDecode(responseString);
+      if (responseData["success"] == true){
+        return responseData;
+      }
+      else {
+        throw responseData["msg"];
+      }
+    }
+    else{
+      throw "Something went wrong";
+    }
   }
 
-  Future<http.StreamedResponse> requestVerificationCode_(
+  Future<http.StreamedResponse> programVerification_(
       Map<String, dynamic> data) async {
+    final id = await _repository.getUserId();
+    var user = {'user_id': id};
+    var mergedData = {...data, ...user};
     final tokenPair = await getCachedToken();
     var headers = {
-      'x-access-token': tokenPair.accessToken,
+      'Authorization': 'Bearer ${tokenPair.accessToken}',
       'Content-Type': 'application/json',
     };
     var request = http.Request(
-      'GET',
+      'POST',
       Uri.parse(
-          '${Constants.BASE_URL}/patients/programs/verify/${getQueryParams(data)}'),
+          '${Constants.BASE_URL_NEW}/validateprograms'),
     );
     request.headers.addAll(headers);
+    request.body = json.encode(mergedData);
     http.StreamedResponse response = await request.send();
     return response;
   }
