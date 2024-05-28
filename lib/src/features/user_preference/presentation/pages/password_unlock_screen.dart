@@ -55,19 +55,7 @@ class PasswordUnlockScreen extends HookConsumerWidget {
           );
         }).whenComplete(() => loading.value = false);
 
-        // passwordResetStateNotifier.verifyResetPassword(payload).then((value) {
-        //   ScaffoldMessenger.of(context).showSnackBar(
-        //     SnackBar(content: Text(value)),
-        //   );
-        //   context.goNamed(RouteNames.VERIFIED_RESET_PASSWORD_SCREEN,
-        //       extra: username);
-        //   // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ResetPassword(user_name: widget.user_name)));
-        // }).catchError((err) {
-        //   handleResponseError(context, formKey.currentState!.fields, err,
-        //       authStateNotifier.logout);
-        // }).whenComplete(() {
-        //   loading.value = false;
-        // });
+
       }
     }
 
@@ -144,7 +132,7 @@ class PasswordUnlockScreen extends HookConsumerWidget {
                 LinkedRichText(
                     linked: "",
                     unlinked: "Logout",
-                    onPress: () {}),
+                    onPress: authNotifier.logout),
                 const SizedBox(height: Constants.SPACING),
 
                 const SizedBox(height: Constants.SPACING),

@@ -24,7 +24,7 @@ class _SettingsItem {
       this.leadingIcon});
 }
 
-List<_SettingsItem>_settingsItem(BuildContext context) => <_SettingsItem>[
+List<_SettingsItem> _settingsItem(BuildContext context) => <_SettingsItem>[
       _SettingsItem(
         title: "Profile",
         subTitle: "View your profile information",
@@ -32,22 +32,38 @@ List<_SettingsItem>_settingsItem(BuildContext context) => <_SettingsItem>[
         onPress: () => context.goNamed(RouteNames.PROFILE_SETTINGS),
       ),
       _SettingsItem(
-          title: "Theme",
-          leadingIcon: Icons.light_mode,
-          subTitle: "Toggle dark and light theme",
-          trailingIcon: Consumer(
-            builder: (context, ref, child) => Switch(
-              value: ref.watch(settingsNotifierProvider).theme == "dark",
-              onChanged: (value) => ref
-                  .read(settingsNotifierProvider.notifier)
-                  .patchSettings(theme: value ? "dark" : "light"),
-            ),
-          )),
+        title: "Theme",
+        leadingIcon: Icons.light_mode,
+        subTitle: "Toggle dark and light theme",
+        trailingIcon: Consumer(
+          builder: (context, ref, child) => Switch(
+            value: ref.watch(settingsNotifierProvider).theme == "dark",
+            onChanged: (value) => ref
+                .read(settingsNotifierProvider.notifier)
+                .patchSettings(theme: value ? "dark" : "light"),
+          ),
+        ),
+      ),
       _SettingsItem(
         title: "Enable advanced Privacy",
         subTitle: "Lock app every time it goes in background",
         leadingIcon: Icons.security,
-        onPress: () => context.goNamed(RouteNames.PRIVACY_SETTINGS),
+        trailingIcon: Consumer(
+          builder: (context, ref, child)
+          {
+            final settings = ref.read(settingsNotifierProvider.notifier);
+
+            return Switch(
+              value: settings.getState().isPrivacyEnabled,
+              onChanged: (bool value) {
+                final settings = ref.read(settingsNotifierProvider.notifier);
+                settings.patchSettings(
+                    isPrivacyEnabled: !settings.getState().isPrivacyEnabled);
+              },
+            );
+          },
+        ),
+        // onPress: () => context.goNamed(RouteNames.PRIVACY_SETTINGS),
       ),
       // _SettingsItem(
       //     title: "Plugins", leadingIcon: Icons.private_connectivity_outlined),
@@ -78,7 +94,7 @@ class SettingsScreen extends ConsumerWidget {
               child: ListTile(
                 leading: Icon(item.leadingIcon),
                 title: Text(item.title),
-                subtitle:item.subTitle != null ?Text(item.subTitle!): null,
+                subtitle: item.subTitle != null ? Text(item.subTitle!) : null,
                 onTap: item.onPress,
                 trailing: item.trailingIcon,
               ),
