@@ -5,6 +5,7 @@ import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
+import 'package:nishauri/src/shared/display/scafold_stack_body.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
@@ -49,8 +50,7 @@ List<_SettingsItem> _settingsItem(BuildContext context) => <_SettingsItem>[
         subTitle: "Lock app every time it goes in background",
         leadingIcon: Icons.security,
         trailingIcon: Consumer(
-          builder: (context, ref, child)
-          {
+          builder: (context, ref, child) {
             final settings = ref.read(settingsNotifierProvider.notifier);
 
             return Switch(
@@ -83,24 +83,37 @@ class SettingsScreen extends ConsumerWidget {
     final user = ref.watch(userProvider);
     final theme = Theme.of(context);
     return Scaffold(
-        appBar: AppBar(
-          title: const Center(child: Text("Settings")),
-        ),
-        body: ListView.builder(
-          itemBuilder: (context, index) {
-            final item = _items[index];
-            return AppCard(
-              variant: CardVariant.OUTLINED,
-              child: ListTile(
-                leading: Icon(item.leadingIcon),
-                title: Text(item.title),
-                subtitle: item.subTitle != null ? Text(item.subTitle!) : null,
-                onTap: item.onPress,
-                trailing: item.trailingIcon,
-              ),
-            );
-          },
-          itemCount: _items.length,
-        ));
+        // appBar: AppBar(
+        //   title: const Center(child: Text("Settings")),
+        // ),
+        body: ScaffoldStackedBody(
+      body: Column(
+        children: [
+          AppBar(
+            backgroundColor: Colors.transparent,
+            title: Center(child: Text("Settings", style: theme.textTheme.titleLarge,)),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                final item = _items[index];
+                return AppCard(
+                  variant: CardVariant.OUTLINED,
+                  child: ListTile(
+                    leading: Icon(item.leadingIcon),
+                    title: Text(item.title),
+                    subtitle:
+                        item.subTitle != null ? Text(item.subTitle!) : null,
+                    onTap: item.onPress,
+                    trailing: item.trailingIcon,
+                  ),
+                );
+              },
+              itemCount: _items.length,
+            ),
+          ),
+        ],
+      ),
+    ));
   }
 }
