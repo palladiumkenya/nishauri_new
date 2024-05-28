@@ -60,10 +60,10 @@ class _HomeScreenState extends ConsumerState<MainScreen>
     // I user returns to foreground then show auth screen
     if (state == AppLifecycleState.resumed &&
         settings.isPrivacyEnabled &&
-        !settings.isAuthenticated) showPinAuth(context);
+        !settings.isAuthenticated) showUnlockScreen(context);
   }
 
-  void showPinAuth(BuildContext context) {
+  void showUnlockScreen(BuildContext context) {
     if (!_isAuthModalVisible) {
       setState(() {
         _isAuthModalVisible = true;
@@ -72,6 +72,7 @@ class _HomeScreenState extends ConsumerState<MainScreen>
         isScrollControlled: true,
         context: context,
         isDismissible: false,
+        enableDrag: false,
         builder: (BuildContext context) => WillPopScope(
           onWillPop: () async {
             // Disable the default back button behavior
@@ -79,7 +80,8 @@ class _HomeScreenState extends ConsumerState<MainScreen>
           },
           child: const PasswordUnlockScreen(),
         ),
-      ).whenComplete(() {
+      )
+          .whenComplete(() {
         setState(() {
           _isAuthModalVisible = false;
         });

@@ -44,7 +44,6 @@ class PasswordUnlockScreen extends HookConsumerWidget {
           ...formKey.currentState!.value,
           "user_name": userAsync.valueOrNull?.phoneNumber,
         };
-        log("AUTH:$payload");
         authNotifier.unlock(payload).then((value) {
           context.pop();
         }).catchError((error) {
