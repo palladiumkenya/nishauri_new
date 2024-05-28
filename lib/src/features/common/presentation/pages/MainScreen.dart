@@ -22,10 +22,9 @@ class MainScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<MainScreen>
     with WidgetsBindingObserver {
-  OverlayEntry? _overlayEntry;
   AppLifecycleState state = AppLifecycleState.inactive;
   int _messagesCount = 0;
-  int rebuild = 0;
+  bool _isAuthModalVisible = false;
   var _currIndex = 0;
 
   @override
@@ -64,33 +63,27 @@ class _HomeScreenState extends ConsumerState<MainScreen>
   }
 
   void showPinAuth(BuildContext context) {
-    // context.goNamed(RouteNames.UNLOCK_SCREEN);
-    showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      isDismissible: false,
-      builder: (BuildContext context) => WillPopScope(
-        onWillPop: () async {
-          // Disable the default back button behavior
-          return false;
-        },
-        child: PinAuthScreen(
-          authenticate: (value) {
-            final settings = ref.watch(settingsNotifierProvider);
-            final settingsSetter = ref.read(settingsNotifierProvider.notifier);
-            if (value != null && settings.pin == value) {
-              if (settings.isAuthenticated == false) {
-                context.pop();
-                settingsSetter.patchSettings(isAuthenticated: true);
-              }
-            } else {
-              return "Invalid pin";
-            }
-            return null;
+    if (!_isAuthModalVisible) {
+      setState(() {
+        _isAuthModalVisible = true;
+      });
+      showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        isDismissible: false,
+        builder: (BuildContext context) => WillPopScope(
+          onWillPop: () async {
+            // Disable the default back button behavior
+            return false;
           },
+          child: const PinAuthScreen(),
         ),
-      ),
-    );
+      ).whenComplete(() {
+        setState(() {
+          _isAuthModalVisible = false;
+        });
+      });
+    }
   }
 
   @override
@@ -142,8 +135,8 @@ class _HomeScreenState extends ConsumerState<MainScreen>
         ],
         currentIndex: _currIndex,
         onTap: (index) async {
-          if (true) {
-            // if (_currIndex == 2 && index != 2 && _messagesCount > 2) {
+          // if (true) {
+          if (_currIndex == 2 && index != 2 && _messagesCount > 2) {
             await showDialog(
               context: context,
               barrierDismissible: false,

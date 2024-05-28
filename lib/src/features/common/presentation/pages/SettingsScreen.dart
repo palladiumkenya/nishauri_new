@@ -24,15 +24,17 @@ class _SettingsItem {
       this.leadingIcon});
 }
 
-_settingsItem(BuildContext context) => [
+List<_SettingsItem>_settingsItem(BuildContext context) => <_SettingsItem>[
       _SettingsItem(
         title: "Profile",
+        subTitle: "View your profile information",
         leadingIcon: Icons.account_circle,
         onPress: () => context.goNamed(RouteNames.PROFILE_SETTINGS),
       ),
       _SettingsItem(
           title: "Theme",
           leadingIcon: Icons.light_mode,
+          subTitle: "Toggle dark and light theme",
           trailingIcon: Consumer(
             builder: (context, ref, child) => Switch(
               value: ref.watch(settingsNotifierProvider).theme == "dark",
@@ -41,11 +43,12 @@ _settingsItem(BuildContext context) => [
                   .patchSettings(theme: value ? "dark" : "light"),
             ),
           )),
-      // _SettingsItem(
-      //   title: "Privacy",
-      //   leadingIcon: Icons.security,
-      //   onPress: () => context.goNamed(RouteNames.PRIVACY_SETTINGS),
-      // ),
+      _SettingsItem(
+        title: "Enable advanced Privacy",
+        subTitle: "Lock app every time it goes in background",
+        leadingIcon: Icons.security,
+        onPress: () => context.goNamed(RouteNames.PRIVACY_SETTINGS),
+      ),
       // _SettingsItem(
       //     title: "Plugins", leadingIcon: Icons.private_connectivity_outlined),
       _SettingsItem(
@@ -75,6 +78,7 @@ class SettingsScreen extends ConsumerWidget {
               child: ListTile(
                 leading: Icon(item.leadingIcon),
                 title: Text(item.title),
+                subtitle:item.subTitle != null ?Text(item.subTitle!): null,
                 onTap: item.onPress,
                 trailing: item.trailingIcon,
               ),
