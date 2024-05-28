@@ -12,6 +12,7 @@ import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.d
 import 'package:nishauri/src/features/common/presentation/pages/chat_feeback_form.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
+import 'package:nishauri/src/features/user_preference/presentation/pages/password_unlock_screen.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -22,10 +23,9 @@ class MainScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<MainScreen>
     with WidgetsBindingObserver {
-  OverlayEntry? _overlayEntry;
   AppLifecycleState state = AppLifecycleState.inactive;
   int _messagesCount = 0;
-  int rebuild = 0;
+  bool _isAuthModalVisible = false;
   var _currIndex = 0;
 
   @override
@@ -60,37 +60,33 @@ class _HomeScreenState extends ConsumerState<MainScreen>
     // I user returns to foreground then show auth screen
     if (state == AppLifecycleState.resumed &&
         settings.isPrivacyEnabled &&
-        !settings.isAuthenticated) showPinAuth(context);
+        !settings.isAuthenticated) showUnlockScreen(context);
   }
 
-  void showPinAuth(BuildContext context) {
-    // context.goNamed(RouteNames.UNLOCK_SCREEN);
-    showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      isDismissible: false,
-      builder: (BuildContext context) => WillPopScope(
-        onWillPop: () async {
-          // Disable the default back button behavior
-          return false;
-        },
-        child: PinAuthScreen(
-          authenticate: (value) {
-            final settings = ref.watch(settingsNotifierProvider);
-            final settingsSetter = ref.read(settingsNotifierProvider.notifier);
-            if (value != null && settings.pin == value) {
-              if (settings.isAuthenticated == false) {
-                context.pop();
-                settingsSetter.patchSettings(isAuthenticated: true);
-              }
-            } else {
-              return "Invalid pin";
-            }
-            return null;
+  void showUnlockScreen(BuildContext context) {
+    if (!_isAuthModalVisible) {
+      setState(() {
+        _isAuthModalVisible = true;
+      });
+      showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        isDismissible: false,
+        enableDrag: false,
+        builder: (BuildContext context) => WillPopScope(
+          onWillPop: () async {
+            // Disable the default back button behavior
+            return false;
           },
+          child: const PasswordUnlockScreen(),
         ),
-      ),
-    );
+      )
+          .whenComplete(() {
+        setState(() {
+          _isAuthModalVisible = false;
+        });
+      });
+    }
   }
 
   @override
@@ -142,12 +138,27 @@ class _HomeScreenState extends ConsumerState<MainScreen>
         ],
         currentIndex: _currIndex,
         onTap: (index) async {
+          // if (true) {
           if (_currIndex == 2 && index != 2 && _messagesCount > 2) {
             await showDialog(
               context: context,
               barrierDismissible: false,
-              builder: (context) => const AlertDialog(
-                content: ChatFeedbackForm(),
+              builder: (context) => AlertDialog(
+                content: Stack(
+                  children: [
+                    const ChatFeedbackForm(),
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: IconButton(
+                        onPressed: () => context.pop(),
+                        icon: const FaIcon(
+                          FontAwesomeIcons.xmark,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }

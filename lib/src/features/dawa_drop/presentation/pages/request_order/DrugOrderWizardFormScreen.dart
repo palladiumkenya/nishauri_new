@@ -16,6 +16,7 @@ import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 import '../../../../../shared/exeptions/http_exceptions.dart';
 import '../../../../../utils/helpers.dart';
@@ -39,9 +40,12 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
     final stepFieldsToValidate = [
       ["mode", "order_type", "appointment"],
       [
-        "delivery_method","courier_service",
-        "delivery_person","delivery_person_id",
-        "delivery_person_contact", "delivery_pickup_time"
+        "delivery_method",
+        "courier_service",
+        "delivery_person",
+        "delivery_person_id",
+        "delivery_person_contact",
+        "delivery_pickup_time"
       ],
       ["client_phone_no", "delivery_address"],
     ];
@@ -107,36 +111,53 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
     void handleSubmit() {
       debugPrint("=====================>${formKey.currentState?.fields}");
       if (formKey.currentState!.validate()) {
-        debugPrint("=====================>${formKey.currentState?.instantValue}");
+        debugPrint(
+            "=====================>${formKey.currentState?.instantValue}");
         loading.value = true;
-        final pickupTime = formKey.currentState!.instantValue["delivery_pickup_time"];
-        final courierService = formKey.currentState!.instantValue["courier_service"].toString();
+        final pickupTime =
+            formKey.currentState!.instantValue["delivery_pickup_time"];
+        final courierService =
+            formKey.currentState!.instantValue["courier_service"].toString();
         ref.read(drugOrderProvider.notifier).createOrder({
           ...formKey.currentState!.instantValue,
-          "delivery_pickup_time":
-          pickupTime is DateTime ? pickupTime.toIso8601String() : pickupTime,
+          "delivery_pickup_time": pickupTime is DateTime
+              ? pickupTime.toIso8601String()
+              : pickupTime,
           "delivery_lat": "",
           "delivery_long": "",
-          ...(formKey.currentState?.instantValue["delivery_method"] == "parcel" ? {
-            // "delivery_person": "",
-            // "delivery_person_id": "",
-            // "delivery_person_contact": "",
-            // "delivery_pickup_time":"",
-            "courier_service": courierService,
-            "delivery_method": "In Parcel",
-          } : {
-            "courier_service": "",
-            "delivery_method": "In Person",
-          }),
-          ...(formKey.currentState?.instantValue["delivery_method"] == "person" ? {"deliveryPerson": {
-            "fullName": formKey.currentState!.instantValue["delivery_person"],
-            "nationalId": formKey.currentState!.instantValue["delivery_person_id"],
-            "phoneNumber": formKey.currentState!.instantValue["delivery_person_contact"],
-            "pickupTime": formKey.currentState!.instantValue["delivery_pickup_time"],
-          }} : {})
+          ...(formKey.currentState?.instantValue["delivery_method"] == "parcel"
+              ? {
+                  // "delivery_person": "",
+                  // "delivery_person_id": "",
+                  // "delivery_person_contact": "",
+                  // "delivery_pickup_time":"",
+                  "courier_service": courierService,
+                  "delivery_method": "In Parcel",
+                }
+              : {
+                  "courier_service": "",
+                  "delivery_method": "In Person",
+                }),
+          ...(formKey.currentState?.instantValue["delivery_method"] == "person"
+              ? {
+                  "deliveryPerson": {
+                    "fullName":
+                        formKey.currentState!.instantValue["delivery_person"],
+                    "nationalId": formKey
+                        .currentState!.instantValue["delivery_person_id"],
+                    "phoneNumber": formKey
+                        .currentState!.instantValue["delivery_person_contact"],
+                    "pickupTime": formKey
+                        .currentState!.instantValue["delivery_pickup_time"],
+                  }
+                }
+              : {})
         }).then((value) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("Drug delivery request was a success!")));
+          context.goNamed(
+            RouteNames.HIV_DRUG_ORDERS,
+          );
         }).catchError((e) {
           switch (e) {
             case BadRequestException e:
@@ -155,11 +176,13 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
         }).whenComplete(() => loading.value = false);
       } else {
         //   if invalid then navigate to the 1st step with errors
-        final fieldStep = stepFieldsToValidate.indexWhere((fields) => fields
-            .any((field) => formKey.currentState!.fields[field]?.hasError == true));
+        final fieldStep = stepFieldsToValidate.indexWhere((fields) =>
+            fields.any((field) =>
+                formKey.currentState!.fields[field]?.hasError == true));
         currentStep.value = fieldStep;
       }
     }
+
     debugPrint("${currentStep.value}");
     return Scaffold(
       appBar: AppBar(
@@ -184,7 +207,7 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
               final currentStepFields = stepFieldsToValidate[currentStep.value];
 
               if (currentStepFields.any((field) =>
-              formKey.currentState!.fields[field]?.validate() == false)) {
+                  formKey.currentState!.fields[field]?.validate() == false)) {
                 return; //Don't move to next step if current step not valid
               }
             }
@@ -214,18 +237,20 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
                               content: SizedBox(
                                 width: double.maxFinite,
                                 height:
-                                MediaQuery.of(context).size.height * 0.5,
+                                    MediaQuery.of(context).size.height * 0.5,
                                 child: SingleChildScrollView(
                                   child: ReviewAndSubmit(
                                     formState:
-                                    formKey.currentState!.instantValue,
+                                        formKey.currentState!.instantValue,
                                   ),
                                 ),
                               ),
                               actions: [
-                                Row( // Wrap buttons inside a Row
+                                Row(
+                                  // Wrap buttons inside a Row
                                   children: [
-                                    Expanded( // Ensures buttons take equal width
+                                    Expanded(
+                                      // Ensures buttons take equal width
                                       child: Button(
                                         title: "Submit",
                                         onPress: () {
@@ -233,12 +258,15 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
                                         },
                                       ),
                                     ),
-                                    SizedBox(width: Constants.SPACING), // Add some space between buttons
+                                    SizedBox(
+                                        width: Constants
+                                            .SPACING), // Add some space between buttons
                                     Expanded(
                                       child: Button(
                                         title: "Cancel",
                                         onPress: context.pop,
-                                        titleStyle: theme.textTheme.titleLarge?.copyWith(
+                                        titleStyle: theme.textTheme.titleLarge
+                                            ?.copyWith(
                                           color: theme.colorScheme.error,
                                         ),
                                       ),

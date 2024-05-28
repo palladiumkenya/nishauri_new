@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nishauri/src/shared/display/label_input_container.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
+import 'package:nishauri/src/shared/input/rating_bar.dart';
 import 'package:nishauri/src/utils/constants.dart';
+
+String? _getRatingMessage(int? rating) {
+  switch (rating) {
+    case 1:
+      return "Very poor";
+    case 2:
+      return "Poor";
+    case 3:
+      return "Fair";
+    case 4:
+      return "Good";
+    case 5:
+      return "Very Good";
+  }
+  return null;
+}
 
 class ChatFeedbackForm extends HookWidget {
   const ChatFeedbackForm({super.key});
@@ -34,65 +49,72 @@ class ChatFeedbackForm extends HookWidget {
       child: SingleChildScrollView(
         child: Wrap(
           runSpacing: Constants.SPACING,
+          alignment: WrapAlignment.center,
           children: <Widget>[
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              const Expanded(child: Text("How was your coversation with Nuru?")),
-              IconButton(icon: FaIcon(FontAwesomeIcons.circleXmark, color: theme.colorScheme.error,), onPressed: ()=>context.pop(),)
-            ]),
-            LabelInputContainer(
-              label: "Rating",
-              child: FormBuilderChoiceChip<int>(
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
-                name: "rating",
-                decoration: const InputDecoration(border: InputBorder.none),
-                options: List.generate(
-                  5,
-                  (index) => FormBuilderChipOption(
-                    value: index + 1,
-                    child: Text(
-                      "${index + 1}",
-                    ),
-                  ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Live Chat",
+                  style: theme.textTheme.titleLarge,
                 ),
-              ),
+                Text(
+                  "(Chat Ended)",
+                  style: TextStyle(color: theme.disabledColor),
+                ),
+                const SizedBox(height: Constants.SPACING * 2),
+                const Text("Rate your conversation with \nNuru",
+                    textAlign: TextAlign.center),
+              ],
             ),
-            LabelInputContainer(
-              label: "Review",
-              child: Container(
-                clipBehavior: Clip.antiAlias,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(
-                      Constants.ROUNDNESS,
+            FormBuilderField<int>(
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(errorText: "Please select a rating"),
+              ]),
+              builder: (state) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    RatingBar(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      maxRating: 6,
+                      rating: state.value,
+                      onRatingChange: (rating) => state.didChange(rating),
+                      decoration: InputDecoration(
+                          errorText: state.errorText, border: InputBorder.none),
                     ),
-                  ),
-                ),
-                child: FormBuilderTextField(
-                  name: "review",
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    filled: true,
-                    fillColor: theme.canvasColor,
-                  ),
-                  maxLines: 3,
-                  minLines: 3,
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                  ]),
-                ),
-              ),
+                    if (_getRatingMessage(state.value) != null)
+                      Text(
+                        _getRatingMessage(state.value)!,
+                        style: TextStyle(color: theme.disabledColor),
+                      ),
+                  ],
+                );
+              },
+              name: "rating",
             ),
-            const SizedBox(
-              height: Constants.SPACING,
+            FormBuilderTextField(
+              name: "review",
+              decoration:
+                  const InputDecoration(hintText: "Leave a review here ..."),
             ),
             Button(
-                title: "Submit",
-                backgroundColor: theme.colorScheme.primary,
-                loading: loading.value,
-                textColor: Colors.white,
-                onPress: handleSubmit)
+              title: "Submit Response",
+              backgroundColor: theme.colorScheme.primary,
+              loading: loading.value,
+              textColor: Colors.white,
+              onPress: handleSubmit,
+            ),
+            InkWell(
+              onTap: ()=>context.pop(),
+              child: Text(
+                "Skip Rating",
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+            )
           ],
         ),
       ),

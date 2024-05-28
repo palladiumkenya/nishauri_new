@@ -122,31 +122,7 @@ class MainMenuScreen extends StatelessWidget {
                             // ),
                             items: [
                               // get generic menu items
-                              ...getGenericMenuItems(context)
-                                ..removeWhere((element) {
-                                  if (data.where((element) => element.isActive).isEmpty &&
-                                      element.title ==
-                                          MenuItemNames.PROGRAM_MENU) {
-                                    return true;
-                                  }
-                                  return false;
-                                }),
-                              if (data.where((element) => element.isActive).isEmpty)
-                                MenuItem(
-                                  icon: Icon(
-                                    Icons.add,
-                                    size: Constants.iconSize,
-                                    color: theme.colorScheme.inversePrimary,
-                                  ),
-                                  shortcutIcon: Icon(
-                                    Icons.add,
-                                    color: theme.colorScheme.inversePrimary,
-                                  ),
-                                  // color: theme.colorScheme.primary,
-                                  title: "Add Programme",
-                                  onPressed: () => context.goNamed(
-                                      RouteNames.PROGRAME_REGISTRATION_SCREEN),
-                                ),
+                              ...getGenericMenuItems(context),
                             ],
                           );
                         },

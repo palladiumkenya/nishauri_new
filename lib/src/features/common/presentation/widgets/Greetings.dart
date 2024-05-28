@@ -173,7 +173,7 @@ _showDialog(BuildContext context) {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 content:
-                                    Text("Max number of shortcuts reached")));
+                                Text("Max number of shortcuts reached")));
                       } else {
                         shortcutsNotifier.addShortcut(
                           item.title ?? "",

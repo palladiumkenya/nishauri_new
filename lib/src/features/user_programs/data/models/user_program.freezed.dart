@@ -23,7 +23,7 @@ mixin _$UserProgram {
   String? get id => throw _privateConstructorUsedError;
   String? get program_name => throw _privateConstructorUsedError;
   bool get isActive => throw _privateConstructorUsedError;
-  String? get createdAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,7 +38,7 @@ abstract class $UserProgramCopyWith<$Res> {
       _$UserProgramCopyWithImpl<$Res, UserProgram>;
   @useResult
   $Res call(
-      {String? id, String? program_name, bool isActive, String? createdAt});
+      {String? id, String? program_name, bool isActive, DateTime? createdAt});
 }
 
 /// @nodoc
@@ -75,7 +75,7 @@ class _$UserProgramCopyWithImpl<$Res, $Val extends UserProgram>
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -89,7 +89,7 @@ abstract class _$$UserProgramImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? id, String? program_name, bool isActive, String? createdAt});
+      {String? id, String? program_name, bool isActive, DateTime? createdAt});
 }
 
 /// @nodoc
@@ -124,7 +124,7 @@ class __$$UserProgramImplCopyWithImpl<$Res>
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as DateTime?,
     ));
   }
 }
@@ -146,7 +146,7 @@ class _$UserProgramImpl with DiagnosticableTreeMixin implements _UserProgram {
   @JsonKey()
   final bool isActive;
   @override
-  final String? createdAt;
+  final DateTime? createdAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -202,7 +202,7 @@ abstract class _UserProgram implements UserProgram {
       {final String? id,
       final String? program_name,
       final bool isActive,
-      final String? createdAt}) = _$UserProgramImpl;
+      final DateTime? createdAt}) = _$UserProgramImpl;
 
   factory _UserProgram.fromJson(Map<String, dynamic> json) =
       _$UserProgramImpl.fromJson;
@@ -214,7 +214,7 @@ abstract class _UserProgram implements UserProgram {
   @override
   bool get isActive;
   @override
-  String? get createdAt;
+  DateTime? get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$UserProgramImplCopyWith<_$UserProgramImpl> get copyWith =>

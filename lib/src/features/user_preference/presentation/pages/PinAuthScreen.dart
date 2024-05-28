@@ -1,18 +1,23 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:pinput/pinput.dart';
 
-class PinAuthScreen extends StatefulWidget {
-  final String? Function(String?)? authenticate;
+import '../../data/providers/settings_provider.dart';
 
-  const PinAuthScreen({super.key, this.authenticate});
+class PinAuthScreen extends ConsumerStatefulWidget {
+
+  const PinAuthScreen({super.key});
 
   @override
-  State<PinAuthScreen> createState() => _PinAuthScreenState();
+  ConsumerState<PinAuthScreen> createState() => _PinAuthScreenState();
 }
 
-class _PinAuthScreenState extends State<PinAuthScreen> {
+class _PinAuthScreenState extends ConsumerState<PinAuthScreen> {
   final pinController = TextEditingController();
   final focusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
@@ -24,18 +29,38 @@ class _PinAuthScreenState extends State<PinAuthScreen> {
     super.dispose();
   }
 
-  void onSubmit() {
-    focusNode.unfocus();
-    if (formKey.currentState!.validate() && widget.authenticate != null) {
-      widget.authenticate!(pinController.text);
-    }
-  }
+  // (value) {
+  // final settings = ref.watch(settingsNotifierProvider);
+  // final settingsSetter = ref.read(settingsNotifierProvider.notifier);
+  // if (value != null && settings.pin == value) {
+  // if (settings.isAuthenticated == false) {
+  // context.pop();
+  // settingsSetter.patchSettings(isAuthenticated: true);
+  // }
+  // } else {
+  // return "Invalid pin";
+  // }
+  // return null;
+  // },
+
+
 
   @override
   Widget build(BuildContext context) {
     const focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
     const fillColor = Color.fromRGBO(243, 246, 249, 0);
     const borderColor = Color.fromRGBO(23, 171, 144, 0.4);
+    final settingsNotifier = ref.read(settingsNotifierProvider.notifier);
+    final settings = ref.watch(settingsNotifierProvider);
+
+    void onSubmit() {
+      focusNode.unfocus();
+
+      if (formKey.currentState!.validate()) {
+        context.pop();
+        settingsNotifier.patchSettings(isAuthenticated: true);
+      }
+    }
 
     final defaultPinTheme = PinTheme(
       width: 56,
@@ -83,7 +108,12 @@ class _PinAuthScreenState extends State<PinAuthScreen> {
                       listenForMultipleSmsOnAndroid: true,
                       defaultPinTheme: defaultPinTheme,
                       separatorBuilder: (index) => const SizedBox(width: 8),
-                      validator: widget.authenticate,
+                      validator: (val){
+                        if(val == null || settings.pin != val) {
+                          return "Invalid pin";
+                        }
+                        return null;
+                      },
                       obscureText: true,
                       // onClipboardFound: (value) {
                       //   debugPrint('onClipboardFound: $value');

@@ -48,6 +48,7 @@ class BackgroundImageWidget extends StatelessWidget {
             child: Center(
               child: Text(
                 notFoundText,
+                textAlign: TextAlign.center,
                 style: TextStyle(color: backgroundColor),
               ),
             ),

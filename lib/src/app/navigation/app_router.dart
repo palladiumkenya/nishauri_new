@@ -238,7 +238,6 @@ final List<RouteBase> secureRoutes = [
     },
     routes: dawaDropRoutes,
   ),
-
   GoRoute(
     name: RouteNames.DASHBOARD,
     path: 'dashboard',
@@ -261,6 +260,16 @@ final List<RouteBase> secureRoutes = [
 
             return AppointmentRescheduleScreen(
               props: payload,
+            );
+          },
+        ),
+        GoRoute(
+          name: RouteNames.HIV_ART_APPOINTMENT_DETAILS,
+          path: "art-appointment",
+          builder: (BuildContext context, GoRouterState state) {
+            final extras = state.extra as Appointment;
+            return ARTAppointmentDetailScreen(
+              artAppointment: extras,
             );
           },
         ),
@@ -489,16 +498,6 @@ final List<RouteBase> dawaDropRoutes = [
               }
             }),
       ]),
-  GoRoute(
-    name: RouteNames.HIV_ART_APPOINTMENT_DETAILS,
-    path: "art-appointment",
-    builder: (BuildContext context, GoRouterState state) {
-      final extras = state.extra as Appointment;
-      return ARTAppointmentDetailScreen(
-        artAppointment: extras,
-      );
-    },
-  ),
 ];
 
 final List<RouteBase> programMenu = [
@@ -508,17 +507,17 @@ final List<RouteBase> programMenu = [
     builder: (BuildContext context, GoRouterState state) {
       return const ProgramRegistrationScreen();
     },
-    routes: [
-      GoRoute(
-        name: RouteNames.VERIFY_PROGRAM_OTP,
-        path: 'verify',
-        builder: (BuildContext context, GoRouterState state) {
-          ProgramVerificationDetail extra =
-          state.extra! as ProgramVerificationDetail;
-          return ProgramVerificationScreen(verificationDetail: extra);
-        },
-      ),
-    ],
+    // routes: [
+    //   GoRoute(
+    //     name: RouteNames.VERIFY_PROGRAM_OTP,
+    //     path: 'verify',
+    //     builder: (BuildContext context, GoRouterState state) {
+    //       ProgramVerificationDetail extra =
+    //       state.extra! as ProgramVerificationDetail;
+    //       return ProgramVerificationScreen(verificationDetail: extra);
+    //     },
+    //   ),
+    // ],
   ),
   GoRoute(
     name: RouteNames.REMOVE_PROGRAM,

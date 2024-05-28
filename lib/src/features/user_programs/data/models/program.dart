@@ -6,12 +6,13 @@ part 'program.g.dart';
 @Freezed()
 class Program with _$Program {
   const factory Program({
-    String? id,
+    int? id,
     String? program_code,
     String? name,
     String? description,
-    @Default(false) bool is_active,
-    required String createdAt,
+    int? is_active,
+    String? createdAt,
+    String? program_otp,
   }) = _Program;
 
   factory Program.fromJson(Map<String, dynamic> json)=> _$ProgramFromJson(json);

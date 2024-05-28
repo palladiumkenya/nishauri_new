@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/dawa_drop/data/models/order_request/drug_order.dart';
 import 'package:nishauri/src/features/dawa_drop/data/providers/drug_order_provider.dart';
-import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/AllOrders.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/active_orders.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/FulfilledOrders.dart';
 import 'package:nishauri/src/shared/display/CustomTabBar.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
@@ -32,7 +32,7 @@ class DrugOrdersScreen extends HookConsumerWidget {
         List<DrugOrder> fulfilledOrders =
         allOrders.where((order) => order.status == 'Fullfilled').toList();
         final screens = [
-          AllOrders(orders: pendingOrders),
+          ActiveOrders(orders: pendingOrders),
           // PendingOrders(orders: pendingOrders),
           // ApprovedOrders(orders: approvedOrders),
           FulfilledOrders(orders: fulfilledOrders),

@@ -87,175 +87,175 @@ class _VerificationScreenState extends State<VerificationScreen> {
             buildPageContent: (context, color) => SafeArea(
               child: asyncUser.when(
                   data: (user) => Container(
-                        padding: const EdgeInsets.all(Constants.SPACING * 2),
-                        decoration: BoxDecoration(
-                          color: color,
-                          borderRadius:
-                              BorderRadius.circular(Constants.ROUNDNESS),
-                        ),
-                        child: FormBuilder(
-                          key: _formKey,
-                          child: SingleChildScrollView(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 20),
-                              child: Column(
-                                children: [
-                                  const SizedBox(height: Constants.SPACING),
-                                  DecoratedBox(
-                                    decoration: const BoxDecoration(),
-                                    child: SvgPicture.asset(
-                                      "assets/images/security.svg",
-                                      semanticsLabel: "Security",
-                                      fit: BoxFit.contain,
-                                      height: 150,
-                                    ),
-                                  ),
-                                  const SizedBox(height: Constants.SPACING),
-                                  const Text(
-                                    "Account Verification",
-                                    style: TextStyle(
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  const SizedBox(height: Constants.SPACING),
-                                  Text(
-                                    "Kindly use the OTP Code sent to you\n to complete account verification.",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onTertiaryContainer,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  const SizedBox(height: Constants.SPACING),
-                                  FormBuilderRadioGroup(
-                                    name: "mode",
-                                    initialValue: "sms",
-                                    decoration: const InputDecoration(
-                                      label: Text(
-                                          "Want to receive OTP code through?"),
-                                    ),
-                                    options: [
-                                      // FormBuilderFieldOption(
-                                      //   value: "email",
-                                      //   child: ListTile(
-                                      //     title: const Text('Email'),
-                                      //     subtitle: Text(user.email ?? ''),
-                                      //     trailing: const Icon(Icons.email),
-                                      //   ),
-                                      // ),
-                                      // FormBuilderFieldOption(
-                                      //   value: "watsapp",
-                                      //   child: ListTile(
-                                      //     title: const Text("WatsApp"),
-                                      //     subtitle: Text(user.phoneNumber ?? ''),
-                                      //     trailing: const Icon(Icons.chat_outlined),
-                                      //   ),
-                                      // ),
-                                      FormBuilderFieldOption(
-                                        value: "sms",
-                                        child: ListTile(
-                                          title: const Text("SMS"),
-                                          subtitle:
-                                              Text(user.phoneNumber ?? ''),
-                                          trailing: const Icon(Icons.sms),
-                                        ),
-                                      ),
-                                    ],
-                                    validator: FormBuilderValidators.compose([
-                                      FormBuilderValidators.required(),
-                                    ]),
-                                  ),
-                                  const SizedBox(height: Constants.SPACING),
-                                  FormBuilderTextField(
-                                    name: "otp",
-                                    decoration: widgetSurfixIconDecoration(
-                                      placeholder:
-                                          "Enter OTP Verification code",
-                                      prefixIcon: Icons.account_circle,
-                                      surfixIcon: _requestLoading
-                                          ? const CircularProgressIndicator()
-                                          : Text(
-                                              _sent
-                                                  ? (_countdownSeconds > 0
-                                                      ? "Resend Code ($_countdownSeconds)"
-                                                      : "Resend Code")
-                                                  : "Get code",
-                                            ),
-                                      onSurfixIconPressed: () {
-                                        if (!_sent || _countdownSeconds <= 0) {
-                                          // Start countdown timer if the code is not yet sent or timer is zero
-                                          _startCountdownTimer();
-                                          setState(() {
-                                            _requestLoading = true;
-                                          });
-                                          ref
-                                              .read(userProvider.notifier)
-                                              .getOTPCode(_formKey.currentState
-                                                  ?.instantValue["mode"])
-                                              .then((value) {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                content: Text(value),
-                                              ),
-                                            );
-                                          }).catchError((err) {
-                                            handleResponseError(
-                                              context,
-                                              _formKey.currentState!.fields,
-                                              err,
-                                              ref
-                                                  .read(authStateProvider
-                                                      .notifier)
-                                                  .logout,
-                                            );
-                                          }).whenComplete(() {
-                                            setState(() {
-                                              _requestLoading = false;
-                                              _sent = true;
-                                            });
-                                          });
-                                        }
-                                      },
-                                      label: "OTP verification code",
-                                    ),
-                                    validator: FormBuilderValidators.compose([
-                                      FormBuilderValidators.required(),
-                                    ]),
-                                    keyboardType: TextInputType.number,
-                                  ),
-                                  const SizedBox(height: Constants.SPACING),
-                                  const SizedBox(height: Constants.SPACING),
-                                  Button(
-                                    title: "Verify",
-                                    onPress: handleSubmit,
-                                    loading: _loading,
-                                  ),
-                                  const SizedBox(height: Constants.SPACING),
-                                  Consumer(
-                                    builder: (context, ref, child) {
-                                      return LinkedRichText(
-                                        linked: "",
-                                        unlinked: "Back to login",
-                                        onPress: () => ref
-                                            .read(authStateProvider.notifier)
-                                            .logout(),
-                                      );
-                                    },
-                                  )
-                                ],
+                    padding: const EdgeInsets.all(Constants.SPACING * 2),
+                    decoration: BoxDecoration(
+                      color: color,
+                      borderRadius:
+                      BorderRadius.circular(Constants.ROUNDNESS),
+                    ),
+                    child: FormBuilder(
+                      key: _formKey,
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 20),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: Constants.SPACING),
+                              DecoratedBox(
+                                decoration: const BoxDecoration(),
+                                child: SvgPicture.asset(
+                                  "assets/images/security.svg",
+                                  semanticsLabel: "Security",
+                                  fit: BoxFit.contain,
+                                  height: 150,
+                                ),
                               ),
-                            ),
+                              const SizedBox(height: Constants.SPACING),
+                              const Text(
+                                "Account Verification",
+                                style: TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: Constants.SPACING),
+                              Text(
+                                "Kindly use the OTP Code sent to you\n to complete account verification.",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onTertiaryContainer,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: Constants.SPACING),
+                              FormBuilderRadioGroup(
+                                name: "mode",
+                                initialValue: "sms",
+                                decoration: const InputDecoration(
+                                  label: Text(
+                                      "Want to receive OTP code through?"),
+                                ),
+                                options: [
+                                  // FormBuilderFieldOption(
+                                  //   value: "email",
+                                  //   child: ListTile(
+                                  //     title: const Text('Email'),
+                                  //     subtitle: Text(user.email ?? ''),
+                                  //     trailing: const Icon(Icons.email),
+                                  //   ),
+                                  // ),
+                                  // FormBuilderFieldOption(
+                                  //   value: "watsapp",
+                                  //   child: ListTile(
+                                  //     title: const Text("WatsApp"),
+                                  //     subtitle: Text(user.phoneNumber ?? ''),
+                                  //     trailing: const Icon(Icons.chat_outlined),
+                                  //   ),
+                                  // ),
+                                  FormBuilderFieldOption(
+                                    value: "sms",
+                                    child: ListTile(
+                                      title: const Text("SMS"),
+                                      subtitle:
+                                      Text(user.phoneNumber ?? ''),
+                                      trailing: const Icon(Icons.sms),
+                                    ),
+                                  ),
+                                ],
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                ]),
+                              ),
+                              const SizedBox(height: Constants.SPACING),
+                              FormBuilderTextField(
+                                name: "otp",
+                                decoration: widgetSurfixIconDecoration(
+                                  placeholder:
+                                  "Enter OTP Verification code",
+                                  prefixIcon: Icons.account_circle,
+                                  surfixIcon: _requestLoading
+                                      ? const CircularProgressIndicator()
+                                      : Text(
+                                    _sent
+                                        ? (_countdownSeconds > 0
+                                        ? "Resend Code ($_countdownSeconds)"
+                                        : "Resend Code")
+                                        : "Get code",
+                                  ),
+                                  onSurfixIconPressed: () {
+                                    if (!_sent || _countdownSeconds <= 0) {
+                                      // Start countdown timer if the code is not yet sent or timer is zero
+                                      _startCountdownTimer();
+                                      setState(() {
+                                        _requestLoading = true;
+                                      });
+                                      ref
+                                          .read(userProvider.notifier)
+                                          .getOTPCode(_formKey.currentState
+                                          ?.instantValue["mode"])
+                                          .then((value) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(value),
+                                          ),
+                                        );
+                                      }).catchError((err) {
+                                        handleResponseError(
+                                          context,
+                                          _formKey.currentState!.fields,
+                                          err,
+                                          ref
+                                              .read(authStateProvider
+                                              .notifier)
+                                              .logout,
+                                        );
+                                      }).whenComplete(() {
+                                        setState(() {
+                                          _requestLoading = false;
+                                          _sent = true;
+                                        });
+                                      });
+                                    }
+                                  },
+                                  label: "OTP verification code",
+                                ),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                ]),
+                                keyboardType: TextInputType.number,
+                              ),
+                              const SizedBox(height: Constants.SPACING),
+                              const SizedBox(height: Constants.SPACING),
+                              Button(
+                                title: "Verify",
+                                onPress: handleSubmit,
+                                loading: _loading,
+                              ),
+                              const SizedBox(height: Constants.SPACING),
+                              Consumer(
+                                builder: (context, ref, child) {
+                                  return LinkedRichText(
+                                    linked: "",
+                                    unlinked: "Back to login",
+                                    onPress: () => ref
+                                        .read(authStateProvider.notifier)
+                                        .logout(),
+                                  );
+                                },
+                              )
+                            ],
                           ),
                         ),
                       ),
+                    ),
+                  ),
                   error: (error, _) => Center(child: Text(error.toString())),
                   loading: () => const Center(
-                        child: CircularProgressIndicator(),
-                      )),
+                    child: CircularProgressIndicator(),
+                  )),
             ),
           ),
         );

@@ -44,8 +44,10 @@ class _ProgramUpdateScreenState extends State<ProgramUpdateScreen> {
       body: Column(
         children: [
           CustomAppBar(
+            color: Constants.programsColor,
             title: "Remove program",
             icon: Icons.remove_done_sharp,
+            subTitle: "Kindly select the program you want\nto remove",
             // color: Colors.white30,
           ),
           Expanded(child:       ResponsiveWidgetFormLayout(
@@ -75,33 +77,11 @@ class _ProgramUpdateScreenState extends State<ProgramUpdateScreen> {
                                         DecoratedBox(
                                           decoration: const BoxDecoration(),
                                           child: SvgPicture.asset(
-                                            "assets/images/patient.svg",
+                                            "assets/images/add-appointment-large.svg",
                                             semanticsLabel: "Doctors",
                                             fit: BoxFit.contain,
-                                            height: 150,
                                           ),
                                         ),
-                                        const SizedBox(height: Constants.SPACING),
-                                        const Text(
-                                          "Remove program",
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(height: Constants.SPACING),
-                                        Text(
-                                          "Kindly Select the program to remove.",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Theme
-                                                .of(context)
-                                                .colorScheme
-                                                .onTertiaryContainer,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        const SizedBox(height: Constants.SPACING),
                                         const SizedBox(height: Constants.SPACING),
                                         FormBuilderDropdown<String>(
                                           name: "program_id",
@@ -120,77 +100,10 @@ class _ProgramUpdateScreenState extends State<ProgramUpdateScreen> {
                                             });
                                           },
                                         ),
-// <<<<<<< HEAD
-//                                         // const SizedBox(height: Constants.SPACING),
-//                                         // FormBuilderTextField(
-//                                         //   name: "mflCode",
-//                                         //   decoration: inputDecoration(
-//                                         //     prefixIcon: Icons.local_hospital,
-//                                         //     label: "Facility code",
-//                                         //   ),
-//                                         //   validator: FormBuilderValidators.compose([
-//                                         //     FormBuilderValidators.required(),
-//                                         //   ]),
-//                                         // ),
-//                                         // const SizedBox(height: Constants.SPACING),
-//                                         // Visibility(
-//                                         //   visible: _program == ProgramCodeNameIds.HIV, // Show if HIV program is selected
-//                                         //   child: FormBuilderTextField(
-//                                         //     name: "ccc_no",
-//                                         //     decoration: inputDecoration(
-//                                         //       placeholder: "e.g 1234567890",
-//                                         //       prefixIcon: Icons.verified_user,
-//                                         //       label: _getProgramId(_program),
-//                                         //     ),
-//                                         //     validator: FormBuilderValidators.compose([
-//                                         //       FormBuilderValidators.required()
-//                                         //     ]),
-//                                         //   ),
-//                                         // ),
-//
-//                                         // const SizedBox(height: Constants.SPACING),
-//                                         // Visibility(
-//                                         //   visible: _program == ProgramCodeNameIds.HIV, // Show if HIV program is selected
-//                                         //   child: FormBuilderTextField(
-//                                         //     name: "firstname",
-//                                         //     decoration: inputDecoration(
-//                                         //       placeholder: "e.g John",
-//                                         //       prefixIcon: Icons.person,
-//                                         //       label: "First Name",
-//                                         //     ),
-//                                         //     validator: FormBuilderValidators.compose([
-//                                         //       FormBuilderValidators.required(),
-//                                         //     ]),
-//                                         //   ),
-//                                         // ),
-//
-//                                         // FormBuilderTextField(
-//                                         //   name: "ccc_no",
-//                                         //   decoration: inputDecoration(
-//                                         //     placeholder: "e.g 1234567890",
-//                                         //     prefixIcon: Icons.verified_user,
-//                                         //     label: _getProgramId(_program),
-//                                         //   ),
-//                                         //   validator: FormBuilderValidators.compose([
-//                                         //     FormBuilderValidators.required()
-//                                         //   ]),
-//                                         // ),
-//                                         // const SizedBox(height: Constants.SPACING),
-//                                         // FormBuilderTextField(
-//                                         //   name: "firstname",
-//                                         //   decoration: inputDecoration(
-//                                         //     placeholder: "e.g John",
-//                                         //     prefixIcon: Icons.person,
-//                                         //     label: "First Name",
-//                                         //   ),
-//                                         //   validator: FormBuilderValidators.compose([
-//                                         //     FormBuilderValidators.required(),
-//                                         //   ]),
-//                                         // ),
-// =======
-// >>>>>>> omosh-appointment
                                         const SizedBox(height: Constants.SPACING),
                                         Button(
+                                          backgroundColor: Constants.programsColor,
+                                          textColor: Colors.white,
                                           title: "Remove Program",
                                           loading: _loading,
                                           onPress: () {

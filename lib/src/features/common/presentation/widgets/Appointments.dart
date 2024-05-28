@@ -9,6 +9,7 @@ import 'package:nishauri/src/features/common/presentation/widgets/AppointmentCar
 import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 import '../../../../utils/constants.dart';
+import '../../../dawa_drop/data/providers/drug_order_provider.dart';
 
 class Appointments extends HookConsumerWidget {
   const Appointments({super.key});
@@ -18,6 +19,13 @@ class Appointments extends HookConsumerWidget {
     final appointmentsAsync = ref.watch(appointmentProvider(false));
     final appointmentsNotifier = ref.watch(appointmentProvider(false).notifier);
     final screenSize = getOrientationAwareScreenSize(context);
+    final pendingOrders = ref
+            .watch(drugOrderProvider)
+            .valueOrNull
+            ?.where((order) => order.status != 'Fullfilled')
+            .toList() ??
+        [];
+
     final theme = Theme.of(context);
     return appointmentsAsync.when(
       data: (data) {
@@ -95,7 +103,7 @@ class Appointments extends HookConsumerWidget {
                               child: SizedBox(
                                 width: size.width * 0.99,
                                 child: AppointmentCard(
-                                  rescheduleButtonText: artAppointment
+                                  rescheduleButtonText: pendingOrders.isNotEmpty ? "Has active order" : (artAppointment
                                               .reschedule_status
                                               .toString() ==
                                           "0"
@@ -104,14 +112,15 @@ class Appointments extends HookConsumerWidget {
                                                   .toString() ==
                                               "1"
                                           ? "Approved"
-                                          : null,
+                                          : null),
                                   appointmentType:
                                       artAppointment.appointment_type ??
                                           "Unknown type",
                                   appointmentTime: appointmentDate,
                                   providerImage:
                                       "https://www.insurancejournal.com/wp-content/uploads/2014/03/hospital.jpg",
-                                  providerName: artAppointment.facility_name??'',
+                                  providerName:
+                                      artAppointment.facility_name ?? '',
                                   onRescheduleTap: artAppointment
                                                   .reschedule_status ==
                                               null ||
