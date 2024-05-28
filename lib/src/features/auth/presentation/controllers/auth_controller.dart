@@ -51,6 +51,20 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
         ),
       );
   }
+  Future<bool> unlock(Map<String, dynamic> credentials) async {
+      final authResponse = await _repository.authenticate(credentials);
+      var msg = authResponse.accessToken ?? '';
+      if (msg.isEmpty){
+        throw authResponse.message??'';
+      }
+      await _repository.saveToken(TokenPair(
+        accessToken: authResponse.accessToken ?? '',
+        refreshToken: authResponse.refreshToken ?? '',
+      ));
+      await _repository.saveUserId(authResponse.userId??'');
+      await _repository.saveIsVerified(authResponse.accountVerified);
+      return msg.isNotEmpty;
+  }
 
   Future<void> register(Map<String, dynamic> data) async {
     try {

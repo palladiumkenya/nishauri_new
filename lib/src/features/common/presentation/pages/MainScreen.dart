@@ -12,6 +12,7 @@ import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.d
 import 'package:nishauri/src/features/common/presentation/pages/chat_feeback_form.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
+import 'package:nishauri/src/features/user_preference/presentation/pages/password_unlock_screen.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -76,7 +77,7 @@ class _HomeScreenState extends ConsumerState<MainScreen>
             // Disable the default back button behavior
             return false;
           },
-          child: const PinAuthScreen(),
+          child: const PasswordUnlockScreen(),
         ),
       ).whenComplete(() {
         setState(() {
