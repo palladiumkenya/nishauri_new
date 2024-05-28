@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/features/user_preference/data/models/Setings.dart';
 import 'package:nishauri/src/local_storage/LocalStorage.dart';
@@ -16,7 +14,7 @@ class SettingsController extends StateNotifier<Settings> {
     state = state.copyWith(
         theme: theme.isNotEmpty ? theme : "light",
         isPrivacyEnabled:
-            isPrivacyEnabled.isEmpty ? true : isPrivacyEnabled == "1",
+        isPrivacyEnabled.isEmpty ? true : isPrivacyEnabled == "1",
         firstTimeInstallation: firstTimeInstallation.isEmpty
             ? true
             : firstTimeInstallation == "1");
@@ -47,13 +45,13 @@ class SettingsController extends StateNotifier<Settings> {
 
   }) {
     state = state.copyWith(
-      userToken: userToken,
-      theme: theme,
-      pin: pin,
-      isPrivacyEnabled: isPrivacyEnabled,
-      isBiometricEnabled: isBiometricEnabled,
-      isAuthenticated: isAuthenticated,
-      firstTimeInstallation: firstTimeInstallation
+        userToken: userToken,
+        theme: theme,
+        pin: pin,
+        isPrivacyEnabled: isPrivacyEnabled,
+        isBiometricEnabled: isBiometricEnabled,
+        isAuthenticated: isAuthenticated,
+        firstTimeInstallation: firstTimeInstallation
     );
     saveSettingConfig(state);
   }
@@ -79,7 +77,7 @@ class SettingsController extends StateNotifier<Settings> {
         isBiometricEnabled: isBiometricEnabled ?? state.isBiometricEnabled,
         isAuthenticated: isAuthenticated ?? state.isAuthenticated,
         firstTimeInstallation:
-            firstTimeInstallation ?? state.firstTimeInstallation);
+        firstTimeInstallation ?? state.firstTimeInstallation);
     saveSettingConfig(state);
   }
 
