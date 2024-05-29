@@ -3,6 +3,8 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/chatbot/data/repository/ChatbotRepository.dart';
+import 'package:nishauri/src/features/chatbot/data/services/ChatbotService.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/input/rating_bar.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -31,16 +33,22 @@ class ChatFeedbackForm extends HookWidget {
     final formKey = useMemoized(() => GlobalKey<FormBuilderState>());
     final theme = Theme.of(context);
     final loading = useState<bool>(false);
+    final repo = ChatbotRepository(ChatbotService());
 
     void handleSubmit() {
       if (formKey.currentState!.saveAndValidate()) {
         loading.value = true;
-        Future.delayed(const Duration(seconds: 3)).then((value) {
-          loading.value = false;
+        repo.review(formKey.currentState!.value).then((value) {
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Thank you for the feedback")));
           context.pop();
-        });
+        }).catchError((err) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("$err"),
+            ),
+          );
+        }).whenComplete(() => loading.value = false);
       }
     }
 
@@ -69,7 +77,8 @@ class ChatFeedbackForm extends HookWidget {
             ),
             FormBuilderField<int>(
               validator: FormBuilderValidators.compose([
-                FormBuilderValidators.required(errorText: "Please select a rating"),
+                FormBuilderValidators.required(
+                    errorText: "Please select a rating"),
               ]),
               builder: (state) {
                 return Column(
@@ -106,7 +115,7 @@ class ChatFeedbackForm extends HookWidget {
               onPress: handleSubmit,
             ),
             InkWell(
-              onTap: ()=>context.pop(),
+              onTap: () => context.pop(),
               child: Text(
                 "Skip Rating",
                 style: theme.textTheme.titleSmall?.copyWith(

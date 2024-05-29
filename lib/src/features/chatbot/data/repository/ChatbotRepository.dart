@@ -11,4 +11,7 @@ class ChatbotRepository {
     final sendMessage = await _service.sendMessage(message);
     return sendMessage;
   }
+  Future<String> review(Map<String, dynamic> data) async {
+    return await _service.review(data);
+  }
 }
