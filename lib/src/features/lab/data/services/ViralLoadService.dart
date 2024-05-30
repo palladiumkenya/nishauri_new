@@ -32,9 +32,12 @@ class ViralLoadService extends HTTPService {
     final tokenPair = await getCachedToken();
     var headers = {'Authorization':"Bearer ${tokenPair.accessToken}",
       'Content-Type': 'application/json'};
-    var request =
-    http.Request('GET', Uri.parse('${Constants.BASE_URL_NEW}/vl_results?user_id=$id'));
-    request.headers.addAll(headers);
-    return await request.send();
+    var url = '${Constants.BASE_URL_NEW}/vl_results?user_id=$id';
+    final response = request(url: url, token: tokenPair, method: 'GET', requestHeaders: headers, userId: id);
+    return response;
+    // var request =
+    // http.Request('GET', Uri.parse('${Constants.BASE_URL_NEW}/vl_results?user_id=$id'));
+    // request.headers.addAll(headers);
+    // return await request.send();
   }
 }

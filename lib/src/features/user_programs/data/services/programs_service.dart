@@ -12,91 +12,9 @@ import 'package:nishauri/src/utils/constants.dart';
 
 class ProgramService extends HTTPService {
   final AuthRepository _repository = AuthRepository(AuthApiService());
-
-  // final List<Program> _programs = [
-  //   const Program(
-  //     program_code: "HIV",
-  //     name: "HIV Program",
-  //     createdAt: "20th Oct 2023",
-  //   ),
-  //   const Program(
-  //     program_code: "TB",
-  //     name: "Tuberculosis Program",
-  //     createdAt: "20th Oct 2023",
-  //   ),
-  //   const Program(
-  //     program_code: "ASTHMA",
-  //     name: "Asthma Program",
-  //     createdAt: "20th Oct 2023",
-  //   ),
-  //   const Program(
-  //     program_code: "DIABETES",
-  //     name: "Diabetes Program",
-  //     createdAt: "20th Oct 2023",
-  //   ),
-  //   const Program(
-  //     program_code: "CANCER",
-  //     name: "Cancer Program",
-  //     createdAt: "20th Oct 2023",
-  //   ),
-  //   const Program(
-  //     program_code: "HBP",
-  //     name: "Hypertension",
-  //     createdAt: "20th Oct 2023",
-  //   ),
-  // ];
-
-  // final List<UserProgram> _userPrograms = [
-  //   const UserProgram(
-  //     program: Program(
-  //       id: "1",
-  //       program_code: "HIV",
-  //       name: "HIV Program",
-  //       createdAt: "20th Oct 2023",
-  //     ),
-  //     // user: "u-1",
-  //     createdAt: "20th Oct 2023",
-  //   ),
-  //   const UserProgram(
-  //     program: Program(
-  //       id: "2",
-  //       program_code: "TB",
-  //       name: "Tuberculosis Program",
-  //       createdAt: "20th Oct 2023",
-  //     ),
-  //     // user: "u-1",
-  //     createdAt: "20th Oct 2023",
-  //   ),
-  //   const UserProgram(
-  //     program: Program(
-  //       id: "3",
-  //       program_code: "ASTHMA",
-  //       name: "Asthma Program",
-  //       createdAt: "20th Oct 2023",
-  //     ),
-  //     // user: "u-1",
-  //     createdAt: "20th Oct 2023",
-  //   ),
-  //   const UserProgram(
-  //     program: Program(
-  //       id: "4",
-  //       program_code: "DIABETES",
-  //       name: "Diabetes Program",
-  //       createdAt: "20th Oct 2023",
-  //     ),
-  //     // user: "u-1",
-  //     createdAt: "20th Oct 2023",
-  //   ),
-  // ];
-
-  // Future<List<Program>> getPrograms() async {
-  //   await Future.delayed(const Duration(seconds: 3));
-  //   return _programs;
-  // }
   Future<List<Program>> getPrograms() async {
 
       final response = await call(getPrograms_, null);
-      print(response.statusCode);
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final List<dynamic> programData = json.decode(responseString)["programs"];
@@ -151,11 +69,14 @@ class ProgramService extends HTTPService {
       'Authorization': 'Bearer ${tokenPair.accessToken}',
       'Content-Type': 'application/json',
     };
-    var request = http.Request('GET',
-        Uri.parse('${Constants.BASE_URL_NEW}/user_programs?user_id=$id'));
-    request.headers.addAll(headers);
-    print(request.headers);
-    return await request.send();
+    var url = '${Constants.BASE_URL_NEW}/user_programs?user_id=$id';
+    final response = request(url: url, token: tokenPair, method: 'GET', requestHeaders: headers, userId: id);
+    return response;
+    // var request = http.Request('GET',
+    //     Uri.parse('${Constants.BASE_URL_NEW}/user_programs?user_id=$id'));
+    // request.headers.addAll(headers);
+    // print(request.headers);
+    // return await request.send();
   }
 
   Future<String> registerProgram(Map<String, dynamic> data) async {
@@ -181,18 +102,19 @@ class ProgramService extends HTTPService {
 
     var user = {'user_id': id};
     var mergedData = {...data, ...user, 'program_id': programId};
+    print(mergedData);
     var headers = {
       'Authorization': 'Bearer ${tokenPair.accessToken}',
       'Content-Type': 'application/json',
     };
-    final data_ = Map.from(mergedData)
-      ..removeWhere((key, value) => key == "program");
-    var request =
-        http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}/setprogram'));
-    request.body = json.encode(data_);
-    request.headers.addAll(headers);
-    print(request.body);
-    http.StreamedResponse response = await request.send();
+    var url = '${Constants.BASE_URL_NEW}/setprogram';
+    final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, data: mergedData, userId: id);
+    // var request =
+    //     http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}/setprogram'));
+    // request.body = json.encode(data_);
+    // request.headers.addAll(headers);
+    // print(request.body);
+    // http.StreamedResponse response = await request.send();
     return response;
   }
 
@@ -222,11 +144,13 @@ class ProgramService extends HTTPService {
       'Authorization': 'Bearer ${tokenPair.accessToken}',
       'Content-Type': 'application/json',
     };
-    var request = http.Request(
-        'POST', Uri.parse('${Constants.BASE_URL_NEW}/updateprogram'));
-    request.body = json.encode(mergedData);
-    request.headers.addAll(headers);
-    http.StreamedResponse response = await request.send();
+    var url = '${Constants.BASE_URL_NEW}/updateprogram';
+    final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, data: mergedData, userId: id);
+    // var request = http.Request(
+    //     'POST', Uri.parse('${Constants.BASE_URL_NEW}/updateprogram'));
+    // request.body = json.encode(mergedData);
+    // request.headers.addAll(headers);
+    // http.StreamedResponse response = await request.send();
     return response;
   }
 
@@ -283,14 +207,16 @@ class ProgramService extends HTTPService {
       'Authorization': 'Bearer ${tokenPair.accessToken}',
       'Content-Type': 'application/json',
     };
-    var request = http.Request(
-      'POST',
-      Uri.parse(
-          '${Constants.BASE_URL_NEW}/validateprograms'),
-    );
-    request.headers.addAll(headers);
-    request.body = json.encode(mergedData);
-    http.StreamedResponse response = await request.send();
+    var url = '${Constants.BASE_URL_NEW}/validateprograms';
+    final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, data: mergedData, userId: id);
+    // var request = http.Request(
+    //   'POST',
+    //   Uri.parse(
+    //       '${Constants.BASE_URL_NEW}/validateprograms'),
+    // );
+    // request.headers.addAll(headers);
+    // request.body = json.encode(mergedData);
+    // http.StreamedResponse response = await request.send();
     return response;
   }
 }

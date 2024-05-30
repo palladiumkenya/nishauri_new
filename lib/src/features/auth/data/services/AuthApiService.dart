@@ -24,7 +24,7 @@ class AuthApiService extends HTTPService {
         final data = jsonDecode(responseString);
         final authState = AuthResponse(
           accessToken: data["data"]?["token"] ?? '',
-          refreshToken: data["data"]?["token"] ?? '',
+          refreshToken: data["data"]?["refreshToken"] ?? '',
           accountVerified: data["data"]?["account_verified"] == "1"!,
           profileUpdated: data["data"]?["account_verified"] == "1"!,
           userId: data["data"]?["user_id"]!,
@@ -55,7 +55,7 @@ class AuthApiService extends HTTPService {
       final data = jsonDecode(responseString);
       final authState = AuthResponse(
           accessToken: data["data"]?["token"]?? ''!,
-          refreshToken: data["data"]?["token"]?? ''!,
+          refreshToken: data["data"]?["refreshToken"]?? ''!,
           accountVerified: data["data"]?["account_verified"] == "1"!,
           profileUpdated: data["data"]?["account_verified"] == "1"!,
           userId: data["data"]?["user_id"]!,

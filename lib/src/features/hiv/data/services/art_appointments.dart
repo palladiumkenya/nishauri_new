@@ -68,11 +68,13 @@ class ARTAppointmentService extends HTTPService {
       'Authorization': 'Bearer ${tokenPair.accessToken}',
       'Content-Type': 'application/json',
     };
-    var request = Request(
-        'POST', Uri.parse('${Constants.BASE_URL_NEW}reschedule'));
-    request.body = json.encode(data);
-    request.headers.addAll(headers);
-    StreamedResponse response = await request.send();
+    var url = '${Constants.BASE_URL_NEW}reschedule';
+    final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, data: data, userId: id);
+    // var request = Request(
+    //     'POST', Uri.parse('${Constants.BASE_URL_NEW}reschedule'));
+    // request.body = json.encode(data);
+    // request.headers.addAll(headers);
+    // StreamedResponse response = await request.send();
     return response;
   }
 
