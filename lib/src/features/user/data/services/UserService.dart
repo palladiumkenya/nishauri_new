@@ -113,7 +113,6 @@ class UserService extends HTTPService {
       'Authorization': "Bearer ${tokenPair.accessToken}",
       'Content-Type': 'application/json'
     };
-    print('user token : $tokenPair');
     var url = '${Constants.BASE_URL_NEW}/get_profile?user_id=$id';
     final response = await request(url: url, token: tokenPair, method: 'GET', requestHeaders: headers, userId: id);
     // var request = http.Request(
