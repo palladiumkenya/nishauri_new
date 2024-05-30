@@ -113,6 +113,7 @@ class UserService extends HTTPService {
       'Authorization': "Bearer ${tokenPair.accessToken}",
       'Content-Type': 'application/json'
     };
+    print('user token : $tokenPair');
     var url = '${Constants.BASE_URL_NEW}/get_profile?user_id=$id';
     final response = await request(url: url, token: tokenPair, method: 'GET', requestHeaders: headers, userId: id);
     // var request = http.Request(
@@ -188,5 +189,31 @@ class UserService extends HTTPService {
     final responseString = await response.stream.bytesToString();
     final userData = json.decode(responseString);
     return userData["msg"];
+  }
+
+  Future<String> revokeToken() async {
+    final id = await _repository.getUserId();
+    final tokenPair = await getCachedToken();
+    var data = {"token": tokenPair.refreshToken, "user_id" : id};
+    var headers = {'Content-Type': 'application/json'};
+    var request =
+    http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}/revoke_token'));
+    request.body = json.encode(data);
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+
+      final responseString = await response.stream.bytesToString();
+      final respData = jsonDecode(responseString);
+      print(respData);
+      if(respData["success"] == true){
+        return respData['msg'];
+      }else {
+        throw respData['msg'];
+      }
+    } else {
+      print('-->revokeToken ${await getException(response)}');
+      throw await getException(response);
+    }
   }
 }

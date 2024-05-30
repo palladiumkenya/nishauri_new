@@ -26,5 +26,9 @@ class UserRepository {
     return await _service.requestVerificationCode(mode);
   }
 
+  Future<String> revokeToken() async {
+    final response = await _service.revokeToken();
+    return response;
+  }
 
 }
