@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
+import 'package:nishauri/src/features/user/data/services/UserService.dart';
 import 'package:nishauri/src/local_storage/LocalStorage.dart';
 import 'package:nishauri/src/shared/models/token_pair.dart';
 
@@ -56,4 +57,5 @@ class AuthRepository {
   Future<bool> getIsVerified() async {
     return await LocalStorage.getIsVerified("acc");
   }
+
 }
