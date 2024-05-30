@@ -113,6 +113,7 @@ class UserService extends HTTPService {
       'Authorization': "Bearer ${tokenPair.accessToken}",
       'Content-Type': 'application/json'
     };
+    print('user token : $tokenPair');
     var url = '${Constants.BASE_URL_NEW}/get_profile?user_id=$id';
     final response = await request(url: url, token: tokenPair, method: 'GET', requestHeaders: headers, userId: id);
     // var request = http.Request(
@@ -204,6 +205,10 @@ class UserService extends HTTPService {
 
       final responseString = await response.stream.bytesToString();
       final respData = jsonDecode(responseString);
+<<<<<<< HEAD
+=======
+      print(respData);
+>>>>>>> 7670836 (Add revoke token)
       if(respData["success"] == true){
         return respData['msg'];
       }else {
