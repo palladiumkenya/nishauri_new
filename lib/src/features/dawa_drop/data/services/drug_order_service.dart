@@ -18,12 +18,15 @@ class DrugOrderService extends HTTPService {
     final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
     var headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
-    var request = Request(
-      'GET',
-      Uri.parse('${Constants.BASE_URL_NEW}drug_delivery_list?user_id=$id'),
-    );
-    request.headers.addAll(headers);
-    return await request.send();
+    var url = '${Constants.BASE_URL_NEW}drug_delivery_list?user_id=$id';
+    final response = request(url: url, token: tokenPair, method: 'GET', requestHeaders: headers, userId: id);
+    // var request = Request(
+    //   'GET',
+    //   Uri.parse('${Constants.BASE_URL_NEW}drug_delivery_list?user_id=$id'),
+    // );
+    // request.headers.addAll(headers);
+    // return await request.send();
+    return response;
   }
   Future<List<DrugOrder>> getOrders() async {
     // try{
@@ -81,13 +84,16 @@ class DrugOrderService extends HTTPService {
       'Authorization': 'Bearer ${tokenPair.accessToken}',
       'Content-Type': 'application/json',
     };
-    var request = Request(
-      'POST',
-      Uri.parse('${Constants.BASE_URL_NEW}/create_order'),
-    );
-    request.body = json.encode(mergedData);
-    request.headers.addAll(headers);
-    return await request.send();
+    var url = '${Constants.BASE_URL_NEW}/create_order';
+    final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, data: mergedData, userId: id);
+    return response;
+    // var request = Request(
+    //   'POST',
+    //   Uri.parse('${Constants.BASE_URL_NEW}/create_order'),
+    // );
+    // request.body = json.encode(mergedData);
+    // request.headers.addAll(headers);
+    // return await request.send();
   }
 
   Future<String> createOrder(Map<String, dynamic> data) async {

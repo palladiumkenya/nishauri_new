@@ -36,23 +36,29 @@ class AppointmentService extends HTTPService {
     final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
     final headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
-    final request = Request(
-        'GET',
-        Uri.parse(
-            '${Constants.BASE_URL_NEW}/upcoming_appointment?user_id=$id'));
-    request.headers.addAll(headers);
-    return await request.send();
+    var url = '${Constants.BASE_URL_NEW}/upcoming_appointment?user_id=$id';
+    final response = request(url: url, token: tokenPair, method: 'GET', requestHeaders: headers, userId: id);
+    return response;
+    // final request = Request(
+    //     'GET',
+    //     Uri.parse(
+    //         '${Constants.BASE_URL_NEW}/upcoming_appointment?user_id=$id'));
+    // request.headers.addAll(headers);
+    // return await request.send();
   }
 
   Future<StreamedResponse> getPreviousAppointments_(dynamic args) async {
     final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
     final headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
-    final request = Request(
-        'GET',
-        Uri.parse(
-            '${Constants.BASE_URL_NEW}/appointment_previous?user_id=$id'));
-    request.headers.addAll(headers);
-    return await request.send();
+    var url = '${Constants.BASE_URL_NEW}/appointment_previous?user_id=$id';
+    final response = request(url: url, token: tokenPair, method: 'GET', requestHeaders: headers, userId: id);
+    return response;
+    // final request = Request(
+    //     'GET',
+    //     Uri.parse(
+    //         '${Constants.BASE_URL_NEW}/appointment_previous?user_id=$id'));
+    // request.headers.addAll(headers);
+    // return await request.send();
   }
 }

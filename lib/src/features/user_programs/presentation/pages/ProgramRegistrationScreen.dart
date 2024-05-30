@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/user_programs/data/providers/program_provider.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
@@ -36,11 +37,11 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
         final validateOtpNotifier = ref.read(userProgramProvider.notifier);
         var programOtp = {"program_otp" : otp};
         var mergedData = {...payload, ...programOtp};
-        print(mergedData);
 
         try {
           final response = await validateOtpNotifier.registerProgram(mergedData);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response)));
+          context.pop();
         } catch (err) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err.toString())));
         }
@@ -174,6 +175,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
             final programsNotifier = ref.read(userProgramProvider.notifier);
             final response = await programsNotifier.registerProgram(payload);
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$response')));
+            context.pop();
           }
         } catch (err) {
           handleResponseError(context, _formKey.currentState!.fields, err, ref.read(authStateProvider.notifier).logout);
