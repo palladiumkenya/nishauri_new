@@ -122,9 +122,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               ref.watch(authStateProvider.notifier).logout().then((value) {
                                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                     content: Text('Logout successfully')));
+<<<<<<< HEAD
                                 context.goNamed(RouteNames.LOGIN_SCREEN);
                               });
                               // context.goNamed(RouteNames.LOGIN_SCREEN);
+=======
+                                Navigator.pop(context);
+                              });
+                              // Close drawer
+
+>>>>>>> 7670836 (Add revoke token)
                             },
                             child: const Text("Log out"))
                       ],
