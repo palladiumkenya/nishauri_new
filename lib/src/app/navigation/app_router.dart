@@ -92,13 +92,13 @@ class RouterNotifier extends ChangeNotifier {
 
     // Handle with error
     if (loginState_.hasError && areWeInOpenRoutes) return null;
-    if (loginState_.hasError && !areWeInOpenRoutes) return "/auth/login";
+    if (loginState_.hasError && !areWeInOpenRoutes) return "/auth";
     // Handle with value
     final loginState = loginState_.requireValue;
     // Is user not logged in and accessing open route then let them be?
     if (!loginState.isAuthenticated && areWeInOpenRoutes) return null;
     // if not logged in and trying to accept secure root then redirect to login
-    if (!loginState.isAuthenticated && !areWeInOpenRoutes) return "/auth/login";
+    if (!loginState.isAuthenticated && !areWeInOpenRoutes) return "/auth";
     // If user already logged in and moving on open routes then redirect to home
     if (loginState.isAuthenticated == true && areWeInOpenRoutes) return '/';
     // If user is logged in bt not verified account the redirect to verification
