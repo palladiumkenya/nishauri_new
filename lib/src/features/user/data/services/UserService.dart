@@ -205,10 +205,6 @@ class UserService extends HTTPService {
 
       final responseString = await response.stream.bytesToString();
       final respData = jsonDecode(responseString);
-<<<<<<< HEAD
-=======
-      print(respData);
->>>>>>> 7670836 (Add revoke token)
       if(respData["success"] == true){
         return respData['msg'];
       }else {
