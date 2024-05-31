@@ -205,7 +205,6 @@ class UserService extends HTTPService {
 
       final responseString = await response.stream.bytesToString();
       final respData = jsonDecode(responseString);
-      print(respData);
       if(respData["success"] == true){
         return respData['msg'];
       }else {

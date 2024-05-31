@@ -121,10 +121,12 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
   }
 
   Future<void> logout() async {
-    _userRepository.revokeToken();
-    print(_userRepository.revokeToken());
-    // _repository.deleteToken();
-    // _repository.deleteUserId();
+    var resp = await _userRepository.revokeToken();
+    print(resp);
+    if (resp == "Logout Successful") {
+      _repository.deleteToken();
+      _repository.deleteUserId();
+    }
     state.when(
       data: (value) => state = AsyncValue.data(
         value.copyWith(

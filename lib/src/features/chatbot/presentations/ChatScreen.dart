@@ -268,10 +268,10 @@ class _ChatScreenState extends State<ChatScreen> {
             hintText: hintText,
             suffixIcon: Wrap(
               children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const FaIcon(FontAwesomeIcons.microphoneLines),
-                ),
+                // IconButton(
+                //   onPressed: () {},
+                //   icon: const FaIcon(FontAwesomeIcons.microphoneLines),
+                // ),
                 IconButton(
                   icon: const FaIcon(FontAwesomeIcons.paperPlane),
                   onPressed: () => _handleSubmit(_textController.text),

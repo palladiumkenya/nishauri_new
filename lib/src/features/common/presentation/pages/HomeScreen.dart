@@ -122,10 +122,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               ref.watch(authStateProvider.notifier).logout().then((value) {
                                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                     content: Text('Logout successfully')));
-                                Navigator.pop(context);
+                                context.goNamed(RouteNames.LOGIN_SCREEN);
                               });
-                              // Close drawer
-
+                              // context.goNamed(RouteNames.LOGIN_SCREEN);
                             },
                             child: const Text("Log out"))
                       ],
