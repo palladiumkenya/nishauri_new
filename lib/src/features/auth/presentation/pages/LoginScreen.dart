@@ -6,6 +6,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
+import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/display/label_input_container.dart';
@@ -155,6 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                             final authNotifier =
                                 ref.read(authStateProvider.notifier);
+                            final settings = ref.read(settingsNotifierProvider.notifier);
                             authNotifier
                                 .login(_formKey.currentState!.value)
                                 .then((_) {
@@ -162,6 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ref.read(userProvider.notifier).getUser();
                             }).then(
                               (_) {
+                                settings.patchSettings(firstTimeInstallation: false);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Login successful!'),

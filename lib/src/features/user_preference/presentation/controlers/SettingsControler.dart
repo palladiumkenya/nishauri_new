@@ -12,22 +12,28 @@ class SettingsController extends StateNotifier<Settings> {
   Future<void> loadSettingConfig() async {
     final theme = await LocalStorage.get("theme");
     final isPrivacyEnabled = await LocalStorage.get("isPrivacyEnabled");
+    final firstTimeInstallation = await LocalStorage.get("initial");
     state = state.copyWith(
-      theme: theme.isNotEmpty ? theme : "light",
-      isPrivacyEnabled:
-          isPrivacyEnabled.isEmpty ? true : isPrivacyEnabled == "1",
-    );
+        theme: theme.isNotEmpty ? theme : "light",
+        isPrivacyEnabled:
+            isPrivacyEnabled.isEmpty ? true : isPrivacyEnabled == "1",
+        firstTimeInstallation: firstTimeInstallation.isEmpty
+            ? true
+            : firstTimeInstallation == "1");
   }
 
   Future<void> saveSettingConfig(Settings settings) async {
     await LocalStorage.save("theme", settings.theme);
     await LocalStorage.save(
         "isPrivacyEnabled", settings.isPrivacyEnabled ? "1" : "0");
+    await LocalStorage.save(
+        "initial", settings.firstTimeInstallation ? "1" : "0");
   }
 
   Future<void> clearSettingConfig() async {
     await LocalStorage.delete("theme");
     await LocalStorage.delete("isPrivacyEnabled");
+    await LocalStorage.delete("initial");
   }
 
   void updateSettings({
@@ -37,14 +43,18 @@ class SettingsController extends StateNotifier<Settings> {
     bool? isPrivacyEnabled,
     bool? isBiometricEnabled,
     bool? isAuthenticated,
+    bool? firstTimeInstallation,
+
   }) {
     state = state.copyWith(
-        userToken: userToken,
-        theme: theme,
-        pin: pin,
-        isPrivacyEnabled: isPrivacyEnabled,
-        isBiometricEnabled: isBiometricEnabled,
-        isAuthenticated: isAuthenticated);
+      userToken: userToken,
+      theme: theme,
+      pin: pin,
+      isPrivacyEnabled: isPrivacyEnabled,
+      isBiometricEnabled: isBiometricEnabled,
+      isAuthenticated: isAuthenticated,
+      firstTimeInstallation: firstTimeInstallation
+    );
     saveSettingConfig(state);
   }
 
@@ -59,6 +69,7 @@ class SettingsController extends StateNotifier<Settings> {
     bool? isPrivacyEnabled,
     bool? isBiometricEnabled,
     bool? isAuthenticated,
+    bool? firstTimeInstallation,
   }) {
     state = state.copyWith(
         userToken: userToken ?? state.userToken,
@@ -66,7 +77,9 @@ class SettingsController extends StateNotifier<Settings> {
         pin: pin ?? state.pin,
         isPrivacyEnabled: isPrivacyEnabled ?? state.isPrivacyEnabled,
         isBiometricEnabled: isBiometricEnabled ?? state.isBiometricEnabled,
-        isAuthenticated: isAuthenticated ?? state.isAuthenticated);
+        isAuthenticated: isAuthenticated ?? state.isAuthenticated,
+        firstTimeInstallation:
+            firstTimeInstallation ?? state.firstTimeInstallation);
     saveSettingConfig(state);
   }
 
