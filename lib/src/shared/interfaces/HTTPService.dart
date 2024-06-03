@@ -16,19 +16,19 @@ abstract class HTTPService {
       case 400:
         final responseString = await response.stream.bytesToString();
         final errorData = jsonDecode(responseString);
-        return BadRequestException(errorData['errors']);
+        return BadRequestException(errorData);
       case 401:
         final responseString = await response.stream.bytesToString();
         final errorData = jsonDecode(responseString);
-        return UnauthorizedException(errorData["detail"]);
+        return UnauthorizedException(errorData);
       case 403:
         final responseString = await response.stream.bytesToString();
         final errorData = jsonDecode(responseString);
-        return ForbiddenException(errorData["detail"]);
+        return ForbiddenException(errorData["msg"]);
       case 404:
         final responseString = await response.stream.bytesToString();
         final errorData = jsonDecode(responseString);
-        return ResourceNotFoundException(errorData["detail"]);
+        return ResourceNotFoundException(errorData["msg"]);
       case 500:
         return InternalServerErrorException("Unknown error occurred!");
       default:
@@ -37,16 +37,30 @@ abstract class HTTPService {
     }
   }
 
-  Future<TokenPair> refreshTokenAndCash(String refreshToken) async {
-    final url = Uri.parse("${Constants.BASE_URL}/auth/refresh-token");
-    var headers = {'x-refresh-token': refreshToken};
-    var request = Request('GET', url);
+  Future<String> getUserId() async {
+    final id = await LocalStorage.get("user");
+    if (id != null) return id;
+    throw UnauthorizedException("Please sign in to continue");
+  }
+
+  Future<TokenPair> refreshTokenAndCash(String refreshToken, String userId) async {
+    final payload = {"token" : refreshToken, "user_id" : userId,};
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+    final url = Uri.parse("${Constants.BASE_URL_NEW}refreshtoken");
+    var request = Request('POST', url);
+    request.body = jsonEncode(payload);
     request.headers.addAll(headers);
     StreamedResponse refreshResponse = await request.send();
+
     if (refreshResponse.statusCode == 200) {
+      final responseString = await refreshResponse.stream.bytesToString();
+      final responseData = jsonDecode(responseString);
+
       final token = TokenPair(
-        accessToken: refreshResponse.headers["x-access-token"]!,
-        refreshToken: refreshResponse.headers["x-refresh-token"]!,
+        accessToken: responseData['data']['token']!,
+        refreshToken: responseData['data']['refreshToken']!,
       );
       // Save new token so it can be available for future requests
       await LocalStorage.saveToken(token);
@@ -54,35 +68,7 @@ abstract class HTTPService {
     }
     final responseString = await refreshResponse.stream.bytesToString();
     final errorData = jsonDecode(responseString);
-    throw UnauthorizedException(errorData["detail"]);
-  }
-
-  Future<StreamedResponse> request(
-      {required String url,
-      required TokenPair token,
-      required String method,
-      Map<String, String>? requestHeaders,
-      Map<String, String>? data}) async {
-    var headers = {'x-access-token': token.accessToken};
-    var request = Request(method, Uri.parse(url));
-    if (requestHeaders != null) request.headers.addAll((headers));
-    request.headers.addAll(headers);
-    if (data != null) request.body = jsonEncode(data);
-
-    StreamedResponse response = await request.send();
-    if (response.statusCode == 401) {
-      final authResponse = await refreshTokenAndCash(token.refreshToken);
-      headers = {'x-access-token': authResponse.accessToken};
-      request = Request(method, Uri.parse(url));
-      if (requestHeaders != null) request.headers.addAll((headers));
-      request.headers.addAll(headers);
-      if (data != null) request.body = jsonEncode(data);
-      response = await request.send();
-    }
-    if (response.statusCode != 200) {
-      throw await getException(response);
-    }
-    return response;
+    throw UnauthorizedException(errorData);
   }
 
   Future<TokenPair> getCachedToken() async {
@@ -91,15 +77,43 @@ abstract class HTTPService {
     throw UnauthorizedException("Please sign in to continue");
   }
 
+  Future<StreamedResponse> request(
+      {required String url,
+         required TokenPair token,
+        required String method,
+        required Map<String, String> requestHeaders,
+        required String userId,
+        Map<String, dynamic>? data}) async {
+    var headers = requestHeaders;
+    var request = Request(method, Uri.parse(url));
+    request.headers.addAll(headers);
+    if (data != null) request.body = jsonEncode(data);
+    StreamedResponse response = await request.send();
+    if (response.statusCode == 401) {
+      final authResponse = await refreshTokenAndCash(token.refreshToken, userId);
+      headers = {'Authorization': "Bearer ${authResponse.accessToken}",
+                  'Content-Type': 'application/json',};
+      request = Request(method, Uri.parse(url));
+      request.headers.addAll(headers);
+      if (data != null) request.body = jsonEncode(data);
+      response = await request.send();
+    }
+    if (response.statusCode != 200 && response.statusCode != 401) {
+      throw await getException(response);
+    }
+    return response;
+  }
+
   Future<StreamedResponse> call<T>(Future<StreamedResponse> Function(T args) api,
-    T args,
-  ) async {
+      T args,
+      ) async {
     // call api
     var response = await api(args);
     if (response.statusCode == 401) {
       // if not authenticated refresh and retry
       var token = await getCachedToken();
-      token = await refreshTokenAndCash(token.refreshToken);
+      var id = await getUserId();
+      token = await refreshTokenAndCash(token.refreshToken, id);
       response = await api(args);
     }
     if (response.statusCode != 200) {

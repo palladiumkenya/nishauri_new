@@ -131,13 +131,16 @@ class ResetPasswordService extends HTTPService {
      var userId = {'user_id': id};
      var mergedData = {...userId, ...data};
      var headers = {
-     'Authorization': 'Bearer ${tokenPair.accessToken}',
+       'Authorization': 'Bearer ${tokenPair.accessToken}',
        'Content-Type': 'application/json',
      };
-     var request =
-     http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}updatepassword'));
-     request.body = jsonEncode(mergedData);
-     request.headers.addAll(headers);
-     return await request.send();
+     var url = '${Constants.BASE_URL_NEW}updatepassword';
+     final response = request(url: url, token:tokenPair, method: 'POST', requestHeaders: headers, data: mergedData, userId: id);
+     // var request =
+     // http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}updatepassword'));
+     // request.body = jsonEncode(mergedData);
+     // request.headers.addAll(headers);
+     // return await request.send();
+     return response;
    }
 }

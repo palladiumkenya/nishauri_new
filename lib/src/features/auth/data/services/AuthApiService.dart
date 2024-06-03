@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
+import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
 import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'dart:developer' as developer;
 
 class AuthApiService extends HTTPService {
-
   Future<AuthResponse> authenticate(Map<String, dynamic> credentials) async {
     try {
       var headers = {'Content-Type': 'application/json'};
@@ -24,7 +24,7 @@ class AuthApiService extends HTTPService {
         final data = jsonDecode(responseString);
         final authState = AuthResponse(
           accessToken: data["data"]?["token"] ?? '',
-          refreshToken: data["data"]?["token"] ?? '',
+          refreshToken: data["data"]?["refreshToken"] ?? '',
           accountVerified: data["data"]?["account_verified"] == "1"!,
           profileUpdated: data["data"]?["account_verified"] == "1"!,
           userId: data["data"]?["user_id"]!,
@@ -55,7 +55,7 @@ class AuthApiService extends HTTPService {
       final data = jsonDecode(responseString);
       final authState = AuthResponse(
           accessToken: data["data"]?["token"]?? ''!,
-          refreshToken: data["data"]?["token"]?? ''!,
+          refreshToken: data["data"]?["refreshToken"]?? ''!,
           accountVerified: data["data"]?["account_verified"] == "1"!,
           profileUpdated: data["data"]?["account_verified"] == "1"!,
           userId: data["data"]?["user_id"]!,

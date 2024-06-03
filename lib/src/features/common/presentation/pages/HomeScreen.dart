@@ -119,9 +119,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       actions: [
                         ElevatedButton(
                             onPressed: () {
-                              ref.watch(authStateProvider.notifier).logout();
-                              // Close drawer
-                              Navigator.pop(context);
+                              ref.watch(authStateProvider.notifier).logout().then((value) {
+                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                    content: Text('Logout successfully')));
+                                context.goNamed(RouteNames.LOGIN_SCREEN);
+                              });
+                              // context.goNamed(RouteNames.LOGIN_SCREEN);
                             },
                             child: const Text("Log out"))
                       ],
