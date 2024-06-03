@@ -98,7 +98,7 @@ class MainMenuScreen extends StatelessWidget {
                                         item.title ?? "",
                                         style: theme.textTheme.titleMedium
                                             ?.copyWith(
-                                          color: theme.canvasColor,
+                                          color: Colors.white,
                                           fontWeight: FontWeight.normal,
                                         ),
                                         overflow: TextOverflow.ellipsis,
