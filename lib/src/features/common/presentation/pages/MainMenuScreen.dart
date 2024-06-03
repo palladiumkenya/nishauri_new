@@ -45,11 +45,21 @@ class MainMenuScreen extends StatelessWidget {
               builder: (context, ref, child) {
                 final userProgram = ref.watch(userProgramProvider);
                 return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: Constants.SPACING),
-                    Center(
-                      child: Text("App modules",
-                          style: theme.textTheme.headlineLarge),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Constants.SPACING,
+                          vertical: Constants.SPACING),
+                      child: Text(
+                        "App Modules📱",
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: theme.colorScheme.primary,
+                        ),
+                      ),
                     ),
                     const SizedBox(height: Constants.SPACING * 2),
                     Expanded(

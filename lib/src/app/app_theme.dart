@@ -34,7 +34,7 @@ final mainTheme = Provider<ThemeData>((ref) => ThemeData(
       useMaterial3: true,
     ));
 final mainTheme1 = ThemeData(
-  fontFamily: "Play",
+  fontFamily: "Montserrat",
   colorScheme: ColorScheme.fromSeed(
     seedColor: const Color(0xff2bb6aa),
     primary: const Color(0xff2bb6aa),
