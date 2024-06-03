@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/auth/data/services/Terms.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
+import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/display/label_input_container.dart';
@@ -349,12 +350,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     });
                                     final authNotifier =
                                         ref.read(authStateProvider.notifier);
+                                    final settings = ref.read(settingsNotifierProvider.notifier);
+
                                     authNotifier
                                         .register(formState)
                                         .then((value) {
                                       //     Update user state
                                       ref.read(userProvider.notifier).getUser();
                                     }).then((_) {
+                                      settings.patchSettings(firstTimeInstallation: false);
+
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
