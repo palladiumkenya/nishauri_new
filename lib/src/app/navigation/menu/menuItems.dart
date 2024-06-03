@@ -204,6 +204,7 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
         title: MenuItemNames.FACILITY_DIRECTORY,
         onPressed: () => context.goNamed(RouteNames.Facility_Directory),
         color: Constants.facilityDirectoryColor),
+
     // MenuItem(
     //   icon: Icons.group,
     //   title: MenuItemNames.TREATMENT_SUPPORT,
@@ -256,6 +257,26 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
       onPressed: () => context.goNamed(RouteNames.DAWA_DROP),
       color: Constants.dawaDropColor.withOpacity(0.5),
     ),
+
+
+    MenuItem(
+        icon: SvgPicture.asset(
+          "assets/images/house.svg",
+          semanticsLabel: "Doctors",
+          fit: BoxFit.contain,
+          height: 80,
+          width: 80,
+        ),
+        shortcutIcon: SvgPicture.asset(
+          "assets/images/house.svg",
+          semanticsLabel: "Doctors",
+          fit: BoxFit.contain,
+          width: Constants.shortcutIconSize,
+          height: Constants.shortcutIconSize,
+        ),
+        title: MenuItemNames.PSURVEY,
+        onPressed: () => context.goNamed(RouteNames.Facility_Directory),
+        color: Constants.facilityDirectoryColor),
     // MenuItem(
     //   icon: Icons.move_down,
     //   title: MenuItemNames.FACILITY_VISITS,

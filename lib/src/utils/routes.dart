@@ -48,6 +48,7 @@ class RouteNames {
   static const SETTINGS = "settings";
 
   static const Facility_Directory= "facility-directory";
+  static const pSurvey= "pSurvey";
   static const PROGRAM_MENU = "program-menu";
   static const DAWA_DROP = "dawa-drop";
   static const PROGRAM_APPOINTMENT = "program-appointment";
@@ -76,6 +77,7 @@ class MenuItemNames {
   static const MY_CLINIC_CARD = "My Clinic Card";
   static const CHAT_HCW = "Ask Nuru";
   static const FACILITY_DIRECTORY= "Facility Directory";
+  static const PSURVEY= "pSurvey";
   static const PROGRAM_MENU = "Program Menu";
   static const DAWA_DROP = "Dawa Drop";
   static const DAWA_DROP_MENU = "Dawa Drop Menu";

@@ -173,6 +173,14 @@ final List<RouteBase> secureRoutes = [
     },
   ),
   GoRoute(
+    name: RouteNames.pSurvey,
+    path: 'pSurvey',
+    builder: (BuildContext context, GoRouterState state) {
+     // return pSurveyScreen();
+      return FacilityDirectoryScreen();
+    },
+  ),
+  GoRoute(
     name: RouteNames.UNLOCK_SCREEN,
     path: 'unlock',
     builder: (BuildContext context, GoRouterState state) {
