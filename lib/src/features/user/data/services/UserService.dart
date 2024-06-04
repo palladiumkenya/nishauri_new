@@ -173,7 +173,7 @@ class UserService extends HTTPService {
     };
     var body = {'user_id': id};
     var url = '${Constants.BASE_URL_NEW}sendotp';
-    final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, userId: id);
+    final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, userId: id, data: body);
     // var request =
     //     http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}sendotp'));
     // request.body = jsonEncode(body);

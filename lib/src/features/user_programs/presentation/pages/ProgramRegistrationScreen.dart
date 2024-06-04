@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/user_programs/data/providers/program_provider.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
@@ -27,6 +29,30 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
   int? _program;
   bool _loading = false;
   bool _isValidation = false;
+  int _countdownSeconds = 60;
+  Timer? _countdownTimer;
+  bool _sent = false;
+
+  void _startCountdownTimer() {
+    // const oneMinute = Duration(minutes: 1);
+    _countdownSeconds = 50;
+    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_countdownSeconds > 0) {
+          _countdownSeconds--;
+        } else {
+          // If the countdown is finished, cancel the timer
+          _countdownTimer?.cancel();
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _countdownTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +61,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
     Future<void> validateOtp(String? otp, ref, Map<String, dynamic> payload) async {
       if (otp != null) {
         final validateOtpNotifier = ref.read(userProgramProvider.notifier);
-        var programOtp = {"program_otp" : otp};
+        var programOtp = {"program_otp": otp};
         var mergedData = {...payload, ...programOtp};
 
         try {
@@ -48,7 +74,33 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
       }
     }
 
+    void _handleResendOTP(BuildContext context, ref, Map<String, dynamic> payload) {
+      if (!_sent && _countdownSeconds == 0) {
+        _startCountdownTimer();
+        setState(() {
+          _loading = true;
+        });
+
+        final resendOTPNotifier = ref.read(userProgramProvider.notifier);
+
+        resendOTPNotifier.resendOTP(payload).then((value) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(value)),
+          );
+        }).whenComplete(() {
+          setState(() {
+            _loading = false;
+            _sent = true;
+          });
+        });
+      }
+    }
+
     Future<void> showOtpDialog(ref, Map<String, dynamic> payload, String responseMessage) async {
+
+      if (_sent || _countdownSeconds > 0 ) {
+        _startCountdownTimer();
+      }
       return showDialog(
         context: context,
         builder: (context) {
@@ -75,7 +127,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                 RichText(
                   text: TextSpan(
                     text: 'A code has been sent to ',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Constants.programsColor,
                       fontSize: 15,
                     ),
@@ -143,6 +195,28 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                   ],
                 ),
               ),
+              const SizedBox(height: Constants.SPACING * 2),
+              Center(
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+
+                    _countdownSeconds > 0
+                        ? LinkedRichText(
+                      linked: "Send code in ",
+                      unlinked: "00:${_countdownSeconds}",
+                      mainAxisAlignment: MainAxisAlignment.start,
+                    )
+                        : LinkedRichText(
+                      linked: "Don't receive code?",
+                      unlinked: " Resend code",
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      onPress: () => _handleResendOTP(context, ref, payload),
+                    ),
+
+                  ]
+                )
+              ),
             ],
           );
         },
@@ -160,7 +234,6 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err.toString())));
       }
     }
-
     void handleSubmit(ref) async {
       if (_formKey.currentState!.saveAndValidate()) {
         setState(() {
