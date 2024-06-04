@@ -54,10 +54,9 @@ class UserProgramController
     }
   }
 
-  Future<String> verifyProgramOTP(Map<String, dynamic> data) async {
+  Future<String> resendOTP(Map<String, dynamic> data) async {
     try {
-      final message = await _repository.verifyProgramOTP(data);
-      _getUserPrograms();
+      final message = await _repository.resendOTP(data);
       return message;
     } catch (e) {
       rethrow;

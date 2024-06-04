@@ -1,10 +1,7 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
 import 'package:nishauri/src/features/user_programs/data/models/program.dart';
-import 'package:nishauri/src/features/user_programs/data/models/program_verification_detail.dart';
-import 'package:nishauri/src/features/user_programs/data/models/program_verificaton_contact.dart';
 import 'package:nishauri/src/features/user_programs/data/models/user_program.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 import 'package:http/http.dart' as http;
@@ -218,5 +215,49 @@ class ProgramService extends HTTPService {
     // request.body = json.encode(mergedData);
     // http.StreamedResponse response = await request.send();
     return response;
+  }
+
+  Future<http.StreamedResponse> resendOTP_(Map<String, dynamic> data) async {
+    final tokenPair = await getCachedToken();
+    final id = await _repository.getUserId();
+
+    // Parse program_id to integer
+    final programId = int.parse(data['program_id'].toString());
+    final ccc = data['ccc_no'];
+    var mergedData = {'program_id': programId, 'ccc_no': ccc, 'user_id': id};
+    print(mergedData);
+    var headers = {
+      'Authorization': 'Bearer ${tokenPair.accessToken}',
+      'Content-Type': 'application/json',
+    };
+    var url = '${Constants.BASE_URL_NEW}resendotp';
+    final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, data: mergedData, userId: id);
+    // var request =
+    //     http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}/setprogram'));
+    // request.body = json.encode(data_);
+    // request.headers.addAll(headers);
+    // print(request.body);
+    // http.StreamedResponse response = await request.send();
+    return response;
+  }
+
+  Future<String> resendOTP(Map<String, dynamic> data) async {
+    http.StreamedResponse response = await call(resendOTP_, data);
+    try{
+      if (response.statusCode == 200) {
+        final responseString = await response.stream.bytesToString();
+        final userData = json.decode(responseString);
+        if (userData["success"] == true)
+        {
+          return userData["msg"];
+        } else {
+          throw userData["msg"];
+        }
+      }
+    } catch (e)
+    {
+      throw "$e";
+    }
+    return "";
   }
 }

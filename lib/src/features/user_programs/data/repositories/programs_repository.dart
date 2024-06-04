@@ -32,4 +32,8 @@ class ProgramsRepository {
   Future<Map<String, dynamic>> programVerification(Map<String, dynamic> data) async{
     return await _service.programVerification(data);
   }
+
+  Future<String> resendOTP(Map<String, dynamic> data) async{
+    return await _service.resendOTP(data);
+  }
 }
