@@ -261,14 +261,14 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
 
     MenuItem(
         icon: SvgPicture.asset(
-          "assets/images/house.svg",
+          "assets/images/psurvey-logo.svg",
           semanticsLabel: "Doctors",
           fit: BoxFit.contain,
           height: 80,
           width: 80,
         ),
         shortcutIcon: SvgPicture.asset(
-          "assets/images/house.svg",
+          "assets/images/psurvey-logo.svg",
           semanticsLabel: "Doctors",
           fit: BoxFit.contain,
           width: Constants.shortcutIconSize,
