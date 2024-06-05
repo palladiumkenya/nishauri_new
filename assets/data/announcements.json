@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1",
+    "image": "https://www.emeraldgrouppublishing.com/sites/default/files/image/covid-cells.jpg",
+    "source": "https://www.emeraldgrouppublishing.com/sites/default/files/image/covid-cells.jpg",
+    "title": "Stay Informed About \nCOVID-19 Variants",
+    "description": "### Latest Updates on COVID-19 Variants \n\nKeep yourself and your loved ones safe with our **COVID-19 Variant Updates** feature. In an ever-evolving pandemic, staying informed about new variants is crucial. Our app provides timely updates and essential information about the latest COVID-19 variants, helping you take necessary precautions. \n\n**Why It’s Important:** \n\n- **Awareness:** Learn about new variants and their characteristics. \n- **Safety Tips:** Get advice on how to protect yourself and others. \n- **Vaccination Updates:** Stay updated on vaccine efficacy and new recommendations. \n\n**How to Access:** \n\n1. Open the app and navigate to the COVID-19 Updates section. \n2. Select the Variants tab to see the latest information. \n3. Read through detailed articles, watch expert videos, and view infographics. \n\nBy staying informed, you can make better decisions for your health and safety during the pandemic. Our goal is to provide you with accurate and reliable information to help you navigate these challenging times."
+  },
+  {
+    "id": "2",
+    "image": "https://images.unsplash.com/photo-1558655146-364adaf1fcc9?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "source": "assets/images/reschedule_appointment.png",
+    "title": "Easily Reschedule Your\n Appointments",
+    "description": "### Never Miss an Appointment Again! \n\nWith our new **Reschedule Appointment** feature, managing your healthcare schedule has never been easier. Whether something unexpected comes up or you simply need to change your appointment time, you can now effortlessly reschedule your appointments with just a few taps. \n\n**How It Works:** \n\n1. Navigate to your upcoming appointments in the app. \n2. Select the appointment you need to reschedule. \n3. Choose a new date and time that works for you. \n4. Confirm the changes, and you’re all set! \n\nOur system will automatically notify your healthcare provider of the change, ensuring a seamless experience. Stay on top of your health without the stress of rigid schedules."
+  },
+  {
+    "id": "3",
+    "image": "https://images.unsplash.com/photo-1480694313141-fce5e697ee25?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "source": "assets/images/drug_order.png",
+    "title": "Order Your Medications \nwith Ease",
+    "description": "### Hassle-Free Medication Orders \n\nIntroducing our **Drug Order** feature, designed to simplify your medication management. No more waiting in long pharmacy lines or worrying about running out of your prescriptions. With this feature, you can order your medications directly through the app and have them delivered to your doorstep. \n\n**Key Benefits:** \n\n- **Convenience:** Order your medications anytime, anywhere. \n- **Safety:** Securely manage your prescriptions with our encrypted system. \n- **Speed:** Fast processing and delivery options to suit your needs. \n\n**How to Use:** \n\n1. Go to the Drug Order section in the app. \n2. Select the medications you need to reorder from your prescription list. \n3. Choose your preferred delivery method and time. \n4. Confirm your order, and track the delivery status in real-time. \n\nStay healthy and stress-free with our streamlined drug ordering process."
+  }
+]

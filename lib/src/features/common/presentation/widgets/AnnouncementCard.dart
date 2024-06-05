@@ -52,11 +52,11 @@ class AnnouncementCard extends StatelessWidget {
                     style: theme.textTheme.titleLarge?.copyWith(
                       color: Colors.white,
                     ),
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 5),
-                  if (description != null)
+                  if (false)
                     Text(
                       description!,
                       style: theme.textTheme.bodyMedium?.copyWith(
