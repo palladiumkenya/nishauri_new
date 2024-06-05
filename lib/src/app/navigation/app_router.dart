@@ -25,6 +25,7 @@ import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
 import 'package:nishauri/src/features/clinic_card/presentation/pages/ClinicCardScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.dart';
+import 'package:nishauri/src/features/common/presentation/pages/blog.dart';
 import 'package:nishauri/src/features/confirm_delivery/presentation/pages/ConfirmDeliveryScreen.dart';
 import 'package:nishauri/src/features/dashboard/presentation/pages/Dashboard.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/dawa_drop_menu.dart';
@@ -220,6 +221,13 @@ final List<RouteBase> secureRoutes = [
     path: 'profile',
     builder: (BuildContext context, GoRouterState state) {
       return const ProfileScreen();
+    },
+  ),GoRoute(
+    name: RouteNames.BLOG_POST,
+    path: 'blog',
+    builder: (BuildContext context, GoRouterState state) {
+      dynamic ann = state.extra;
+      return BlogPostScreen(announcement: ann,);
     },
   ),
   GoRoute(

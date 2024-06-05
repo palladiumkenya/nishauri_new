@@ -1,6 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.kenyahmis.nishauri">
+<!-- <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.kenyahmis.nishauri"> -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.mhealth.nishauri">
     <application
-        android:label="nishauri"
+        android:label="NiShauri"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

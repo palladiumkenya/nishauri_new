@@ -303,13 +303,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   ),
                                 ),
                                 GestureDetector(
-                                  onTap: () => showTermsDialog(
-                                      context), // Show terms dialog on tap
+                                  onTap: () => showTermsDialog(context),
+                                  // Show terms dialog on tap
                                   child: const Text(
                                     " (Terms)",
                                     style: TextStyle(
-                                      color: Colors
-                                          .blue, // Change color to indicate it's a link
+                                      color: Colors.blue,
+                                      // Change color to indicate it's a link
                                       decoration: TextDecoration
                                           .underline, // Add underline to indicate it's a link
                                     ),

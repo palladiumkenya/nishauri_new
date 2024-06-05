@@ -18,7 +18,7 @@ import 'package:nishauri/src/utils/helpers.dart';
 import 'package:pinput/pinput.dart';
 
 class ProgramRegistrationScreen extends StatefulWidget {
-  const ProgramRegistrationScreen({super.key});
+  const ProgramRegistrationScreen({Key? key}) : super(key: key);
 
   @override
   State<ProgramRegistrationScreen> createState() => _ProgramRegistrationScreenState();
@@ -34,14 +34,13 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
   bool _sent = false;
 
   void _startCountdownTimer() {
-    // const oneMinute = Duration(minutes: 1);
-    _countdownSeconds = 50;
+    _countdownSeconds = 60;
     _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         if (_countdownSeconds > 0) {
           _countdownSeconds--;
+          print(' counting down: -> $_countdownSeconds' );
         } else {
-          // If the countdown is finished, cancel the timer
           _countdownTimer?.cancel();
         }
       });
@@ -54,211 +53,217 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    Future<void> validateOtp(String? otp, ref, Map<String, dynamic> payload) async {
-      if (otp != null) {
-        final validateOtpNotifier = ref.read(userProgramProvider.notifier);
-        var programOtp = {"program_otp": otp};
-        var mergedData = {...payload, ...programOtp};
-
-        try {
-          final response = await validateOtpNotifier.registerProgram(mergedData);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response)));
-          context.pop();
-        } catch (err) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err.toString())));
-        }
-      }
-    }
-
-    void _handleResendOTP(BuildContext context, ref, Map<String, dynamic> payload) {
-      if (!_sent && _countdownSeconds == 0) {
-        _startCountdownTimer();
-        setState(() {
-          _loading = true;
-        });
-
-        final resendOTPNotifier = ref.read(userProgramProvider.notifier);
-
-        resendOTPNotifier.resendOTP(payload).then((value) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(value)),
-          );
-        }).whenComplete(() {
-          setState(() {
-            _loading = false;
-            _sent = true;
-          });
-        });
-      }
-    }
-
-    Future<void> showOtpDialog(ref, Map<String, dynamic> payload, String responseMessage) async {
-
-      if (_sent || _countdownSeconds > 0 ) {
-        _startCountdownTimer();
-      }
-      return showDialog(
-        context: context,
-        builder: (context) {
-          final theme = Theme.of(context);
-          String? otp;
-          final defaultPinTheme = PinTheme(
-            width: 56,
-            height: 56,
-            textStyle: const TextStyle(
-              fontSize: 22,
-              color: Color.fromRGBO(30, 60, 87, 1),
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(19),
-              border: Border.all(color: Constants.programsColor),
-            ),
-          );
-
-          return AlertDialog(
-            title: const Text('Please enter the OTP code to verify your program'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                RichText(
-                  text: TextSpan(
-                    text: 'A code has been sent to ',
-                    style: const TextStyle(
-                      color: Constants.programsColor,
-                      fontSize: 15,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: responseMessage,
-                        style: TextStyle(
-                          color: theme.primaryColorDark,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: Constants.SPACING),
-                Pinput(
-                  length: 5,
-                  defaultPinTheme: defaultPinTheme,
-                  cursor: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 9),
-                        width: 22,
-                        height: 1,
-                        color: Constants.programsColor,
-                      ),
-                    ],
-                  ),
-                  onChanged: (value) {
-                    otp = value;
-                  },
-                  onCompleted: (value) {
-                    otp = value;
-                  },
-                  validator: (value) {
-                    if (value == null || value.length != 5) {
-                      return 'Please enter a valid 5-digit OTP';
-                    }
-                    return null;
-                  },
-                  pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
-                ),
-              ],
-            ),
-            actions: [
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Cancel'),
-                    ),
-                    const SizedBox(width: 8),
-                    TextButton(
-                      onPressed: () async {
-                        Navigator.of(context).pop();
-                        await validateOtp(otp, ref, payload);
-                      },
-                      child: const Text('Validate'),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: Constants.SPACING * 2),
-              Center(
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-
-                    _countdownSeconds > 0
-                        ? LinkedRichText(
-                      linked: "Send code in ",
-                      unlinked: "00:${_countdownSeconds}",
-                      mainAxisAlignment: MainAxisAlignment.start,
-                    )
-                        : LinkedRichText(
-                      linked: "Don't receive code?",
-                      unlinked: " Resend code",
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      onPress: () => _handleResendOTP(context, ref, payload),
-                    ),
-
-                  ]
-                )
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    Future<void> handleProgramVerification(ref, Map<String, dynamic> payload) async {
-      final programsNotifier = ref.read(userProgramProvider.notifier);
+  Future<void> validateOtp(String? otp, WidgetRef ref, Map<String, dynamic> payload) async {
+    if (otp != null) {
+      final validateOtpNotifier = ref.read(userProgramProvider.notifier);
+      var programOtp = {"program_otp": otp};
+      var mergedData = {...payload, ...programOtp};
 
       try {
-        final response = await programsNotifier.programVerification(payload);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['msg'])));
-        await showOtpDialog(ref, payload, response['data']['phoneno']);
+        final response = await validateOtpNotifier.registerProgram(mergedData);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response)));
+        context.pop();
       } catch (err) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err.toString())));
       }
     }
-    void handleSubmit(ref) async {
-      if (_formKey.currentState!.saveAndValidate()) {
-        setState(() {
-          _loading = true;
-        });
-        final payload = _formKey.currentState!.value;
+  }
 
-        try {
-          if (_isValidation) {
-            await handleProgramVerification(ref, payload);
-          } else {
-            final programsNotifier = ref.read(userProgramProvider.notifier);
-            final response = await programsNotifier.registerProgram(payload);
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$response')));
-            context.pop();
-          }
-        } catch (err) {
-          handleResponseError(context, _formKey.currentState!.fields, err, ref.read(authStateProvider.notifier).logout);
-        } finally {
-          setState(() {
-            _loading = false;
-          });
+  void _handleResendOTP(BuildContext context, WidgetRef ref, Map<String, dynamic> payload) {
+    // if (!_sent && _countdownSeconds <= 0) {
+    //   _startCountdownTimer();
+      setState(() {
+        _loading = true;
+      });
+
+      final resendOTPNotifier = ref.read(userProgramProvider.notifier);
+
+      resendOTPNotifier.resendOTP(payload).then((value) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(value)),
+        );
+      }).whenComplete(() {
+        setState(() {
+          _loading = false;
+        });
+      });
+    // }
+  }
+
+  Future<void> showOtpDialog(WidgetRef ref, Map<String, dynamic> payload, String responseMessage) async {
+    // if (_sent || _countdownSeconds > 0) {
+    //   _startCountdownTimer();
+    //   LinkedRichText(
+    //     linked: "Don't receive code? Resend code in ",
+    //     unlinked: "00:$_countdownSeconds",
+    //     mainAxisAlignment: MainAxisAlignment.start,
+    //   );
+    //   setState(() {
+    //     _sent = true;
+    //   });
+    // }
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        final theme = Theme.of(context);
+        String? otp;
+        final defaultPinTheme = PinTheme(
+          width: 56,
+          height: 56,
+          textStyle: const TextStyle(
+            fontSize: 22,
+            color: Color.fromRGBO(30, 60, 87, 1),
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(19),
+            border: Border.all(color: Constants.programsColor),
+          ),
+        );
+
+        return AlertDialog(
+          title: const Text('Please enter the OTP code to verify your program'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RichText(
+                text: TextSpan(
+                  text: 'A code has been sent to ',
+                  style: const TextStyle(
+                    color: Constants.programsColor,
+                    fontSize: 15,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: responseMessage,
+                      style: TextStyle(
+                        color: theme.primaryColorDark,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: Constants.SPACING),
+              Pinput(
+                length: 5,
+                defaultPinTheme: defaultPinTheme,
+                androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
+                cursor: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 9),
+                      width: 22,
+                      height: 1,
+                      color: Constants.programsColor,
+                    ),
+                  ],
+                ),
+                onChanged: (value) {
+                  otp = value;
+                },
+                onCompleted: (value) {
+                  otp = value;
+                },
+                validator: (value) {
+                  if (value == null || value.length != 5) {
+                    return 'Please enter a valid 5-digit OTP';
+                  }
+                  return null;
+                },
+                pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+              ),
+            ],
+          ),
+          actions: [
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  const SizedBox(width: 8),
+                  TextButton(
+                    onPressed: () async {
+                      Navigator.of(context).pop();
+                      await validateOtp(otp, ref, payload);
+                    },
+                    child: const Text('Validate'),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: Constants.SPACING * 2),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  LinkedRichText(
+                    linked: "Don't receive code?",
+                    unlinked: " Resend code",
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    onPress: () => _handleResendOTP(context, ref, payload),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> handleProgramVerification(WidgetRef ref, Map<String, dynamic> payload) async {
+    final programsNotifier = ref.read(userProgramProvider.notifier);
+
+    try {
+      final response = await programsNotifier.programVerification(payload);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['msg'])));
+      await showOtpDialog(ref, payload, response['data']['phoneno']);
+    } catch (err) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err.toString())));
+    }
+  }
+
+  void handleSubmit(WidgetRef ref) async {
+    if (_formKey.currentState!.saveAndValidate()) {
+      setState(() {
+        _loading = true;
+      });
+      final payload = _formKey.currentState!.value;
+
+      try {
+        if (_isValidation) {
+          await handleProgramVerification(ref, payload);
+        } else {
+          final programsNotifier = ref.read(userProgramProvider.notifier);
+          final response = await programsNotifier.registerProgram(payload);
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$response')));
+          context.pop();
         }
+      } catch (err) {
+        handleResponseError(
+          context,
+          _formKey.currentState!.fields,
+          err,
+          ref.read(authStateProvider.notifier).logout,
+        );
+      } finally {
+        setState(() {
+          _loading = false;
+        });
       }
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return Scaffold(
       body: Column(
@@ -266,7 +271,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
           const CustomAppBar(
             title: "Add program",
             icon: Icons.add_task_sharp,
-            subTitle: "Kindly provide program details \n below to verify yourself",
+            subTitle: "Kindly provide program details below to verify yourself",
             color: Constants.programsColor,
           ),
           Expanded(
@@ -372,7 +377,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

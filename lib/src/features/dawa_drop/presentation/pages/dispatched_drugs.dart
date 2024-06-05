@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
 import 'package:nishauri/src/features/hiv/data/models/art_orders/art_drug_order.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_drug_order_provider.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
@@ -26,18 +25,10 @@ class DispatchedDrugs extends ConsumerWidget {
 
         if (dispatchedOrders.isEmpty) {
           return Scaffold(
-            // appBar: AppBar(
-            //   leading: IconButton(
-            //     onPressed: () => context.pop(),
-            //     icon: const Icon(Icons.chevron_left),
-            //   ),
-            //   title: const Text("Dispatched Drug Orders"),
-            //   backgroundColor: Theme.of(context).primaryColor,
-            // ),
             body: BackgroundImageWidget(
                 customAppBar: CustomAppBar(
                   title: "Dispatched Orders",
-                  icon: Icons.vaccines_sharp,
+                  icon: Icons.shopping_cart_checkout,
                   color: Constants.dawaDropColor.withOpacity(0.5),
                 ),
                 svgImage: 'assets/images/lab-empty-state.svg',
@@ -46,43 +37,85 @@ class DispatchedDrugs extends ConsumerWidget {
         }
 
         return Scaffold(
-          // appBar: AppBar(
-          //   leading: IconButton(
-          //     onPressed: () => context.pop(),
-          //     icon: const Icon(Icons.chevron_left),
-          //   ),
-          //   title: const Text("Dispatched Drug Orders"),
-          //   backgroundColor: Theme.of(context).primaryColor,
-          // ),
-          body: ListView.builder(
-            itemCount: dispatchedOrders.length,
-            itemBuilder: (context, index) {
-              final order = dispatchedOrders[index];
-              return ListTile(
-                leading: const Icon(Icons.calendar_month_sharp),
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Appointment Date: ${DateFormat("dd MMM yyy").format(DateTime.parse(order.appointment?.appointment_date ?? ''))}',
-                      style: theme.textTheme.titleMedium
-                          ?.merge(TextStyle(color: Colors.green)),
-                    ),
-                    Text(
-                      'Dispatched Date : ${DateFormat("dd MMM yyy").format(DateTime.parse(order.dispatched_date ?? ''))}',
-                      style: theme.textTheme.titleSmall
-                          ?.merge(TextStyle(color: Colors.grey)),
-                    ),
-                  ],
-                ),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () {
-                  context.goNamed(RouteNames.CONFIRM_DELIVERY,
-                      extra: {"OrderId": order.order_id});
+          body: Column(
+            children: [
+              CustomAppBar(
+                title: "Dispatched Drug Orders",
+                icon: Icons.shopping_cart_checkout,
+                color: Constants.dawaDropColor.withOpacity(0.5),
+              ),
+              ListView.builder(
+                itemCount: dispatchedOrders.length,
+                itemBuilder: (context, index) {
+                  final order = dispatchedOrders[index];
+                  return ListTile(
+                    title: Row(
+                      children: [
+                        Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  order.appointment?.appointment_type?? '',
+                                  style: theme.textTheme.headline6,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                                const SizedBox(height: Constants.SPACING),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.date_range,
+                                      color: Constants.dawaDropColor.withOpacity(0.5),
+                                    ),
+                                    const SizedBox(width: Constants.SPACING),
+                                    Text(
+                                      'Appointment Date: ${DateFormat("dd MMM yyy").format(DateTime.parse(order.appointment?.appointment_date ?? ''))}',
+                                      style: theme.textTheme.titleMedium
+                                          ?.merge(TextStyle(color: Constants.dawaDropColor)),
+                                    ),
+                                  ],
+                                ),
+
+                                const SizedBox(height: Constants.SPACING),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.date_range,
+                                      color: Constants.dawaDropColor.withOpacity(0.5),
+                                    ),
+                                    const SizedBox(width: Constants.SPACING),
+                                    Text(
+                                      'Appointment Date: ${DateFormat("dd MMM yyy").format(DateTime.parse(order.dispatched_date ?? ''))}',
+                                      style: theme.textTheme.titleMedium
+                                          ?.merge(TextStyle(color: Constants.dawaDropShortcutBgColor)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: theme.primaryColor.withOpacity(0.5),
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              context.goNamed(RouteNames.CONFIRM_DELIVERY,
+                                  extra: {"OrderId": order.order_id});
+                            },
+                            icon: const Icon(Icons.forward),
+                          ),
+                        ),
+                      ],
+                    )
+                  );
                 },
-              );
-            },
-          ),
+              ),
+            ],
+          )
         );
       },
       error: (error, _) => BackgroundImageWidget(

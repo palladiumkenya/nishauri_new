@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class AnnouncementCard extends StatelessWidget {
   final String image;
@@ -8,22 +10,24 @@ class AnnouncementCard extends StatelessWidget {
   final String title;
   final String? description;
   final double? width;
+  final Function()? onTap;
 
-  const AnnouncementCard(
-      {Key? key,
-      required this.image,
-      required this.source,
-      required this.title,
-      this.description,
-      this.width = double.infinity})
-      : super(key: key);
+  const AnnouncementCard({
+    Key? key,
+    required this.image,
+    required this.source,
+    required this.title,
+    this.description,
+    this.width = double.infinity,
+    this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return AppCard(
       clipBehaviour: Clip.antiAlias,
-      onTap: () {},
+      onTap: onTap,
       child: SizedBox(
         width: width,
         child: Stack(
@@ -48,11 +52,11 @@ class AnnouncementCard extends StatelessWidget {
                     style: theme.textTheme.titleLarge?.copyWith(
                       color: Colors.white,
                     ),
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 5),
-                  if (description != null)
+                  if (false)
                     Text(
                       description!,
                       style: theme.textTheme.bodyMedium?.copyWith(

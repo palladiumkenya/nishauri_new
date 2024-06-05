@@ -14,6 +14,7 @@ import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/forms/ReviewAndSubmit.dart';
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
+import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
@@ -47,7 +48,12 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
         "delivery_person_contact",
         "delivery_pickup_time"
       ],
-      ["client_phone_no", "delivery_address"],
+      [
+        "client_phone_no",
+        "delivery_address",
+        "delivery_estate",
+        "delivery_apartment"
+      ],
     ];
 
     List<Step> steps = [
@@ -185,137 +191,146 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
 
     debugPrint("${currentStep.value}");
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: const Icon(Icons.chevron_left),
-        ),
-        title: const Text("Request drug delivery"),
-      ),
-      body: FormBuilder(
-        key: formKey,
-        child: Stepper(
-          currentStep: currentStep.value,
-          steps: steps,
-          onStepCancel: () {
-            currentStep.value == 1 ? null : currentStep.value -= 1;
-          },
-          onStepContinue: () {
-            bool isLastStep = (currentStep.value == steps.length - 1);
-            // 1.validate current step fields and prevent continue encase of any error in current step
-            if (!isLastStep) {
-              final currentStepFields = stepFieldsToValidate[currentStep.value];
+      // appBar: AppBar(
+      //   leading: IconButton(
+      //     onPressed: () => context.pop(),
+      //     icon: const Icon(Icons.chevron_left),
+      //   ),
+      //   title: const Text("Request drug delivery"),
+      // ),
+      body: Column(
+        children: [
+           CustomAppBar(
+            title: "Request drug delivery",
+            icon: Icons.shopping_cart,
+            color: Constants.dawaDropColor.withOpacity(0.5),),
+          FormBuilder(
+            key: formKey,
+            child: Stepper(
+              currentStep: currentStep.value,
+              steps: steps,
+              onStepCancel: () {
+                currentStep.value == 1 ? null : currentStep.value -= 1;
+              },
+              onStepContinue: () {
+                bool isLastStep = (currentStep.value == steps.length - 1);
+                // 1.validate current step fields and prevent continue encase of any error in current step
+                if (!isLastStep) {
+                  final currentStepFields = stepFieldsToValidate[currentStep.value];
 
-              if (currentStepFields.any((field) =>
+                  if (currentStepFields.any((field) =>
                   formKey.currentState!.fields[field]?.validate() == false)) {
-                return; //Don't move to next step if current step not valid
-              }
-            }
-            if (isLastStep) {
-              // Submit form
-              handleSubmit();
-            } else {
-              currentStep.value += 1;
-            }
-          },
-          onStepTapped: (step) {
-            currentStep.value = step;
-          },
-          controlsBuilder: (context, details) {
-            return Row(
-              children: [
-                Expanded(
-                  child: Builder(builder: (context) {
-                    bool isLastStep = (currentStep.value == steps.length - 1);
-                    if (isLastStep) {
-                      return Button(
-                        onPress: () async {
-                          final results = await showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text("Confirm Details Entered"),
-                              content: SizedBox(
-                                width: double.maxFinite,
-                                height:
+                    return; //Don't move to next step if current step not valid
+                  }
+                }
+                if (isLastStep) {
+                  // Submit form
+                  handleSubmit();
+                } else {
+                  currentStep.value += 1;
+                }
+              },
+              onStepTapped: (step) {
+                currentStep.value = step;
+              },
+              controlsBuilder: (context, details) {
+                return Row(
+                  children: [
+                    Expanded(
+                      child: Builder(builder: (context) {
+                        bool isLastStep = (currentStep.value == steps.length - 1);
+                        if (isLastStep) {
+                          return Button(
+                            onPress: () async {
+                              final results = await showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text("Confirm Details Entered"),
+                                  content: SizedBox(
+                                    width: double.maxFinite,
+                                    height:
                                     MediaQuery.of(context).size.height * 0.5,
-                                child: SingleChildScrollView(
-                                  child: ReviewAndSubmit(
-                                    formState:
+                                    child: SingleChildScrollView(
+                                      child: ReviewAndSubmit(
+                                        formState:
                                         formKey.currentState!.instantValue,
-                                  ),
-                                ),
-                              ),
-                              actions: [
-                                Row(
-                                  // Wrap buttons inside a Row
-                                  children: [
-                                    Expanded(
-                                      // Ensures buttons take equal width
-                                      child: Button(
-                                        title: "Submit",
-                                        onPress: () {
-                                          context.pop(1);
-                                        },
                                       ),
                                     ),
-                                    SizedBox(
-                                        width: Constants
-                                            .SPACING), // Add some space between buttons
-                                    Expanded(
-                                      child: Button(
-                                        title: "Cancel",
-                                        onPress: context.pop,
-                                        titleStyle: theme.textTheme.titleLarge
-                                            ?.copyWith(
-                                          color: theme.colorScheme.error,
+                                  ),
+                                  actions: [
+                                    Row(
+                                      // Wrap buttons inside a Row
+                                      children: [
+                                        Expanded(
+                                          // Ensures buttons take equal width
+                                          child: Button(
+                                            title: "Submit",
+                                            onPress: () {
+                                              context.pop(1);
+                                            },
+                                          ),
                                         ),
-                                      ),
+                                        SizedBox(
+                                            width: Constants
+                                                .SPACING), // Add some space between buttons
+                                        Expanded(
+                                          child: Button(
+                                            title: "Cancel",
+                                            onPress: context.pop,
+                                            titleStyle: theme.textTheme.titleLarge
+                                                ?.copyWith(
+                                              color: theme.colorScheme.error,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
+                              );
+                              if (results == 1) {
+                                details.onStepContinue!();
+                              }
+                            },
+                            title: 'Review',
+                            loading: loading.value,
+                            titleStyle: theme.textTheme.titleSmall?.copyWith(
+                              color: theme.colorScheme.primary,
+                              fontWeight: FontWeight.bold,
                             ),
                           );
-                          if (results == 1) {
-                            details.onStepContinue!();
-                          }
-                        },
-                        title: 'Review',
-                        loading: loading.value,
-                        titleStyle: theme.textTheme.titleSmall?.copyWith(
-                          color: theme.colorScheme.primary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      );
-                    }
-                    return Button(
-                      onPress: details.onStepContinue,
-                      title: 'Next',
-                      disabled: loading.value,
-                      titleStyle: theme.textTheme.titleSmall?.copyWith(
-                        color: theme.colorScheme.primary,
-                        fontWeight: FontWeight.bold,
+                        }
+                        return Button(
+                          onPress: details.onStepContinue,
+                          title: 'Next',
+                          disabled: loading.value,
+                          titleStyle: theme.textTheme.titleSmall?.copyWith(
+                            color: theme.colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      }),
+                    ),
+                    const SizedBox(width: Constants.SPACING),
+                    Expanded(
+                      child: Button(
+                        onPress: details.onStepCancel,
+                        title: 'Cancel',
+                        disabled: loading.value,
+                        titleStyle: theme.textTheme.titleSmall
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
-                    );
-                  }),
-                ),
-                const SizedBox(width: Constants.SPACING),
-                Expanded(
-                  child: Button(
-                    onPress: details.onStepCancel,
-                    title: 'Cancel',
-                    disabled: loading.value,
-                    titleStyle: theme.textTheme.titleSmall
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(width: Constants.SPACING),
-                Expanded(child: Container())
-              ],
-            );
-          },
-        ),
-      ),
+                    ),
+                    const SizedBox(width: Constants.SPACING),
+                    Expanded(child: Container())
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
+      )
+
     );
   }
 }

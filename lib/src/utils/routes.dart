@@ -55,6 +55,7 @@ class RouteNames {
   static const REQUEST_DRUGS = "request-drugs";
   static const DISPATCHED_DRUGS = "dispatched-drugs";
   static const REMOVE_PROGRAM = "remove-program";
+  static const BLOG_POST = "blog-post";
 
 }
 
