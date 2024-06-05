@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/confirm_delivery/data/modules/confirm_delivery.dart';
 import 'package:nishauri/src/features/confirm_delivery/data/providers/confirm_delivery_provider.dart';
+import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/display/verify.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
@@ -56,86 +57,98 @@ class ConfirmDeliveryScreen extends HookConsumerWidget {
       }
     }
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: const Icon(Icons.chevron_left),
-        ),
-        title: const Text("Confirm drug delivery"),
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
-      body: ResponsiveWidgetFormLayout(
-        buildPageContent: (BuildContext context, Color? color) => SafeArea(
-            child: FormBuilder(
-              key: _formKey,
-              child: Container(
-                padding: const EdgeInsets.all(Constants.SPACING * 2),
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: Constants.SPACING),
-                      const DecoratedBox(
-                        decoration: BoxDecoration(),
-                        child: Verify(),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        "Confirm Deliver",
-                        style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: Constants.SPACING),
-                      FormBuilderTextField(
-                        name: "confirmation_code",
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.min(10),
-                        ]),
-                        decoration: inputDecoration(
-                          prefixIcon: Icons.abc_outlined,
-                          label: "Confirmation Code",
-                          placeholder: "754WEd",
+      // appBar: AppBar(
+      //   leading: IconButton(
+      //     onPressed: () => context.pop(),
+      //     icon: const Icon(Icons.chevron_left),
+      //   ),
+      //   title: const Text("Confirm drug delivery"),
+      //   backgroundColor: Theme.of(context).primaryColor,
+      // ),
+      body: Column(
+        children: [
+          const CustomAppBar(
+            title: "Confirm drug delivery",
+            icon: Icons.checklist_rtl,
+            subTitle: "Confirm you have received your delivery",
+            color: Constants.dawaDropShortcutBgColor,
+          ),
+          Expanded(
+              child:       ResponsiveWidgetFormLayout(
+                buildPageContent: (BuildContext context, Color? color) => SafeArea(
+                    child: FormBuilder(
+                      key: _formKey,
+                      child: Container(
+                        padding: const EdgeInsets.all(Constants.SPACING * 2),
+                        decoration: BoxDecoration(
+                          color: color,
+                          borderRadius: BorderRadius.circular(Constants.ROUNDNESS),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                          ),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: Constants.SPACING),
+                              const DecoratedBox(
+                                decoration: BoxDecoration(),
+                                child: Verify(),
+                              ),
+                              const SizedBox(height: 20),
+                              const Text(
+                                "Confirm Deliver",
+                                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: Constants.SPACING),
+                              FormBuilderTextField(
+                                name: "confirmation_code",
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                  FormBuilderValidators.min(10),
+                                ]),
+                                decoration: inputDecoration(
+                                  prefixIcon: Icons.abc_outlined,
+                                  label: "Confirmation Code",
+                                  placeholder: "754WEd",
+                                ),
+                              ),
+                              const SizedBox(height: Constants.SPACING),
+                              FormBuilderTextField(
+                                name: "comment",
+                                controller: textarea,
+                                maxLines: 4,
+                                // validator: FormBuilderValidators.compose([
+                                //   FormBuilderValidators.required(),
+                                //   FormBuilderValidators.min(10),
+                                // ]),
+                                decoration: inputDecoration(
+                                  prefixIcon: Icons.abc_outlined,
+                                  label: "Feedback",
+                                  placeholder: "Write a feedback/comment on the delivery...",
+                                ),
+
+                              ),
+
+                              const SizedBox(height: Constants.SPACING),
+                              Consumer(
+                                builder: (context, ref, child) {
+                                  return                               Button(
+                                    title: "Confirm Delivery",
+                                    onPress: handleSubmit,
+                                    loading: _loading,
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      const SizedBox(height: Constants.SPACING),
-                      FormBuilderTextField(
-                        name: "comment",
-                        controller: textarea,
-                        maxLines: 4,
-                        // validator: FormBuilderValidators.compose([
-                        //   FormBuilderValidators.required(),
-                        //   FormBuilderValidators.min(10),
-                        // ]),
-                        decoration: inputDecoration(
-                          prefixIcon: Icons.abc_outlined,
-                          label: "Feedback",
-                          placeholder: "Write a feedback/comment on the delivery...",
-                        ),
-
-                      ),
-
-                      const SizedBox(height: Constants.SPACING),
-                      Consumer(
-                        builder: (context, ref, child) {
-                          return                               Button(
-                            title: "Confirm Delivery",
-                            onPress: handleSubmit,
-                            loading: _loading,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+                    )),
               ),
-            )),
-      ),
+          )
+        ],
+      )
     );
   }
 }
