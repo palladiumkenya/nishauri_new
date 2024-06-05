@@ -47,7 +47,12 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
         "delivery_person_contact",
         "delivery_pickup_time"
       ],
-      ["client_phone_no", "delivery_address"],
+      [
+        "client_phone_no",
+        "delivery_address",
+        "delivery_estate",
+        "delivery_apartment"
+      ],
     ];
 
     List<Step> steps = [
@@ -258,9 +263,8 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
                                         },
                                       ),
                                     ),
-                                    SizedBox(
-                                        width: Constants
-                                            .SPACING), // Add some space between buttons
+                                    const SizedBox(width: Constants.SPACING),
+                                    // Add some space between buttons
                                     Expanded(
                                       child: Button(
                                         title: "Cancel",

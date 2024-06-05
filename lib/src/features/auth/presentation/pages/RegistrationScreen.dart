@@ -303,13 +303,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   ),
                                 ),
                                 GestureDetector(
-                                  onTap: () => showTermsDialog(
-                                      context), // Show terms dialog on tap
+                                  onTap: () => showTermsDialog(context),
+                                  // Show terms dialog on tap
                                   child: const Text(
                                     " (Terms)",
                                     style: TextStyle(
-                                      color: Colors
-                                          .blue, // Change color to indicate it's a link
+                                      color: Colors.blue,
+                                      // Change color to indicate it's a link
                                       decoration: TextDecoration
                                           .underline, // Add underline to indicate it's a link
                                     ),
@@ -350,7 +350,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     });
                                     final authNotifier =
                                         ref.read(authStateProvider.notifier);
-                                    final settings = ref.read(settingsNotifierProvider.notifier);
+                                    final settings = ref.read(
+                                        settingsNotifierProvider.notifier);
 
                                     authNotifier
                                         .register(formState)
@@ -358,7 +359,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       //     Update user state
                                       ref.read(userProvider.notifier).getUser();
                                     }).then((_) {
-                                      settings.patchSettings(firstTimeInstallation: false);
+                                      settings.patchSettings(
+                                          firstTimeInstallation: false);
 
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(

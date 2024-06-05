@@ -34,21 +34,19 @@ class ReviewAndSubmit extends ConsumerWidget {
         asyncAppointments.when(
           data: (data) {
             final apt = data.indexWhere(
-                    (element) => element.id == formState["appointment_id"]);
+                (element) => element.id == formState["appointment_id"]);
             return ListTile(
               subtitle: Text(
                 apt == -1
                     ? "None"
-                    : "${data[apt].appointment_type}(${DateFormat("dd MMM yyy")
-                    .format(DateFormat('EEEE, MMMM d y').parse(data[apt].appointment_date))}})",
+                    : "${data[apt].appointment_type}(${DateFormat("dd MMM yyy").format(DateFormat('EEEE, MMMM d y').parse(data[apt].appointment_date))}})",
               ),
               title: const Text("Appointment"),
               leading: const Icon(Icons.check),
             );
           },
           error: (error, _) => Center(child: Text(error.toString())),
-          loading: () =>
-          const Center(
+          loading: () => const Center(
             child: CircularProgressIndicator(),
           ),
         ),
@@ -100,20 +98,17 @@ class ReviewAndSubmit extends ConsumerWidget {
         asyncCourierServices.when(
           data: (data) {
             final courier = data.indexWhere(
-                    (element) => element.id == formState["courier_service"]);
+                (element) => element.id == formState["courier_service"]);
             return ListTile(
               subtitle: Text(
-                courier == -1
-                    ? "None"
-                    : data[courier].name??'',
+                courier == -1 ? "None" : data[courier].name ?? '',
               ),
               title: const Text("Courier service"),
               leading: const Icon(Icons.check),
             );
           },
           error: (error, _) => Center(child: Text(error.toString())),
-          loading: () =>
-          const Center(
+          loading: () => const Center(
             child: CircularProgressIndicator(),
           ),
         ),
@@ -139,8 +134,10 @@ class ReviewAndSubmit extends ConsumerWidget {
               leading: const Icon(Icons.subdirectory_arrow_right),
             ),
             ListTile(
-              subtitle: Text(formState["delivery_pickup_time"] == null ? "None":  DateFormat("dd MMM yyy HH:mm a")
-                  .format(DateTime.parse(formState["delivery_pickup_time"]))),
+              subtitle: Text(formState["delivery_pickup_time"] == null
+                  ? "None"
+                  : DateFormat("dd MMM yyy HH:mm a").format(
+                      DateTime.parse(formState["delivery_pickup_time"]))),
               title: const Text("Pickup time"),
               leading: const Icon(Icons.subdirectory_arrow_right),
             ),
@@ -154,6 +151,16 @@ class ReviewAndSubmit extends ConsumerWidget {
       ListTile(
         subtitle: Text(formState["delivery_address"] ?? "None"),
         title: const Text("Delivery location"),
+        leading: const Icon(Icons.check),
+      ),
+      ListTile(
+        subtitle: Text(formState["delivery_estate"] ?? "None"),
+        title: const Text("Estate"),
+        leading: const Icon(Icons.check),
+      ),
+      ListTile(
+        subtitle: Text(formState["delivery_apartment"] ?? "None"),
+        title: const Text("Apartment"),
         leading: const Icon(Icons.check),
       ),
     ]);
