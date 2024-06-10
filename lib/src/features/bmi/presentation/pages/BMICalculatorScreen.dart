@@ -34,9 +34,9 @@ class BMICalculatorScreen extends HookWidget {
       body: Column(
         children: [
           const CustomAppBar(
-            title: "BMI Calculator",
+            title: "BMI Calculator ⚖️",
             subTitle: "Empower Your Health Journey \nWith BMI Insights",
-            icon: Icons.calculate_outlined,
+            // icon: Icons.calculate_outlined,
             color: Constants.bmiCalculatorColor,
           ),
           Expanded(
@@ -90,7 +90,6 @@ class BMICalculatorScreen extends HookWidget {
                                 if (isPregnant_ == false) {
                                   gender.value = gender_;
                                   isPregnant.value = false;
-
                                 } else {
                                   gender.value = gender_;
                                   isPregnant.value = true;

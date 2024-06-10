@@ -8,7 +8,7 @@ import '../../utils/helpers.dart';
 class CustomAppBar extends StatelessWidget {
   final String title;
   final String? subTitle;
-  final IconData icon;
+  final IconData? icon;
   final Color? color;
   final Widget? bottom;
 
@@ -16,7 +16,7 @@ class CustomAppBar extends StatelessWidget {
       {super.key,
       required this.title,
       this.subTitle,
-      required this.icon,
+      this.icon,
       this.bottom,
       this.color});
 
@@ -79,8 +79,7 @@ class CustomAppBar extends StatelessWidget {
           if (subTitle != null)
             Text(
               subTitle!,
-              style: theme.textTheme.titleLarge
-                  ?.copyWith(color: Colors.white),
+              style: theme.textTheme.titleLarge?.copyWith(color: Colors.white),
             ),
           if (bottom != null) const SizedBox(height: Constants.SPACING * 2),
           if (bottom != null) bottom!
