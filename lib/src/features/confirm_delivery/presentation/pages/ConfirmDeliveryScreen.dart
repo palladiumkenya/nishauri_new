@@ -41,7 +41,7 @@ class ConfirmDeliveryScreen extends HookConsumerWidget {
         }).then((value) {
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Drug delivery was a success!")));
-          context.goNamed(RouteNames.DAWA_DROP_MENU);
+          context.goNamed(RouteNames.DISPATCHED_DRUGS);
         }).catchError((e) {
           switch (e) {
             case BadRequestException e:
