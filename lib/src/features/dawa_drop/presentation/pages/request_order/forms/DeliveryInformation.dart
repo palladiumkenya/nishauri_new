@@ -80,7 +80,7 @@ class DeliveryInformation extends HookConsumerWidget {
             // initialValue: user.phoneNumber,
             keyboardType: TextInputType.text,
             decoration: inputDecoration(
-              placeholder: "e.g Omosh Rentals",
+              placeholder: "e.g Pahali Rentals",
               prefixIcon: Icons.map_outlined,
               label: "Apartment",
             ),
