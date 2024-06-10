@@ -38,13 +38,14 @@ class ChatbotService extends HTTPService {
 
   Future<http.StreamedResponse> review_(Map<String, dynamic> data) async {
     final tokenPair = await getCachedToken();
+    final userId = await getUserId();
     var headers = {
       'Authorization': "Bearer ${tokenPair.accessToken}",
       'Content-Type': 'application/json',
     };
     var request =
         http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}chat_review'));
-    request.body = jsonEncode(data);
+    request.body = jsonEncode({...data, "user_id": userId});
     request.headers.addAll(headers);
     return await request.send();
   }
