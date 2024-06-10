@@ -65,7 +65,7 @@ class CustomAppBar extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: theme.textTheme.headlineLarge
+                style: theme.textTheme.headlineMedium
                     ?.copyWith(color: Colors.white),
               ),
               const SizedBox(width: Constants.SPACING),

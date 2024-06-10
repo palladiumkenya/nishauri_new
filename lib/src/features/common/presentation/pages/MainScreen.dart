@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/custom_icons.dart';
@@ -80,8 +81,7 @@ class _HomeScreenState extends ConsumerState<MainScreen>
           },
           child: const PasswordUnlockScreen(),
         ),
-      )
-          .whenComplete(() {
+      ).whenComplete(() {
         setState(() {
           _isAuthModalVisible = false;
         });
@@ -118,21 +118,29 @@ class _HomeScreenState extends ConsumerState<MainScreen>
         elevation: 0,
         selectedItemColor: theme.colorScheme.primary,
         unselectedItemColor: theme.disabledColor,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: FaIcon(Icons.home_filled),
+            icon: SvgPicture.asset(
+              "assets/images/Home-Active.svg",
+            ),
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: FaIcon(Icons.apps),
+            icon: SvgPicture.asset(
+              "assets/images/Modules-active.svg",
+            ),
             label: "Apps",
           ),
           BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.comments),
+            icon: SvgPicture.asset(
+              "assets/images/Chatbot-Active.svg",
+            ),
             label: "Ask Nuru",
           ),
           BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.gear),
+            icon: SvgPicture.asset(
+              "assets/images/Settings-Active.svg",
+            ),
             label: "Settings",
           ),
         ],

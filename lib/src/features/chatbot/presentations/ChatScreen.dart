@@ -183,9 +183,10 @@ class _ChatScreenState extends State<ChatScreen> {
             question: 'Failed to send message to Nuru..', isSentByUser: false));
         _isBotTyping = false; // Bot stops typing on failure to send message
       });
-    }
-    finally{
-      widget.onChatsChange!= null ? widget.onChatsChange!(_messages.length):null;
+    } finally {
+      widget.onChatsChange != null
+          ? widget.onChatsChange!(_messages.length)
+          : null;
     }
   }
 
@@ -273,7 +274,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 //   icon: const FaIcon(FontAwesomeIcons.microphoneLines),
                 // ),
                 IconButton(
-                  icon: const FaIcon(FontAwesomeIcons.paperPlane),
+                  icon: SvgPicture.asset(
+                    "assets/images/Send.svg",
+                  ),
                   onPressed: () => _handleSubmit(_textController.text),
                 ),
               ],
