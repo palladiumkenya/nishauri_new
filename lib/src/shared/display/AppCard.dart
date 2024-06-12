@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 enum CardVariant { FILLED, OUTLINED, ELEVETED }
@@ -10,6 +11,7 @@ class AppCard extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final Clip? clipBehaviour;
   final Color? color;
+  final String? svgImage;
 
   const AppCard({
     super.key,
@@ -19,14 +21,34 @@ class AppCard extends StatelessWidget {
     this.margin,
     this.clipBehaviour,
     this.color,
+    this.svgImage,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    Widget cardContent = child ?? Container();
+
+    // Add the SVG background if provided
+    if (svgImage != null) {
+      cardContent = Stack(
+        children: [
+          Positioned.fill(
+            child: SvgPicture.asset(
+              svgImage!,
+              fit: BoxFit.cover,
+            ),
+          ),
+          if (child != null)
+            Positioned.fill(
+              child: child!,
+            ),
+        ],
+      );
+    }
+
     if (variant == CardVariant.OUTLINED) {
       return Card(
-
         color: color,
         clipBehavior: clipBehaviour,
         margin: margin,
@@ -40,19 +62,20 @@ class AppCard extends StatelessWidget {
         child: InkWell(
           splashColor: theme.colorScheme.primary.withAlpha(30),
           onTap: onTap,
-          child: child,
+          child: cardContent,
         ),
       );
     } else if (variant == CardVariant.ELEVETED) {
       return Card(
-          color: color,
-          clipBehavior: clipBehaviour,
-          margin: margin,
-          child: InkWell(
-            splashColor: theme.colorScheme.primary.withAlpha(30),
-            onTap: onTap,
-            child: child,
-          ));
+        color: color,
+        clipBehavior: clipBehaviour,
+        margin: margin,
+        child: InkWell(
+          splashColor: theme.colorScheme.primary.withAlpha(30),
+          onTap: onTap,
+          child: cardContent,
+        ),
+      );
     } else {
       return Card(
         clipBehavior: clipBehaviour,
@@ -62,7 +85,7 @@ class AppCard extends StatelessWidget {
         child: InkWell(
           splashColor: theme.colorScheme.primary.withAlpha(30),
           onTap: onTap,
-          child: child,
+          child: cardContent,
         ),
       );
     }

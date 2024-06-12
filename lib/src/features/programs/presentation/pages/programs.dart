@@ -76,7 +76,7 @@ class ProgramsMenuScreen extends HookWidget {
                               trailing: IconButton(
                                 onPressed: () {
                                   showConfirmDeleteDialog(context,
-                                          "Are you sure you want to remove ${item.program_name}?")
+                                          "You are about to deactivate ${item.program_name}")
                                       .then((value) {
                                     if (value == true) {
                                       final programsNotifier = ref
@@ -106,8 +106,8 @@ class ProgramsMenuScreen extends HookWidget {
                                   });
                                 },
                                 icon: FaIcon(
-                                  FontAwesomeIcons.trashCan,
-                                  color: theme.colorScheme.error,
+                                  FontAwesomeIcons.minus,
+                                  color: theme.colorScheme.inversePrimary,
                                 ),
                               ),
                               onTap: getProgramMenuItemByProgramCode(
