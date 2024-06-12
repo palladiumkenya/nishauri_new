@@ -46,8 +46,8 @@ class ClinicCardScreen extends HookConsumerWidget {
             notFoundText: "No programs available",
           );
         }
-        final screens =
-            activePrograms.map((program) => ClinicalDetailsTab(program: program));
+        final screens = activePrograms
+            .map((program) => ClinicalDetailsTab(program: program));
 
         return Scaffold(
           body: Column(

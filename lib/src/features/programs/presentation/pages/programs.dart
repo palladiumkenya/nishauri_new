@@ -34,8 +34,8 @@ class ProgramsMenuScreen extends HookWidget {
               const CustomAppBar(
                 color: Constants.programsColor,
                 subTitle: "Keep track of all your programs you belong to",
-                title: "Enrolled Programs",
-                icon: Icons.file_copy_sharp,
+                title: "Enrolled Programs 📋",
+                // icon: Icons.file_copy_sharp,
                 // color: Colors.white30,
               ),
               Expanded(

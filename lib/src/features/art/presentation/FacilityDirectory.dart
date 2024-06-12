@@ -46,8 +46,8 @@ class FacilityDirectoryScreen extends HookWidget {
       body: Column(
         children: <Widget>[
           CustomAppBar(
-            title: "Facility Directory",
-            icon: Icons.local_hospital,
+            title: "Facility Directory 🏥",
+            // icon: Icons.local_hospital,
             color: Constants.facilityDirectoryColor,
             bottom: Row(children: [
               Expanded(
@@ -89,13 +89,14 @@ class FacilityDirectoryScreen extends HookWidget {
                 padding: const EdgeInsets.all(Constants.SPACING),
                 child: facilities.value.isEmpty && !loading.value
                     ? SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.67,
+                        height: MediaQuery.of(context).size.height * 0.67,
                         child: Center(
                             child: BackgroundImageWidget(
-
-                              svgImage: 'assets/images/facility-dir-empty-state.svg',
-                            notFoundText: textController.text.length >= 3 ? "Facility not found": "Search Facility",
-
+                          svgImage:
+                              'assets/images/facility-dir-empty-state.svg',
+                          notFoundText: textController.text.length >= 3
+                              ? "Facility not found"
+                              : "Search Facility",
                         )),
                       )
                     : loading.value

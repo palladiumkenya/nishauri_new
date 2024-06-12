@@ -23,8 +23,8 @@ class BMICalculatorResultsScreen extends HookConsumerWidget {
     return Scaffold(
       body: Column(children: [
         const CustomAppBar(
-            title: "BMI Calculator",
-            icon: Icons.calculate,
+            title: "BMI Calculator ⚖️",
+            // icon: Icons.calculate,
             color: Constants.bmiCalculatorColor),
         Expanded(
           child: SingleChildScrollView(

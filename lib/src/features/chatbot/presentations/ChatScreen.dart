@@ -217,10 +217,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   padding: const EdgeInsets.all(Constants.SPACING),
                   child: Row(
                     children: [
-                      Text('Chat with Nuru',
+                      Text('Chat with Nuru 🤖',
                           style: theme.textTheme.headlineLarge),
                       const SizedBox(width: Constants.SPACING),
-                      const FaIcon(FontAwesomeIcons.robot),
+                      // const FaIcon(FontAwesomeIcons.robot),
                     ],
                   ),
                 ),

@@ -73,19 +73,6 @@ class DawaDropMenuScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final _items = _menuItems(context);
     return Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: theme.primaryColor,
-        //   leading: IconButton(
-        //     icon: const Icon(Icons.chevron_left),
-        //     onPressed: () => context.pop(),
-        //   ),
-        //   title: Text("Dawa Drop",
-        //       style: theme.textTheme.titleMedium?.copyWith(
-        //           color: Constants.dawaDropShortcutBgColor,
-        //           fontWeight: FontWeight.normal,
-        //           overflow: TextOverflow.ellipsis
-        //       ),),
-        // ),
         body: Column(
       children: [
         CustomAppBar(

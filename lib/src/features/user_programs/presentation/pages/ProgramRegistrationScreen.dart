@@ -21,7 +21,8 @@ class ProgramRegistrationScreen extends StatefulWidget {
   const ProgramRegistrationScreen({Key? key}) : super(key: key);
 
   @override
-  State<ProgramRegistrationScreen> createState() => _ProgramRegistrationScreenState();
+  State<ProgramRegistrationScreen> createState() =>
+      _ProgramRegistrationScreenState();
 }
 
 class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
@@ -39,7 +40,7 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
       setState(() {
         if (_countdownSeconds > 0) {
           _countdownSeconds--;
-          print(' counting down: -> $_countdownSeconds' );
+          print(' counting down: -> $_countdownSeconds');
         } else {
           _countdownTimer?.cancel();
         }
@@ -53,7 +54,8 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
     super.dispose();
   }
 
-  Future<void> validateOtp(String? otp, WidgetRef ref, Map<String, dynamic> payload) async {
+  Future<void> validateOtp(
+      String? otp, WidgetRef ref, Map<String, dynamic> payload) async {
     if (otp != null) {
       final validateOtpNotifier = ref.read(userProgramProvider.notifier);
       var programOtp = {"program_otp": otp};
@@ -61,36 +63,40 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
 
       try {
         final response = await validateOtpNotifier.registerProgram(mergedData);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response)));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(response)));
         context.pop();
       } catch (err) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err.toString())));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(err.toString())));
       }
     }
   }
 
-  void _handleResendOTP(BuildContext context, WidgetRef ref, Map<String, dynamic> payload) {
+  void _handleResendOTP(
+      BuildContext context, WidgetRef ref, Map<String, dynamic> payload) {
     // if (!_sent && _countdownSeconds <= 0) {
     //   _startCountdownTimer();
+    setState(() {
+      _loading = true;
+    });
+
+    final resendOTPNotifier = ref.read(userProgramProvider.notifier);
+
+    resendOTPNotifier.resendOTP(payload).then((value) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(value)),
+      );
+    }).whenComplete(() {
       setState(() {
-        _loading = true;
+        _loading = false;
       });
-
-      final resendOTPNotifier = ref.read(userProgramProvider.notifier);
-
-      resendOTPNotifier.resendOTP(payload).then((value) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(value)),
-        );
-      }).whenComplete(() {
-        setState(() {
-          _loading = false;
-        });
-      });
+    });
     // }
   }
 
-  Future<void> showOtpDialog(WidgetRef ref, Map<String, dynamic> payload, String responseMessage) async {
+  Future<void> showOtpDialog(WidgetRef ref, Map<String, dynamic> payload,
+      String responseMessage) async {
     // if (_sent || _countdownSeconds > 0) {
     //   _startCountdownTimer();
     //   LinkedRichText(
@@ -148,7 +154,8 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
               Pinput(
                 length: 5,
                 defaultPinTheme: defaultPinTheme,
-                androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
+                androidSmsAutofillMethod:
+                    AndroidSmsAutofillMethod.smsUserConsentApi,
                 cursor: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -218,15 +225,18 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
     );
   }
 
-  Future<void> handleProgramVerification(WidgetRef ref, Map<String, dynamic> payload) async {
+  Future<void> handleProgramVerification(
+      WidgetRef ref, Map<String, dynamic> payload) async {
     final programsNotifier = ref.read(userProgramProvider.notifier);
 
     try {
       final response = await programsNotifier.programVerification(payload);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['msg'])));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(response['msg'])));
       await showOtpDialog(ref, payload, response['data']['phoneno']);
     } catch (err) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err.toString())));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(err.toString())));
     }
   }
 
@@ -243,7 +253,8 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
         } else {
           final programsNotifier = ref.read(userProgramProvider.notifier);
           final response = await programsNotifier.registerProgram(payload);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$response')));
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('$response')));
           context.pop();
         }
       } catch (err) {
@@ -269,8 +280,8 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
       body: Column(
         children: [
           const CustomAppBar(
-            title: "Add program",
-            icon: Icons.add_task_sharp,
+            title: "Add program 📋",
+            // icon: Icons.add_task_sharp,
             subTitle: "Kindly provide program details below to verify yourself",
             color: Constants.programsColor,
           ),
@@ -287,7 +298,8 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                     key: _formKey,
                     child: SingleChildScrollView(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 20),
                         child: Consumer(
                           builder: (context, ref, child) {
                             final asyncPrograms = ref.watch(programsProvider);
@@ -311,10 +323,12 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                       prefixIcon: Icons.read_more_outlined,
                                       label: "Program",
                                     ),
-                                    items: programs.map((program) => DropdownMenuItem(
-                                      value: program.id,
-                                      child: Text(program.name ?? ''),
-                                    )).toList(),
+                                    items: programs
+                                        .map((program) => DropdownMenuItem(
+                                              value: program.id,
+                                              child: Text(program.name ?? ''),
+                                            ))
+                                        .toList(),
                                     validator: FormBuilderValidators.compose([
                                       FormBuilderValidators.required(),
                                     ]),
@@ -360,14 +374,17 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
                                     title: "Add Program",
                                     backgroundColor: Constants.programsColor,
                                     textColor: Colors.white,
-                                    surfixIcon: const FaIcon(FontAwesomeIcons.plus),
+                                    surfixIcon:
+                                        const FaIcon(FontAwesomeIcons.plus),
                                     loading: _loading,
                                     onPress: () => handleSubmit(ref),
                                   ),
                                 ],
                               ),
-                              error: (error, _) => Center(child: Text('Error: $error')),
-                              loading: () => const Center(child: CircularProgressIndicator()),
+                              error: (error, _) =>
+                                  Center(child: Text('Error: $error')),
+                              loading: () => const Center(
+                                  child: CircularProgressIndicator()),
                             );
                           },
                         ),

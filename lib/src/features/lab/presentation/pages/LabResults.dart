@@ -16,7 +16,7 @@ class LabResults extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
           icon: const Icon(Icons.chevron_left),
         ),
-        title: const Text("Lab Results"),
+        title: const Text("Lab Results 🧪"),
       ),
       body: Consumer(
         builder: (context, ref, child) {
@@ -32,7 +32,9 @@ class LabResults extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: data.length,
                     itemBuilder: (BuildContext context, int index) {
-                      final color = data[index].status == "Viral unsuppressed" ? Colors.red : Colors.greenAccent;
+                      final color = data[index].status == "Viral unsuppressed"
+                          ? Colors.red
+                          : Colors.greenAccent;
                       return Column(
                         children: [
                           const Divider(),
@@ -59,26 +61,25 @@ class LabResults extends StatelessWidget {
                                 ),
                                 actions: [
                                   TextButton(
-                                    onPressed: () => Navigator.of(context).pop(),
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
                                     child: const Text('Close'),
                                   ),
                                 ],
                               ),
                             ),
-                            leading: const Icon(Icons.medical_information_rounded),
+                            leading:
+                                const Icon(Icons.medical_information_rounded),
                             title: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                    " ${data[index].date} ",
-                                    style: theme.textTheme.titleMedium
-                                ),
+                                Text(" ${data[index].date} ",
+                                    style: theme.textTheme.titleMedium),
                                 Text(
                                   " ${data[index].result} ",
                                   style: theme.textTheme.titleSmall?.merge(
                                     TextStyle(
                                       color: color,
-
                                     ),
                                   ),
                                 ),
@@ -93,9 +94,7 @@ class LabResults extends StatelessWidget {
                               ],
                             ),
                             trailing: Icon(Icons.info_outline, color: color),
-
                           )
-
                         ],
                       );
                     },
@@ -103,10 +102,10 @@ class LabResults extends StatelessWidget {
                 ),
               ],
             ),
-              error: (error, _) => BackgroundImageWidget(
-                svgImage: 'assets/images/background.svg',
-                notFoundText: error.toString(),
-              ),
+            error: (error, _) => BackgroundImageWidget(
+              svgImage: 'assets/images/background.svg',
+              notFoundText: error.toString(),
+            ),
             loading: () => Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
