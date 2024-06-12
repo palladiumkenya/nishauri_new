@@ -38,13 +38,14 @@ class Announcements extends HookConsumerWidget {
              return Builder(
                builder: (BuildContext context) {
                  return AnnouncementCard(
-                   image: announcement.image,
-                   source: announcement.source,
+                   height: 200,
+                   width: 336,
+                   svgPath: announcement.image,
                    title: announcement.title,
-                   description: announcement.description,
-                    onTap: (){
-                     context.goNamed(RouteNames.BLOG_POST, extra: announcement);
-                    },
+                    // onTap: (){},
+                    // onTap: (){
+                    //  context.goNamed(RouteNames.BLOG_POST, extra: announcement);
+                    // },
                  );
                },
              );

@@ -49,71 +49,160 @@ class DispatchedDrugs extends ConsumerWidget {
                     itemCount: dispatchedOrders.length,
                     itemBuilder: (context, index) {
                       final order = dispatchedOrders[index];
-                      return ListTile(
-                          title: Row(
+                      return Column(
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                order.appointment?.appointment_type ?? '',
-                                style: theme.textTheme.headline6,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
+                          const Divider(),
+                          ListTile(
+                            title: Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(Constants.SPACING),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          // Text(
+                                          //   order.order_type ?? '',
+                                          //   style: theme.textTheme.headline6,
+                                          //   overflow: TextOverflow.ellipsis,
+                                          //   maxLines: 1,
+                                          // ),
+                                          // const SizedBox(height: Constants.SPACING),
+                                          // Row(
+                                          //   children: [
+                                          //     Icon(
+                                          //       Icons.app_registration_outlined,
+                                          //       color: Constants.dawaDropColor.withOpacity(0.5),
+                                          //     ),
+                                          //     const SizedBox(width: Constants.SPACING),
+                                          //     Text('Appointment Type ${order.appointment?.appointment_type ?? ''}'),
+                                          //   ],
+                                          // ),
+                                          const SizedBox(height: Constants.SPACING),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.calendar_month_outlined,
+                                                color: Constants.dawaDropColor.withOpacity(0.5),
+                                              ),
+                                              const SizedBox(width: Constants.SPACING),
+                                              Text('Appointment: ${DateFormat("dd MMM yyy").format(DateTime.parse(order.appointment?.appointment_date ?? ''))}'),
+                                            ],
+                                          ),
+
+                                          const SizedBox(height: Constants.SPACING),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.calendar_month_outlined,
+                                                color: Constants.dawaDropColor.withOpacity(0.5),
+                                              ),
+                                              const SizedBox(width: Constants.SPACING),
+                                              Text('Dispatched: ${DateFormat("dd MMM yyy").format(DateTime.parse(order.dispatched_date ?? ''))}'),
+                                            ],
+                                          ),
+                                          const SizedBox(height: Constants.SPACING),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.rotate_left_outlined,
+                                                color: Constants.dawaDropColor.withOpacity(0.5),
+                                              ),
+                                              const SizedBox(width: Constants.SPACING),
+                                              Text('Order Status: ${order.status ?? ''}'),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: theme.primaryColor.withOpacity(0.5),
+                                          shape: BoxShape.rectangle,
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: IconButton(
+                                          onPressed: () {
+                                            context.goNamed(RouteNames.CONFIRM_DELIVERY,
+                                                extra: {"OrderId": order.order_id});
+                                          },
+                                          icon: const Icon(Icons.forward),
+                                        ),
+                                      ),
+                                  ],
+                                ),
                               ),
-                              const SizedBox(height: Constants.SPACING),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.date_range,
-                                    color: Constants.dawaDropColor
-                                        .withOpacity(0.5),
-                                  ),
-                                  const SizedBox(width: Constants.SPACING),
-                                  Text(
-                                    'Appointment Date: ${DateFormat("dd MMM yyy").format(DateTime.parse(order.appointment?.appointment_date ?? ''))}',
-                                    style: theme.textTheme.titleMedium?.merge(
-                                        TextStyle(
-                                            color: Constants.dawaDropColor)),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: Constants.SPACING),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.date_range,
-                                    color: Constants.dawaDropColor
-                                        .withOpacity(0.5),
-                                  ),
-                                  const SizedBox(width: Constants.SPACING),
-                                  Text(
-                                    'Appointment Date: ${DateFormat("dd MMM yyy").format(DateTime.parse(order.dispatched_date ?? ''))}',
-                                    style: theme.textTheme.titleMedium?.merge(
-                                        TextStyle(
-                                            color: Constants
-                                                .dawaDropShortcutBgColor)),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: theme.primaryColor.withOpacity(0.5),
-                              shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: IconButton(
-                              onPressed: () {
-                                context.goNamed(RouteNames.CONFIRM_DELIVERY,
-                                    extra: {"OrderId": order.order_id});
-                              },
-                              icon: const Icon(Icons.forward),
                             ),
                           ),
                         ],
-                      ));
+                      );
+                      // return ListTile(
+                      //     title: Row(
+                      //   children: [
+                      //     Column(
+                      //       crossAxisAlignment: CrossAxisAlignment.start,
+                      //       children: [
+                      //         Text(
+                      //           order.appointment?.appointment_type ?? '',
+                      //           style: theme.textTheme.headline6,
+                      //           overflow: TextOverflow.ellipsis,
+                      //           maxLines: 1,
+                      //         ),
+                      //         const SizedBox(height: Constants.SPACING),
+                      //         Row(
+                      //           children: [
+                      //             Icon(
+                      //               Icons.date_range,
+                      //               color: Constants.dawaDropColor
+                      //                   .withOpacity(0.5),
+                      //             ),
+                      //             const SizedBox(width: Constants.SPACING),
+                      //             Text(
+                      //               'Appointment Date: ${DateFormat("dd MMM yyy").format(DateTime.parse(order.appointment?.appointment_date ?? ''))}',
+                      //               style: theme.textTheme.titleMedium?.merge(
+                      //                   TextStyle(
+                      //                       color: Constants.dawaDropColor)),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //         const SizedBox(height: Constants.SPACING),
+                      //         Row(
+                      //           children: [
+                      //             Icon(
+                      //               Icons.date_range,
+                      //               color: Constants.dawaDropColor
+                      //                   .withOpacity(0.5),
+                      //             ),
+                      //             const SizedBox(width: Constants.SPACING),
+                      //             Text(
+                      //               'Dispatched Date: ${DateFormat("dd MMM yyy").format(DateTime.parse(order.dispatched_date ?? ''))}',
+                      //               style: theme.textTheme.titleMedium?.merge(
+                      //                   TextStyle(
+                      //                       color: Constants
+                      //                           .dawaDropShortcutBgColor)),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     Container(
+                      //       decoration: BoxDecoration(
+                      //         color: theme.primaryColor.withOpacity(0.5),
+                      //         shape: BoxShape.rectangle,
+                      //         borderRadius: BorderRadius.circular(10),
+                      //       ),
+                      //       child: IconButton(
+                      //         onPressed: () {
+                      //           context.goNamed(RouteNames.CONFIRM_DELIVERY,
+                      //               extra: {"OrderId": order.order_id});
+                      //         },
+                      //         icon: const Icon(Icons.forward),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      // );
                     },
                   ),
                 ),

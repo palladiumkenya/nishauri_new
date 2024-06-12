@@ -15,6 +15,7 @@ import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
+import 'package:nishauri/src/utils/routes.dart';
 import 'package:pinput/pinput.dart';
 
 class ProgramRegistrationScreen extends StatefulWidget {
@@ -231,9 +232,10 @@ class _ProgramRegistrationScreenState extends State<ProgramRegistrationScreen> {
 
     try {
       final response = await programsNotifier.programVerification(payload);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(response['msg'])));
-      await showOtpDialog(ref, payload, response['data']['phoneno']);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['msg'])));
+      var phone = {"phone": response['data']['phoneno']};
+      final payLoad = {...payload, ...phone};
+      context.goNamed(RouteNames.VERIFY_PROGRAM_OTP, extra: payLoad);
     } catch (err) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(err.toString())));

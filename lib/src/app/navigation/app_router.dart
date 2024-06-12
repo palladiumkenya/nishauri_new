@@ -515,17 +515,16 @@ final List<RouteBase> programMenu = [
     builder: (BuildContext context, GoRouterState state) {
       return const ProgramRegistrationScreen();
     },
-    // routes: [
-    //   GoRoute(
-    //     name: RouteNames.VERIFY_PROGRAM_OTP,
-    //     path: 'verify',
-    //     builder: (BuildContext context, GoRouterState state) {
-    //       ProgramVerificationDetail extra =
-    //       state.extra! as ProgramVerificationDetail;
-    //       return ProgramVerificationScreen(verificationDetail: extra);
-    //     },
-    //   ),
-    // ],
+    routes: [
+      GoRoute(
+        name: RouteNames.VERIFY_PROGRAM_OTP,
+        path: 'verify',
+        builder: (BuildContext context, GoRouterState state) {
+          final extra = state.extra as Map<String, dynamic>;
+          return ProgramVerificationScreen(payload: extra);
+        },
+      ),
+    ],
   ),
   GoRoute(
     name: RouteNames.REMOVE_PROGRAM,
