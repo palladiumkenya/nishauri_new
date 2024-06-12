@@ -121,27 +121,39 @@ class _HomeScreenState extends ConsumerState<MainScreen>
         items: [
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              "assets/images/Home-Active.svg",
+              "assets/images/Home.svg",
             ),
             label: "Home",
+            activeIcon: SvgPicture.asset(
+              "assets/images/Home-Active.svg",
+            ),
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              "assets/images/Modules-active.svg",
+              "assets/images/Modules.svg",
             ),
             label: "Apps",
+            activeIcon: SvgPicture.asset(
+              "assets/images/Modules-active.svg",
+            ),
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              "assets/images/Chatbot-Active.svg",
+              "assets/images/Chatbot.svg",
             ),
             label: "Ask Nuru",
+            activeIcon: SvgPicture.asset(
+              "assets/images/Chatbot-Active.svg",
+            ),
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              "assets/images/Settings-Active.svg",
+              "assets/images/Settings.svg",
             ),
             label: "Settings",
+            activeIcon: SvgPicture.asset(
+              "assets/images/Settings-Active.svg",
+            ),
           ),
         ],
         currentIndex: _currIndex,
