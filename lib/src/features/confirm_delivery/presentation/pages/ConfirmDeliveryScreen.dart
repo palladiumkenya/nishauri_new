@@ -136,6 +136,8 @@ class ConfirmDeliveryScreen extends HookConsumerWidget {
                         builder: (context, ref, child) {
                           return Button(
                             title: "Confirm Delivery",
+                            backgroundColor: const Color.fromRGBO(64, 87, 162, 1),
+                            textColor: Colors.white,
                             onPress: handleSubmit,
                             loading: _loading,
                           );
