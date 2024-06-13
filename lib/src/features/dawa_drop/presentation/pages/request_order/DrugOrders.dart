@@ -26,11 +26,11 @@ class DrugOrdersScreen extends HookConsumerWidget {
         // Separate orders based on their status
         List<DrugOrder> allOrders = data;
         List<DrugOrder> pendingOrders =
-        allOrders.where((order) => order.status != 'Fullfilled').toList();
+            allOrders.where((order) => order.status != 'Fullfilled').toList();
         List<DrugOrder> approvedOrders =
-        allOrders.where((order) => order.status == 'Approved').toList();
+            allOrders.where((order) => order.status == 'Approved').toList();
         List<DrugOrder> fulfilledOrders =
-        allOrders.where((order) => order.status == 'Fullfilled').toList();
+            allOrders.where((order) => order.status == 'Fullfilled').toList();
         final screens = [
           ActiveOrders(orders: pendingOrders),
           // PendingOrders(orders: pendingOrders),
@@ -40,34 +40,32 @@ class DrugOrdersScreen extends HookConsumerWidget {
 
         return Scaffold(
             body: Column(
-              children: [
-                CustomAppBar(
-                  title: "Drug Requests",
-                  icon: Icons.shopping_cart_checkout_sharp,
-                  color: Constants.dawaDropColor.withOpacity(0.5),
+          children: [
+            CustomAppBar(
+              title: "Drug Requests 🛒",
+              // icon: Icons.shopping_cart_checkout_sharp,
+              color: Constants.dawaDropColor.withOpacity(0.5),
+            ),
+            CustomTabBar(
+              activeIndex: currIndex.value,
+              onTap: (item, index) {
+                currIndex.value = index;
+              },
+              activeColor: Constants.dawaDropColor.withOpacity(0.5),
+              items: const [
+                CustomTabBarItem(
+                  title: "Active Request",
+                  icon: Icons.all_inbox,
                 ),
-                CustomTabBar(
-                  activeIndex: currIndex.value,
-                  onTap: (item, index) {
-                    currIndex.value = index;
-                  },
-                  activeColor: Constants.dawaDropColor.withOpacity(0.5),
-                  items: const [
-                    CustomTabBarItem(
-                      title: "Active Request",
-                      icon: Icons.all_inbox,
-                    ),
-                    CustomTabBarItem(
-                      title: "Fulfilled Request",
-                      icon: Icons.done_all,
-                    ),
-                  ],
-                ),
-                Expanded(child: screens[currIndex.value]
+                CustomTabBarItem(
+                  title: "Fulfilled Request",
+                  icon: Icons.done_all,
                 ),
               ],
-            )
-        );
+            ),
+            Expanded(child: screens[currIndex.value]),
+          ],
+        ));
       },
       error: (error, _) => BackgroundImageWidget(
         customAppBar: CustomAppBar(

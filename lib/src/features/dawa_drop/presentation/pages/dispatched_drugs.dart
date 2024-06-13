@@ -28,8 +28,8 @@ class DispatchedDrugs extends ConsumerWidget {
           return Scaffold(
             body: BackgroundImageWidget(
                 customAppBar: CustomAppBar(
-                  title: "Dispatched Orders",
-                  icon: Icons.shopping_cart_checkout,
+                  title: "Dispatched Orders 🛒",
+                  // icon: Icons.shopping_cart_checkout,
                   color: Constants.dawaDropColor.withOpacity(0.5),
                 ),
                 svgImage: 'assets/images/lab-empty-state.svg',

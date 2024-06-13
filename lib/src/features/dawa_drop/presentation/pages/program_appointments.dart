@@ -20,7 +20,10 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
     return appointmentAsync.when(
       data: (data) {
         // Filter appointments based on the condition
-        final filteredAppointments = data.where((appointment) => appointment.program_status.toString() == "1").toList();
+        final filteredAppointments = data
+            .where(
+                (appointment) => appointment.program_status.toString() == "1")
+            .toList();
         if (filteredAppointments.isEmpty) {
           return BackgroundImageWidget(
             customAppBar: CustomAppBar(
@@ -36,8 +39,8 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
           body: Column(
             children: [
               CustomAppBar(
-                title: "Appointments",
-                icon: Icons.vaccines_sharp,
+                title: "Appointments 🗓️",
+                // icon: Icons.vaccines_sharp,
                 color: Constants.dawaDropColor.withOpacity(0.5),
               ),
               Expanded(
@@ -46,17 +49,21 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final appointment = filteredAppointments[index];
                     // Check if appointment ID exists and there is an active request for it
-                    final bool hasActiveRequest = appointment.id != null && orderAsync.when(
-                      data: (orders) => orders.any((order) => order.appointment?.id == appointment.id),
-                      loading: () => false,
-                      error: (_, __) => false,
-                    );
+                    final bool hasActiveRequest = appointment.id != null &&
+                        orderAsync.when(
+                          data: (orders) => orders.any((order) =>
+                              order.appointment?.id == appointment.id),
+                          loading: () => false,
+                          error: (_, __) => false,
+                        );
 
-                    final bool eligibleAppointment = appointment.id != null && orderAsync.when(
-                      data: (orders) => orders.any((order) => order.appointment?.appointment_status == 1),
-                      loading: () => false,
-                      error: (_, __) => false,
-                    );
+                    final bool eligibleAppointment = appointment.id != null &&
+                        orderAsync.when(
+                          data: (orders) => orders.any((order) =>
+                              order.appointment?.appointment_status == 1),
+                          loading: () => false,
+                          error: (_, __) => false,
+                        );
 
                     return Column(
                       children: [
@@ -69,78 +76,107 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                                 children: [
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          filteredAppointments[index].program_name ?? '',
+                                          filteredAppointments[index]
+                                                  .program_name ??
+                                              '',
                                           style: theme.textTheme.headline6,
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                         ),
-                                        const SizedBox(height: Constants.SPACING),
+                                        const SizedBox(
+                                            height: Constants.SPACING),
                                         Row(
                                           children: [
                                             Icon(
                                               Icons.app_registration_outlined,
-                                              color: Constants.dawaDropColor.withOpacity(0.5),
+                                              color: Constants.dawaDropColor
+                                                  .withOpacity(0.5),
                                             ),
-                                            const SizedBox(width: Constants.SPACING),
-                                            Text(filteredAppointments[index].appointment_type ?? ''),
+                                            const SizedBox(
+                                                width: Constants.SPACING),
+                                            Text(filteredAppointments[index]
+                                                    .appointment_type ??
+                                                ''),
                                           ],
                                         ),
-                                        const SizedBox(height: Constants.SPACING),
+                                        const SizedBox(
+                                            height: Constants.SPACING),
                                         Row(
                                           children: [
                                             Icon(
                                               Icons.calendar_month_outlined,
-                                              color: Constants.dawaDropColor.withOpacity(0.5),
+                                              color: Constants.dawaDropColor
+                                                  .withOpacity(0.5),
                                             ),
-                                            const SizedBox(width: Constants.SPACING),
-                                            Text(filteredAppointments[index].appointment_date),
+                                            const SizedBox(
+                                                width: Constants.SPACING),
+                                            Text(filteredAppointments[index]
+                                                .appointment_date),
                                           ],
                                         ),
-                                        const SizedBox(height: Constants.SPACING),
+                                        const SizedBox(
+                                            height: Constants.SPACING),
                                         Row(
                                           children: [
                                             Icon(
                                               Icons.local_hospital_sharp,
-                                              color: Constants.dawaDropColor.withOpacity(0.5),
+                                              color: Constants.dawaDropColor
+                                                  .withOpacity(0.5),
                                             ),
-                                            const SizedBox(width: Constants.SPACING),
-                                            Text(filteredAppointments[index].facility_name ?? ''),
+                                            const SizedBox(
+                                                width: Constants.SPACING),
+                                            Text(filteredAppointments[index]
+                                                    .facility_name ??
+                                                ''),
                                           ],
                                         ),
-                                        const SizedBox(height: Constants.SPACING),
+                                        const SizedBox(
+                                            height: Constants.SPACING),
                                         // Display text based on whether there is an active request
                                         Text(
                                           hasActiveRequest
                                               ? "Appointment has an active request"
-                                              : appointment.appointment_status == 1
-                                              ? "Request Home delivery"
-                                              : "",
+                                              : appointment
+                                                          .appointment_status ==
+                                                      1
+                                                  ? "Request Home delivery"
+                                                  : "",
                                           style: TextStyle(
                                             color: hasActiveRequest
                                                 ? Constants.appointmentsColor
-                                                : appointment.appointment_status == 1
-                                                ? Constants.clinicCardColor
-                                                : Colors.transparent,
+                                                : appointment
+                                                            .appointment_status ==
+                                                        1
+                                                    ? Constants.clinicCardColor
+                                                    : Colors.transparent,
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
                                   // Conditionally display the container with the button
-                                  if (!hasActiveRequest && appointment.appointment_status == 1)
+                                  if (!hasActiveRequest &&
+                                      appointment.appointment_status == 1)
                                     Container(
                                       decoration: BoxDecoration(
-                                        color: theme.primaryColor.withOpacity(0.5),
+                                        color:
+                                            theme.primaryColor.withOpacity(0.5),
                                         shape: BoxShape.rectangle,
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: IconButton(
                                         onPressed: () {
-                                          context.goNamed(RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
-                                              extra: {"payload": appointment, "type": "self"});
+                                          context.goNamed(
+                                              RouteNames
+                                                  .HIV_ART_DELIVERY_REQUEST_FORM,
+                                              extra: {
+                                                "payload": appointment,
+                                                "type": "self"
+                                              });
                                         },
                                         icon: const Icon(Icons.forward),
                                       ),
