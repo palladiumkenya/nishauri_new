@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
@@ -19,7 +20,12 @@ class DrugOrderService extends HTTPService {
     final tokenPair = await getCachedToken();
     var headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
     var url = '${Constants.BASE_URL_NEW}drug_delivery_list?user_id=$id';
-    final response = request(url: url, token: tokenPair, method: 'GET', requestHeaders: headers, userId: id);
+    final response = request(
+        url: url,
+        token: tokenPair,
+        method: 'GET',
+        requestHeaders: headers,
+        userId: id);
     // var request = Request(
     //   'GET',
     //   Uri.parse('${Constants.BASE_URL_NEW}drug_delivery_list?user_id=$id'),
@@ -28,6 +34,7 @@ class DrugOrderService extends HTTPService {
     // return await request.send();
     return response;
   }
+
   Future<List<DrugOrder>> getOrders() async {
     // try{
     //
@@ -85,7 +92,14 @@ class DrugOrderService extends HTTPService {
       'Content-Type': 'application/json',
     };
     var url = '${Constants.BASE_URL_NEW}/create_order';
-    final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, data: mergedData, userId: id);
+    debugPrint("Data payload: $mergedData");
+    final response = request(
+        url: url,
+        token: tokenPair,
+        method: 'POST',
+        requestHeaders: headers,
+        data: mergedData,
+        userId: id);
     return response;
     // var request = Request(
     //   'POST',
@@ -102,7 +116,7 @@ class DrugOrderService extends HTTPService {
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final Map<String, dynamic> orderData = json.decode(responseString);
-        if (orderData["success"] == true){
+        if (orderData["success"] == true) {
           return orderData["msg"];
         } else {
           throw orderData["msg"];
