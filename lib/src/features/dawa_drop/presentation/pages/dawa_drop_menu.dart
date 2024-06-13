@@ -76,8 +76,8 @@ class DawaDropMenuScreen extends StatelessWidget {
         body: Column(
       children: [
         CustomAppBar(
-          title: "Dawa Drop",
-          icon: Icons.vaccines_sharp,
+          title: "Dawa Drop 💊",
+          // icon: Icons.vaccines_sharp,
           color: Constants.dawaDropColor.withOpacity(0.5),
         ),
         Expanded(

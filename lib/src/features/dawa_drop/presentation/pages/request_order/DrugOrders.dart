@@ -40,8 +40,8 @@ class DrugOrdersScreen extends HookConsumerWidget {
       body: Column(
         children: [
           CustomAppBar(
-            title: "Drug Requests",
-            icon: Icons.shopping_cart_checkout_sharp,
+            title: "Drug Requests 🛒",
+            // icon: Icons.shopping_cart_checkout_sharp,
             color: Constants.dawaDropColor.withOpacity(0.5),
           ),
           CustomTabBar(

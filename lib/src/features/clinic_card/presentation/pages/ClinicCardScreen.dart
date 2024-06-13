@@ -37,8 +37,8 @@ class ClinicCardScreen extends HookConsumerWidget {
         if (activePrograms.isEmpty) {
           return BackgroundImageWidget(
             customAppBar: CustomAppBar(
-              title: "My Clinic Card",
-              icon: Icons.file_present,
+              title: "My Clinic Card 🎫",
+              // icon: Icons.file_present,
               subTitle: "Access medical services using \nyour clinic cards",
               color: Colors.blue[900],
             ),

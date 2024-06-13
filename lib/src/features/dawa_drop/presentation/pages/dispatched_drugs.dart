@@ -26,22 +26,21 @@ class DispatchedDrugs extends ConsumerWidget {
         if (dispatchedOrders.isEmpty) {
           return Scaffold(
             body: BackgroundImageWidget(
-              customAppBar: CustomAppBar(
-                title: "Dispatched Orders",
-                icon: Icons.shopping_cart_checkout,
-                color: Constants.dawaDropColor.withOpacity(0.5),
-              ),
-              svgImage: 'assets/images/lab-empty-state.svg',
-              notFoundText: "No Dispatched drug orders",
-            ),
+                customAppBar: CustomAppBar(
+                  title: "Dispatched Orders 🛒",
+                  // icon: Icons.shopping_cart_checkout,
+                  color: Constants.dawaDropColor.withOpacity(0.5),
+                ),
+                svgImage: 'assets/images/lab-empty-state.svg',
+                notFoundText: "No Dispatched drug orders"),
           );
         } else {
           return Scaffold(
             body: Column(
               children: [
                 CustomAppBar(
-                  title: "Dispatched Drug Orders",
-                  icon: Icons.shopping_cart_checkout,
+                  title: "Dispatched Drug Orders 🛒",
+                  // icon: Icons.shopping_cart_checkout,
                   color: Constants.dawaDropColor.withOpacity(0.5),
                 ),
                 Expanded(
@@ -135,8 +134,8 @@ class DispatchedDrugs extends ConsumerWidget {
       error: (error, _) => Scaffold(
         body: BackgroundImageWidget(
           customAppBar: CustomAppBar(
-            title: "Dispatched Drug Orders",
-            icon: Icons.vaccines_sharp,
+            title: "Dispatched Drug Orders 🛒",
+            // icon: Icons.vaccines_sharp,
             color: Constants.dawaDropColor.withOpacity(0.5),
           ),
           svgImage: 'assets/images/lab-empty-state.svg',

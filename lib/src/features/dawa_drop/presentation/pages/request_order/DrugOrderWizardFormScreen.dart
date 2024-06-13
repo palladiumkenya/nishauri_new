@@ -116,7 +116,13 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
     ];
 
     void handleSubmit() {
-      debugPrint("=====================>${formKey.currentState?.fields}");
+      final deliveryEstate =
+          formKey.currentState!.instantValue["delivery_estate"].toString();
+      final deliveryApartment =
+          formKey.currentState!.instantValue["delivery_apartment"].toString();
+      final deliveryAddress =
+          formKey.currentState!.instantValue["delivery_address"] +
+              ", $deliveryEstate, $deliveryApartment";
       if (formKey.currentState!.validate()) {
         debugPrint(
             "=====================>${formKey.currentState?.instantValue}");
@@ -125,8 +131,10 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
             formKey.currentState!.instantValue["delivery_pickup_time"];
         final courierService =
             formKey.currentState!.instantValue["courier_service"].toString();
+
         ref.read(drugOrderProvider.notifier).createOrder({
           ...formKey.currentState!.instantValue,
+          "delivery_address": deliveryAddress,
           "delivery_pickup_time": pickupTime is DateTime
               ? pickupTime.toIso8601String()
               : pickupTime,
@@ -279,7 +287,7 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
                                               },
                                             ),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                               width: Constants
                                                   .SPACING), // Add some space between buttons
                                           Expanded(

@@ -135,6 +135,5 @@ class DeliveryInformation extends HookConsumerWidget {
         child: CircularProgressIndicator(),
       ),
     );
-    ;
   }
 }
