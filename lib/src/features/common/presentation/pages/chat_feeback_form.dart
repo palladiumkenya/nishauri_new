@@ -100,10 +100,10 @@ class ChatFeedbackForm extends HookWidget {
                   ],
                 );
               },
-              name: "rating",
+              name: "rate",
             ),
             FormBuilderTextField(
-              name: "review",
+              name: "reviews",
               decoration:
                   const InputDecoration(hintText: "Leave a review here ..."),
             ),
