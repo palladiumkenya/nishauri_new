@@ -12,6 +12,7 @@ import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
+import 'package:pinput/pinput.dart';
 
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({super.key});
@@ -27,6 +28,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
   bool _sent = false;
   int _countdownSeconds = 60;
   Timer? _countdownTimer;
+
+  String otp = "";
 
   void _startCountdownTimer() {
     // const oneMinute = Duration(minutes: 1);
@@ -63,7 +66,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
             final userStateNotifier = ref.read(userProvider.notifier);
             final authStateNotifier = ref.read(authStateProvider.notifier);
             userStateNotifier
-                .verify(_formKey.currentState!.value)
+                //.verify(_formKey.currentState!.value)
+            .verify({
+              "otp": otp,
+              "mode": _formKey.currentState!.value['mode']
+            })
                 .then((value) {
               authStateNotifier.markProfileAsAccountVerified();
               authStateNotifier.markProfileAsUpdated();
@@ -169,63 +176,45 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 ]),
                               ),
                               const SizedBox(height: Constants.SPACING),
-                              FormBuilderTextField(
-                                name: "otp",
-                                decoration: widgetSurfixIconDecoration(
-                                  placeholder:
-                                  "Enter OTP Verification code",
-                                  prefixIcon: Icons.account_circle,
-                                  surfixIcon: _requestLoading
-                                      ? const CircularProgressIndicator()
-                                      : Text(
-                                    _sent
-                                        ? (_countdownSeconds > 0
-                                        ? "Resend Code ($_countdownSeconds)"
-                                        : "Resend Code")
-                                        : "Get code",
+                              Pinput(
+                                length: 5,
+                                defaultPinTheme: PinTheme(
+                                  width: 56,
+                                  height: 56,
+                                  textStyle: const TextStyle(
+                                    fontSize: 22,
+                                    color: Color.fromRGBO(30, 60, 87, 1),
                                   ),
-                                  onSurfixIconPressed: () {
-                                    if (!_sent || _countdownSeconds <= 0) {
-                                      // Start countdown timer if the code is not yet sent or timer is zero
-                                      _startCountdownTimer();
-                                      setState(() {
-                                        _requestLoading = true;
-                                      });
-                                      ref
-                                          .read(userProvider.notifier)
-                                          .getOTPCode(_formKey.currentState
-                                          ?.instantValue["mode"])
-                                          .then((value) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(value),
-                                          ),
-                                        );
-                                      }).catchError((err) {
-                                        handleResponseError(
-                                          context,
-                                          _formKey.currentState!.fields,
-                                          err,
-                                          ref
-                                              .read(authStateProvider
-                                              .notifier)
-                                              .logout,
-                                        );
-                                      }).whenComplete(() {
-                                        setState(() {
-                                          _requestLoading = false;
-                                          _sent = true;
-                                        });
-                                      });
-                                    }
-                                  },
-                                  label: "OTP verification code",
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(19),
+                                    border: Border.all(color: Constants.programsColor),
+                                  ),
                                 ),
-                                validator: FormBuilderValidators.compose([
-                                  FormBuilderValidators.required(),
-                                ]),
-                                keyboardType: TextInputType.number,
+                                androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
+                                cursor: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(bottom: 9),
+                                      width: 22,
+                                      height: 1,
+                                      color: Constants.programsColor,
+                                    ),
+                                  ],
+                                ),
+                                onChanged: (value) {
+                                  otp = value;
+                                },
+                                onCompleted: (value) {
+                                  otp = value;
+                                },
+                                validator: (value) {
+                                  if (value == null || value.length != 5) {
+                                    return 'Please enter a valid 5-digit OTP';
+                                  }
+                                  return null;
+                                },
+                                pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                               ),
                               const SizedBox(height: Constants.SPACING),
                               const SizedBox(height: Constants.SPACING),
