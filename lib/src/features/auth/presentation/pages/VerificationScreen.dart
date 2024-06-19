@@ -28,18 +28,15 @@ class _VerificationScreenState extends State<VerificationScreen> {
   bool _sent = false;
   int _countdownSeconds = 60;
   Timer? _countdownTimer;
-
   String otp = "";
 
   void _startCountdownTimer() {
-    // const oneMinute = Duration(minutes: 1);
     _countdownSeconds = 60;
     _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         if (_countdownSeconds > 0) {
           _countdownSeconds--;
         } else {
-          // If the countdown is finished, cancel the timer
           _countdownTimer?.cancel();
         }
       });
@@ -48,7 +45,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   @override
   void dispose() {
-    // Cancel the countdown timer when the widget is disposed
     _countdownTimer?.cancel();
     super.dispose();
   }
@@ -65,13 +61,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
             });
             final userStateNotifier = ref.read(userProvider.notifier);
             final authStateNotifier = ref.read(authStateProvider.notifier);
-            userStateNotifier
-                //.verify(_formKey.currentState!.value)
-            .verify({
+            userStateNotifier.verify({
               "otp": otp,
               "mode": _formKey.currentState!.value['mode']
-            })
-                .then((value) {
+            }).then((value) {
               authStateNotifier.markProfileAsAccountVerified();
               authStateNotifier.markProfileAsUpdated();
               ScaffoldMessenger.of(context).showSnackBar(
@@ -145,22 +138,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                       "Want to receive OTP code through?"),
                                 ),
                                 options: [
-                                  // FormBuilderFieldOption(
-                                  //   value: "email",
-                                  //   child: ListTile(
-                                  //     title: const Text('Email'),
-                                  //     subtitle: Text(user.email ?? ''),
-                                  //     trailing: const Icon(Icons.email),
-                                  //   ),
-                                  // ),
-                                  // FormBuilderFieldOption(
-                                  //   value: "watsapp",
-                                  //   child: ListTile(
-                                  //     title: const Text("WatsApp"),
-                                  //     subtitle: Text(user.phoneNumber ?? ''),
-                                  //     trailing: const Icon(Icons.chat_outlined),
-                                  //   ),
-                                  // ),
                                   FormBuilderFieldOption(
                                     value: "sms",
                                     child: ListTile(
@@ -175,48 +152,173 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                   FormBuilderValidators.required(),
                                 ]),
                               ),
-                              const SizedBox(height: Constants.SPACING),
-                              Pinput(
-                                length: 5,
-                                defaultPinTheme: PinTheme(
-                                  width: 56,
-                                  height: 56,
-                                  textStyle: const TextStyle(
-                                    fontSize: 22,
-                                    color: Color.fromRGBO(30, 60, 87, 1),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(19),
-                                    border: Border.all(color: Constants.programsColor),
-                                  ),
-                                ),
-                                androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
-                                cursor: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(bottom: 9),
-                                      width: 22,
-                                      height: 1,
-                                      color: Constants.programsColor,
-                                    ),
-                                  ],
-                                ),
-                                onChanged: (value) {
-                                  otp = value;
-                                },
-                                onCompleted: (value) {
-                                  otp = value;
-                                },
-                                validator: (value) {
-                                  if (value == null || value.length != 5) {
-                                    return 'Please enter a valid 5-digit OTP';
+
+
+
+
+
+                              const SizedBox(width: 10),
+                              TextButton(
+                                onPressed: _requestLoading
+                                    ? null
+                                    : () {
+                                  if (!_sent || _countdownSeconds <= 0) {
+                                    _startCountdownTimer();
+                                    setState(() {
+                                      _requestLoading = true;
+                                    });
+                                    ref
+                                        .read(userProvider.notifier)
+                                        .getOTPCode(_formKey.currentState
+                                        ?.instantValue["mode"])
+                                        .then((value) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(value),
+                                        ),
+                                      );
+                                    }).catchError((err) {
+                                      handleResponseError(
+                                        context,
+                                        _formKey.currentState!.fields,
+                                        err,
+                                        ref
+                                            .read(authStateProvider
+                                            .notifier)
+                                            .logout,
+                                      );
+                                    }).whenComplete(() {
+                                      setState(() {
+                                        _requestLoading = false;
+                                        _sent = true;
+                                      });
+                                    });
                                   }
-                                  return null;
                                 },
-                                pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                                child: _requestLoading
+                                    ? const CircularProgressIndicator()
+                                    : Text(
+                                  _sent
+                                      ? (_countdownSeconds > 0
+                                      ? "Resend Code ($_countdownSeconds)"
+                                      : "Resend Code")
+                                      : "Get code",
+                                ),
                               ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                               const SizedBox(height: Constants.SPACING),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Pinput(
+                                      length: 5,
+                                      defaultPinTheme: PinTheme(
+                                        width: 56,
+                                        height: 56,
+                                        textStyle: const TextStyle(
+                                          fontSize: 22,
+                                          color: Color.fromRGBO(30, 60, 87, 1),
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(19),
+                                          border: Border.all(color: Constants.programsColor),
+                                        ),
+                                      ),
+                                      androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
+                                      cursor: Column(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            margin: const EdgeInsets.only(bottom: 9),
+                                            width: 22,
+                                            height: 1,
+                                            color: Constants.programsColor,
+                                          ),
+                                        ],
+                                      ),
+                                      onChanged: (value) {
+                                        otp = value;
+                                      },
+                                      onCompleted: (value) {
+                                        otp = value;
+                                      },
+                                      validator: (value) {
+                                        if (value == null || value.length != 5) {
+                                          return 'Please enter a valid 5-digit OTP';
+                                        }
+                                        return null;
+                                      },
+                                      pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                                    ),
+                                  ),
+                                  // const SizedBox(width: 10),
+                                  // TextButton(
+                                  //   onPressed: _requestLoading
+                                  //       ? null
+                                  //       : () {
+                                  //     if (!_sent || _countdownSeconds <= 0) {
+                                  //       _startCountdownTimer();
+                                  //       setState(() {
+                                  //         _requestLoading = true;
+                                  //       });
+                                  //       ref
+                                  //           .read(userProvider.notifier)
+                                  //           .getOTPCode(_formKey.currentState
+                                  //           ?.instantValue["mode"])
+                                  //           .then((value) {
+                                  //         ScaffoldMessenger.of(context)
+                                  //             .showSnackBar(
+                                  //           SnackBar(
+                                  //             content: Text(value),
+                                  //           ),
+                                  //         );
+                                  //       }).catchError((err) {
+                                  //         handleResponseError(
+                                  //           context,
+                                  //           _formKey.currentState!.fields,
+                                  //           err,
+                                  //           ref
+                                  //               .read(authStateProvider
+                                  //               .notifier)
+                                  //               .logout,
+                                  //         );
+                                  //       }).whenComplete(() {
+                                  //         setState(() {
+                                  //           _requestLoading = false;
+                                  //           _sent = true;
+                                  //         });
+                                  //       });
+                                  //     }
+                                  //   },
+                                  //   child: _requestLoading
+                                  //       ? const CircularProgressIndicator()
+                                  //       : Text(
+                                  //     _sent
+                                  //         ? (_countdownSeconds > 0
+                                  //         ? "Resend Code ($_countdownSeconds)"
+                                  //         : "Resend Code")
+                                  //         : "Get code",
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
                               const SizedBox(height: Constants.SPACING),
                               Button(
                                 title: "Verify",
