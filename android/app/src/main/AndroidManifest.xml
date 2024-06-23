@@ -1,5 +1,10 @@
 <!-- <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.kenyahmis.nishauri"> -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.mhealth.nishauri">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/> <!-- Android 13 and above -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
     <application
         android:label="NiShauri"
         android:name="${applicationName}"
