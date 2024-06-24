@@ -12,10 +12,10 @@ Future<void> main() async {
   );
 
   // Initialize firebase messaging
-  await PushNotifications.initializeFirebaseMessaging();
+  await NotificationService.initializeFirebaseMessaging();
 
   // Initialize local notifications
-  await PushNotifications.initializeLocalNotifications();
+  await NotificationService.initializeLocalNotifications();
 
   runApp(
     const ProviderScope(child: NishauriApp()),
