@@ -23,8 +23,9 @@ class AccountInformation extends StatelessWidget {
               ProfileAvatar(),
               const SizedBox(height: Constants.SPACING),
               FormBuilderTextField(
-                initialValue: user.username,
+                initialValue: (user.username == 'null null' || user.username == null || user.username == '' || user.username == 'Null Null') ? "" : user.username,
                 name: "username",
+                enabled: false,
                 decoration: inputDecoration(
                   placeholder: "Enter your username",
                   prefixIcon: Icons.account_circle_outlined,

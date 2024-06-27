@@ -29,6 +29,7 @@ class AuthApiService extends HTTPService {
           profileUpdated: data["data"]?["account_verified"] == "1"!,
           userId: data["data"]?["user_id"]!,
           message: data["msg"]!,
+          phoneNumber: data["data"]?["phone_no"]!
         );
         return authState;
       } else {
@@ -59,7 +60,8 @@ class AuthApiService extends HTTPService {
           accountVerified: data["data"]?["account_verified"] == "1"!,
           profileUpdated: data["data"]?["account_verified"] == "1"!,
           userId: data["data"]?["user_id"]!,
-          message: data["msg"]!
+          message: data["msg"]!,
+          phoneNumber: data["data"]?["phone_no"]!
       );
       return authState;
     } else {

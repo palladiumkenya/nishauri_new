@@ -6,15 +6,14 @@ plugins {
 
 def localProperties = new Properties()
 
-
-def keystorePropertiesFile = rootProject.file("key.properties")
-def keystoreProperties = new Properties()
-
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-} else {
-    throw new GradleException("Cannot find 'key.properties' file: " + keystorePropertiesFile)
-}
+//def keystorePropertiesFile = rootProject.file("key.properties")
+//def keystoreProperties = new Properties()
+//
+//if (keystorePropertiesFile.exists()) {
+//    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+//} else {
+//    throw new GradleException("Cannot find 'key.properties' file: " + keystorePropertiesFile)
+//}
 
 
 
@@ -45,14 +44,14 @@ android {
     ndkVersion flutter.ndkVersion
 
 
-    signingConfigs {
-        release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file("C:/Users/This/new_UIrecent/android/app/key.jks")
-            storePassword keystoreProperties['storePassword']
-        }
-    }
+//    signingConfigs {
+//        release {
+//            keyAlias keystoreProperties['keyAlias']
+//            keyPassword keystoreProperties['keyPassword']
+//            storeFile file("C:/Users/This/new_UIrecent/android/app/key.jks")
+//            storePassword keystoreProperties['storePassword']
+//        }
+//    }
 
 
 
