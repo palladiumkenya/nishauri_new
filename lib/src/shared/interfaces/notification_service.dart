@@ -135,13 +135,6 @@ abstract class NotificationService {
                 "Subscribed to topic: $topic for appointment on $appointmentDate");
           }
           break;
-        // case SubscriptionType.drugDeliveryDispatched:
-        //   final delivery = data
-        //       as DrugDelivery; // Assuming DrugDelivery is a class you have for deliveries
-        //   if (delivery.status == "dispatched") {
-        //     const topic = "DrugDeliveryDispatched";
-        //     await firebaseMessaging.subscribeToTopic(topic);
-        //     debugPrint("Subscribed to topic: $topic for dispatched delivery");
         case SubscriptionType.drugDeliveryDispatched:
         // TODO: Handle this case.
       }
