@@ -2,6 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
+
+enum SubscriptionType {
+  appointments,
+  drugDeliveryDispatched,
+}
 
 abstract class NotificationService {
   static final firebaseMessaging = FirebaseMessaging.instance;
@@ -108,5 +114,38 @@ abstract class NotificationService {
       RemoteMessage message) async {
     await Firebase.initializeApp();
     debugPrint('Handling a background message: ${message.messageId}');
+  }
+
+  // Method to subscribe to topics based on appointment date
+  static Future<void> subscribeToTopic<T>(
+      List<T> dataList, SubscriptionType type) async {
+    await Firebase.initializeApp();
+    for (var data in dataList) {
+      switch (type) {
+        case SubscriptionType.appointments:
+          final appointment = data as Appointment;
+          final appointmentDate = DateTime.parse(appointment.appointment_date);
+          final now = DateTime.now();
+          final difference = appointmentDate.difference(now).inDays;
+
+          if (difference == 7 || difference == 1) {
+            const topic = "AppointmentReminder";
+            await firebaseMessaging.subscribeToTopic(topic);
+            debugPrint(
+                "Subscribed to topic: $topic for appointment on $appointmentDate");
+          }
+          break;
+        // case SubscriptionType.drugDeliveryDispatched:
+        //   final delivery = data
+        //       as DrugDelivery; // Assuming DrugDelivery is a class you have for deliveries
+        //   if (delivery.status == "dispatched") {
+        //     const topic = "DrugDeliveryDispatched";
+        //     await firebaseMessaging.subscribeToTopic(topic);
+        //     debugPrint("Subscribed to topic: $topic for dispatched delivery");
+        case SubscriptionType.drugDeliveryDispatched:
+        // TODO: Handle this case.
+      }
+      break;
+    }
   }
 }
