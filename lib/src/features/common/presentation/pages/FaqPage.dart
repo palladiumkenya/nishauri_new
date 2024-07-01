@@ -4,7 +4,6 @@ import 'package:nishauri/src/features/common/data/providers/FAQs_providers.dart'
 import 'package:nishauri/src/features/common/data/providers/search_faq_provider.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 
-
 class FAQPage extends ConsumerStatefulWidget {
   const FAQPage({super.key});
 
@@ -13,6 +12,25 @@ class FAQPage extends ConsumerStatefulWidget {
 }
 
 class _FAQPageState extends ConsumerState<FAQPage> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Added a listener to the TextEditingController to trigger the search provider when the text changes
+    _searchController.addListener(() {
+      ref.read(searchFaqProvider.notifier).search(_searchController.text);
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final faqState = ref.watch(faqProvider);
@@ -29,7 +47,7 @@ class _FAQPageState extends ConsumerState<FAQPage> {
           // Initialize the search provider with the loaded FAQs
           WidgetsBinding.instance.addPostFrameCallback((_) {
             ref.read(searchFaqProvider.notifier).updateFaqs(faqs);
-            ref.read(searchFaqProvider.notifier).search('');
+            ref.read(searchFaqProvider.notifier).search(_searchController.text);
           });
 
           return Column(
@@ -37,19 +55,32 @@ class _FAQPageState extends ConsumerState<FAQPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  decoration: const InputDecoration(
+                  controller: _searchController,
+                  decoration: InputDecoration(
                     hintText: 'Search questions...',
-                    prefixIcon: Icon(Icons.search),
+                    prefixIcon: const Icon(Icons.search),
+                    suffixIcon: _searchController.text.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              _searchController.clear();
+                              ref.read(searchFaqProvider.notifier).search('');
+                            },
+                          )
+                        : null,
                   ),
-                  onChanged: (query) {
-                    ref.read(searchFaqProvider.notifier).search(query);
-                  },
                 ),
               ),
               Expanded(
                 child: Consumer(
                   builder: (context, ref, child) {
                     final filteredFaqs = ref.watch(searchFaqProvider);
+
+                    if(filteredFaqs.isEmpty) {
+                      return const Center(
+                        child: Text('No results Found'),
+                      );
+                    }
                     return ListView.builder(
                       itemCount: filteredFaqs.length,
                       itemBuilder: (context, index) {
@@ -64,7 +95,7 @@ class _FAQPageState extends ConsumerState<FAQPage> {
                             Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Text(filteredFaqs[index].answer),
-                              ),
+                            ),
                           ],
                         );
                       },
