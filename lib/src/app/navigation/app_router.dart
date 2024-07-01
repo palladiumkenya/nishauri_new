@@ -23,6 +23,7 @@ import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorResult
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
 import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
 import 'package:nishauri/src/features/clinic_card/presentation/pages/ClinicCardScreen.dart';
+import 'package:nishauri/src/features/common/presentation/pages/FaqPage.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/blog.dart';
@@ -170,7 +171,7 @@ final List<RouteBase> secureRoutes = [
     name: RouteNames.Facility_Directory,
     path: 'Facility-directory',
     builder: (BuildContext context, GoRouterState state) {
-      return FacilityDirectoryScreen();
+      return const FacilityDirectoryScreen();
     },
   ),
   GoRoute(
@@ -216,6 +217,13 @@ final List<RouteBase> secureRoutes = [
       return const SettingsScreen();
     },
   ),
+  GoRoute(
+    name: RouteNames.FAQs,
+    path: 'faqs',
+    builder: (BuildContext context, GoRouterState state) {
+      return FAQPage(); 
+    }
+    ),
   GoRoute(
     name: RouteNames.PROFILE_SETTINGS,
     path: 'profile',

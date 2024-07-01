@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +24,7 @@ import 'package:nishauri/src/shared/extensions/extensions.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
+import 'package:nishauri/src/features/auth/presentation/pages/LoginScreen.dart';
 
 class HomeScreen extends StatefulHookConsumerWidget {
   const HomeScreen({super.key});
@@ -133,6 +135,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 );
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.question_answer),
+              title: const Text("FAQ's"),
+              onTap: () {
+                context.goNamed(RouteNames.FAQs);
+                // Close drawer
+                Navigator.pop(context);
+              },
+            ),
+            const SizedBox(height: 10.0,),
+            Container(
+              padding: const EdgeInsets.only(left: 15.0), // Specify the desired width
+              child: Text(
+                version,
+                style: const TextStyle(fontSize: 16),
+                //textAlign: TextAlign.center, // Optional: Center the text
+              ),
+            ),
+
 
             // ...drawerItems.map(
             //   (e) => ListTile(

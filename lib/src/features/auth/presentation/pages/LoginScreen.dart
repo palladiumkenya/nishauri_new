@@ -17,6 +17,8 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
+
+var version = 'Nishauri v2.0';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -37,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     var theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -206,6 +209,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
+                  SizedBox(height: 10.0,),
+                  Text(version),
                 ],
               ),
             ),
