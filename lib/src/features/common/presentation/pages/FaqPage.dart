@@ -76,11 +76,13 @@ class _FAQPageState extends ConsumerState<FAQPage> {
                   builder: (context, ref, child) {
                     final filteredFaqs = ref.watch(searchFaqProvider);
 
+                    // Handles When a user searches for a question that does not exist
                     if(filteredFaqs.isEmpty) {
                       return const Center(
                         child: Text('No results Found'),
                       );
                     }
+
                     return ListView.builder(
                       itemCount: filteredFaqs.length,
                       itemBuilder: (context, index) {
