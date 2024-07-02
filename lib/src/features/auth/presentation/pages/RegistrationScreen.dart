@@ -8,7 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
-import 'package:nishauri/src/features/auth/data/services/Terms.dart';
+import 'package:nishauri/src/features/auth/presentation/widget/Terms.dart';
+// import 'package:nishauri/src/features/auth/data/services/Terms.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
@@ -306,7 +307,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   onTap: () => showTermsDialog(context),
                                   // Show terms dialog on tap
                                   child: const Text(
-                                    " (Terms)",
+                                    "Terms",
                                     style: TextStyle(
                                       color: Colors.blue,
                                       // Change color to indicate it's a link
