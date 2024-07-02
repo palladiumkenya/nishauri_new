@@ -50,7 +50,7 @@ class _FAQPageState extends ConsumerState<FAQPage> {
           return Column(
             children: [
               CustomAppBar(
-                title: "Frequently Asked Questions (FAQs)",
+                title: "FAQ Section",
                 subTitle: "These are some of the Frequently Asked Questions by our Users",
                 color: Constants.frequentlyAskedQuestions,
                 bottom: Row(
@@ -112,25 +112,33 @@ class _FAQPageState extends ConsumerState<FAQPage> {
                     //   )
                     // Handles When a user searches for a question that does not exist
                     if (filteredFaqs.isEmpty) {
-                      return  const Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 200,
-                              child: BackgroundImageWidget(
-                                svgImage: 'assets/images/warning.svg',
-                                svgHeight: 100, 
-                                notFoundText: '',
-                              ),
-                            ),
-                            SizedBox(height: 10), // Add spacing between the image and the text
-                            Text(
-                              "Results Not Found",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
+                      // return  Center(
+                      //   child: Column(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       SizedBox(
+                      //         height: MediaQuery.of(context).size.height * 0.67,
+                      //         child: const BackgroundImageWidget(
+                      //           svgImage: 'assets/images/lab-empty-space.svg',
+                      //           //svgHeight: 100, 
+                      //           notFoundText: '',
+                      //         ),
+                      //       ),
+                      //       SizedBox(height: 10), // Add spacing between the image and the text
+                      //       Text(
+                      //         "Results Not Found",
+                      //         style: TextStyle(color: Colors.white),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // );
+                      return Center(                      
+                        child: 
+                          SizedBox(                           
+                            height: MediaQuery.of(context).size.height * 0.67,
+                            child: const BackgroundImageWidget(svgImage: 'assets/images/lab-empty-state.svg', notFoundText: "No results Found ",),
+                          ),
+                        
                       );
                     }
 
