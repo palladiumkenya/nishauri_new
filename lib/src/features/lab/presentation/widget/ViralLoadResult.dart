@@ -102,13 +102,13 @@ class ViralLoadResults extends StatelessWidget {
                                   children: [
                                     Icon(
                                       Icons.calendar_month_outlined,
-                                      color: theme.primaryColor,
+                                      color: color,
                                     ),
                                     const SizedBox(width: Constants.SPACING),
                                     Text(
                                       data[index].date,
                                       style: TextStyle(
-                                        color: theme.primaryColor
+                                        color: color
                                       ),
                                     ),
                                   ],
