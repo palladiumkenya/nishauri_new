@@ -1,65 +1,26 @@
 {
   "project_info": {
-    "project_number": "266828776832",
-    "project_id": "nishauri-164c4",
-    "storage_bucket": "nishauri-164c4.appspot.com"
+    "project_number": "267862187023",
+    "project_id": "nishauri-new",
+    "storage_bucket": "nishauri-new.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:266828776832:android:cc3f88904ad3ee168e6d65",
+        "mobilesdk_app_id": "1:267862187023:android:9630eda52e0b0fa5c1977a",
         "android_client_info": {
           "package_name": "com.mhealth.nishauri"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "266828776832-hl0fh10inbjk3r9mqpll34a8rkhvltue.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBHXy40KGPvk6SalJI_qnPVTGXTtIdualU"
+          "current_key": "AIzaSyBKDyCG0apB4uUJogcl-3vpSuIOlyrqRWE"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "266828776832-hl0fh10inbjk3r9mqpll34a8rkhvltue.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:266828776832:android:4f451e4500d5e9098e6d65",
-        "android_client_info": {
-          "package_name": "org.kenyahmis.nishauri.nishauri"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "266828776832-hl0fh10inbjk3r9mqpll34a8rkhvltue.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBHXy40KGPvk6SalJI_qnPVTGXTtIdualU"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "266828776832-hl0fh10inbjk3r9mqpll34a8rkhvltue.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
