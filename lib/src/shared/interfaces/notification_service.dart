@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
+import 'package:nishauri/src/features/dawa_drop/data/models/order_request/drug_order.dart';
 
 enum SubscriptionType {
   appointments,
@@ -136,7 +137,13 @@ abstract class NotificationService {
           }
           break;
         case SubscriptionType.drugDeliveryDispatched:
-        // TODO: Handle this case.
+          final order = data as DrugOrder;
+          if (order.status == 'Dispatched') {
+            const topic = "DrugDeliveryDispatched";
+            await firebaseMessaging.subscribeToTopic(topic);
+            debugPrint("Subscribed to topic: $topic for dispatched order");
+          }
+          break;
       }
       break;
     }
