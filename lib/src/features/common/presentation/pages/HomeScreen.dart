@@ -59,23 +59,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             if (asyncUser.hasValue)
               GestureDetector(
                 child: UserDrawerHeader(
-                  email: asyncUser.value!.email,
-                  name: (asyncUser.value?.name ?? "").titleCase,
-                  phoneNumber: asyncUser.value!.phoneNumber ?? '',
+                  email: asyncUser.value!.email == "null null" || asyncUser.value?.name == null
+                  ? "" : asyncUser.value!.email ?? '',
+                  name: asyncUser.value?.name == "null null" || asyncUser.value?.name == null
+                      ? "" : (asyncUser.value?.name ?? "").titleCase,
+                  phoneNumber: asyncUser.value!.phoneNumber == "null null" || asyncUser.value?.phoneNumber == null
+                      ? "" : asyncUser.value!.phoneNumber ?? '',
                   image: avatar,// asyncUser.value!.image,
                 ),
                 onTap: () => context.goNamed(RouteNames.PROFILE_SETTINGS),
               ),
 
-            ListTile(
-              leading: const Icon(Icons.dashboard_customize_rounded),
-              title: const Text("Dashboard"),
-              onTap: () {
-                context.goNamed(RouteNames.DASHBOARD);
-                // Close drawer
-                Navigator.pop(context);
-              },
-            ),
+            // ListTile(
+            //   leading: const Icon(Icons.dashboard_customize_rounded),
+            //   title: const Text("Dashboard"),
+            //   onTap: () {
+            //     context.goNamed(RouteNames.DASHBOARD);
+            //     // Close drawer
+            //     Navigator.pop(context);
+            //   },
+            // ),
 
             // ListTile(
             //   leading: const Icon(Icons.notifications),

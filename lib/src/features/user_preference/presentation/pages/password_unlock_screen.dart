@@ -6,6 +6,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
+import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/scafold_stack_body.dart';
 
@@ -42,7 +44,6 @@ class PasswordUnlockScreen extends HookConsumerWidget {
         // Form payload
         final payload = {
           ...formKey.currentState!.value,
-          "user_name": userAsync.valueOrNull?.phoneNumber,
         };
         authNotifier.unlock(payload).then((value) {
           context.pop();

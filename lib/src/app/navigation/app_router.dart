@@ -10,6 +10,8 @@ import 'package:nishauri/src/features/appointments/presentation/pages/Appointmen
 import 'package:nishauri/src/features/art/presentation/FacilityDirectory.dart';
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
+import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
+import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/UpdatePassword.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/LoginScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/RegistrationScreen.dart';
@@ -119,6 +121,12 @@ class RouterNotifier extends ChangeNotifier {
     return null;
   }
 
+  final AuthRepository _repository = AuthRepository(AuthApiService());
+  Future<String> getPhone() async {
+    var phone = await _repository.getUserPhoneNumber();
+    return phone;
+  }
+
   List<GoRoute> get routes => [
         GoRoute(
           name: RouteNames.SPLASH_SCREEN,
@@ -141,14 +149,38 @@ class RouterNotifier extends ChangeNotifier {
           builder: (context, state) => const MainScreen(),
           routes: secureRoutes,
         ),
-        GoRoute(
-          name: RouteNames.VERIFY_ACCOUNT,
-          path: '/account-verify',
-          builder: (BuildContext context, GoRouterState state) {
-            return const VerificationScreen();
+        // GoRoute(
+        //   name: RouteNames.VERIFY_ACCOUNT,
+        //   path: '/account-verify',
+        //   builder: (BuildContext context, GoRouterState state) {
+        //     final extras = getPhone() as String;
+        //     print("this is extras $extras");
+        //     return VerificationScreen(username: extras);
+        //   },
+        // ),
+    GoRoute(
+      name: RouteNames.VERIFY_ACCOUNT,
+      path: '/account-verify',
+      builder: (BuildContext context, GoRouterState state) {
+        return FutureBuilder<String>(
+          future: getPhone(),
+          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (snapshot.hasData) {
+              final extras = snapshot.data!;
+              return VerificationScreen(username: extras);
+            } else {
+              return const Center(child: Text('No data available'));
+            }
           },
-        ),
-        GoRoute(
+        );
+      },
+    ),
+
+    GoRoute(
           name: RouteNames.PROFILE_EDIT_FORM,
           path: '/profile-edit',
           builder: (BuildContext context, GoRouterState state) {

@@ -32,13 +32,50 @@ class Greetings extends StatelessWidget {
             style: theme.textTheme.headlineMedium
                 ?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
           ),
-          Text(
-            name,
+        name == 'Null Null' || name == null
+            ? GestureDetector(
+          onTap: () {
+            context.goNamed(RouteNames.PROFILE_EDIT_FORM);
+          },
+          child: Text(
+            'Click here to update your profile',
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: Colors.red,
+            ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.headlineLarge
-                ?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
           ),
+        )
+            : Text(
+          name,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: theme.textTheme.headlineLarge?.copyWith(
+            color: theme.colorScheme.primary,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+
+        // Text(
+          //   name == 'null null' || name == null ?
+          //   GestureDetector(
+          //     onTap: () {
+          //       context.goNamed(RouteNames.PROFILE_EDIT_FORM);
+          //     },
+          //     child: const Text(
+          //       'Click here to update your profile',
+          //       style: TextStyle(
+          //         color: Colors.red,
+          //         // decoration: TextDecoration.underline,
+          //       ),
+          //     ),
+          //   )
+          //   : name,
+          //   maxLines: 1,
+          //   overflow: TextOverflow.ellipsis,
+          //   style: theme.textTheme.headlineLarge
+          //       ?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
+          // ),
           const SizedBox(height: Constants.SPACING * 3),
           Text(
             DateFormat("EEEE, MMMM dd").format(

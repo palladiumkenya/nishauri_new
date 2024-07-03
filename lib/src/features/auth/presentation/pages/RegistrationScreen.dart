@@ -6,14 +6,14 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
+import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
+import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
 import 'package:nishauri/src/features/auth/data/services/Terms.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/display/label_input_container.dart';
-import 'package:nishauri/src/shared/display/scafold_stack_body.dart';
-import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
@@ -357,17 +357,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         .then((value) {
                                       //     Update user state
                                       ref.read(userProvider.notifier).getUser();
-                                    }).then((_) {
+                                    }).then((value) {
                                       settings.patchSettings(firstTimeInstallation: false);
 
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
-                                        const SnackBar(
+                                        SnackBar(
                                           content:
-                                              Text('Registration successful!,'),
+                                              Text(value.toString())
                                         ),
                                       );
-                                      // context.goNamed(RouteNames.VERIFY_ACCOUNT);
+                                      context.goNamed(RouteNames.VERIFY_ACCOUNT);
                                     }).catchError((error) {
                                       handleResponseError(
                                         context,

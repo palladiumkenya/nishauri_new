@@ -8,6 +8,19 @@ plugins {
 }
 
 def localProperties = new Properties()
+
+//def keystorePropertiesFile = rootProject.file("key.properties")
+//def keystoreProperties = new Properties()
+//
+//if (keystorePropertiesFile.exists()) {
+//    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+//} else {
+//    throw new GradleException("Cannot find 'key.properties' file: " + keystorePropertiesFile)
+//}
+
+
+
+
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
@@ -32,6 +45,22 @@ android {
 //    compileSdkVersion flutter.compileSdkVersion
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
+
+
+//    signingConfigs {
+//        release {
+//            keyAlias keystoreProperties['keyAlias']
+//            keyPassword keystoreProperties['keyPassword']
+//            storeFile file("C:/Users/This/new_UIrecent/android/app/key.jks")
+//            storePassword keystoreProperties['storePassword']
+//        }
+//    }
+
+
+
+
+
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

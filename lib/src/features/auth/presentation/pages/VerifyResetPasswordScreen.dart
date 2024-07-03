@@ -16,6 +16,7 @@ import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
+import 'package:pinput/pinput.dart';
 
 import '../../../../shared/display/Logo.dart';
 import '../../../../utils/routes.dart';
@@ -32,6 +33,8 @@ class ResetPasswordVerificationScreen extends HookConsumerWidget {
     final authStateNotifier = ref.read(authStateProvider.notifier);
     final timer = useTime(const Duration(seconds: 60));
     final loading = useState(false);
+
+    final otpController = useTextEditingController();
     void handleSubmit() {
       if (formKey.currentState!.saveAndValidate()) {
         loading.value = true;
@@ -39,7 +42,11 @@ class ResetPasswordVerificationScreen extends HookConsumerWidget {
         // Form payload
         final payload = {
           "user_name": username,
-          "otp": formKey.currentState!.value['otp'],
+          //"otp": formKey.currentState!.value['otp'],
+
+          "otp": otpController.text,
+
+
         };
 
         passwordResetStateNotifier.verifyResetPassword(payload).then((value) {
@@ -121,15 +128,47 @@ class ResetPasswordVerificationScreen extends HookConsumerWidget {
                     const SizedBox(height: Constants.SPACING * 3),
                     LabelInputContainer(
                       label: "Enter Code",
-                      child: FormBuilderTextField(
-                        name: "otp",
-                        decoration: outLineInputDecoration(
-                          placeholder: "5 Digit Code",
+                      child: Pinput(
+                        length: 5,
+                        controller: otpController,
+                        defaultPinTheme: PinTheme(
+                          width: 56,
+                          height: 56,
+                          textStyle: const TextStyle(
+                            fontSize: 22,
+                            color: Color.fromRGBO(30, 60, 87, 1),
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(19),
+                            border: Border.all(color: Constants.programsColor),
+                          ),
                         ),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                        ]),
-                        keyboardType: TextInputType.number,
+
+                        androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
+                        cursor: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 9),
+                              width: 22,
+                              height: 1,
+                              color: Constants.programsColor,
+                            )
+                          ],
+                        ),
+                        // onChanged: (value) {
+                        //   otp.value = value;
+                        // },
+                        // onCompleted: (value) {
+                        //   otp.value = value;
+                        // },
+                        validator: (value) {
+                          if (value == null || value.length != 5) {
+                            return 'Check the code should be 5 digits';
+                          }
+                          return null;
+                        },
+                        pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                       ),
                     ),
                     const SizedBox(height: Constants.SPACING * 6),
