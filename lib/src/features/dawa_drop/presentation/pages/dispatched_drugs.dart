@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/dawa_drop/data/models/order_request/drug_order.dart';
 import 'package:nishauri/src/features/dawa_drop/data/providers/drug_order_provider.dart';
+import 'package:nishauri/src/local_storage/LocalStorage.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/shared/interfaces/notification_service.dart';
@@ -23,6 +26,8 @@ class DispatchedDrugs extends ConsumerWidget {
         List<DrugOrder> allOrders = data;
         List<DrugOrder> dispatchedOrders =
             allOrders.where((order) => order.status == 'Dispatched').toList();
+        _saveAndSubscribeToDispatchedOrders(dispatchedOrders);
+
         // Subscribe to dispatched orders
         NotificationService.subscribeToTopic(
             dispatchedOrders, SubscriptionType.drugDeliveryDispatched);
@@ -175,4 +180,23 @@ class DispatchedDrugs extends ConsumerWidget {
       ),
     );
   }
+
+  Future<void> _saveAndSubscribeToDispatchedOrders(
+      List<DrugOrder> dispatchedOrders) async {
+    String dispatchedOrdersJson =
+        jsonEncode(dispatchedOrders.map((order) => order.toJson()).toList());
+    await LocalStorage.save('dispatched_orders', dispatchedOrdersJson);
+
+    // Retrieve dispatched orders from local storage
+    String? cachedDispatchedOrdersJson =
+        await LocalStorage.get('dispatched_orders');
+
+    List<DrugOrder> cachedDispatchedOrders =
+        (jsonDecode(cachedDispatchedOrdersJson) as List)
+            .map((orderJson) => DrugOrder.fromJson(orderJson))
+            .toList();
+
+    NotificationService.subscribeToTopic(
+        cachedDispatchedOrders, SubscriptionType.drugDeliveryDispatched);
+    }
 }
