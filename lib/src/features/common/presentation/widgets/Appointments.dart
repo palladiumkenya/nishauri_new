@@ -9,7 +9,6 @@ import 'package:nishauri/src/features/appointments/data/models/appointment.dart'
 import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
 import 'package:nishauri/src/features/appointments/presentation/pages/AppointmentRescheduleScreen.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/AppointmentCard.dart';
-import 'package:nishauri/src/features/dawa_drop/data/models/order_request/drug_order.dart';
 import 'package:nishauri/src/local_storage/LocalStorage.dart';
 import 'package:nishauri/src/shared/interfaces/notification_service.dart';
 import 'package:nishauri/src/utils/helpers.dart';
@@ -204,12 +203,12 @@ class Appointments extends HookConsumerWidget {
     String? cachedProgramAppointmentsJson =
         await LocalStorage.get('active_program_appointments');
 
-    List<DrugOrder> cachedActiveProgramAppointments =
+    List<Appointment> cachedActiveProgramAppointments =
         (jsonDecode(cachedProgramAppointmentsJson) as List)
-            .map((orderJson) => DrugOrder.fromJson(orderJson))
+            .map((appointmentJson) => Appointment.fromJson(appointmentJson))
             .toList();
 
-    NotificationService.subscribeToTopic(cachedActiveProgramAppointments,
-        SubscriptionType.drugDeliveryDispatched);
+    NotificationService.subscribeToTopic(
+        cachedActiveProgramAppointments, SubscriptionType.appointments);
   }
 }
