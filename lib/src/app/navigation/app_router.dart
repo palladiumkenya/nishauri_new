@@ -253,7 +253,7 @@ final List<RouteBase> secureRoutes = [
     name: RouteNames.FAQs,
     path: 'faqs',
     builder: (BuildContext context, GoRouterState state) {
-      return FAQPage(); 
+      return const FAQPage(); 
     }
     ),
   GoRoute(
