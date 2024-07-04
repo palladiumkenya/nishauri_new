@@ -113,6 +113,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             //   },
             // ),
             ListTile(
+              leading: const Icon(Icons.question_answer),
+              title: const Text("FAQ's"),
+              onTap: () {
+                context.goNamed(RouteNames.FAQs);
+                // Close drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.settings),
               title: const Text("Settings"),
               onTap: () {
@@ -152,21 +161,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 );
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.question_answer),
-              title: const Text("FAQ's"),
-              onTap: () {
-                context.goNamed(RouteNames.FAQs);
-                // Close drawer
-                Navigator.pop(context);
-              },
-            ),
             const SizedBox(height: 10.0,),
             Container(
               padding: const EdgeInsets.only(left: 15.0), // Specify the desired width
               child: Text(
                 'App Version: $_appVersion',
-                style: const TextStyle(fontSize: 16),
+                style: theme.textTheme.titleSmall!.copyWith(color: Constants.labResultsColor),
                 //textAlign: TextAlign.center, // Optional: Center the text
               ),
             ),
