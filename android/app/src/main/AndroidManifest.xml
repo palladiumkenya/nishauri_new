@@ -1,10 +1,4 @@
-<!-- <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.kenyahmis.nishauri"> -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.mhealth.nishauri">
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/> <!-- Android 13 and above -->
-    <uses-permission android:name="android.permission.VIBRATE"/>
-
     <application
         android:label="NiShauri"
         android:name="${applicationName}"
@@ -26,6 +20,7 @@
               android:resource="@style/NormalTheme"
               />
 
+
             <meta-data
                 android:name="com.google.firebase.messaging.default_notification_channel_id"
                 android:value="@string/default_notification_channel_id"
@@ -41,7 +36,16 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCQVOAQW36FpGPPYYDJMc0_N257RuXh76s"/>
     </application>
+    <!-- Required to query activities that can process text, see:
+         https://developer.android.com/training/package-visibility?hl=en and
+         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
+
+         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+    </queries>
 </manifest>

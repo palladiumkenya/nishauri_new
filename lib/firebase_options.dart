@@ -47,29 +47,29 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBLVyv1jjsYc3KVRg22mgzLitYTAccYgNE',
-    appId: '1:267862187023:web:6b51693fe50d4f0bc1977a',
-    messagingSenderId: '267862187023',
-    projectId: 'nishauri-new',
-    authDomain: 'nishauri-new.firebaseapp.com',
-    storageBucket: 'nishauri-new.appspot.com',
-    measurementId: 'G-EYY0YEJG62',
+    apiKey: 'AIzaSyCCPK_MO0d0QUCHaBGqEylgzTZw9hWRDD8',
+    appId: '1:921170637462:web:12ab142f7ee98c799b48b7',
+    messagingSenderId: '921170637462',
+    projectId: 'nishauri-new-2',
+    authDomain: 'nishauri-new-2.firebaseapp.com',
+    storageBucket: 'nishauri-new-2.appspot.com',
+    measurementId: 'G-YME8KHDKM3',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBKDyCG0apB4uUJogcl-3vpSuIOlyrqRWE',
-    appId: '1:267862187023:android:9630eda52e0b0fa5c1977a',
-    messagingSenderId: '267862187023',
-    projectId: 'nishauri-new',
-    storageBucket: 'nishauri-new.appspot.com',
+    apiKey: 'AIzaSyDDhK2nErRy_-SajzArNonosAo5nWaF9Us',
+    appId: '1:921170637462:android:5e50f392a12562c59b48b7',
+    messagingSenderId: '921170637462',
+    projectId: 'nishauri-new-2',
+    storageBucket: 'nishauri-new-2.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDqMTJ-UYVEsFZBV72Woprz4G2sHCqEKsQ',
-    appId: '1:267862187023:ios:f292a3afa35839afc1977a',
-    messagingSenderId: '267862187023',
-    projectId: 'nishauri-new',
-    storageBucket: 'nishauri-new.appspot.com',
+    apiKey: 'AIzaSyDqmcg2s_uXkJwQq__3Lg6akV3NTbQf1Ps',
+    appId: '1:921170637462:ios:9e081fc27a5afdf29b48b7',
+    messagingSenderId: '921170637462',
+    projectId: 'nishauri-new-2',
+    storageBucket: 'nishauri-new-2.appspot.com',
     iosBundleId: 'org.kenyahmis.nishauri.nishauri',
   );
 
