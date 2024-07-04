@@ -16,6 +16,14 @@ import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+
+Future<String> version() async {
+  final packageInfo = await PackageInfo.fromPlatform();
+  final version = packageInfo.version;
+  return version;
+}
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,6 +33,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String _appVersion = "Loading...";
   final _formKey = GlobalKey<FormBuilderState>();
   bool _hidePassword = true;
   bool _loading = false;
@@ -36,7 +45,21 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _loadVersion();
+  }
+
+  Future<void> _loadVersion() async {
+    final appVersion = await version();
+    setState(() {
+      _appVersion = appVersion;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     var theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -157,8 +180,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             final authNotifier =
                                 ref.read(authStateProvider.notifier);
                             final settings = ref.read(settingsNotifierProvider.notifier);
+                            var version = {"app_version" : _appVersion};
+                            var mergedData = {..._formKey.currentState!.value, ...version};
                             authNotifier
-                                .login(_formKey.currentState!.value)
+                                .login(mergedData)
                                 .then((_) {
                               //     Update user state
                               ref.read(userProvider.notifier).getUser();
@@ -206,6 +231,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
+                  SizedBox(height: 10.0,),
+                  Text('App Version: $_appVersion'),
                 ],
               ),
             ),
