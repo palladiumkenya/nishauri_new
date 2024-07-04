@@ -32,7 +32,6 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
 
   Future<void> login(Map<String, dynamic> credentials) async {
       final authResponse = await _repository.authenticate(credentials);
-      print("null checker $authResponse");
       var msg = authResponse.accessToken ?? '';
       if (msg.isEmpty){
         throw authResponse.message??'';

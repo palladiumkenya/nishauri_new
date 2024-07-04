@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
+import 'package:nishauri/src/features/auth/presentation/pages/LoginScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/widget/Terms.dart';
 // import 'package:nishauri/src/features/auth/data/services/Terms.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
@@ -30,6 +31,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  String _appVersion = "Loading...";
   final _formKey = GlobalKey<FormBuilderState>();
   bool _hidePassword = true;
   bool _loading = false;
@@ -51,6 +53,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       age--;
     }
     return age;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVersion();
+  }
+
+  Future<void> _loadVersion() async {
+    final appVersion = await version();
+    setState(() {
+      _appVersion = appVersion;
+    });
   }
 
   @override
@@ -352,9 +367,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     final authNotifier =
                                         ref.read(authStateProvider.notifier);
                                     final settings = ref.read(settingsNotifierProvider.notifier);
+                                    var version = {"app_version" : _appVersion};
+                                    var mergedData = {...formState, ...version};
 
                                     authNotifier
-                                        .register(formState)
+                                        .register(mergedData)
                                         .then((value) {
                                       //     Update user state
                                       ref.read(userProvider.notifier).getUser();

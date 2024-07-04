@@ -34,6 +34,7 @@ class HomeScreen extends StatefulHookConsumerWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  String _appVersion = "Loading...";
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   toggleDrawer() {
@@ -42,6 +43,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     } else {
       _scaffoldKey.currentState!.openDrawer();
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVersion();
+  }
+
+  Future<void> _loadVersion() async {
+    final appVersion = await version();
+    setState(() {
+      _appVersion = appVersion;
+    });
   }
 
   @override
@@ -151,7 +165,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             Container(
               padding: const EdgeInsets.only(left: 15.0), // Specify the desired width
               child: Text(
-                version,
+                'App Version: $_appVersion',
                 style: const TextStyle(fontSize: 16),
                 //textAlign: TextAlign.center, // Optional: Center the text
               ),

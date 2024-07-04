@@ -46,6 +46,7 @@ class AuthApiService extends HTTPService {
         http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}/signup'));
     request.body = json.encode(data);
     request.headers.addAll(headers);
+    print(request.body);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
 
