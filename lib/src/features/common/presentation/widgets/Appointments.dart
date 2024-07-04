@@ -1,11 +1,16 @@
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
 import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
 import 'package:nishauri/src/features/appointments/presentation/pages/AppointmentRescheduleScreen.dart';
 import 'package:nishauri/src/features/common/presentation/widgets/AppointmentCard.dart';
+import 'package:nishauri/src/local_storage/LocalStorage.dart';
+import 'package:nishauri/src/shared/interfaces/notification_service.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 import '../../../../utils/constants.dart';
@@ -31,6 +36,8 @@ class Appointments extends HookConsumerWidget {
       data: (data) {
         final activeProgramAppointments =
             data.where((element) => element.program_status.toString() == "1");
+        // Subscribes to the appointments topic
+        _saveAndSubscribeToProgramAppointments(activeProgramAppointments);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -103,16 +110,17 @@ class Appointments extends HookConsumerWidget {
                               child: SizedBox(
                                 width: size.width * 0.99,
                                 child: AppointmentCard(
-                                  rescheduleButtonText: pendingOrders.isNotEmpty ? "Has active order" : (artAppointment
-                                              .reschedule_status
-                                              .toString() ==
-                                          "0"
-                                      ? "Pending approval"
-                                      : artAppointment.reschedule_status
+                                  rescheduleButtonText: pendingOrders.isNotEmpty
+                                      ? "Has active order"
+                                      : (artAppointment.reschedule_status
                                                   .toString() ==
-                                              "1"
-                                          ? "Approved"
-                                          : null),
+                                              "0"
+                                          ? "Pending approval"
+                                          : artAppointment.reschedule_status
+                                                      .toString() ==
+                                                  "1"
+                                              ? "Approved"
+                                              : null),
                                   appointmentType:
                                       artAppointment.appointment_type ??
                                           "Unknown type",
@@ -183,5 +191,24 @@ class Appointments extends HookConsumerWidget {
             ]),
       ),
     );
+  }
+
+  Future<void> _saveAndSubscribeToProgramAppointments(var appointments) async {
+    String activeProgramAppointments = jsonEncode(
+        appointments.map((appointment) => appointment.toJson()).toList());
+    await LocalStorage.save(
+        'active_program_appointments', activeProgramAppointments);
+
+    // Retrieve dispatched orders from local storage
+    String? cachedProgramAppointmentsJson =
+        await LocalStorage.get('active_program_appointments');
+
+    List<Appointment> cachedActiveProgramAppointments =
+        (jsonDecode(cachedProgramAppointmentsJson) as List)
+            .map((appointmentJson) => Appointment.fromJson(appointmentJson))
+            .toList();
+
+    NotificationService.subscribeToTopic(
+        cachedActiveProgramAppointments, SubscriptionType.appointments);
   }
 }
