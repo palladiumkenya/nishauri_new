@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/custom_icons.dart';
 import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
+import 'package:nishauri/src/features/common/data/providers/idleTimeoutProvider.dart';
 import 'package:nishauri/src/features/common/presentation/pages/HomeScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainMenuScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.dart';
@@ -188,7 +189,15 @@ class _HomeScreenState extends ConsumerState<MainScreen>
           });
         },
       ),
-      body: pages.elementAt(_currIndex),
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onPanDown: (_) => ref.read(idleTimeoutProvider.notifier).resetTimer(),
+        onTap: () => ref.read(idleTimeoutProvider.notifier).resetTimer(),
+        child: Center(
+          child: pages.elementAt(_currIndex),
+        ),
+      ),
+      // body: pages.elementAt(_currIndex),
     );
   }
 }

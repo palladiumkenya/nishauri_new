@@ -11,6 +11,7 @@ class Constants {
   //static const String BASE_URL_NEW = "https://ushauriapi.nascop.org/nishauri_new/";
 
 
+
   //live    https://ushauriapi.nascop.org/
   // static const String BASE_URL = "http://192.168.2.133:5000";
   // static const String BASE_URL = "http://192.168.1.28:5000"; //HETARK
@@ -36,6 +37,7 @@ class Constants {
   static const activeSelectionColor = Color.fromARGB(255,65, 165, 146);
   static const clinicCardColor = Color.fromARGB(255,13,71,161);
   static const announcement = Color.fromARGB(255, 64, 87, 162);
+  static const frequentlyAskedQuestions = Color.fromARGB(255, 123, 83, 162);
   static const iconSize = 70.0;
   static const shortcutIconSize = 30.0;
 
