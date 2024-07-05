@@ -67,8 +67,8 @@ class FAQPage extends HookWidget {
       body: Column(
         children: [
           CustomAppBar(
-            title: "FAQ Section",
-            subTitle: "These are some of the Frequently Asked Questions by our Users",
+            title: "FAQ's",
+            subTitle: "Frequently Asked Questions.",
             color: Constants.frequentlyAskedQuestions,
             bottom: Row(
               children: [
