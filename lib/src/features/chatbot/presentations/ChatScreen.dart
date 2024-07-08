@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:developer';
-import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nishauri/custom_icons.dart';
 import 'package:nishauri/src/features/chatbot/data/models/message.dart';
 import 'package:nishauri/src/features/chatbot/data/repository/ChatbotRepository.dart';
@@ -17,12 +15,6 @@ import 'package:nishauri/src/utils/helpers.dart';
 class TypingAnimation extends StatefulWidget {
   @override
   _TypingAnimationState createState() => _TypingAnimationState();
-}
-
-Future<String> getInitial() async {
-  final String initial = await LocalStorage.get("initial") == "1" ? "1" : "0";
-  // debugPrint("Initial login: ${initial}");
-  return initial;
 }
 
 class _TypingAnimationState extends State<TypingAnimation>
@@ -201,6 +193,45 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  void _showConsentDialog(BuildContext context, WidgetRef ref) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Nuru Consent'),
+          content: const Text(
+              'Nuru is a chatbot that can assist you with your health queries. Do you consent to use Nuru?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                ref
+                    .read(settingsNotifierProvider.notifier)
+                    .updateSettings(firstNuruAccess: false);
+                setState(() {
+                  consent = true;
+                });
+                Navigator.of(context).pop();
+              },
+              child: const Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () {
+                ref
+                    .read(settingsNotifierProvider.notifier)
+                    .updateSettings(firstNuruAccess: false);
+                setState(() {
+                  consent = false;
+                });
+                Navigator.of(context).pop();
+              },
+              child: const Text('No'),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = getOrientationAwareScreenSize(context);
@@ -213,33 +244,7 @@ class _ChatScreenState extends State<ChatScreen> {
           // ref.read(settingsNotifierProvider.notifier).updateSettings(
           //     firstNuruAccess: false);
           // Open alert dialog to request user for consent
-          AlertDialog(
-            title: const Text('Nuru Consent'),
-            content: const Text(
-                'Nuru is a chatbot that can assist you with your health queries. Do you consent to use Nuru?'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  ref
-                      .read(settingsNotifierProvider.notifier)
-                      .updateSettings(firstNuruAccess: false);
-                  setState(() => consent = true);
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Yes'),
-              ),
-              TextButton(
-                onPressed: () {
-                  ref
-                      .read(settingsNotifierProvider.notifier)
-                      .updateSettings(firstNuruAccess: false);
-                  setState(() => consent = false);
-                  Navigator.of(context).pop();
-                },
-                child: const Text('No'),
-              ),
-            ],
-          );
+          _showConsentDialog(context, ref);
         } else {
           debugPrint("Nuru first time use: ${settings.firstNuruAccess}");
         }
@@ -274,50 +279,58 @@ class _ChatScreenState extends State<ChatScreen> {
                           consent
                               ? TextButton(
                                   onPressed: () {
-                                    AlertDialog(
-                                      title: const Text('Revoke Consent'),
-                                      content: const Text(
-                                          'Are you sure you want to revoke your consent to using the personalized version of Nuru?'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            setState(() => consent = false);
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('Yes'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('No'),
-                                        ),
-                                      ],
-                                    );
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                              title:
+                                                  const Text('Revoke Consent'),
+                                              content: const Text(
+                                                  'Are you sure you want to revoke your consent to using the personalized version of Nuru?'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () {
+                                                    setState(() =>
+                                                        (consent = false));
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text('Yes'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text('No'),
+                                                ),
+                                              ],
+                                            ));
                                   },
                                   child: const Text("Revoke consent"))
                               : TextButton(
                                   onPressed: () {
-                                    AlertDialog(
-                                      title: const Text('Give Consent'),
-                                      content: const Text(
-                                          'Nuru is a chatbot that can assist you with your health queries. Do you consent to use Nuru?'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            setState(() => consent = true);
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('Yes'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('No'),
-                                        ),
-                                      ],
-                                    );
+                                    showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (context) => AlertDialog(
+                                              title: const Text('Give Consent'),
+                                              content: const Text(
+                                                  'Nuru is a chatbot that can assist you with your health queries. Do you consent to use Nuru?'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () {
+                                                    setState(
+                                                        () => (consent = true));
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text('Yes'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text('No'),
+                                                ),
+                                              ],
+                                            ));
                                   },
                                   child: const Text("Give consent"))
                         ],
@@ -370,10 +383,6 @@ class _ChatScreenState extends State<ChatScreen> {
             hintText: hintText,
             suffixIcon: Wrap(
               children: [
-                // IconButton(
-                //   onPressed: () {},
-                //   icon: const FaIcon(FontAwesomeIcons.microphoneLines),
-                // ),
                 IconButton(
                   icon: SvgPicture.asset(
                     "assets/images/Send.svg",
