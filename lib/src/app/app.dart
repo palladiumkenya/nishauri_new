@@ -11,6 +11,7 @@ class NishauriApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Handles clicking push notification
     NotificationService.handleOpenNotification(context);
     return Consumer(builder: (context, ref, child) {
       final router = ref.watch(routesProvider);

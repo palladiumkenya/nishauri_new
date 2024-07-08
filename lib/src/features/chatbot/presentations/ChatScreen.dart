@@ -209,6 +209,34 @@ class _ChatScreenState extends State<ChatScreen> {
         final settings = ref.watch(settingsNotifierProvider);
         if (settings.firstNuruAccess) {
           debugPrint("Nuru first time use: ${settings.firstNuruAccess}");
+          // ref.read(settingsNotifierProvider.notifier).updateSettings(
+          //     firstNuruAccess: false);
+          // Open alert dialog to request user for consent
+          AlertDialog(
+            title: const Text('Nuru Chatbot'),
+            content: const Text(
+                'Nuru is a chatbot that can assist you with your health queries. Do you consent to use Nuru?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  ref
+                      .read(settingsNotifierProvider.notifier)
+                      .updateSettings(firstNuruAccess: false);
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Yes'),
+              ),
+              TextButton(
+                onPressed: () {
+                  ref
+                      .read(settingsNotifierProvider.notifier)
+                      .updateSettings(firstNuruAccess: false);
+                  Navigator.of(context).pop();
+                },
+                child: const Text('No'),
+              ),
+            ],
+          );
         } else {
           debugPrint("Nuru first time use: ${settings.firstNuruAccess}");
         }
