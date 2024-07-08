@@ -16,7 +16,7 @@ class SettingsController extends StateNotifier<Settings> {
     state = state.copyWith(
         theme: theme.isNotEmpty ? theme : "light",
         isPrivacyEnabled:
-        isPrivacyEnabled.isEmpty ? true : isPrivacyEnabled == "1",
+            isPrivacyEnabled.isEmpty ? true : isPrivacyEnabled == "1",
         firstTimeInstallation: firstTimeInstallation.isEmpty
             ? true
             : firstTimeInstallation == "1");
@@ -28,6 +28,8 @@ class SettingsController extends StateNotifier<Settings> {
         "isPrivacyEnabled", settings.isPrivacyEnabled ? "1" : "0");
     await LocalStorage.save(
         "initial", settings.firstTimeInstallation ? "1" : "0");
+    await LocalStorage.save(
+        "firstNuruAccess", settings.firstNuruAccess ? "1" : "0");
   }
 
   Future<void> clearSettingConfig() async {
@@ -44,7 +46,7 @@ class SettingsController extends StateNotifier<Settings> {
     bool? isBiometricEnabled,
     bool? isAuthenticated,
     bool? firstTimeInstallation,
-
+    bool? firstNuruAccess,
   }) {
     state = state.copyWith(
         userToken: userToken,
@@ -53,8 +55,8 @@ class SettingsController extends StateNotifier<Settings> {
         isPrivacyEnabled: isPrivacyEnabled,
         isBiometricEnabled: isBiometricEnabled,
         isAuthenticated: isAuthenticated,
-        firstTimeInstallation: firstTimeInstallation
-    );
+        firstTimeInstallation: firstTimeInstallation,
+        firstNuruAccess: firstNuruAccess);
     saveSettingConfig(state);
   }
 
@@ -70,6 +72,7 @@ class SettingsController extends StateNotifier<Settings> {
     bool? isBiometricEnabled,
     bool? isAuthenticated,
     bool? firstTimeInstallation,
+    bool? firstNuruAccess,
   }) {
     state = state.copyWith(
         userToken: userToken ?? state.userToken,
@@ -79,7 +82,8 @@ class SettingsController extends StateNotifier<Settings> {
         isBiometricEnabled: isBiometricEnabled ?? state.isBiometricEnabled,
         isAuthenticated: isAuthenticated ?? state.isAuthenticated,
         firstTimeInstallation:
-        firstTimeInstallation ?? state.firstTimeInstallation);
+            firstTimeInstallation ?? state.firstTimeInstallation,
+        firstNuruAccess: firstNuruAccess ?? state.firstNuruAccess);
     saveSettingConfig(state);
   }
 

@@ -1,18 +1,28 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nishauri/custom_icons.dart';
 import 'package:nishauri/src/features/chatbot/data/models/message.dart';
 import 'package:nishauri/src/features/chatbot/data/repository/ChatbotRepository.dart';
 import 'package:nishauri/src/features/chatbot/data/services/ChatbotService.dart';
+import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
+import 'package:nishauri/src/local_storage/LocalStorage.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 
 class TypingAnimation extends StatefulWidget {
   @override
   _TypingAnimationState createState() => _TypingAnimationState();
+}
+
+Future<String> getInitial() async {
+  final String initial = await LocalStorage.get("initial") == "1" ? "1" : "0";
+  // debugPrint("Initial login: ${initial}");
+  return initial;
 }
 
 class _TypingAnimationState extends State<TypingAnimation>
@@ -194,58 +204,68 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     final size = getOrientationAwareScreenSize(context);
     final theme = Theme.of(context);
-    return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Chat with Nuru'),
-      // ),
-      body: Stack(
-        children: [
-          Positioned(
-              top: 0,
-              right: 0,
-              child: SvgPicture.asset(
-                "assets/images/rect-bg.svg",
-                semanticsLabel: "Doctors",
-                fit: BoxFit.contain,
-                height: size.width * 0.55,
-                width: size.width * 0.55,
-              )),
-          SafeArea(
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(Constants.SPACING),
-                  child: Row(
-                    children: [
-                      Text('Chat with Nuru 🤖',
-                          style: theme.textTheme.headlineLarge),
-                      const SizedBox(width: Constants.SPACING),
-                      // const FaIcon(FontAwesomeIcons.robot),
-                    ],
-                  ),
+    return Consumer(
+      builder: (context, ref, child) {
+        final settings = ref.watch(settingsNotifierProvider);
+        if (settings.firstNuruAccess) {
+          debugPrint("Nuru first time use: ${settings.firstNuruAccess}");
+        } else {
+          debugPrint("Nuru first time use: ${settings.firstNuruAccess}");
+        }
+        return Scaffold(
+          // appBar: AppBar(
+          //   title: const Text('Chat with Nuru'),
+          // ),
+          body: Stack(
+            children: [
+              Positioned(
+                  top: 0,
+                  right: 0,
+                  child: SvgPicture.asset(
+                    "assets/images/rect-bg.svg",
+                    semanticsLabel: "Doctors",
+                    fit: BoxFit.contain,
+                    height: size.width * 0.55,
+                    width: size.width * 0.55,
+                  )),
+              SafeArea(
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(Constants.SPACING),
+                      child: Row(
+                        children: [
+                          Text('Chat with Nuru 🤖',
+                              style: theme.textTheme.headlineLarge),
+                          const SizedBox(width: Constants.SPACING),
+                          // const FaIcon(FontAwesomeIcons.robot),
+                        ],
+                      ),
+                    ),
+                    const Divider(),
+                    Expanded(
+                      child: ListView.builder(
+                        controller: _scrollController,
+                        itemCount: _messages.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final Message message = _messages[index];
+                          return _buildMessage(message);
+                        },
+                      ),
+                    ),
+                    _isBotTyping
+                        ? Padding(
+                            padding: const EdgeInsets.all(Constants.SPACING),
+                            child: TypingAnimation(), // Bot typing indicator
+                          )
+                        : _buildComposer(),
+                  ],
                 ),
-                const Divider(),
-                Expanded(
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: _messages.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final Message message = _messages[index];
-                      return _buildMessage(message);
-                    },
-                  ),
-                ),
-                _isBotTyping
-                    ? Padding(
-                        padding: const EdgeInsets.all(Constants.SPACING),
-                        child: TypingAnimation(), // Bot typing indicator
-                      )
-                    : _buildComposer(),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
