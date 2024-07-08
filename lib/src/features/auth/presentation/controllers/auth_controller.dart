@@ -32,6 +32,7 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
 
   Future<void> login(Map<String, dynamic> credentials) async {
       final authResponse = await _repository.authenticate(credentials);
+      print("null checker $authResponse");
       var msg = authResponse.accessToken ?? '';
       if (msg.isEmpty){
         throw authResponse.message??'';
@@ -41,6 +42,7 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
         refreshToken: authResponse.refreshToken ?? '',
       ));
       await _repository.saveUserId(authResponse.userId??'');
+      await _repository.savePhoneNumber(authResponse.phoneNumber ?? '');
       await _repository.saveIsVerified(authResponse.accountVerified);
       state = AsyncValue.data(
         AuthState(
@@ -52,7 +54,9 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
       );
   }
   Future<bool> unlock(Map<String, dynamic> credentials) async {
-      final authResponse = await _repository.authenticate(credentials);
+    var username = {"user_name" : await _repository.getUserPhoneNumber()};
+    final unlockCredentials = {...credentials, ...username};
+      final authResponse = await _repository.authenticate(unlockCredentials);
       var msg = authResponse.accessToken ?? '';
       if (msg.isEmpty){
         throw authResponse.message??'';
@@ -62,6 +66,7 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
         refreshToken: authResponse.refreshToken ?? '',
       ));
       await _repository.saveUserId(authResponse.userId??'');
+      await _repository.savePhoneNumber(authResponse.phoneNumber ?? '');
       await _repository.saveIsVerified(authResponse.accountVerified);
       return msg.isNotEmpty;
   }
@@ -78,6 +83,7 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
         refreshToken: authResponse.refreshToken?? '',
       ));
       await _repository.saveUserId(authResponse.userId??'');
+      await _repository.savePhoneNumber(authResponse.phoneNumber ?? '');
       await _repository.saveIsVerified(authResponse.accountVerified);
       state = AsyncValue.data(AuthState(
         isAccountVerified: authResponse.accountVerified,
@@ -126,7 +132,12 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
     if (resp == "Logout Successful") {
       _repository.deleteToken();
       _repository.deleteUserId();
+      _repository.deletePhoneNumber();
     }
+    _userRepository.revokeToken();
+    print(_userRepository.revokeToken());
+    // _repository.deleteToken();
+    // _repository.deleteUserId();
     state.when(
       data: (value) => state = AsyncValue.data(
         value.copyWith(

@@ -6,14 +6,16 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
-import 'package:nishauri/src/features/auth/data/services/Terms.dart';
+import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
+import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
+import 'package:nishauri/src/features/auth/presentation/pages/LoginScreen.dart';
+import 'package:nishauri/src/features/auth/presentation/widget/Terms.dart';
+// import 'package:nishauri/src/features/auth/data/services/Terms.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/display/label_input_container.dart';
-import 'package:nishauri/src/shared/display/scafold_stack_body.dart';
-import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
@@ -29,6 +31,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  String _appVersion = "Loading...";
   final _formKey = GlobalKey<FormBuilderState>();
   bool _hidePassword = true;
   bool _loading = false;
@@ -50,6 +53,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       age--;
     }
     return age;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVersion();
+  }
+
+  Future<void> _loadVersion() async {
+    final appVersion = await version();
+    setState(() {
+      _appVersion = appVersion;
+    });
   }
 
   @override
@@ -306,7 +322,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   onTap: () => showTermsDialog(context),
                                   // Show terms dialog on tap
                                   child: const Text(
-                                    " (Terms)",
+                                    "Terms",
                                     style: TextStyle(
                                       color: Colors.blue,
                                       // Change color to indicate it's a link
@@ -351,23 +367,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     final authNotifier =
                                         ref.read(authStateProvider.notifier);
                                     final settings = ref.read(settingsNotifierProvider.notifier);
+                                    var version = {"app_version" : _appVersion};
+                                    var mergedData = {...formState, ...version};
 
                                     authNotifier
-                                        .register(formState)
+                                        .register(mergedData)
                                         .then((value) {
                                       //     Update user state
                                       ref.read(userProvider.notifier).getUser();
-                                    }).then((_) {
+                                    }).then((value) {
                                       settings.patchSettings(firstTimeInstallation: false);
 
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
-                                        const SnackBar(
+                                        SnackBar(
                                           content:
-                                              Text('Registration successful!,'),
+                                              Text(value.toString())
                                         ),
                                       );
-                                      // context.goNamed(RouteNames.VERIFY_ACCOUNT);
+                                      context.goNamed(RouteNames.VERIFY_ACCOUNT);
                                     }).catchError((error) {
                                       handleResponseError(
                                         context,

@@ -10,6 +10,8 @@ import 'package:nishauri/src/features/appointments/presentation/pages/Appointmen
 import 'package:nishauri/src/features/art/presentation/FacilityDirectory.dart';
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
+import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
+import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/UpdatePassword.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/LoginScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/RegistrationScreen.dart';
@@ -23,6 +25,7 @@ import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorResult
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
 import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
 import 'package:nishauri/src/features/clinic_card/presentation/pages/ClinicCardScreen.dart';
+import 'package:nishauri/src/features/common/presentation/pages/FaqPage.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/blog.dart';
@@ -119,6 +122,12 @@ class RouterNotifier extends ChangeNotifier {
     return null;
   }
 
+  final AuthRepository _repository = AuthRepository(AuthApiService());
+  Future<String> getPhone() async {
+    var phone = await _repository.getUserPhoneNumber();
+    return phone;
+  }
+
   List<GoRoute> get routes => [
         GoRoute(
           name: RouteNames.SPLASH_SCREEN,
@@ -141,14 +150,38 @@ class RouterNotifier extends ChangeNotifier {
           builder: (context, state) => const MainScreen(),
           routes: secureRoutes,
         ),
-        GoRoute(
-          name: RouteNames.VERIFY_ACCOUNT,
-          path: '/account-verify',
-          builder: (BuildContext context, GoRouterState state) {
-            return const VerificationScreen();
+        // GoRoute(
+        //   name: RouteNames.VERIFY_ACCOUNT,
+        //   path: '/account-verify',
+        //   builder: (BuildContext context, GoRouterState state) {
+        //     final extras = getPhone() as String;
+        //     print("this is extras $extras");
+        //     return VerificationScreen(username: extras);
+        //   },
+        // ),
+    GoRoute(
+      name: RouteNames.VERIFY_ACCOUNT,
+      path: '/account-verify',
+      builder: (BuildContext context, GoRouterState state) {
+        return FutureBuilder<String>(
+          future: getPhone(),
+          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (snapshot.hasData) {
+              final extras = snapshot.data!;
+              return VerificationScreen(username: extras);
+            } else {
+              return const Center(child: Text('No data available'));
+            }
           },
-        ),
-        GoRoute(
+        );
+      },
+    ),
+
+    GoRoute(
           name: RouteNames.PROFILE_EDIT_FORM,
           path: '/profile-edit',
           builder: (BuildContext context, GoRouterState state) {
@@ -170,7 +203,7 @@ final List<RouteBase> secureRoutes = [
     name: RouteNames.Facility_Directory,
     path: 'Facility-directory',
     builder: (BuildContext context, GoRouterState state) {
-      return FacilityDirectoryScreen();
+      return const FacilityDirectoryScreen();
     },
   ),
   GoRoute(
@@ -216,6 +249,13 @@ final List<RouteBase> secureRoutes = [
       return const SettingsScreen();
     },
   ),
+  GoRoute(
+    name: RouteNames.FAQs,
+    path: 'faqs',
+    builder: (BuildContext context, GoRouterState state) {
+      return const FAQPage(); 
+    }
+    ),
   GoRoute(
     name: RouteNames.PROFILE_SETTINGS,
     path: 'profile',
@@ -515,17 +555,16 @@ final List<RouteBase> programMenu = [
     builder: (BuildContext context, GoRouterState state) {
       return const ProgramRegistrationScreen();
     },
-    // routes: [
-    //   GoRoute(
-    //     name: RouteNames.VERIFY_PROGRAM_OTP,
-    //     path: 'verify',
-    //     builder: (BuildContext context, GoRouterState state) {
-    //       ProgramVerificationDetail extra =
-    //       state.extra! as ProgramVerificationDetail;
-    //       return ProgramVerificationScreen(verificationDetail: extra);
-    //     },
-    //   ),
-    // ],
+    routes: [
+      GoRoute(
+        name: RouteNames.VERIFY_PROGRAM_OTP,
+        path: 'verify',
+        builder: (BuildContext context, GoRouterState state) {
+          final extra = state.extra as Map<String, dynamic>;
+          return ProgramVerificationScreen(payload: extra);
+        },
+      ),
+    ],
   ),
   GoRoute(
     name: RouteNames.REMOVE_PROGRAM,

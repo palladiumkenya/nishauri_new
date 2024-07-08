@@ -46,6 +46,21 @@ class AuthRepository {
     await LocalStorage.save("user", userId);
   }
 
+  Future<void> savePhoneNumber(String phone) async {
+    print("Saving phone number $phone");
+    await LocalStorage.save("phone", phone);
+  }
+
+  Future<void> deletePhoneNumber() async {
+    await LocalStorage.delete("phone");
+  }
+
+  Future<String> getUserPhoneNumber() async {
+    var phone = await LocalStorage.get("phone");
+    print("getting phone number $phone");
+    return phone;
+  }
+
   Future<void> deleteUserId() async {
     await LocalStorage.delete("user");
   }
