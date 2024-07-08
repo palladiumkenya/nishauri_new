@@ -189,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ref.read(userProvider.notifier).getUser();
                             }).then(
                               (_) {
-                                settings.patchSettings(firstTimeInstallation: false);
+                                settings.patchSettings(firstTimeInstallation: false, firstNuruAccess: true);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Login successful!'),
