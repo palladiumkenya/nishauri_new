@@ -7,6 +7,7 @@ import 'package:nishauri/custom_icons.dart';
 import 'package:nishauri/src/features/chatbot/data/models/message.dart';
 import 'package:nishauri/src/features/chatbot/data/repository/ChatbotRepository.dart';
 import 'package:nishauri/src/features/chatbot/data/services/ChatbotService.dart';
+import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/local_storage/LocalStorage.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -60,7 +61,7 @@ class _TypingAnimationState extends State<TypingAnimation>
   }
 }
 
-class ChatScreen extends StatefulWidget {
+class ChatScreen extends ConsumerStatefulWidget {
   final Function(int chatsCount)? onChatsChange;
   const ChatScreen({Key? key, this.onChatsChange}) : super(key: key);
 
@@ -68,19 +69,30 @@ class ChatScreen extends StatefulWidget {
   _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreenState extends ConsumerState<ChatScreen> {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final ChatbotRepository _repository = ChatbotRepository(ChatbotService());
-
-  final List<Message> _messages = [
-    const Message(
-      question: "Welcome to Nuru \nHow can I assist you today?",
-      isSentByUser: false,
-    ),
-  ];
+  var currentUser = "";
   bool _isBotTyping = false;
   var consent = false;
+  List<Message> _messages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _fetchUserData(context, ref));
+    final userAsyncValue = AsyncValue.data(userProvider);
+    _messages = [
+      Message(
+        question:
+            "Hi $currentUser 👋 \nWelcome to Nuru \nHow can I assist you today?",
+        isSentByUser: false,
+      ),
+    ];
+    debugPrint("Current User: $currentUser");
+  }
 
   Widget _buildMessage(Message message) {
     IconData userIcon = message.isSentByUser ? Icons.person : CustomIcons.robot;
@@ -193,6 +205,35 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  // function that Fetch user data
+  void _fetchUserData(BuildContext context, WidgetRef ref) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userAsyncValue = ref.watch(userProvider);
+      userAsyncValue.when(
+        data: (user) {
+          debugPrint("User data: ${user.username}");
+          setState(() {
+            currentUser = user.username as String;
+            _messages = [
+              Message(
+                question:
+                    "Hi $currentUser 👋 \nWelcome to Nuru \nHow can I assist you today?",
+                isSentByUser: false,
+              ),
+            ];
+          });
+        },
+        loading: () {
+          debugPrint("Loading user data...");
+        },
+        error: (error, stackTrace) {
+          debugPrint("Error loading user data: $error");
+        },
+      );
+    });
+  }
+
+  // Shows consent Dialog
   void _showConsentDialog(BuildContext context, WidgetRef ref) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showDialog(
@@ -313,7 +354,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                         builder: (context) => AlertDialog(
                                               title: const Text('Give Consent'),
                                               content: const Text(
-                                                  'Nuru is a chatbot that can assist you with your health queries. Do you consent to use Nuru?'),
+                                                  'Do you consent to use Nuru with personalized responses?'),
                                               actions: <Widget>[
                                                 TextButton(
                                                   onPressed: () {
