@@ -10,7 +10,7 @@ import 'package:nishauri/src/utils/constants.dart';
 class ConsentService extends HTTPService {
   final AuthRepository _repository = AuthRepository(AuthApiService());
 
-  Future<String> consent(dynamic data) async {
+  Future<String> consent() async {
     try{
       final response = await call(
         consent_, null
@@ -35,6 +35,35 @@ class ConsentService extends HTTPService {
     final tokenPair = await getCachedToken();
     final headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
     var url = '${Constants.BASE_URL_NEW}/consent?user_id=$id';
+    final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, userId: id);
+    return response;
+  }
+
+  Future<String> revokeConsent() async {
+    try{
+      final response = await call(
+          revokeConsent_, null
+      );
+      if (response.statusCode == 200) {
+        final responseString = await response.stream.bytesToString();
+        final resp = json.decode(responseString);
+        if (resp["success"] == false) {
+          return resp["msg"];
+        } else {
+          throw resp["msg"];
+        }
+      }
+    } catch (e) {
+      throw e;
+    }
+    return "";
+  }
+
+  Future<StreamedResponse> revokeConsent_(dynamic args) async {
+    final id = await _repository.getUserId();
+    final tokenPair = await getCachedToken();
+    final headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
+    var url = '${Constants.BASE_URL_NEW}/revoke_consent?user_id=$id';
     final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, userId: id);
     return response;
   }

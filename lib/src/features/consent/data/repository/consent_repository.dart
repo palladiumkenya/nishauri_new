@@ -8,8 +8,12 @@ class ConsentRepository {
       this._service
       );
 
-  Future<String> consent(Map<String, dynamic> data) async {
-    return await _service.consent(data);
+  Future<String> consent() async {
+    return await _service.consent();
+  }
+
+  Future<String> revokeConsent() async {
+    return await _service.revokeConsent();
   }
 
   Future<List<Consent>> getConsent() async {
