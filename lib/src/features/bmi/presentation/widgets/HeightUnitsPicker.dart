@@ -3,14 +3,17 @@ import 'package:nishauri/src/utils/constants.dart';
 
 enum HeightUnitsPickerOptions { Cm, Ft, In }
 
-double convertFromCmTo(HeightUnitsPickerOptions units, double cm) {
+String convertFromCmTo(HeightUnitsPickerOptions units, double cm) {
   switch (units) {
     case HeightUnitsPickerOptions.Ft:
-      return cm / 30.48; // Convert to feet (1 cm = 0.0328084 ft)
+      int feet = (cm / 30.48).floor(); //converting to feet without rounding up(1cm = 0.0328084 ft)
+      double inches = (cm / 2.54) % 12; // first converting to inches then finding the remainder when dividing it by 12, since there are 12 inches in one foot 
+      return '$feet\' ${inches.toStringAsFixed(0)}"';
+      //return cm / 30.48; // Convert to feet (1 cm = 0.0328084 ft)
     case HeightUnitsPickerOptions.In:
-      return cm / 2.54; // Convert to inches (1 cm = 0.3937 in)
+      return (cm / 2.54).toStringAsFixed(1); // Convert to inches (1 cm = 0.3937 in)
     default:
-      return cm; // No conversion needed for centimeters
+      return cm.toStringAsFixed(1); // No conversion needed for centimeters
   }
 }
 
