@@ -6,7 +6,7 @@ enum HeightUnitsPickerOptions { Cm, Ft, In }
 double convertFromCmTo(HeightUnitsPickerOptions units, double cm) {
   switch (units) {
     case HeightUnitsPickerOptions.Ft:
-      return cm / 30.48; // Convert to feet (1 cm = 0.0328 ft)
+      return cm / 30.48; // Convert to feet (1 cm = 0.0328084 ft)
     case HeightUnitsPickerOptions.In:
       return cm / 2.54; // Convert to inches (1 cm = 0.3937 in)
     default:
