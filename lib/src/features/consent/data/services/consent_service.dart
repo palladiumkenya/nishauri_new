@@ -32,10 +32,11 @@ class ConsentService extends HTTPService {
 
   Future<StreamedResponse> consent_(dynamic data) async {
     final id = await _repository.getUserId();
+    final userId = {"user_id": id};
     final tokenPair = await getCachedToken();
     final headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
-    var url = '${Constants.BASE_URL_NEW}/consent?user_id=$id';
-    final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, userId: id);
+    var url = '${Constants.BASE_URL_NEW}/chat_consent';
+    final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, userId: id, data: userId);
     return response;
   }
 
@@ -61,10 +62,11 @@ class ConsentService extends HTTPService {
 
   Future<StreamedResponse> revokeConsent_(dynamic args) async {
     final id = await _repository.getUserId();
+    final userId = {"user_id": id};
     final tokenPair = await getCachedToken();
     final headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
-    var url = '${Constants.BASE_URL_NEW}/revoke_consent?user_id=$id';
-    final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, userId: id);
+    var url = '${Constants.BASE_URL_NEW}/chat_consent';
+    final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, userId: id, data: userId);
     return response;
   }
 
