@@ -9,11 +9,13 @@ part of 'consent.dart';
 _$ConsentImpl _$$ConsentImplFromJson(Map<String, dynamic> json) =>
     _$ConsentImpl(
       user_id: json['user_id'] as String?,
-      isConsent: (json['isConsent'] as num).toInt(),
+      chat_consent: json['chat_consent'] as String,
+      chat_consent_date: json['chat_consent_date'] as String?,
     );
 
 Map<String, dynamic> _$$ConsentImplToJson(_$ConsentImpl instance) =>
     <String, dynamic>{
       'user_id': instance.user_id,
-      'isConsent': instance.isConsent,
+      'chat_consent': instance.chat_consent,
+      'chat_consent_date': instance.chat_consent_date,
     };

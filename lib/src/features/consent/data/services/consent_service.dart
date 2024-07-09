@@ -98,7 +98,7 @@ class ConsentService extends HTTPService {
     final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
     final headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
-    var url = '${Constants.BASE_URL_NEW}/get_consent?user_id=$id';
+    var url = '${Constants.BASE_URL_NEW}/get_chat_consent?user_id=$id';
     final response = request(url: url, token: tokenPair, method: 'GET', requestHeaders: headers, userId: id);
     return response;
   }

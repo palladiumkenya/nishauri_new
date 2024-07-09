@@ -8,7 +8,9 @@ part 'consent.g.dart';
 class Consent with _$Consent {
   const factory Consent({
     String? user_id,
-    required int isConsent,
+    required String chat_consent,
+    String? chat_consent_date,
+
   }) = _Consent;
 
   factory Consent.fromJson(Map<String, dynamic> json)=> _$ConsentFromJson(json);
