@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/custom_icons.dart';
+import 'package:nishauri/src/features/auth/presentation/widget/Terms.dart';
 import 'package:nishauri/src/features/chatbot/data/models/message.dart';
 import 'package:nishauri/src/features/chatbot/data/repository/ChatbotRepository.dart';
 import 'package:nishauri/src/features/chatbot/data/services/ChatbotService.dart';
@@ -235,12 +236,34 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       BuildContext context, WidgetRef ref, ConsentType? type) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Nuru Consent'),
-          content: Text(type == ConsentType.accept
-              ? 'Nuru is a chatbot that can assist you with your health queries. Do you consent to use Nuru?'
-              : 'Are you sure you want to revoke your consent to using the personalized version of Nuru?'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(type == ConsentType.accept
+                  ? 'Nuru is a chatbot that can assist you with your health queries. Do you consent to use Nuru?'
+                  : 'Are you sure you want to revoke your consent to using the personalized version of Nuru?'),
+              type == ConsentType.accept
+                  ? GestureDetector(
+                      onTap: () => showTermsDialog(context),
+                      // Show terms dialog on tap
+                      child: const Text(
+                        "Terms and Conditions",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          // Change color to indicate it's a link
+                          decoration: TextDecoration
+                              .underline, // Add underline to indicate it's a link
+                        ),
+                      ),
+                    )
+                  : const SizedBox(),
+            ],
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -303,7 +326,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         responseMessage = await repository.revokeConsent();
       }
       debugPrint("Consent update response: $responseMessage");
-      // Update UI based on response
     } catch (e) {
       debugPrint("Error updating consent: $e");
       // Handle error, e.g., show an error message

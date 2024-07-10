@@ -16,7 +16,7 @@ class ConsentService extends HTTPService {
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final resp = json.decode(responseString);
-        if (resp["success"] == false) {
+        if (resp["success"] == true) {
           return resp["msg"];
         } else {
           throw resp["msg"];
@@ -50,7 +50,7 @@ class ConsentService extends HTTPService {
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final resp = json.decode(responseString);
-        if (resp["success"] == false) {
+        if (resp["success"] == true) {
           return resp["msg"];
         } else {
           throw resp["msg"];
