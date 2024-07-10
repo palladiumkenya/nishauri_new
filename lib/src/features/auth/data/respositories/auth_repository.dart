@@ -47,7 +47,6 @@ class AuthRepository {
   }
 
   Future<void> savePhoneNumber(String phone) async {
-    print("Saving phone number $phone");
     await LocalStorage.save("phone", phone);
   }
 
@@ -57,7 +56,6 @@ class AuthRepository {
 
   Future<String> getUserPhoneNumber() async {
     var phone = await LocalStorage.get("phone");
-    print("getting phone number $phone");
     return phone;
   }
 
@@ -71,6 +69,56 @@ class AuthRepository {
 
   Future<bool> getIsVerified() async {
     return await LocalStorage.getIsVerified("acc");
+  }
+
+  // For Nuru
+
+  Future<void> saveAppointment(String appDate) async {
+    await LocalStorage.save("appointment_datetime", appDate);
+  }
+
+  Future<String> getAppointmentDate() async {
+    return await LocalStorage.get("appointment_datetime");
+  }
+
+  Future<void> saveGender(String gender) async {
+    await LocalStorage.save("gender", gender);
+  }
+
+  Future<String> getGender() async {
+    return await LocalStorage.get("gender");
+  }
+
+  Future<void> saveAge(String age) async {
+    await LocalStorage.save("age", age);
+  }
+
+  Future<String> getAge() async {
+    return await LocalStorage.get("age");
+  }
+
+  Future<void> saveRegimen(String regimen) async {
+    await LocalStorage.save("regimen", regimen);
+  }
+
+  Future<String> getRegimen() async {
+    return await LocalStorage.get("regimen");
+  }
+
+  Future<void> saveVL(String vl) async {
+    await LocalStorage.save("viral_load", vl);
+  }
+
+  Future<String> getVL() async {
+    return await LocalStorage.get("viral_load");
+  }
+
+  Future<void> saveVlDate(String vlDate) async {
+    await LocalStorage.save("viral_load_date", vlDate);
+  }
+
+  Future<String> getVlDate() async {
+    return await LocalStorage.get("viral_load_date");
   }
 
 }

@@ -79,12 +79,15 @@ class ConsentService extends HTTPService {
         final responseString = await response.stream.bytesToString();
         final resp = json.decode(responseString);
         if (resp["success"] == true){
-          final List<dynamic> consent = resp["data"];
-          return consent.map((e) => Consent.fromJson({
-            ...e
-          })).toList();
+          final dynamic consent = resp["data"]["user_consent"];
+          final userId = resp["data"]["user_id"];
+          final Consent consentJson = Consent.fromJson({
+            ...consent,
+            "user_id" : userId,
+          });
+          return [consentJson];
         } else {
-          throw resp["msg"];
+          throw resp["message"];
         }
       } else {
         throw "Failed to Fetch consent";
