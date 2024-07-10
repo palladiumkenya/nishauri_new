@@ -45,18 +45,18 @@ class ProfileScreen extends HookWidget {
               height: MediaQuery.of(context).size.height,
               header: user.username == 'null null' || user.username == ""
                   ? GestureDetector(
-                onTap: () {
-                  context.goNamed(RouteNames.PROFILE_EDIT_FORM);
-                },
-                child: const Text(
-                  'Update your profile',
-                  style: TextStyle(
-                    color: Colors.red,
-                    // decoration: TextDecoration.underline,
-                  ),
-                ),
-              )
-              :Text((user.name ?? "").titleCase),
+                      onTap: () {
+                        context.goNamed(RouteNames.PROFILE_EDIT_FORM);
+                      },
+                      child: const Text(
+                        'Update your profile',
+                        style: TextStyle(
+                          color: Colors.red,
+                          // decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    )
+                  : Text((user.name ?? "").titleCase),
               image: avatar,
               // user.image,
               icon: Icons.person,

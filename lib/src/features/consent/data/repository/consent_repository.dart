@@ -19,4 +19,6 @@ class ConsentRepository {
   Future<List<Consent>> getConsent() async {
     return await _service.getConsent();
   }
+
+  void when({required Null Function(dynamic consent) data, required Null Function() loading, required Null Function(dynamic error, dynamic stackTrace) error}) {}
 }
