@@ -69,7 +69,7 @@ class ChatScreen extends ConsumerStatefulWidget {
   _ChatScreenState createState() => _ChatScreenState();
 }
 
-enum ConsentType { accept,revoke }
+enum ConsentType { accept, revoke }
 
 class _ChatScreenState extends ConsumerState<ChatScreen> {
   final TextEditingController _textController = TextEditingController();
@@ -85,7 +85,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     super.initState();
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _fetchUserData(context, ref));
-    final userAsyncValue = AsyncValue.data(userProvider);
     _messages = [
       Message(
         question:
