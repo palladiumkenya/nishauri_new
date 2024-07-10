@@ -211,9 +211,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       final userAsyncValue = ref.watch(userProvider);
       userAsyncValue.when(
         data: (user) {
-          debugPrint("User data: ${user.username}");
+          debugPrint("User data: ${user.firstName}");
           setState(() {
-            currentUser = user.username as String;
+            currentUser = user.firstName as String;
             _messages = [
               Message(
                 question:
