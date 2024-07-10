@@ -7,6 +7,7 @@ import 'package:nishauri/custom_icons.dart';
 import 'package:nishauri/src/features/chatbot/data/models/message.dart';
 import 'package:nishauri/src/features/chatbot/data/repository/ChatbotRepository.dart';
 import 'package:nishauri/src/features/chatbot/data/services/ChatbotService.dart';
+import 'package:nishauri/src/features/consent/data/providers/consent_provider.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/local_storage/LocalStorage.dart';
@@ -77,22 +78,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   final ChatbotRepository _repository = ChatbotRepository(ChatbotService());
   var currentUser = "";
   bool _isBotTyping = false;
-  var consent = false;
+  bool consent = false;
   List<Message> _messages = [];
 
   @override
   void initState() {
     super.initState();
+    _fetchUserData();
+    _fetchConsent();
     WidgetsBinding.instance
-        .addPostFrameCallback((_) => _fetchUserData(context, ref));
-    _messages = [
-      Message(
-        question:
-            "Hi $currentUser 👋 \nWelcome to Nuru \nHow can I assist you today?",
-        isSentByUser: false,
-      ),
-    ];
-    debugPrint("Current User: $currentUser");
+        .addPostFrameCallback((_) => _checkAndShowConsentDialog());
   }
 
   Widget _buildMessage(Message message) {
@@ -207,9 +202,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   // function that Fetch user data
-  void _fetchUserData(BuildContext context, WidgetRef ref) {
+  void _fetchUserData() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final userAsyncValue = ref.watch(userProvider);
+      final userAsyncValue = ref.read(userProvider);
       userAsyncValue.when(
         data: (user) {
           debugPrint("User data: ${user.firstName}");
@@ -276,26 +271,45 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     });
   }
 
+  // Fetch consent from the server using consent service
+  void _fetchConsent() {
+    final consentAsyncValue = ref.read(consentProvider);
+    consentAsyncValue.then(
+      (consent) {
+        consent.when(
+          data: (consent) {
+            setState(() {
+              consent = consent;
+            });
+          },
+          loading: () {
+            debugPrint("Loading consent data...");
+          },
+          error: (error, stackTrace) {
+            debugPrint("Error loading consent data: $error");
+          },
+        );
+      },
+    );
+  }
+
+  void _checkAndShowConsentDialog() {
+    final settings = ref.read(settingsNotifierProvider);
+    if (settings.firstNuruAccess) {
+      debugPrint("Nuru first time use: ${settings.firstNuruAccess}");
+      _showConsentDialog(context, ref, ConsentType.accept);
+    } else {
+      debugPrint("Nuru first time use: ${settings.firstNuruAccess}");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = getOrientationAwareScreenSize(context);
     final theme = Theme.of(context);
     return Consumer(
       builder: (context, ref, child) {
-        final settings = ref.watch(settingsNotifierProvider);
-        if (settings.firstNuruAccess) {
-          debugPrint("Nuru first time use: ${settings.firstNuruAccess}");
-          // ref.read(settingsNotifierProvider.notifier).updateSettings(
-          //     firstNuruAccess: false);
-          // Open alert dialog to request user for consent
-          _showConsentDialog(context, ref, ConsentType.accept);
-        } else {
-          debugPrint("Nuru first time use: ${settings.firstNuruAccess}");
-        }
         return Scaffold(
-          // appBar: AppBar(
-          //   title: const Text('Chat with Nuru'),
-          // ),
           body: Stack(
             children: [
               Positioned(
@@ -318,8 +332,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           Text('Chat with Nuru 🤖',
                               style: theme.textTheme.headlineLarge),
                           const SizedBox(width: Constants.SPACING),
-                          // const FaIcon(FontAwesomeIcons.robot),
-                          // Check if user has given consent to use Nuru
                           consent
                               ? TextButton(
                                   onPressed: () {

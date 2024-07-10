@@ -1,8 +1,10 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/bmi/onboardng_step.dart';
+import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/utils/data.dart';
 
 import '../../../../shared/input/Button.dart';
@@ -43,12 +45,12 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     final screens = onboardingSteps
         .map(
           (e) => OnboardingStep(
-        title: e["title"]!,
-        icon: e["icon"]!,
-        description: e["description"]!,
-        index: int.parse(e["id"]!),
-      ),
-    )
+            title: e["title"]!,
+            icon: e["icon"]!,
+            description: e["description"]!,
+            index: int.parse(e["id"]!),
+          ),
+        )
         .toList();
 
     return Scaffold(
@@ -99,8 +101,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       "Skip",
                       style: theme.textTheme.titleLarge?.copyWith(
                           color: theme.colorScheme.primary,
-                          fontWeight: FontWeight.bold
-                      ),
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   IconButton.filledTonal(
@@ -110,8 +111,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     onPressed: _currentPageIndex >= 4
                         ? null
                         : () {
-                      _updateCurrentPageIndex(_currentPageIndex + 1);
-                    },
+                            _updateCurrentPageIndex(_currentPageIndex + 1);
+                          },
                   ),
                 ],
               ),
@@ -122,13 +123,20 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               bottom: Constants.SPACING * 2,
               child: Padding(
                 padding: const EdgeInsets.all(Constants.SPACING),
-                child: Button(
-                  backgroundColor: theme.colorScheme.primary,
-                  textColor: Colors.white,
-                  title: "Get started",
-                  surfixIcon: const FaIcon(FontAwesomeIcons.arrowRight),
-                  onPress: () {
-                    context.goNamed(RouteNames.LOGIN_SCREEN);
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    return Button(
+                      backgroundColor: theme.colorScheme.primary,
+                      textColor: Colors.white,
+                      title: "Get started",
+                      surfixIcon: const FaIcon(FontAwesomeIcons.arrowRight),
+                      onPress: () {
+                        final settings =
+                            ref.read(settingsNotifierProvider.notifier);
+                        settings.updateSettings(firstNuruAccess: true);
+                        context.goNamed(RouteNames.LOGIN_SCREEN);
+                      },
+                    );
                   },
                 ),
               ),
