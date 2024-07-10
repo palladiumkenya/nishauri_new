@@ -69,6 +69,8 @@ class ChatScreen extends ConsumerStatefulWidget {
   _ChatScreenState createState() => _ChatScreenState();
 }
 
+enum ConsentType { accept,revoke }
+
 class _ChatScreenState extends ConsumerState<ChatScreen> {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
@@ -234,14 +236,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   // Shows consent Dialog
-  void _showConsentDialog(BuildContext context, WidgetRef ref) {
+  void _showConsentDialog(
+      BuildContext context, WidgetRef ref, ConsentType? type) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Nuru Consent'),
-          content: const Text(
-              'Nuru is a chatbot that can assist you with your health queries. Do you consent to use Nuru?'),
+          content: Text(type == ConsentType.accept
+              ? 'Nuru is a chatbot that can assist you with your health queries. Do you consent to use Nuru?'
+              : 'Are you sure you want to revoke your consent to using the personalized version of Nuru?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -249,7 +253,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     .read(settingsNotifierProvider.notifier)
                     .updateSettings(firstNuruAccess: false);
                 setState(() {
-                  consent = true;
+                  consent = !consent;
                 });
                 Navigator.of(context).pop();
               },
@@ -285,7 +289,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           // ref.read(settingsNotifierProvider.notifier).updateSettings(
           //     firstNuruAccess: false);
           // Open alert dialog to request user for consent
-          _showConsentDialog(context, ref);
+          _showConsentDialog(context, ref, ConsentType.accept);
         } else {
           debugPrint("Nuru first time use: ${settings.firstNuruAccess}");
         }
@@ -320,58 +324,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           consent
                               ? TextButton(
                                   onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                              title:
-                                                  const Text('Revoke Consent'),
-                                              content: const Text(
-                                                  'Are you sure you want to revoke your consent to using the personalized version of Nuru?'),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  onPressed: () {
-                                                    setState(() =>
-                                                        (consent = false));
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text('Yes'),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text('No'),
-                                                ),
-                                              ],
-                                            ));
+                                    _showConsentDialog(
+                                        context, ref, ConsentType.revoke);
                                   },
                                   child: const Text("Revoke consent"))
                               : TextButton(
                                   onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        builder: (context) => AlertDialog(
-                                              title: const Text('Give Consent'),
-                                              content: const Text(
-                                                  'Do you consent to use Nuru with personalized responses?'),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  onPressed: () {
-                                                    setState(
-                                                        () => (consent = true));
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text('Yes'),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text('No'),
-                                                ),
-                                              ],
-                                            ));
+                                    _showConsentDialog(
+                                        context, ref, ConsentType.accept);
                                   },
                                   child: const Text("Give consent"))
                         ],
