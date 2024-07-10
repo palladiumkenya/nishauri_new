@@ -21,6 +21,9 @@ class ConsentService extends HTTPService {
         } else {
           throw resp["msg"];
         }
+      } else {
+        print('server error why?');
+        print(response.statusCode);
       }
     } catch (e) {
       throw e;
@@ -30,17 +33,21 @@ class ConsentService extends HTTPService {
 
   Future<StreamedResponse> consent_(dynamic data) async {
     final id = await _repository.getUserId();
-    final userId = {"user_id": id};
+    final userId = {'user_id': id};
     final tokenPair = await getCachedToken();
-    final headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
-    var url = '${Constants.BASE_URL_NEW}/chat_consent';
+    var headers = {
+      'Authorization': 'Bearer ${tokenPair.accessToken}',
+      'Content-Type': 'application/json',
+    };
+    var url = '${Constants.BASE_URL_NEW}chat_consent';
     final response = request(
         url: url,
         token: tokenPair,
         method: 'POST',
         requestHeaders: headers,
+        data: userId,
         userId: id,
-        data: userId);
+        );
     return response;
   }
 
@@ -55,6 +62,9 @@ class ConsentService extends HTTPService {
         } else {
           throw resp["msg"];
         }
+      } else {
+        print('server error why?');
+        print(response.statusCode);
       }
     } catch (e) {
       throw e;
@@ -66,15 +76,19 @@ class ConsentService extends HTTPService {
     final id = await _repository.getUserId();
     final userId = {"user_id": id};
     final tokenPair = await getCachedToken();
-    final headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
-    var url = '${Constants.BASE_URL_NEW}/chat_consent';
+    var headers = {
+      'Authorization': 'Bearer ${tokenPair.accessToken}',
+      'Content-Type': 'application/json',
+    };
+    var url = '${Constants.BASE_URL_NEW}chat_consent';
     final response = request(
-        url: url,
-        token: tokenPair,
-        method: 'POST',
-        requestHeaders: headers,
-        userId: id,
-        data: userId);
+      url: url,
+      token: tokenPair,
+      method: 'POST',
+      requestHeaders: headers,
+      data: userId,
+      userId: id,
+    );
     return response;
   }
 
@@ -84,17 +98,27 @@ class ConsentService extends HTTPService {
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final resp = json.decode(responseString);
-        if (resp["success"] == true) {
-          final data = resp["data"];
-          if (data is List) {
-            return data.map((e) => Consent.fromJson(e)).toList();
-          } else if (data is Map) {
-            return [Consent.fromJson(data as Map<String, dynamic>)];
-          } else {
-            throw "Unexpected data format";
-          }
+// <<<<<<< HEAD
+//         if (resp["success"] == true) {
+//           final data = resp["data"];
+//           if (data is List) {
+//             return data.map((e) => Consent.fromJson(e)).toList();
+//           } else if (data is Map) {
+//             return [Consent.fromJson(data as Map<String, dynamic>)];
+//           } else {
+//             throw "Unexpected data format";
+//           }
+// =======
+        if (resp["success"] == true){
+          final dynamic consent = resp["data"]["user_consent"];
+          final userId = resp["data"]["user_id"];
+          final Consent consentJson = Consent.fromJson({
+            ...consent,
+            "user_id" : userId,
+          });
+          return [consentJson];
         } else {
-          throw resp["msg"];
+          throw resp["message"];
         }
       } else {
         throw "Failed to fetch consent";

@@ -8,8 +8,8 @@ part 'consent.g.dart';
 class Consent with _$Consent {
   const factory Consent({
     String? user_id,
-    required String chat_consent,
-    String? chat_consent_date,
+    required String chatbot_consent,
+    String? chatbot_consent_date,
 
   }) = _Consent;
 

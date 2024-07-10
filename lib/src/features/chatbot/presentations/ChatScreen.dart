@@ -300,12 +300,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   // Fetch consent from the server using consent service
   void _fetchConsent() async {
     try {
-      final repository = await ref.read(consentProvider);
+      final repository = await ref.watch(consentProvider);
       final consentData = await repository.getConsent();
       debugPrint("Fetched consent data: $consentData");
       // Update UI based on fetched consent data
       var remoteConsent =
-          consentData.isNotEmpty ? consentData.first.chat_consent : null;
+          consentData.isNotEmpty ? consentData.first.chatbot_consent : null;
       setState(() {
         _consent = remoteConsent == "1" ? true : false;
       });

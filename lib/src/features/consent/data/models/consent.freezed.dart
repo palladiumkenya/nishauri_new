@@ -21,8 +21,8 @@ Consent _$ConsentFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Consent {
   String? get user_id => throw _privateConstructorUsedError;
-  String get chat_consent => throw _privateConstructorUsedError;
-  String? get chat_consent_date => throw _privateConstructorUsedError;
+  String get chatbot_consent => throw _privateConstructorUsedError;
+  String? get chatbot_consent_date => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +34,8 @@ abstract class $ConsentCopyWith<$Res> {
   factory $ConsentCopyWith(Consent value, $Res Function(Consent) then) =
       _$ConsentCopyWithImpl<$Res, Consent>;
   @useResult
-  $Res call({String? user_id, String chat_consent, String? chat_consent_date});
+  $Res call(
+      {String? user_id, String chatbot_consent, String? chatbot_consent_date});
 }
 
 /// @nodoc
@@ -51,21 +52,21 @@ class _$ConsentCopyWithImpl<$Res, $Val extends Consent>
   @override
   $Res call({
     Object? user_id = freezed,
-    Object? chat_consent = null,
-    Object? chat_consent_date = freezed,
+    Object? chatbot_consent = null,
+    Object? chatbot_consent_date = freezed,
   }) {
     return _then(_value.copyWith(
       user_id: freezed == user_id
           ? _value.user_id
           : user_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      chat_consent: null == chat_consent
-          ? _value.chat_consent
-          : chat_consent // ignore: cast_nullable_to_non_nullable
+      chatbot_consent: null == chatbot_consent
+          ? _value.chatbot_consent
+          : chatbot_consent // ignore: cast_nullable_to_non_nullable
               as String,
-      chat_consent_date: freezed == chat_consent_date
-          ? _value.chat_consent_date
-          : chat_consent_date // ignore: cast_nullable_to_non_nullable
+      chatbot_consent_date: freezed == chatbot_consent_date
+          ? _value.chatbot_consent_date
+          : chatbot_consent_date // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -78,7 +79,8 @@ abstract class _$$ConsentImplCopyWith<$Res> implements $ConsentCopyWith<$Res> {
       __$$ConsentImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? user_id, String chat_consent, String? chat_consent_date});
+  $Res call(
+      {String? user_id, String chatbot_consent, String? chatbot_consent_date});
 }
 
 /// @nodoc
@@ -93,21 +95,21 @@ class __$$ConsentImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? user_id = freezed,
-    Object? chat_consent = null,
-    Object? chat_consent_date = freezed,
+    Object? chatbot_consent = null,
+    Object? chatbot_consent_date = freezed,
   }) {
     return _then(_$ConsentImpl(
       user_id: freezed == user_id
           ? _value.user_id
           : user_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      chat_consent: null == chat_consent
-          ? _value.chat_consent
-          : chat_consent // ignore: cast_nullable_to_non_nullable
+      chatbot_consent: null == chatbot_consent
+          ? _value.chatbot_consent
+          : chatbot_consent // ignore: cast_nullable_to_non_nullable
               as String,
-      chat_consent_date: freezed == chat_consent_date
-          ? _value.chat_consent_date
-          : chat_consent_date // ignore: cast_nullable_to_non_nullable
+      chatbot_consent_date: freezed == chatbot_consent_date
+          ? _value.chatbot_consent_date
+          : chatbot_consent_date // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -117,7 +119,7 @@ class __$$ConsentImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ConsentImpl implements _Consent {
   const _$ConsentImpl(
-      {this.user_id, required this.chat_consent, this.chat_consent_date});
+      {this.user_id, required this.chatbot_consent, this.chatbot_consent_date});
 
   factory _$ConsentImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConsentImplFromJson(json);
@@ -125,13 +127,13 @@ class _$ConsentImpl implements _Consent {
   @override
   final String? user_id;
   @override
-  final String chat_consent;
+  final String chatbot_consent;
   @override
-  final String? chat_consent_date;
+  final String? chatbot_consent_date;
 
   @override
   String toString() {
-    return 'Consent(user_id: $user_id, chat_consent: $chat_consent, chat_consent_date: $chat_consent_date)';
+    return 'Consent(user_id: $user_id, chatbot_consent: $chatbot_consent, chatbot_consent_date: $chatbot_consent_date)';
   }
 
   @override
@@ -140,16 +142,16 @@ class _$ConsentImpl implements _Consent {
         (other.runtimeType == runtimeType &&
             other is _$ConsentImpl &&
             (identical(other.user_id, user_id) || other.user_id == user_id) &&
-            (identical(other.chat_consent, chat_consent) ||
-                other.chat_consent == chat_consent) &&
-            (identical(other.chat_consent_date, chat_consent_date) ||
-                other.chat_consent_date == chat_consent_date));
+            (identical(other.chatbot_consent, chatbot_consent) ||
+                other.chatbot_consent == chatbot_consent) &&
+            (identical(other.chatbot_consent_date, chatbot_consent_date) ||
+                other.chatbot_consent_date == chatbot_consent_date));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, user_id, chat_consent, chat_consent_date);
+      Object.hash(runtimeType, user_id, chatbot_consent, chatbot_consent_date);
 
   @JsonKey(ignore: true)
   @override
@@ -168,17 +170,17 @@ class _$ConsentImpl implements _Consent {
 abstract class _Consent implements Consent {
   const factory _Consent(
       {final String? user_id,
-      required final String chat_consent,
-      final String? chat_consent_date}) = _$ConsentImpl;
+      required final String chatbot_consent,
+      final String? chatbot_consent_date}) = _$ConsentImpl;
 
   factory _Consent.fromJson(Map<String, dynamic> json) = _$ConsentImpl.fromJson;
 
   @override
   String? get user_id;
   @override
-  String get chat_consent;
+  String get chatbot_consent;
   @override
-  String? get chat_consent_date;
+  String? get chatbot_consent_date;
   @override
   @JsonKey(ignore: true)
   _$$ConsentImplCopyWith<_$ConsentImpl> get copyWith =>
