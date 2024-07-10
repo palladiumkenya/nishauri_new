@@ -7,6 +7,7 @@ import 'package:nishauri/custom_icons.dart';
 import 'package:nishauri/src/features/chatbot/data/models/message.dart';
 import 'package:nishauri/src/features/chatbot/data/repository/ChatbotRepository.dart';
 import 'package:nishauri/src/features/chatbot/data/services/ChatbotService.dart';
+import 'package:nishauri/src/features/consent/data/models/consent.dart';
 import 'package:nishauri/src/features/consent/data/providers/consent_provider.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
@@ -78,7 +79,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   final ChatbotRepository _repository = ChatbotRepository(ChatbotService());
   var currentUser = "";
   bool _isBotTyping = false;
-  bool consent = false;
+  bool _consent = false;
   List<Message> _messages = [];
 
   @override
@@ -247,8 +248,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     .read(settingsNotifierProvider.notifier)
                     .updateSettings(firstNuruAccess: false);
                 setState(() {
-                  consent = !consent;
+                  _consent = !_consent;
                 });
+                _updateConsent(type == ConsentType.accept ? true : false);
                 Navigator.of(context).pop();
               },
               child: const Text('Yes'),
@@ -259,8 +261,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     .read(settingsNotifierProvider.notifier)
                     .updateSettings(firstNuruAccess: false);
                 setState(() {
-                  consent = false;
+                  type == ConsentType.accept ? _consent = false : _consent;
                 });
+                _updateConsent(type == ConsentType.accept ? true : false);
                 Navigator.of(context).pop();
               },
               child: const Text('No'),
@@ -272,27 +275,42 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   // Fetch consent from the server using consent service
-  void _fetchConsent() {
-    final consentAsyncValue = ref.read(consentProvider);
-    consentAsyncValue.then(
-      (consent) {
-        consent.when(
-          data: (consent) {
-            setState(() {
-              consent = consent;
-            });
-          },
-          loading: () {
-            debugPrint("Loading consent data...");
-          },
-          error: (error, stackTrace) {
-            debugPrint("Error loading consent data: $error");
-          },
-        );
-      },
-    );
+  void _fetchConsent() async {
+    try {
+      final repository = await ref.read(consentProvider);
+      final consentData = await repository.getConsent();
+      debugPrint("Fetched consent data: $consentData");
+      // Update UI based on fetched consent data
+      var remoteConsent =
+          consentData.isNotEmpty ? consentData.first.chat_consent : null;
+      setState(() {
+        _consent = remoteConsent == "1" ? true : false;
+      });
+    } catch (e) {
+      debugPrint("Error fetching consent: $e");
+      // Handle error, e.g., show an error message
+    }
   }
 
+  // Update consent to the server
+  void _updateConsent(bool consent) async {
+    try {
+      final repository = await ref.read(consentProvider);
+      String responseMessage;
+      if (consent) {
+        responseMessage = await repository.consent();
+      } else {
+        responseMessage = await repository.revokeConsent();
+      }
+      debugPrint("Consent update response: $responseMessage");
+      // Update UI based on response
+    } catch (e) {
+      debugPrint("Error updating consent: $e");
+      // Handle error, e.g., show an error message
+    }
+  }
+
+  // Check and show consent dialog for first time use
   void _checkAndShowConsentDialog() {
     final settings = ref.read(settingsNotifierProvider);
     if (settings.firstNuruAccess) {
@@ -332,7 +350,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           Text('Chat with Nuru 🤖',
                               style: theme.textTheme.headlineLarge),
                           const SizedBox(width: Constants.SPACING),
-                          consent
+                          _consent
                               ? TextButton(
                                   onPressed: () {
                                     _showConsentDialog(

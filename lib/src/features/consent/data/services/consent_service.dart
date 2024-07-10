@@ -11,10 +11,8 @@ class ConsentService extends HTTPService {
   final AuthRepository _repository = AuthRepository(AuthApiService());
 
   Future<String> consent() async {
-    try{
-      final response = await call(
-        consent_, null
-      );
+    try {
+      final response = await call(consent_, null);
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final resp = json.decode(responseString);
@@ -36,15 +34,19 @@ class ConsentService extends HTTPService {
     final tokenPair = await getCachedToken();
     final headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
     var url = '${Constants.BASE_URL_NEW}/chat_consent';
-    final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, userId: id, data: userId);
+    final response = request(
+        url: url,
+        token: tokenPair,
+        method: 'POST',
+        requestHeaders: headers,
+        userId: id,
+        data: userId);
     return response;
   }
 
   Future<String> revokeConsent() async {
-    try{
-      final response = await call(
-          revokeConsent_, null
-      );
+    try {
+      final response = await call(revokeConsent_, null);
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final resp = json.decode(responseString);
@@ -66,30 +68,38 @@ class ConsentService extends HTTPService {
     final tokenPair = await getCachedToken();
     final headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
     var url = '${Constants.BASE_URL_NEW}/chat_consent';
-    final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, userId: id, data: userId);
+    final response = request(
+        url: url,
+        token: tokenPair,
+        method: 'POST',
+        requestHeaders: headers,
+        userId: id,
+        data: userId);
     return response;
   }
 
   Future<List<Consent>> getConsent() async {
-    try{
-      final response = await call(
-        getConsent_,null
-      );
-      if (response.statusCode == 200){
+    try {
+      final response = await call(getConsent_, null);
+      if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final resp = json.decode(responseString);
-        if (resp["success"] == true){
-          final List<dynamic> consent = resp["data"];
-          return consent.map((e) => Consent.fromJson({
-            ...e
-          })).toList();
+        if (resp["success"] == true) {
+          final data = resp["data"];
+          if (data is List) {
+            return data.map((e) => Consent.fromJson(e)).toList();
+          } else if (data is Map) {
+            return [Consent.fromJson(data as Map<String, dynamic>)];
+          } else {
+            throw "Unexpected data format";
+          }
         } else {
           throw resp["msg"];
         }
       } else {
-        throw "Failed to Fetch consent";
+        throw "Failed to fetch consent";
       }
-    }catch (e) {
+    } catch (e) {
       throw e;
     }
   }
@@ -99,7 +109,12 @@ class ConsentService extends HTTPService {
     final tokenPair = await getCachedToken();
     final headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
     var url = '${Constants.BASE_URL_NEW}/get_chat_consent?user_id=$id';
-    final response = request(url: url, token: tokenPair, method: 'GET', requestHeaders: headers, userId: id);
+    final response = request(
+        url: url,
+        token: tokenPair,
+        method: 'GET',
+        requestHeaders: headers,
+        userId: id);
     return response;
   }
 }
