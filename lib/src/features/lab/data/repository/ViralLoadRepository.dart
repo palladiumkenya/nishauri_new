@@ -11,4 +11,8 @@ class ViralLoadRepository {
     final viralLoads = await _service.getViralLoads();
     return viralLoads;
   }
+
+  Future<void> saveViralLoad() async {
+    await _service.saveViralLoad();
+  }
 }

@@ -245,8 +245,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(type == ConsentType.accept
-                  ? 'Nuru is a chatbot that can assist you with your health queries. Do you consent to use Nuru?'
-                  : 'Are you sure you want to revoke your consent to using the personalized version of Nuru?'),
+                  ? 'Nuru is a chatbot that can assist you with your health queries.\nNuru is able to personalize your responses.\nDo you consent for Nuru to use your data for personalized responses?'
+                  : 'Are you sure you want to revoke your consent for personalized response by Nuru?'),
               type == ConsentType.accept
                   ? GestureDetector(
                       onTap: () => showTermsDialog(context),
@@ -305,7 +305,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       debugPrint("Fetched consent data: $consentData");
       // Update UI based on fetched consent data
       var remoteConsent =
-          consentData.isNotEmpty ? consentData.first.chat_consent : null;
+          consentData.isNotEmpty ? consentData.first.chatbot_consent : null;
       setState(() {
         _consent = remoteConsent == "1" ? true : false;
       });
