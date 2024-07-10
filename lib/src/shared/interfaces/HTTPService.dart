@@ -89,10 +89,6 @@ abstract class HTTPService {
     request.headers.addAll(headers);
     if (data != null) request.body = jsonEncode(data);
     StreamedResponse response = await request.send();
-    print(url);
-    print(request.headers);
-    print(request.body);
-    print(response.statusCode);
     if (response.statusCode == 401) {
       final authResponse = await refreshTokenAndCash(token.refreshToken, userId);
       headers = {'Authorization': "Bearer ${authResponse.accessToken}",

@@ -22,8 +22,6 @@ class ConsentService extends HTTPService {
           throw resp["msg"];
         }
       } else {
-        print('server error why?');
-        print(response.statusCode);
       }
     } catch (e) {
       throw e;
