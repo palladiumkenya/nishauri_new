@@ -372,21 +372,27 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           Text('Chat with Nuru 🤖',
                               style: theme.textTheme.headlineLarge),
                           const SizedBox(width: Constants.SPACING),
-                          _consent
-                              ? TextButton(
-                                  onPressed: () {
-                                    _showConsentDialog(
-                                        context, ref, ConsentType.revoke);
-                                  },
-                                  child: const Text("Revoke consent"))
-                              : TextButton(
-                                  onPressed: () {
-                                    _showConsentDialog(
-                                        context, ref, ConsentType.accept);
-                                  },
-                                  child: const Text("Give consent"))
                         ],
                       ),
+                    ),
+                    Flex(
+                      direction: Axis.horizontal,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        _consent
+                            ? TextButton(
+                                onPressed: () {
+                                  _showConsentDialog(
+                                      context, ref, ConsentType.revoke);
+                                },
+                                child: const Text("Revoke consent"))
+                            : TextButton(
+                                onPressed: () {
+                                  _showConsentDialog(
+                                      context, ref, ConsentType.accept);
+                                },
+                                child: const Text("Give consent"))
+                      ],
                     ),
                     const Divider(),
                     Expanded(

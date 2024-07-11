@@ -191,7 +191,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               (_) {
                                 settings.patchSettings(
                                   firstTimeInstallation: false,
-                                  // firstNuruAccess: true,
                                 );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -237,11 +236,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 10.0,
                   ),
-                  Text(
-                    'App Version: $_appVersion',
-                    style: theme.textTheme.titleSmall!
-                        .copyWith(color: Constants.labResultsColor),
-                  ),
+                  Text('App Version: $_appVersion',
+                      style: theme.textTheme.titleSmall!
+                      // .copyWith(color: Constants.labResultsColor),
+                      ),
                 ],
               ),
             ),
