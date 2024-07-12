@@ -16,10 +16,10 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
 
   Future<void> loadAuthState() async {
     try {
-      // final verified = await _repository.getIsVerified();
-      // final user = await _userRepository.getUser();
+      final verified = await _repository.getIsVerified();
+      final user = await _userRepository.getUser();
       state = AsyncValue.data(AuthState(
-        isAccountVerified: true,
+        isAccountVerified: verified,
         isProfileComplete: true,
         // isAccountVerified: true,
         // isProfileComplete: true,

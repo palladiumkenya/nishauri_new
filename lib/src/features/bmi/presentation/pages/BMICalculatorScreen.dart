@@ -153,11 +153,45 @@ class BMICalculatorScreen extends HookWidget {
                         disabled: isPregnant.value,
                         backgroundColor: activeColor,
                         textColor: theme.canvasColor,
-                        onPress: () {
-                          final bmi = calculateBMI(height.value, weight.value);
-                          context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS,
-                              extra: bmi);
-                        },
+                        onPress: () {             
+                          // final bmi = calculateBMI(height.value, weight.value);
+                          // context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS,
+                          //     extra: bmi);
+                          showDialog<bool>(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text("Calculate BMI"),
+                              content: const Text("Are you calculating BMI for yourself or someone else?"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false); 
+                                  },
+                                  child: const Text("Someone Else"),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(true); 
+                                  },
+                                  child: const Text("Myself"),
+                                ),
+                              ],
+                            ),
+                          ).then((isForSelf) {
+                            final bmi = calculateBMI(height.value, weight.value);
+                            if (isForSelf != null) {
+                              if (isForSelf) {
+                                saveBMI(bmi).then((_) {
+                                  
+                                  context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
+                                });
+                              } else {
+                                context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
+                              }
+                            }
+                          }
+                          );
+                          }         
                       ),
                       const SizedBox(height: Constants.SPACING),
                     ],
@@ -171,3 +205,11 @@ class BMICalculatorScreen extends HookWidget {
     );
   }
 }
+
+//Awaiting Endpoints
+Future<void> saveBMI(double bmi) async {
+      // Will add logic to save the BMI to the endpoint when provided
+      print("Saving BMI $bmi to the endpoint...");
+      // await MyApiService.saveBMI(bmi);
+    }
+
