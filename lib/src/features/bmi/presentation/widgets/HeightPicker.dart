@@ -53,6 +53,7 @@ class HeightPicker extends StatelessWidget {
           ),
           Slider(
             value: height,
+            
             min: min!,
             max: max!,
             onChanged: onHeightChange,
