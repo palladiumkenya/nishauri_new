@@ -40,4 +40,25 @@ class ViralLoadService extends HTTPService {
     // request.headers.addAll(headers);
     // return await request.send();
   }
+
+  Future<void> saveViralLoad() async {
+    try{
+      final resp = await call(getViralLoads_, null);
+      if (resp.statusCode == 200) {
+        final responseString = await resp.stream.bytesToString();
+        final respData = json.decode(responseString);
+        if (respData["success"] == true){
+          var msgList = List.from(respData['msg']);
+          msgList.sort((a, b) => DateTime.parse(b['date']).compareTo(DateTime.parse(a['date'])));
+          var latestResult = msgList.first;
+          var viralLoad = latestResult["result"];
+          var vlDate = latestResult["date"];
+          await _repository.saveVL(viralLoad);
+          await _repository.saveVlDate(vlDate);
+        }
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
 }

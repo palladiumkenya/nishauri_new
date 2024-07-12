@@ -18,7 +18,7 @@ class WelcomeScreen extends ConsumerWidget {
     final screenSize = MediaQuery.of(context).size;
     final settings = ref.watch(settingsNotifierProvider);
 
-    if(settings.firstTimeInstallation) {
+    if (settings.firstTimeInstallation) {
       return const OnboardingScreen();
     }
 

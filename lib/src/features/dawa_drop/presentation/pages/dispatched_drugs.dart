@@ -1,11 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/dawa_drop/data/models/order_request/drug_order.dart';
 import 'package:nishauri/src/features/dawa_drop/data/providers/drug_order_provider.dart';
+import 'package:nishauri/src/local_storage/LocalStorage.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
+import 'package:nishauri/src/shared/interfaces/notification_service.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
@@ -21,8 +25,12 @@ class DispatchedDrugs extends ConsumerWidget {
       data: (data) {
         List<DrugOrder> allOrders = data;
         List<DrugOrder> dispatchedOrders =
-        allOrders.where((order) => order.status == 'Dispatched').toList();
+            allOrders.where((order) => order.status == 'Dispatched').toList();
+        _saveAndSubscribeToDispatchedOrders(dispatchedOrders);
 
+        // Subscribe to dispatched orders
+        NotificationService.subscribeToTopic(
+            dispatchedOrders, SubscriptionType.drugDeliveryDispatched);
         if (dispatchedOrders.isEmpty) {
           return Scaffold(
             body: BackgroundImageWidget(
@@ -54,47 +62,58 @@ class DispatchedDrugs extends ConsumerWidget {
                           ListTile(
                             title: Card(
                               child: Padding(
-                                padding: const EdgeInsets.all(Constants.SPACING),
+                                padding:
+                                    const EdgeInsets.all(Constants.SPACING),
                                 child: Row(
                                   children: [
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Row(
                                             children: [
                                               Icon(
                                                 Icons.calendar_month_outlined,
-                                                color: Constants.dawaDropColor.withOpacity(0.5),
+                                                color: Constants.dawaDropColor
+                                                    .withOpacity(0.5),
                                               ),
-                                              const SizedBox(width: Constants.SPACING),
+                                              const SizedBox(
+                                                  width: Constants.SPACING),
                                               Text(
                                                 'Appointment: ${DateFormat("dd MMM yyy").format(DateTime.parse(order.appointment?.appointment_date ?? ''))}',
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: Constants.SPACING),
+                                          const SizedBox(
+                                              height: Constants.SPACING),
                                           Row(
                                             children: [
                                               Icon(
                                                 Icons.calendar_month_outlined,
-                                                color: Constants.dawaDropColor.withOpacity(0.5),
+                                                color: Constants.dawaDropColor
+                                                    .withOpacity(0.5),
                                               ),
-                                              const SizedBox(width: Constants.SPACING),
+                                              const SizedBox(
+                                                  width: Constants.SPACING),
                                               Text(
                                                 'Dispatched: ${DateFormat("dd MMM yyy").format(DateTime.parse(order.dispatched_date ?? ''))}',
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: Constants.SPACING),
+                                          const SizedBox(
+                                              height: Constants.SPACING),
                                           Row(
                                             children: [
                                               Icon(
                                                 Icons.rotate_left_outlined,
-                                                color: Constants.dawaDropColor.withOpacity(0.5),
+                                                color: Constants.dawaDropColor
+                                                    .withOpacity(0.5),
                                               ),
-                                              const SizedBox(width: Constants.SPACING),
-                                              Text('Order Status: ${order.status ?? ''}'),
+                                              const SizedBox(
+                                                  width: Constants.SPACING),
+                                              Text(
+                                                  'Order Status: ${order.status ?? ''}'),
                                             ],
                                           ),
                                         ],
@@ -102,7 +121,8 @@ class DispatchedDrugs extends ConsumerWidget {
                                     ),
                                     Container(
                                       decoration: BoxDecoration(
-                                        color: theme.primaryColor.withOpacity(0.5),
+                                        color:
+                                            theme.primaryColor.withOpacity(0.5),
                                         shape: BoxShape.rectangle,
                                         borderRadius: BorderRadius.circular(10),
                                       ),
@@ -160,4 +180,23 @@ class DispatchedDrugs extends ConsumerWidget {
       ),
     );
   }
+
+  Future<void> _saveAndSubscribeToDispatchedOrders(
+      List<DrugOrder> dispatchedOrders) async {
+    String dispatchedOrdersJson =
+        jsonEncode(dispatchedOrders.map((order) => order.toJson()).toList());
+    await LocalStorage.save('dispatched_orders', dispatchedOrdersJson);
+
+    // Retrieve dispatched orders from local storage
+    String? cachedDispatchedOrdersJson =
+        await LocalStorage.get('dispatched_orders');
+
+    List<DrugOrder> cachedDispatchedOrders =
+        (jsonDecode(cachedDispatchedOrdersJson) as List)
+            .map((orderJson) => DrugOrder.fromJson(orderJson))
+            .toList();
+
+    NotificationService.subscribeToTopic(
+        cachedDispatchedOrders, SubscriptionType.drugDeliveryDispatched);
+    }
 }

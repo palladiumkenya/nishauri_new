@@ -31,4 +31,8 @@ class UserRepository {
     return response;
   }
 
+  Future<void> saveGenderAge() async {
+    await _service.saveGenderAge();
+  }
+
 }

@@ -10,4 +10,8 @@ class ProgramRepository {
     final programs = await _service.getPrograms();
     return programs;
   }
+
+  Future<void> saveRegimen() async {
+    await _service.saveRegimen();
+  }
 }

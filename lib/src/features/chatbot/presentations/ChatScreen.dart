@@ -1,12 +1,18 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nishauri/custom_icons.dart';
+import 'package:nishauri/src/features/auth/presentation/widget/Terms.dart';
 import 'package:nishauri/src/features/chatbot/data/models/message.dart';
 import 'package:nishauri/src/features/chatbot/data/repository/ChatbotRepository.dart';
 import 'package:nishauri/src/features/chatbot/data/services/ChatbotService.dart';
+import 'package:nishauri/src/features/consent/data/models/consent.dart';
+import 'package:nishauri/src/features/consent/data/providers/consent_provider.dart';
+import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
+import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
+import 'package:nishauri/src/local_storage/LocalStorage.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 
@@ -58,7 +64,7 @@ class _TypingAnimationState extends State<TypingAnimation>
   }
 }
 
-class ChatScreen extends StatefulWidget {
+class ChatScreen extends ConsumerStatefulWidget {
   final Function(int chatsCount)? onChatsChange;
   const ChatScreen({Key? key, this.onChatsChange}) : super(key: key);
 
@@ -66,18 +72,25 @@ class ChatScreen extends StatefulWidget {
   _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+enum ConsentType { accept, revoke }
+
+class _ChatScreenState extends ConsumerState<ChatScreen> {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final ChatbotRepository _repository = ChatbotRepository(ChatbotService());
-
-  final List<Message> _messages = [
-    const Message(
-      question: "Welcome to Nuru \nHow can I assist you today?",
-      isSentByUser: false,
-    ),
-  ];
+  var currentUser = "";
   bool _isBotTyping = false;
+  bool _consent = false;
+  List<Message> _messages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+    _fetchConsent();
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _checkAndShowConsentDialog());
+  }
 
   Widget _buildMessage(Message message) {
     IconData userIcon = message.isSentByUser ? Icons.person : CustomIcons.robot;
@@ -190,62 +203,215 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  // function that Fetch user data
+  void _fetchUserData() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userAsyncValue = ref.read(userProvider);
+      userAsyncValue.when(
+        data: (user) {
+          debugPrint("User data: ${user.firstName}");
+          setState(() {
+            currentUser = user.firstName as String;
+            _messages = [
+              Message(
+                question:
+                    "Hi $currentUser 👋 \nWelcome to Nuru \nHow can I assist you today?",
+                isSentByUser: false,
+              ),
+            ];
+          });
+        },
+        loading: () {
+          debugPrint("Loading user data...");
+        },
+        error: (error, stackTrace) {
+          debugPrint("Error loading user data: $error");
+        },
+      );
+    });
+  }
+
+  // Shows consent Dialog
+  void _showConsentDialog(
+      BuildContext context, WidgetRef ref, ConsentType? type) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Nuru Consent'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(type == ConsentType.accept
+                  ? 'Nuru is a chatbot that can assist you with your health queries.\nNuru is able to personalize your responses.\nDo you consent for Nuru to use your data for personalized responses?'
+                  : 'Are you sure you want to revoke your consent for personalized response by Nuru?'),
+              type == ConsentType.accept
+                  ? GestureDetector(
+                      onTap: () => showTermsDialog(context),
+                      // Show terms dialog on tap
+                      child: const Text(
+                        "Terms and Conditions",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          // Change color to indicate it's a link
+                          decoration: TextDecoration
+                              .underline, // Add underline to indicate it's a link
+                        ),
+                      ),
+                    )
+                  : const SizedBox(),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                ref
+                    .read(settingsNotifierProvider.notifier)
+                    .updateSettings(firstNuruAccess: false);
+                setState(() {
+                  _consent = !_consent;
+                });
+                _updateConsent(type == ConsentType.accept ? true : false);
+                Navigator.of(context).pop();
+              },
+              child: const Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () {
+                ref
+                    .read(settingsNotifierProvider.notifier)
+                    .updateSettings(firstNuruAccess: false);
+                setState(() {
+                  type == ConsentType.accept ? _consent = false : _consent;
+                });
+                _updateConsent(type == ConsentType.accept ? true : false);
+                Navigator.of(context).pop();
+              },
+              child: const Text('No'),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
+  // Fetch consent from the server using consent service
+  void _fetchConsent() async {
+    try {
+      final repository = await ref.read(consentProvider);
+      final consentData = await repository.getConsent();
+      debugPrint("Fetched consent data: $consentData");
+      // Update UI based on fetched consent data
+      var remoteConsent =
+          consentData.isNotEmpty ? consentData.first.chatbot_consent : null;
+      setState(() {
+        _consent = remoteConsent == "1" ? true : false;
+      });
+    } catch (e) {
+      debugPrint("Error fetching consent: $e");
+      // Handle error, e.g., show an error message
+    }
+  }
+
+  // Update consent to the server
+  void _updateConsent(bool consent) async {
+    try {
+      final repository = await ref.read(consentProvider);
+      String responseMessage;
+      if (consent) {
+        responseMessage = await repository.consent();
+      } else {
+        responseMessage = await repository.revokeConsent();
+      }
+      debugPrint("Consent update response: $responseMessage");
+    } catch (e) {
+      debugPrint("Error updating consent: $e");
+      // Handle error, e.g., show an error message
+    }
+  }
+
+  // Check and show consent dialog for first time use
+  void _checkAndShowConsentDialog() {
+    final settings = ref.read(settingsNotifierProvider);
+    if (settings.firstNuruAccess) {
+      debugPrint("Nuru first time use: ${settings.firstNuruAccess}");
+      _showConsentDialog(context, ref, ConsentType.accept);
+    } else {
+      debugPrint("Nuru first time use: ${settings.firstNuruAccess}");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = getOrientationAwareScreenSize(context);
     final theme = Theme.of(context);
-    return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Chat with Nuru'),
-      // ),
-      body: Stack(
-        children: [
-          Positioned(
-              top: 0,
-              right: 0,
-              child: SvgPicture.asset(
-                "assets/images/rect-bg.svg",
-                semanticsLabel: "Doctors",
-                fit: BoxFit.contain,
-                height: size.width * 0.55,
-                width: size.width * 0.55,
-              )),
-          SafeArea(
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(Constants.SPACING),
-                  child: Row(
-                    children: [
-                      Text('Chat with Nuru 🤖',
-                          style: theme.textTheme.headlineLarge),
-                      const SizedBox(width: Constants.SPACING),
-                      // const FaIcon(FontAwesomeIcons.robot),
-                    ],
-                  ),
+    return Consumer(
+      builder: (context, ref, child) {
+        return Scaffold(
+          body: Stack(
+            children: [
+              Positioned(
+                  top: 0,
+                  right: 0,
+                  child: SvgPicture.asset(
+                    "assets/images/rect-bg.svg",
+                    semanticsLabel: "Doctors",
+                    fit: BoxFit.contain,
+                    height: size.width * 0.55,
+                    width: size.width * 0.55,
+                  )),
+              SafeArea(
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(Constants.SPACING),
+                      child: Row(
+                        children: [
+                          Text('Chat with Nuru 🤖',
+                              style: theme.textTheme.headlineLarge),
+                          const SizedBox(width: Constants.SPACING),
+                          _consent
+                              ? TextButton(
+                                  onPressed: () {
+                                    _showConsentDialog(
+                                        context, ref, ConsentType.revoke);
+                                  },
+                                  child: const Text("Revoke consent"))
+                              : TextButton(
+                                  onPressed: () {
+                                    _showConsentDialog(
+                                        context, ref, ConsentType.accept);
+                                  },
+                                  child: const Text("Give consent"))
+                        ],
+                      ),
+                    ),
+                    const Divider(),
+                    Expanded(
+                      child: ListView.builder(
+                        controller: _scrollController,
+                        itemCount: _messages.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final Message message = _messages[index];
+                          return _buildMessage(message);
+                        },
+                      ),
+                    ),
+                    _isBotTyping
+                        ? Padding(
+                            padding: const EdgeInsets.all(Constants.SPACING),
+                            child: TypingAnimation(), // Bot typing indicator
+                          )
+                        : _buildComposer(),
+                  ],
                 ),
-                const Divider(),
-                Expanded(
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: _messages.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final Message message = _messages[index];
-                      return _buildMessage(message);
-                    },
-                  ),
-                ),
-                _isBotTyping
-                    ? Padding(
-                        padding: const EdgeInsets.all(Constants.SPACING),
-                        child: TypingAnimation(), // Bot typing indicator
-                      )
-                    : _buildComposer(),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -269,10 +435,6 @@ class _ChatScreenState extends State<ChatScreen> {
             hintText: hintText,
             suffixIcon: Wrap(
               children: [
-                // IconButton(
-                //   onPressed: () {},
-                //   icon: const FaIcon(FontAwesomeIcons.microphoneLines),
-                // ),
                 IconButton(
                   icon: SvgPicture.asset(
                     "assets/images/Send.svg",

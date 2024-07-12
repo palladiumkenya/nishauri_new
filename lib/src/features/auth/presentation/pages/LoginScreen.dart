@@ -24,7 +24,6 @@ Future<String> version() async {
   return version;
 }
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -59,7 +58,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     var theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -179,17 +177,22 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                             final authNotifier =
                                 ref.read(authStateProvider.notifier);
-                            final settings = ref.read(settingsNotifierProvider.notifier);
-                            var version = {"app_version" : _appVersion};
-                            var mergedData = {..._formKey.currentState!.value, ...version};
-                            authNotifier
-                                .login(mergedData)
-                                .then((_) {
+                            final settings =
+                                ref.read(settingsNotifierProvider.notifier);
+                            var version = {"app_version": _appVersion};
+                            var mergedData = {
+                              ..._formKey.currentState!.value,
+                              ...version
+                            };
+                            authNotifier.login(mergedData).then((_) {
                               //     Update user state
                               ref.read(userProvider.notifier).getUser();
                             }).then(
                               (_) {
-                                settings.patchSettings(firstTimeInstallation: false);
+                                settings.patchSettings(
+                                  firstTimeInstallation: false,
+                                  // firstNuruAccess: true,
+                                );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Login successful!'),
@@ -231,9 +234,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10.0,),
-                  Text('App Version: $_appVersion',
-                    style: theme.textTheme.titleSmall!.copyWith(color: Constants.labResultsColor),),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Text(
+                    'App Version: $_appVersion',
+                    style: theme.textTheme.titleSmall!
+                        .copyWith(color: Constants.labResultsColor),
+                  ),
                 ],
               ),
             ),

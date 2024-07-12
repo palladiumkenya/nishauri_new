@@ -122,6 +122,42 @@ class UserService extends HTTPService {
     return response;
   }
 
+  int calculateAge(String dob) {
+    if (dob.isEmpty) return 0;
+    DateTime dateOfBirth = DateTime.parse(dob);
+    DateTime now = DateTime.now();
+
+    int age = now.year - dateOfBirth.year;
+
+    if (now.month < dateOfBirth.month ||
+        (now.month == dateOfBirth.month && now.day < dateOfBirth.day)) {
+      age--;
+    }
+
+    return age;
+  }
+
+
+  Future<void> saveGenderAge() async {
+    try{
+      final resp = await call(getUser_, null);
+      if (resp.statusCode == 200) {
+        final responseString = await resp.stream.bytesToString();
+        final respData = json.decode(responseString);
+        if (respData["success"] == true) {
+          final gender = respData["data"]["profile"]["gender"];
+          final dob = respData["data"]["profile"]["dob"];
+          await _repository.saveGender(gender);
+          await _repository.saveAge(calculateAge(dob).toString());
+        }
+        else{
+          throw respData["msg"];
+        }
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
   Future<String> accountVerify(Map<String, dynamic> data) async {
     http.StreamedResponse response = await call(accountVerify_, data);
     String message = '';
