@@ -4,8 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/custom_icons.dart';
+import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
+import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
 import 'package:nishauri/src/features/auth/presentation/widget/Terms.dart';
 import 'package:nishauri/src/features/chatbot/data/models/message.dart';
+import 'package:nishauri/src/features/chatbot/data/models/personal_info.dart';
 import 'package:nishauri/src/features/chatbot/data/repository/ChatbotRepository.dart';
 import 'package:nishauri/src/features/chatbot/data/services/ChatbotService.dart';
 import 'package:nishauri/src/features/consent/data/models/consent.dart';
@@ -157,9 +160,23 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   void _handleSubmit(String text) async {
+    final AuthRepository authRepository = AuthRepository(AuthApiService());
+    final repository = await ref.read(consentProvider);
+    final consentData = await repository.getConsent();
+    final gender = await authRepository.getGender();
+    final age = await authRepository.getAge();
+    final appointment = await authRepository.getAppointmentDate();
+    final regimen = await authRepository.getRegimen();
+    final vl = await authRepository.getVL();
+    final vlDate = await authRepository.getVlDate();
+    var userConsent =
+    consentData.isNotEmpty ? consentData.first.chatbot_consent : null;
+    final consent = userConsent == "1" ? "Yes" : "No";
     if (text.isEmpty) return;
     _textController.clear();
-    Message message = Message(question: text, isSentByUser: true);
+    PersonalInfo personalInfo = PersonalInfo(gender: gender, age: int.parse(age), regimen: regimen,
+      appointment_datetime: appointment, viral_load: vl, viral_load_datetime: vlDate);
+    Message message = Message(question: text, isSentByUser: true,personal_info: personalInfo, consent: consent);
     setState(() {
       _messages.add(message);
       _isBotTyping = true; // Bot starts typing when user sends a message
@@ -372,6 +389,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           Text('Chat with Nuru 🤖',
                               style: theme.textTheme.headlineLarge),
                           const SizedBox(width: Constants.SPACING),
+                          _consent
+                              ? TextButton(
+                                  onPressed: () {
+                                    _showConsentDialog(
+                                        context, ref, ConsentType.revoke);
+                                  },
+                                  child: const Text("Revoke consent", style: TextStyle(color: Colors.red),))
+                              : TextButton(
+                                  onPressed: () {
+                                    _showConsentDialog(
+                                        context, ref, ConsentType.accept);
+                                  },
+                                  child: const Text("Give consent"))
                         ],
                       ),
                     ),
@@ -385,7 +415,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                   _showConsentDialog(
                                       context, ref, ConsentType.revoke);
                                 },
-                                child: const Text("Revoke consent"))
+                                child: const Text("Revoke consent", style: TextStyle(color: Colors.red)))
                             : TextButton(
                                 onPressed: () {
                                   _showConsentDialog(
