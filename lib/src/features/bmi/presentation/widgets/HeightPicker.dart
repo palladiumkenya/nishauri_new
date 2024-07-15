@@ -4,6 +4,8 @@ import 'package:nishauri/src/features/bmi/presentation/widgets/HeightUnitsPicker
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
+
+
 class HeightPicker extends StatelessWidget {
   final double height;
   final double? min;
@@ -46,8 +48,10 @@ class HeightPicker extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(Constants.SPACING),
+            
+
             child: Text(
-              convertFromCmTo(heightUnits, height),
+              convertFromCmTo(heightUnits, height).toString(),
               style: theme.textTheme.displayLarge,
             ),
           ),

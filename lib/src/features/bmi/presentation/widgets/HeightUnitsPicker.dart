@@ -1,20 +1,40 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 enum HeightUnitsPickerOptions { Cm, Ft, In }
 
 
-String convertFromCmTo(HeightUnitsPickerOptions units, double cm) {
+// String convertFromCmTo(HeightUnitsPickerOptions units, double cm) {
+//   switch (units) {
+//     case HeightUnitsPickerOptions.Ft:
+//       int totalInches = (cm / 2.54).round();
+//       int feet = totalInches ~/ 12;
+//       int inches = totalInches % 12;
+//       return '$feet\' ${inches.toStringAsFixed(4)}"';
+//     case HeightUnitsPickerOptions.In:
+//       return (cm / 2.54).toStringAsFixed(4);
+//     default:
+//       return cm.toStringAsFixed(4);
+//   }
+// }
+
+double truncateDouble(double value, int decimals) {
+  num mod = pow(10.0, decimals);
+  return ((value * mod).truncateToDouble() / mod);
+  }
+
+double convertFromCmTo(HeightUnitsPickerOptions units, double cm) {
   switch (units) {
     case HeightUnitsPickerOptions.Ft:
-      int totalInches = (cm / 2.54).round();
-      int feet = totalInches ~/ 12;
-      int inches = totalInches % 12;
-      return '$feet\' $inches"';
+      double feet = cm / 30.48;
+      return truncateDouble(feet, 1); // Convert to feet (1 cm = 0.0328 ft)
     case HeightUnitsPickerOptions.In:
-      return (cm / 2.54).toStringAsFixed(1);
+      double inches = cm / 2.54;
+      return truncateDouble(inches, 1); // Convert to inches (1 cm = 0.3937 in)
     default:
-      return cm.toStringAsFixed(1);
+      return truncateDouble(cm, 1); // No conversion needed for centimeters
   }
 }
 
