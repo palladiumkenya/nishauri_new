@@ -133,7 +133,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       onPress: () {
                         final settings =
                             ref.read(settingsNotifierProvider.notifier);
-                        settings.updateSettings(firstNuruAccess: true);
+                        settings.updateSettings(
+                            firstNuruAccess: true,
+                            firstTimeInstallation: false);
                         context.goNamed(RouteNames.LOGIN_SCREEN);
                       },
                     );
