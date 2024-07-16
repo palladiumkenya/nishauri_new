@@ -51,7 +51,7 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
         isActive: currentStep.value == 0,
       ),
       Step(
-        title: const Text("Personal Information"),
+        title: const Text("Personal Information **"),
         subtitle: const Text(
           "Provide basic personal details for a comprehensive profile.",
         ),

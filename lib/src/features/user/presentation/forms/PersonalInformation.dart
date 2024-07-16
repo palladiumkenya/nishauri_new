@@ -106,6 +106,10 @@ class _PersonalInformationState extends State<PersonalInformation> {
                 ]),
                 items: const [
                   DropdownMenuItem(
+                    value: "Female",
+                    child: Text("Select gender"),
+                  ),
+                  DropdownMenuItem(
                     value: "Male",
                     child: Text("Male"),
                   ),

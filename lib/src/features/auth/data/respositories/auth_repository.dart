@@ -74,6 +74,7 @@ class AuthRepository {
   // For Nuru
 
   Future<void> saveAppointment(String appDate) async {
+    print(' saving user ID: $appDate');
     await LocalStorage.save("appointment_datetime", appDate);
   }
 
@@ -82,6 +83,7 @@ class AuthRepository {
   }
 
   Future<void> saveGender(String gender) async {
+    print(' saving user ID: $gender');
     await LocalStorage.save("gender", gender);
   }
 
@@ -90,6 +92,7 @@ class AuthRepository {
   }
 
   Future<void> saveAge(String age) async {
+    print(' saving user ID: $age');
     await LocalStorage.save("age", age);
   }
 
@@ -98,6 +101,7 @@ class AuthRepository {
   }
 
   Future<void> saveRegimen(String regimen) async {
+    print(' saving user ID: $regimen');
     await LocalStorage.save("regimen", regimen);
   }
 
@@ -106,6 +110,7 @@ class AuthRepository {
   }
 
   Future<void> saveVL(String vl) async {
+    print(' saving user ID: $vl');
     await LocalStorage.save("viral_load", vl);
   }
 
@@ -114,6 +119,7 @@ class AuthRepository {
   }
 
   Future<void> saveVlDate(String vlDate) async {
+    print(' saving user ID: $vlDate');
     await LocalStorage.save("viral_load_date", vlDate);
   }
 

@@ -22,6 +22,8 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
 mixin _$Message {
   String get question => throw _privateConstructorUsedError;
   bool get isSentByUser => throw _privateConstructorUsedError;
+  PersonalInfo? get personal_info => throw _privateConstructorUsedError;
+  String? get consent => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -33,7 +35,13 @@ abstract class $MessageCopyWith<$Res> {
   factory $MessageCopyWith(Message value, $Res Function(Message) then) =
       _$MessageCopyWithImpl<$Res, Message>;
   @useResult
-  $Res call({String question, bool isSentByUser});
+  $Res call(
+      {String question,
+      bool isSentByUser,
+      PersonalInfo? personal_info,
+      String? consent});
+
+  $PersonalInfoCopyWith<$Res>? get personal_info;
 }
 
 /// @nodoc
@@ -51,6 +59,8 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
   $Res call({
     Object? question = null,
     Object? isSentByUser = null,
+    Object? personal_info = freezed,
+    Object? consent = freezed,
   }) {
     return _then(_value.copyWith(
       question: null == question
@@ -61,7 +71,27 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
           ? _value.isSentByUser
           : isSentByUser // ignore: cast_nullable_to_non_nullable
               as bool,
+      personal_info: freezed == personal_info
+          ? _value.personal_info
+          : personal_info // ignore: cast_nullable_to_non_nullable
+              as PersonalInfo?,
+      consent: freezed == consent
+          ? _value.consent
+          : consent // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $PersonalInfoCopyWith<$Res>? get personal_info {
+    if (_value.personal_info == null) {
+      return null;
+    }
+
+    return $PersonalInfoCopyWith<$Res>(_value.personal_info!, (value) {
+      return _then(_value.copyWith(personal_info: value) as $Val);
+    });
   }
 }
 
@@ -72,7 +102,14 @@ abstract class _$$MessageImplCopyWith<$Res> implements $MessageCopyWith<$Res> {
       __$$MessageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String question, bool isSentByUser});
+  $Res call(
+      {String question,
+      bool isSentByUser,
+      PersonalInfo? personal_info,
+      String? consent});
+
+  @override
+  $PersonalInfoCopyWith<$Res>? get personal_info;
 }
 
 /// @nodoc
@@ -88,6 +125,8 @@ class __$$MessageImplCopyWithImpl<$Res>
   $Res call({
     Object? question = null,
     Object? isSentByUser = null,
+    Object? personal_info = freezed,
+    Object? consent = freezed,
   }) {
     return _then(_$MessageImpl(
       question: null == question
@@ -98,6 +137,14 @@ class __$$MessageImplCopyWithImpl<$Res>
           ? _value.isSentByUser
           : isSentByUser // ignore: cast_nullable_to_non_nullable
               as bool,
+      personal_info: freezed == personal_info
+          ? _value.personal_info
+          : personal_info // ignore: cast_nullable_to_non_nullable
+              as PersonalInfo?,
+      consent: freezed == consent
+          ? _value.consent
+          : consent // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -105,7 +152,11 @@ class __$$MessageImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$MessageImpl implements _Message {
-  const _$MessageImpl({required this.question, required this.isSentByUser});
+  const _$MessageImpl(
+      {required this.question,
+      required this.isSentByUser,
+      this.personal_info,
+      this.consent});
 
   factory _$MessageImpl.fromJson(Map<String, dynamic> json) =>
       _$$MessageImplFromJson(json);
@@ -114,10 +165,14 @@ class _$MessageImpl implements _Message {
   final String question;
   @override
   final bool isSentByUser;
+  @override
+  final PersonalInfo? personal_info;
+  @override
+  final String? consent;
 
   @override
   String toString() {
-    return 'Message(question: $question, isSentByUser: $isSentByUser)';
+    return 'Message(question: $question, isSentByUser: $isSentByUser, personal_info: $personal_info, consent: $consent)';
   }
 
   @override
@@ -128,12 +183,16 @@ class _$MessageImpl implements _Message {
             (identical(other.question, question) ||
                 other.question == question) &&
             (identical(other.isSentByUser, isSentByUser) ||
-                other.isSentByUser == isSentByUser));
+                other.isSentByUser == isSentByUser) &&
+            (identical(other.personal_info, personal_info) ||
+                other.personal_info == personal_info) &&
+            (identical(other.consent, consent) || other.consent == consent));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, question, isSentByUser);
+  int get hashCode =>
+      Object.hash(runtimeType, question, isSentByUser, personal_info, consent);
 
   @JsonKey(ignore: true)
   @override
@@ -152,7 +211,9 @@ class _$MessageImpl implements _Message {
 abstract class _Message implements Message {
   const factory _Message(
       {required final String question,
-      required final bool isSentByUser}) = _$MessageImpl;
+      required final bool isSentByUser,
+      final PersonalInfo? personal_info,
+      final String? consent}) = _$MessageImpl;
 
   factory _Message.fromJson(Map<String, dynamic> json) = _$MessageImpl.fromJson;
 
@@ -160,6 +221,10 @@ abstract class _Message implements Message {
   String get question;
   @override
   bool get isSentByUser;
+  @override
+  PersonalInfo? get personal_info;
+  @override
+  String? get consent;
   @override
   @JsonKey(ignore: true)
   _$$MessageImplCopyWith<_$MessageImpl> get copyWith =>
