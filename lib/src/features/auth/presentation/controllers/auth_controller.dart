@@ -1,6 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nishauri/src/features/appointments/data/repository/appointment_repository.dart';
+import 'package:nishauri/src/features/appointments/data/services/appointment_services.dart';
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
+import 'package:nishauri/src/features/clinic_card/data/repository/ProgramRepository.dart';
+import 'package:nishauri/src/features/clinic_card/data/services/ProgramService.dart';
+import 'package:nishauri/src/features/hiv/data/repositories/art_appointment_repository.dart';
+import 'package:nishauri/src/features/hiv/data/services/art_appointments.dart';
+import 'package:nishauri/src/features/lab/data/repository/ViralLoadRepository.dart';
+import 'package:nishauri/src/features/lab/data/services/ViralLoadService.dart';
 import 'package:nishauri/src/features/user/data/respositories/UserRepository.dart';
 import 'package:nishauri/src/shared/models/token_pair.dart';
 import 'dart:developer' as developer;
@@ -9,6 +17,10 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
   /// Act as the view model that hold the state of component or screen
   final AuthRepository _repository;
   final UserRepository _userRepository;
+
+  ProgramRepository programRepository = ProgramRepository(ProgramService());
+  ViralLoadRepository viralLoadRepository = ViralLoadRepository(ViralLoadService());
+  AppointmentRepository appointmentRepository = AppointmentRepository(AppointmentService(), false, ARTAppointmentRepository(ARTAppointmentService()));
 
   AuthController(this._repository, this._userRepository) : super(const AsyncValue.loading()) {
     loadAuthState();
@@ -32,7 +44,6 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
 
   Future<void> login(Map<String, dynamic> credentials) async {
       final authResponse = await _repository.authenticate(credentials);
-      print("null checker $authResponse");
       var msg = authResponse.accessToken ?? '';
       if (msg.isEmpty){
         throw authResponse.message??'';
@@ -52,6 +63,13 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
 
         ),
       );
+      await saveToLocal();
+  }
+  Future<void> saveToLocal() async {
+    await appointmentRepository.saveAppointment();
+    await _userRepository.saveGenderAge();
+    await programRepository.saveRegimen();
+    await viralLoadRepository.saveViralLoad();
   }
   Future<bool> unlock(Map<String, dynamic> credentials) async {
     var username = {"user_name" : await _repository.getUserPhoneNumber()};
@@ -69,6 +87,7 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
       await _repository.savePhoneNumber(authResponse.phoneNumber ?? '');
       await _repository.saveIsVerified(authResponse.accountVerified);
       return msg.isNotEmpty;
+
   }
 
   Future<void> register(Map<String, dynamic> data) async {
@@ -85,11 +104,15 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
       await _repository.saveUserId(authResponse.userId??'');
       await _repository.savePhoneNumber(authResponse.phoneNumber ?? '');
       await _repository.saveIsVerified(authResponse.accountVerified);
+      await appointmentRepository.saveAppointment();
+      await _userRepository.saveGenderAge();
+      await viralLoadRepository.saveViralLoad();
       state = AsyncValue.data(AuthState(
         isAccountVerified: authResponse.accountVerified,
         isProfileComplete: authResponse.profileUpdated,
         isAuthenticated: isAuth.isNotEmpty,
       ));
+      await saveToLocal();
     } catch (e) {
       developer.log('-->register ${e.toString()}');
       rethrow;

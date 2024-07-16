@@ -46,10 +46,10 @@ class AnnouncementCard extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: Constants.announcement,
-                      ),
-                      maxLines:2,
+                      // style: theme.textTheme.titleMedium?.copyWith(
+                      //   color: Constants.announcement,
+                      // ),
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 10),
@@ -72,11 +72,11 @@ class AnnouncementCard extends StatelessWidget {
             // Right column with SVG image
             Expanded(
               flex: 1,
-                child: SvgPicture.asset(
-                  svgPath,
-                  fit: BoxFit.scaleDown,
-                  height: double.infinity,
-                ),
+              child: SvgPicture.asset(
+                svgPath,
+                fit: BoxFit.scaleDown,
+                height: double.infinity,
+              ),
             ),
           ],
         ),

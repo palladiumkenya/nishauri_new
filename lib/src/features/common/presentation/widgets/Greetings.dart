@@ -29,34 +29,34 @@ class Greetings extends StatelessWidget {
         children: [
           Text(
             "Hey, 👋",
-            style: theme.textTheme.headlineMedium
-                ?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
+            style: theme.textTheme.headlineMedium?.copyWith(
+                color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
           ),
-        name == 'Null Null' || name == null
-            ? GestureDetector(
-          onTap: () {
-            context.goNamed(RouteNames.PROFILE_EDIT_FORM);
-          },
-          child: Text(
-            'Click here to update your profile',
-            style: theme.textTheme.titleMedium?.copyWith(
-              color: Colors.red,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        )
-            : Text(
-          name,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: theme.textTheme.headlineLarge?.copyWith(
-            color: theme.colorScheme.primary,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
+          name == 'Null Null' || name == null
+              ? GestureDetector(
+                  onTap: () {
+                    context.goNamed(RouteNames.PROFILE_EDIT_FORM);
+                  },
+                  child: Text(
+                    'Click here to update your profile',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: Colors.red,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                )
+              : Text(
+                  name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.headlineLarge?.copyWith(
+                    color: theme.colorScheme.primary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
 
-        // Text(
+          // Text(
           //   name == 'null null' || name == null ?
           //   GestureDetector(
           //     onTap: () {
@@ -76,15 +76,15 @@ class Greetings extends StatelessWidget {
           //   style: theme.textTheme.headlineLarge
           //       ?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
           // ),
-          const SizedBox(height: Constants.SPACING * 3),
+          const SizedBox(height: Constants.SPACING),
           Text(
-            DateFormat("EEEE, MMMM dd").format(
-              DateTime.now(),
-            ),
-            style: theme.textTheme.titleLarge
-                ?.copyWith(color: theme.colorScheme.onSurface.withOpacity(0.3)),
-          ),
-
+              DateFormat("EEEE, MMMM dd").format(
+                DateTime.now(),
+              ),
+              style: theme.textTheme.titleMedium
+              // ?.copyWith(color: theme.colorScheme.onSurface.withOpacity(0.3)),
+              ),
+          const SizedBox(height: Constants.SPACING * 2),
           /* Stack(
             clipBehavior: Clip.none,
             alignment: Alignment.center,
@@ -210,7 +210,7 @@ _showDialog(BuildContext context) {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 content:
-                                Text("Max number of shortcuts reached")));
+                                    Text("Max number of shortcuts reached")));
                       } else {
                         shortcutsNotifier.addShortcut(
                           item.title ?? "",

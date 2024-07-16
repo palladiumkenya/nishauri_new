@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
+import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
 import 'package:nishauri/src/features/common/data/models/faq_model.dart';
 import 'package:nishauri/src/local_storage/LocalStorage.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
@@ -6,36 +8,42 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 class FAQService extends HTTPService {
-  final String url;
+  final AuthRepository _repository = AuthRepository(AuthApiService());
 
-  FAQService({
-    this.url = '${Constants.BASE_URL_NEW}/get_faqs',
-  });
+  Future<List<FAQModel>> fetchFAQs(String faqs) async {
+    try{
+      final response = await call(fetchFAQs_, faqs);
 
-  Future<List<FAQModel>> fetchFAQs() async {
-    final token = await getCachedToken();
-    final response = await http.get(
-      Uri.parse(url),
-      headers: {
-        'Authorization': 'Bearer ${token.accessToken}',
-      },
-    );
+      if (response.statusCode == 200) {
+        final responseString = await response.stream.bytesToString();
+        final Map<String, dynamic> dataNew = json.decode(responseString);
 
-    print(response.statusCode);
-    print(response.body); // Logged the response status code and body for debugging
-
-    if (response.statusCode == 200) {
-      try {
-        Map<String, dynamic> data = json.decode(response.body);
-        List<dynamic> faqList = data['questions'];
-        return faqList.map((faq) => FAQModel.fromJson(faq)).toList();
+        return (dataNew['questions'] as List<dynamic>)
+          .map((e) => FAQModel.fromJson(e))
+          .toList();
       }
-      catch (e) {
-        print('Error during JSON parsing: $e'); // Log parsing error
-        throw Exception('Failed to parse FAQs');
+      else {
+        throw "Something Went Wrong Try Again Later ${response.statusCode}";
       }
-    } else {
-      throw "Something Went Wrong Try Again Later ${response.statusCode}";
     }
+    catch (e) {
+      print('Error during JSON parsing: $e'); // Log parsing error
+      throw Exception('Failed to parse FAQs');
+    } 
+  }
+
+  Future<http.StreamedResponse> fetchFAQs_(String faqs) async{
+    final id = await _repository.getUserId();
+    final tokenPair = await getCachedToken();
+    var url = '${Constants.BASE_URL_NEW}/get_faqs?name=$faqs&user_id=$id';
+    var headers = {
+      'Authorization': "Bearer ${tokenPair.accessToken}",
+      'Content-Type': 'application/json'
+    };
+    final response = request(url: url, token: tokenPair, method: 'GET', requestHeaders: headers, userId: id);
+
+    return response;
   }
 }
+
+

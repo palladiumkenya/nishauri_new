@@ -28,10 +28,6 @@ class ProgramService extends HTTPService {
     } catch (e) {
       throw e.toString();
     }
-    // final data = await loadJsonData('assets/data/clinic_card.json');
-    // final List<dynamic> jsonList = jsonDecode(data)['programs'];
-    // final programs = jsonList.map((json) => Program.fromJson(json)).toList();
-    // return programs;
   }
 
   Future<http.StreamedResponse> getPrograms_(dynamic args) async {
@@ -46,5 +42,27 @@ class ProgramService extends HTTPService {
     // request.headers.addAll(headers);
     // return await request.send();
     return response;
+  }
+
+  Future<void> saveRegimen() async {
+    try{
+      final resp = await call(getPrograms_, null);
+      if (resp.statusCode == 200) {
+        final responseString = await resp.stream.bytesToString();
+        final respData = json.decode(responseString);
+        var regimen;
+        for (var program in respData['programs']) {
+          for (var observation in program['patient_observations']) {
+            if (observation['label'] == 'Regimen') {
+              regimen = observation['value'];
+              break;
+            }
+          }
+        }
+          await _repository.saveRegimen(regimen);
+      }
+    } catch (e) {
+      throw e;
+    }
   }
 }

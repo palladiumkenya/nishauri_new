@@ -29,6 +29,6 @@ final onboardingSteps = [
     "icon": "assets/images/chat_bot.svg",
     "title": "Meet Nuru",
     "description":
-        "Get instant assistance and answers t your health related questions"
+        "Get instant assistance and answers to your health related questions"
   },
 ];
