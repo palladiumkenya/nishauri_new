@@ -23,7 +23,7 @@ class AuthApiService extends HTTPService {
           accessToken: data["data"]?["token"] ?? '',
           refreshToken: data["data"]?["refreshToken"] ?? '',
           accountVerified: data["data"]?["account_verified"] == "1"!,
-          profileUpdated: data["data"]?["account_verified"] == "1"!,
+          profileUpdated: data["data"]?["profile_complete"] == "1"!,
           userId: data["data"]?["user_id"]!,
           message: data["msg"]!,
           phoneNumber: data["data"]?["phone_no"]!
@@ -55,7 +55,7 @@ class AuthApiService extends HTTPService {
           accessToken: data["data"]?["token"]?? ''!,
           refreshToken: data["data"]?["refreshToken"]?? ''!,
           accountVerified: data["data"]?["account_verified"] == "1"!,
-          profileUpdated: data["data"]?["account_verified"] == "1"!,
+          profileUpdated: data["data"]?["profile_complete"] == "1"!,
           userId: data["data"]?["user_id"]!,
           message: data["msg"]!,
           phoneNumber: data["data"]?["phone_no"]!
