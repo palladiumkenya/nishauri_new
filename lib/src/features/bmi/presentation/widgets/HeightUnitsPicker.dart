@@ -1,42 +1,59 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 enum HeightUnitsPickerOptions { Cm, Ft, In }
 
-
-// String convertFromCmTo(HeightUnitsPickerOptions units, double cm) {
+// double convertFromCmTo(HeightUnitsPickerOptions units, double cm) {
 //   switch (units) {
 //     case HeightUnitsPickerOptions.Ft:
-//       int totalInches = (cm / 2.54).round();
-//       int feet = totalInches ~/ 12;
-//       int inches = totalInches % 12;
-//       return '$feet\' ${inches.toStringAsFixed(4)}"';
+//       return (cm / 30.48);
 //     case HeightUnitsPickerOptions.In:
-//       return (cm / 2.54).toStringAsFixed(4);
+//       return (cm / 2.54); 
 //     default:
-//       return cm.toStringAsFixed(4);
+//       return cm; 
 //   }
 // }
 
-double truncateDouble(double value, int decimals) {
-  num mod = pow(10.0, decimals);
-  return ((value * mod).truncateToDouble() / mod);
-  }
-
-double convertFromCmTo(HeightUnitsPickerOptions units, double cm) {
+//display height for user
+String displayHeight(HeightUnitsPickerOptions units, double cm) {
   switch (units) {
     case HeightUnitsPickerOptions.Ft:
-      double feet = cm / 30.48;
-      return truncateDouble(feet, 1); // Convert to feet (1 cm = 0.0328 ft)
+      int feet = (cm / 30.48).floor();
+      double remainingInches = (cm / 2.54) - (feet * 12);
+      int inches = remainingInches.round();
+
+      //since 1 ft = 12 inches
+      if(inches == 12) {
+        feet += 1;
+        inches = 0;
+      }
+      return "$feet' $inches\"";
     case HeightUnitsPickerOptions.In:
-      double inches = cm / 2.54;
-      return truncateDouble(inches, 1); // Convert to inches (1 cm = 0.3937 in)
+      return (cm / 2.54).toStringAsFixed(1);
     default:
-      return truncateDouble(cm, 1); // No conversion needed for centimeters
+      return cm.toStringAsFixed(1);
   }
 }
+
+//Converting height to cm
+double convertToCm(HeightUnitsPickerOptions units, double value, [double inches = 0.0]) {
+  switch (units) {
+    case HeightUnitsPickerOptions.Ft:
+      return (value * 30.48) + (inches * 2.54);
+    case HeightUnitsPickerOptions.In:
+      return value * 2.54;
+    default:
+      return value;
+  }
+}
+
+
+
+
+
+
+
+
 
 class HeightUnitsPicker extends StatelessWidget {
   final HeightUnitsPickerOptions heightUnits;

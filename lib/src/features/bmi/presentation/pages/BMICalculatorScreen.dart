@@ -112,9 +112,11 @@ class BMICalculatorScreen extends HookWidget {
                         height: height.value,
                         heightUnits: heightUnits.value,
                         onHeightChange: (height_) {
+                          print(height.value);
                           height.value = height_;
                         },
                         onHeightUnitsChange: (units) {
+                          print(heightUnits.value);
                           heightUnits.value = units;
                         },
                       ),
@@ -178,7 +180,10 @@ class BMICalculatorScreen extends HookWidget {
                               ],
                             ),
                           ).then((isForSelf) {
+                            //final heightInCm = convertToCmFrom(heightUnits.value, height.value);
                             final bmi = calculateBMI(height.value, weight.value);
+                            print('height.value: ${height.value}');
+                            print('bmi: $bmi');
                             if (isForSelf != null) {
                               if (isForSelf) {
                                 saveBMI(bmi).then((_) {

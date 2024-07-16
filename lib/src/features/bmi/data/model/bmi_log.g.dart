@@ -10,6 +10,7 @@ _$BMILogImpl _$$BMILogImplFromJson(Map<String, dynamic> json) => _$BMILogImpl(
       weight: (json['weight'] as num).toDouble(),
       height: (json['height'] as num).toDouble(),
       bmi: (json['bmi'] as num).toDouble(),
+      timestamp: json['timestamp'] as String,
     );
 
 Map<String, dynamic> _$$BMILogImplToJson(_$BMILogImpl instance) =>
@@ -17,4 +18,5 @@ Map<String, dynamic> _$$BMILogImplToJson(_$BMILogImpl instance) =>
       'weight': instance.weight,
       'height': instance.height,
       'bmi': instance.bmi,
+      'timestamp': instance.timestamp,
     };
