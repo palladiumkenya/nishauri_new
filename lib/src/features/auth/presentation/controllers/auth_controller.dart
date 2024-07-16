@@ -55,10 +55,6 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
       await _repository.saveUserId(authResponse.userId??'');
       await _repository.savePhoneNumber(authResponse.phoneNumber ?? '');
       await _repository.saveIsVerified(authResponse.accountVerified);
-      await appointmentRepository.saveAppointment();
-      await _userRepository.saveGenderAge();
-      await programRepository.saveRegimen();
-      await viralLoadRepository.saveViralLoad();
       state = AsyncValue.data(
         AuthState(
           isAccountVerified: authResponse.accountVerified,
@@ -67,6 +63,13 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
 
         ),
       );
+      await saveToLocal();
+  }
+  Future<void> saveToLocal() async {
+    await appointmentRepository.saveAppointment();
+    await _userRepository.saveGenderAge();
+    await programRepository.saveRegimen();
+    await viralLoadRepository.saveViralLoad();
   }
   Future<bool> unlock(Map<String, dynamic> credentials) async {
     var username = {"user_name" : await _repository.getUserPhoneNumber()};
@@ -83,10 +86,8 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
       await _repository.saveUserId(authResponse.userId??'');
       await _repository.savePhoneNumber(authResponse.phoneNumber ?? '');
       await _repository.saveIsVerified(authResponse.accountVerified);
-      await appointmentRepository.saveAppointment();
-      await _userRepository.saveGenderAge();
-      await viralLoadRepository.saveViralLoad();
       return msg.isNotEmpty;
+
   }
 
   Future<void> register(Map<String, dynamic> data) async {
@@ -111,6 +112,7 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
         isProfileComplete: authResponse.profileUpdated,
         isAuthenticated: isAuth.isNotEmpty,
       ));
+      await saveToLocal();
     } catch (e) {
       developer.log('-->register ${e.toString()}');
       rethrow;
