@@ -280,13 +280,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             ),
             TextButton(
               onPressed: () {
-                ref
-                    .read(settingsNotifierProvider.notifier)
-                    .updateSettings(firstNuruAccess: false);
-                setState(() {
-                  type == ConsentType.accept ? _consent = false : _consent;
-                });
-                _updateConsent(type == ConsentType.accept ? true : false);
+                // ref
+                //     .read(settingsNotifierProvider.notifier)
+                //     .updateSettings(firstNuruAccess: false);
+                // setState(() {
+                //   type == ConsentType.accept ? _consent = false : _consent;
+                // });
+                // _updateConsent(type == ConsentType.accept ? true : false);
                 Navigator.of(context).pop();
               },
               child: const Text('No'),
