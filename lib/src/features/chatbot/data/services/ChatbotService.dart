@@ -9,16 +9,27 @@ class ChatbotService extends HTTPService {
   final String endpoint = "${Constants.BASE_URL}/chat";
 
   Future<FeedbackResponse> sendMessage(Message message) async {
+    var personalInfo = {
+      "gender": message.personal_info?.gender,
+      "age": message.personal_info?.age,
+      "regimen": message.personal_info?.regimen,
+      "appointment_datetime":message.personal_info?.appointment_datetime,
+      "viral_load": message.personal_info?.viral_load,
+      "viral_load_datetime": message.personal_info?.appointment_datetime
+    };
+    var messages = {
+      "consent" : message.consent,
+      "personal_info" : personalInfo,
+      "question" : message.question,
+    };
+
     final response = await http.post(
       Uri.parse(endpoint),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'question': message.question.toString(),
-      }),
+      body: jsonEncode(messages),
     );
-
     if (response.statusCode == 200) {
       return FeedbackResponse.fromJson(jsonDecode(response.body));
     } else {

@@ -39,12 +39,12 @@ class _TypingAnimationState extends State<TypingAnimation>
         curve: Curves.easeInOut,
       ),
     )..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          _controller.reverse();
-        } else if (status == AnimationStatus.dismissed) {
-          _controller.forward();
-        }
-      });
+      if (status == AnimationStatus.completed) {
+        _controller.reverse();
+      } else if (status == AnimationStatus.dismissed) {
+        _controller.forward();
+      }
+    });
 
     _controller.forward();
   }
@@ -97,7 +97,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     Color iconColor = message.isSentByUser ? Colors.blue : Colors.grey;
     return Align(
       alignment:
-          message.isSentByUser ? Alignment.centerRight : Alignment.centerLeft,
+      message.isSentByUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Row(
         mainAxisAlignment: message.isSentByUser
             ? MainAxisAlignment.end
@@ -106,13 +106,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           message.isSentByUser
               ? const SizedBox()
               : Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: Constants.SPACING),
-                  child: Icon(
-                    userIcon,
-                    color: iconColor,
-                  ),
-                ),
+            padding:
+            const EdgeInsets.symmetric(horizontal: Constants.SPACING),
+            child: Icon(
+              userIcon,
+              color: iconColor,
+            ),
+          ),
           Flexible(
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 4.0),
@@ -143,13 +143,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           ),
           message.isSentByUser
               ? Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: Constants.SPACING),
-                  child: Icon(
-                    userIcon,
-                    color: iconColor,
-                  ),
-                )
+            padding:
+            const EdgeInsets.symmetric(horizontal: Constants.SPACING),
+            child: Icon(
+              userIcon,
+              color: iconColor,
+            ),
+          )
               : const SizedBox(),
         ],
       ),
@@ -180,7 +180,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               question: 'Failed to receive response from the server',
               isSentByUser: false));
           _isBotTyping =
-              false; // Bot stops typing on failure to receive response
+          false; // Bot stops typing on failure to receive response
         });
       }
       Future.delayed(const Duration(milliseconds: 100), () {
@@ -215,7 +215,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             _messages = [
               Message(
                 question:
-                    "Hi $currentUser 👋 \nWelcome to Nuru \nHow can I assist you today?",
+                "Hi $currentUser 👋 \nWelcome to Nuru \nHow can I assist you today?",
                 isSentByUser: false,
               ),
             ];
@@ -249,18 +249,18 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   : 'Are you sure you want to revoke your consent for personalized response by Nuru?'),
               type == ConsentType.accept
                   ? GestureDetector(
-                      onTap: () => showTermsDialog(context),
-                      // Show terms dialog on tap
-                      child: const Text(
-                        "Terms and Conditions",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          // Change color to indicate it's a link
-                          decoration: TextDecoration
-                              .underline, // Add underline to indicate it's a link
-                        ),
-                      ),
-                    )
+                onTap: () => showTermsDialog(context),
+                // Show terms dialog on tap
+                child: const Text(
+                  "Terms and Conditions",
+                  style: TextStyle(
+                    color: Colors.blue,
+                    // Change color to indicate it's a link
+                    decoration: TextDecoration
+                        .underline, // Add underline to indicate it's a link
+                  ),
+                ),
+              )
                   : const SizedBox(),
             ],
           ),
@@ -280,13 +280,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             ),
             TextButton(
               onPressed: () {
-                ref
-                    .read(settingsNotifierProvider.notifier)
-                    .updateSettings(firstNuruAccess: false);
-                setState(() {
-                  type == ConsentType.accept ? _consent = false : _consent;
-                });
-                _updateConsent(type == ConsentType.accept ? true : false);
+                // ref
+                //     .read(settingsNotifierProvider.notifier)
+                //     .updateSettings(firstNuruAccess: false);
+                // setState(() {
+                //   type == ConsentType.accept ? _consent = false : _consent;
+                // });
+                // _updateConsent(type == ConsentType.accept ? true : false);
                 Navigator.of(context).pop();
               },
               child: const Text('No'),
@@ -305,7 +305,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       debugPrint("Fetched consent data: $consentData");
       // Update UI based on fetched consent data
       var remoteConsent =
-          consentData.isNotEmpty ? consentData.first.chatbot_consent : null;
+      consentData.isNotEmpty ? consentData.first.chatbot_consent : null;
       setState(() {
         _consent = remoteConsent == "1" ? true : false;
       });
@@ -381,17 +381,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       children: [
                         _consent
                             ? TextButton(
-                                onPressed: () {
-                                  _showConsentDialog(
-                                      context, ref, ConsentType.revoke);
-                                },
-                                child: const Text("Revoke consent"))
+                            onPressed: () {
+                              _showConsentDialog(
+                                  context, ref, ConsentType.revoke);
+                            },
+                            child: const Text("Revoke consent", style: TextStyle(color: Colors.red),))
                             : TextButton(
-                                onPressed: () {
-                                  _showConsentDialog(
-                                      context, ref, ConsentType.accept);
-                                },
-                                child: const Text("Give consent"))
+                            onPressed: () {
+                              _showConsentDialog(
+                                  context, ref, ConsentType.accept);
+                            },
+                            child: const Text("Give consent", style: TextStyle(color: Colors.green),))
                       ],
                     ),
                     const Divider(),
@@ -407,9 +407,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     ),
                     _isBotTyping
                         ? Padding(
-                            padding: const EdgeInsets.all(Constants.SPACING),
-                            child: TypingAnimation(), // Bot typing indicator
-                          )
+                      padding: const EdgeInsets.all(Constants.SPACING),
+                      child: TypingAnimation(), // Bot typing indicator
+                    )
                         : _buildComposer(),
                   ],
                 ),
