@@ -15,7 +15,7 @@ enum HeightUnitsPickerOptions { Cm, Ft, In }
 // }
 
 //display height for user
-String displayHeight(HeightUnitsPickerOptions units, double cm) {
+String convertToCm(HeightUnitsPickerOptions units, double cm) {
   switch (units) {
     case HeightUnitsPickerOptions.Ft:
       int feet = (cm / 30.48).floor();
@@ -36,16 +36,7 @@ String displayHeight(HeightUnitsPickerOptions units, double cm) {
 }
 
 //Converting height to cm
-double convertToCm(HeightUnitsPickerOptions units, double value, [double inches = 0.0]) {
-  switch (units) {
-    case HeightUnitsPickerOptions.Ft:
-      return (value * 30.48) + (inches * 2.54);
-    case HeightUnitsPickerOptions.In:
-      return value * 2.54;
-    default:
-      return value;
-  }
-}
+
 
 
 
