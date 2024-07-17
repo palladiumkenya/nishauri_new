@@ -5,11 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/bmi/data/model/bmi_log.dart';
+import 'package:nishauri/src/features/bmi/data/providers/bmi_log_provider.dart';
 import 'package:nishauri/src/features/bmi/data/services/bmi_log_service.dart';
 import 'package:nishauri/src/features/bmi/presentation/widgets/GenderPicker.dart';
 import 'package:nishauri/src/features/bmi/presentation/widgets/HeightPicker.dart';
 import 'package:nishauri/src/features/bmi/presentation/widgets/HeightUnitsPicker.dart';
+import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/shared/display/RadioGroup.dart';
@@ -19,11 +22,11 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
-class BMICalculatorScreen extends HookWidget {
+class BMICalculatorScreen extends HookConsumerWidget {
   const BMICalculatorScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     const activeColor = Constants.activeSelectionColor;
     final gender = useState<GenderPickerChoices>(GenderPickerChoices.male);
@@ -52,29 +55,34 @@ class BMICalculatorScreen extends HookWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            "Choose your gender",
-                            style: theme.textTheme.titleMedium,
-                          ),
-                          const SizedBox(width: Constants.SPACING,),
                           ToggleButtons(
-                            isSelected: [isForSelf.value, !isForSelf.value], 
-                            onPressed:(index) {
-                              isForSelf.value = index == 0;
-                            },
-                            children: const [
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                                child: Text("Self"),
+                                isSelected: [isForSelf.value, !isForSelf.value], 
+                                onPressed:(index) {
+                                  isForSelf.value = index == 0;
+                                },
+                                selectedColor: Colors.white, //color for selected button
+                                fillColor: activeColor,                              
+                                color: theme.canvasColor,
+                                children: const [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                    child: Text("Self"),
+                                    
+                                    ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                    child: Text("Other"),
+                                    ),
+                                ],
                                 ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                                child: Text("Other"),
-                                ),
-                            ],
-                            ),
                         ],
+                      ),
+                      const SizedBox(height: Constants.SPACING),      
+                      Text(
+                          "Choose your gender",
+                          style: theme.textTheme.titleMedium,
                       ),
                       const SizedBox(height: Constants.SPACING),
                       GenderPicker(
@@ -184,7 +192,10 @@ class BMICalculatorScreen extends HookWidget {
                           print('bmi: $bmi');
 
                           if (isForSelf.value) {
-                            context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
+                            ref.read(bmiLogProvider.notifier).logBMI(height.value, weight.value.toDouble(), bmi).then((_) {
+                              context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
+                            });
+                            
                           }
                           else{
                             context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
