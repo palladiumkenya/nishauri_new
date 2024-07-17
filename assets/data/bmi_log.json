@@ -1,8 +1,7 @@
 {
-
-        "weight": 180.0,
-        "height": 65.0,
-        "bmi": 21.0,
-        "timestamp": "21-05-2024"
-    }
+    "user_id": "1234",
+    "weight": 180.0,
+    "height": 65.0,
+    "bmi": 21.0
+}
 

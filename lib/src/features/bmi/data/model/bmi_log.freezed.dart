@@ -23,7 +23,6 @@ mixin _$BMILog {
   double get weight => throw _privateConstructorUsedError;
   double get height => throw _privateConstructorUsedError;
   double get bmi => throw _privateConstructorUsedError;
-  String get timestamp => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +34,7 @@ abstract class $BMILogCopyWith<$Res> {
   factory $BMILogCopyWith(BMILog value, $Res Function(BMILog) then) =
       _$BMILogCopyWithImpl<$Res, BMILog>;
   @useResult
-  $Res call({double weight, double height, double bmi, String timestamp});
+  $Res call({double weight, double height, double bmi});
 }
 
 /// @nodoc
@@ -54,7 +53,6 @@ class _$BMILogCopyWithImpl<$Res, $Val extends BMILog>
     Object? weight = null,
     Object? height = null,
     Object? bmi = null,
-    Object? timestamp = null,
   }) {
     return _then(_value.copyWith(
       weight: null == weight
@@ -69,10 +67,6 @@ class _$BMILogCopyWithImpl<$Res, $Val extends BMILog>
           ? _value.bmi
           : bmi // ignore: cast_nullable_to_non_nullable
               as double,
-      timestamp: null == timestamp
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
-              as String,
     ) as $Val);
   }
 }
@@ -84,7 +78,7 @@ abstract class _$$BMILogImplCopyWith<$Res> implements $BMILogCopyWith<$Res> {
       __$$BMILogImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({double weight, double height, double bmi, String timestamp});
+  $Res call({double weight, double height, double bmi});
 }
 
 /// @nodoc
@@ -101,7 +95,6 @@ class __$$BMILogImplCopyWithImpl<$Res>
     Object? weight = null,
     Object? height = null,
     Object? bmi = null,
-    Object? timestamp = null,
   }) {
     return _then(_$BMILogImpl(
       weight: null == weight
@@ -116,10 +109,6 @@ class __$$BMILogImplCopyWithImpl<$Res>
           ? _value.bmi
           : bmi // ignore: cast_nullable_to_non_nullable
               as double,
-      timestamp: null == timestamp
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -128,10 +117,7 @@ class __$$BMILogImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$BMILogImpl implements _BMILog {
   const _$BMILogImpl(
-      {required this.weight,
-      required this.height,
-      required this.bmi,
-      required this.timestamp});
+      {required this.weight, required this.height, required this.bmi});
 
   factory _$BMILogImpl.fromJson(Map<String, dynamic> json) =>
       _$$BMILogImplFromJson(json);
@@ -142,12 +128,10 @@ class _$BMILogImpl implements _BMILog {
   final double height;
   @override
   final double bmi;
-  @override
-  final String timestamp;
 
   @override
   String toString() {
-    return 'BMILog(weight: $weight, height: $height, bmi: $bmi, timestamp: $timestamp)';
+    return 'BMILog(weight: $weight, height: $height, bmi: $bmi)';
   }
 
   @override
@@ -157,14 +141,12 @@ class _$BMILogImpl implements _BMILog {
             other is _$BMILogImpl &&
             (identical(other.weight, weight) || other.weight == weight) &&
             (identical(other.height, height) || other.height == height) &&
-            (identical(other.bmi, bmi) || other.bmi == bmi) &&
-            (identical(other.timestamp, timestamp) ||
-                other.timestamp == timestamp));
+            (identical(other.bmi, bmi) || other.bmi == bmi));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, weight, height, bmi, timestamp);
+  int get hashCode => Object.hash(runtimeType, weight, height, bmi);
 
   @JsonKey(ignore: true)
   @override
@@ -184,8 +166,7 @@ abstract class _BMILog implements BMILog {
   const factory _BMILog(
       {required final double weight,
       required final double height,
-      required final double bmi,
-      required final String timestamp}) = _$BMILogImpl;
+      required final double bmi}) = _$BMILogImpl;
 
   factory _BMILog.fromJson(Map<String, dynamic> json) = _$BMILogImpl.fromJson;
 
@@ -195,8 +176,6 @@ abstract class _BMILog implements BMILog {
   double get height;
   @override
   double get bmi;
-  @override
-  String get timestamp;
   @override
   @JsonKey(ignore: true)
   _$$BMILogImplCopyWith<_$BMILogImpl> get copyWith =>

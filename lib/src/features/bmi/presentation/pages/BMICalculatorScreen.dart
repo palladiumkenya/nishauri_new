@@ -1,9 +1,12 @@
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/bmi/data/model/bmi_log.dart';
+import 'package:nishauri/src/features/bmi/data/services/bmi_log_service.dart';
 import 'package:nishauri/src/features/bmi/presentation/widgets/GenderPicker.dart';
 import 'package:nishauri/src/features/bmi/presentation/widgets/HeightPicker.dart';
 import 'package:nishauri/src/features/bmi/presentation/widgets/HeightUnitsPicker.dart';
@@ -30,6 +33,7 @@ class BMICalculatorScreen extends HookWidget {
         useState<HeightUnitsPickerOptions>(HeightUnitsPickerOptions.In);
     final weight = useState<int>(65);
     final age = useState<int>(27);
+    final isForSelf = useState(true);
     return Scaffold(
       body: Column(
         children: [
@@ -47,9 +51,30 @@ class BMICalculatorScreen extends HookWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Choose your gender",
-                        style: theme.textTheme.titleMedium,
+                      Row(
+                        children: [
+                          Text(
+                            "Choose your gender",
+                            style: theme.textTheme.titleMedium,
+                          ),
+                          const SizedBox(width: Constants.SPACING,),
+                          ToggleButtons(
+                            isSelected: [isForSelf.value, !isForSelf.value], 
+                            onPressed:(index) {
+                              isForSelf.value = index == 0;
+                            },
+                            children: const [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                child: Text("Self"),
+                                ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                child: Text("Other"),
+                                ),
+                            ],
+                            ),
+                        ],
                       ),
                       const SizedBox(height: Constants.SPACING),
                       GenderPicker(
@@ -112,11 +137,9 @@ class BMICalculatorScreen extends HookWidget {
                         height: height.value,
                         heightUnits: heightUnits.value,
                         onHeightChange: (height_) {
-                          print(height.value);
                           height.value = height_;
                         },
                         onHeightUnitsChange: (units) {
-                          print(heightUnits.value);
                           heightUnits.value = units;
                         },
                       ),
@@ -156,47 +179,18 @@ class BMICalculatorScreen extends HookWidget {
                         backgroundColor: activeColor,
                         textColor: theme.canvasColor,
                         onPress: () {             
-                          // final bmi = calculateBMI(height.value, weight.value);
-                          // context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS,
-                          //     extra: bmi);
-                          showDialog<bool>(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text("Calculate BMI"),
-                              content: const Text("Are you calculating BMI for yourself or someone else?"),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(false); 
-                                  },
-                                  child: const Text("Someone Else"),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(true); 
-                                  },
-                                  child: const Text("Myself"),
-                                ),
-                              ],
-                            ),
-                          ).then((isForSelf) {
-                            //final heightInCm = convertToCmFrom(heightUnits.value, height.value);
-                            final bmi = calculateBMI(height.value, weight.value);
-                            print('height.value: ${height.value}');
-                            print('bmi: $bmi');
-                            if (isForSelf != null) {
-                              if (isForSelf) {
-                                saveBMI(bmi).then((_) {
-                                  
-                                  context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
-                                });
-                              } else {
-                                context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
-                              }
-                            }
+                          final bmi = calculateBMI(height.value, weight.value);
+                          print('height.value: ${height.value}');
+                          print('bmi: $bmi');
+
+                          if (isForSelf.value) {
+                            context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
                           }
-                          );
-                          }         
+                          else{
+                            context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
+                          }
+                          
+                        }         
                       ),
                       const SizedBox(height: Constants.SPACING),
                     ],
@@ -212,9 +206,5 @@ class BMICalculatorScreen extends HookWidget {
 }
 
 //Awaiting Endpoints
-Future<void> saveBMI(double bmi) async {
-      // Will add logic to save the BMI to the endpoint when provided
-      print("Saving BMI $bmi to the endpoint...");
-      // await MyApiService.saveBMI(bmi);
-    }
+
 
