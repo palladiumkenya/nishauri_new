@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/bmi/data/model/bmi_log.dart';
 import 'package:nishauri/src/features/bmi/data/providers/bmi_log_provider.dart';
@@ -54,30 +55,46 @@ class BMICalculatorScreen extends HookConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ToggleButtons(
-                                isSelected: [isForSelf.value, !isForSelf.value], 
-                                onPressed:(index) {
-                                  isForSelf.value = index == 0;
-                                },
-                                selectedColor: Colors.white, //color for selected button
-                                fillColor: activeColor,                              
-                                color: theme.canvasColor,
-                                children: const [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                                    child: Text("Self"),
-                                    
+                      Card(
+                        child: Container(
+                          padding: const EdgeInsets.all(Constants.SPACING),
+                          child: Column(
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Center(
+                                    child: Text(
+                                      "Calculating BMI for",
+                                      style: theme.textTheme.headlineMedium,
                                     ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                                    child: Text("Other"),
-                                    ),
+                                  ),
+                                  const SizedBox(height: Constants.SPACING),
+                                  ToggleButtons(
+                                        isSelected: [isForSelf.value, !isForSelf.value], 
+                                        onPressed:(index) {
+                                          isForSelf.value = index == 0;
+                                        },
+                                        selectedColor: Colors.white, //color for selected button
+                                        fillColor: activeColor,                              
+                                        children: const [
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                            child: Text("Myself"),
+                                            
+                                            ),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                            child: Text("Other"),
+                                            ),
+                                        ],
+                                        ),
+                                        const SizedBox(height: Constants.SPACING), 
                                 ],
-                                ),
-                        ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                       const SizedBox(height: Constants.SPACING),      
                       Text(
