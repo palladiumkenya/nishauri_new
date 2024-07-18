@@ -24,6 +24,7 @@ import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorResultsScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMIHistoryScreen.dart';
+import 'package:nishauri/src/features/bp/presentation/pages/bpScreen.dart';
 import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
 import 'package:nishauri/src/features/clinic_card/presentation/pages/ClinicCardScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/FaqPage.dart';
@@ -242,6 +243,13 @@ final List<RouteBase> secureRoutes = [
               return const BMIHistoryScreen();
             }),
       ]),
+  GoRoute(
+    name: RouteNames.BLOOD_PRESSURE,
+    path: 'blood-pressure',
+    builder: (BuildContext context, GoRouterState state) {
+      return const BPScreen();
+    },
+  ),
   GoRoute(
     name: RouteNames.PRIVACY_SETTINGS,
     path: 'privacy-settings',
