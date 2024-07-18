@@ -7,9 +7,9 @@ part of 'bmi_log.dart';
 // **************************************************************************
 
 _$BMILogImpl _$$BMILogImplFromJson(Map<String, dynamic> json) => _$BMILogImpl(
-      weight: (json['weight'] as num).toDouble(),
-      height: (json['height'] as num).toDouble(),
-      bmi: (json['bmi'] as num).toDouble(),
+      weight: json['weight'] as String,
+      height: json['height'] as String,
+      bmi: json['bmi'] as String,
     );
 
 Map<String, dynamic> _$$BMILogImplToJson(_$BMILogImpl instance) =>

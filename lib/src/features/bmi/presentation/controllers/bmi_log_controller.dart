@@ -9,13 +9,13 @@ class BMILogController extends StateNotifier<AsyncValue<String>> {
   BMILogController(this._repository)
     : super(const AsyncValue.data(''));
 
-  Future<void> logBMI(double height, double weight, double bmi) async {
+  Future<void> logBMI(String height, String weight, String bmi) async {
     state = const AsyncValue.loading();
     try {
       final response = await _repository.logBMI({
         'height': height,
         'weight': weight,
-        'bmi': bmi,
+        'results': bmi,
       });
       state = AsyncValue.data(response);
     }

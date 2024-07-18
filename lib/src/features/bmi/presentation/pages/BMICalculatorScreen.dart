@@ -60,14 +60,12 @@ class BMICalculatorScreen extends HookConsumerWidget {
                           padding: const EdgeInsets.all(Constants.SPACING),
                           child: Column(
                             children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Center(
-                                    child: Text(
-                                      "Calculating BMI for",
-                                      style: theme.textTheme.headlineMedium,
-                                    ),
+                                  Text(
+                                    "Calculating BMI for",
+                                    style: theme.textTheme.titleMedium,
                                   ),
                                   const SizedBox(height: Constants.SPACING),
                                   ToggleButtons(
@@ -209,7 +207,7 @@ class BMICalculatorScreen extends HookConsumerWidget {
                           print('bmi: $bmi');
 
                           if (isForSelf.value) {
-                            ref.read(bmiLogProvider.notifier).logBMI(height.value, weight.value.toDouble(), bmi).then((_) {
+                            ref.read(bmiLogProvider.notifier).logBMI(height.value.toString(), weight.value.toString(), bmi.toString()).then((_) {
                               context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
                             });
                             

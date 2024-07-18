@@ -7,9 +7,9 @@ part 'bmi_log.g.dart';
 class BMILog with _$BMILog {
 
   const factory BMILog({
-    required double weight,
-    required double height,
-    required double bmi,
+    required String weight,
+    required String height,
+    required String bmi,
   }) = _BMILog;
 
   factory BMILog.fromJson(Map<String, Object?> json)
