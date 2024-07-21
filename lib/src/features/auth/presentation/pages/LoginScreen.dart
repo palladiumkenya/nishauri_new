@@ -162,15 +162,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   const SizedBox(height: Constants.SPACING),
-                  //  Biometric icon button
-                  Button(
-                    title: "Login with biometrics",
-                    backgroundColor: theme.colorScheme.secondary,
-                    textColor: Colors.white,
-                    onPress: () {},
-                    surfixIcon: const Icon(Icons.fingerprint),
-                  ),
-                  const SizedBox(height: Constants.SPACING),
                   Consumer(
                     builder: (context, ref, child) {
                       return Button(
@@ -228,6 +219,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     },
                   ),
+                  const SizedBox(height: Constants.SPACING),
+                  //  Biometric icon button
+                  Button(
+                    title: "Login with biometrics",
+                    backgroundColor: theme.colorScheme.secondary,
+                    textColor: Colors.white,
+                    onPress: () {},
+                    surfixIcon: const Icon(Icons.fingerprint),
+                  ),
+
                   const SizedBox(
                     height: Constants.SPACING * 2,
                   ),

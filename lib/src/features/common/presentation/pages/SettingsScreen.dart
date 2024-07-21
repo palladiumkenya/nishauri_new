@@ -71,7 +71,27 @@ List<_SettingsItem> _settingsItem(BuildContext context) => <_SettingsItem>[
         title: "Change Password",
         leadingIcon: Icons.key,
         onPress: () => context.goNamed(RouteNames.CHANGE_PASSWORD),
-      )
+      ),
+      // Enable biometric support option
+      _SettingsItem(
+        title: "Enable Biometric support",
+        leadingIcon: Icons.fingerprint,
+        // trailingIcon: Consumer(
+        //   builder: (context, ref, child) {
+        //     final settings = ref.read(settingsNotifierProvider.notifier);
+
+        //     return Switch(
+        //       value: settings.getState().isBiometricEnabled,
+        //       onChanged: (bool value) {
+        //         final settings = ref.read(settingsNotifierProvider.notifier);
+        //         settings.patchSettings(
+        //             isBiometricEnabled:
+        //                 !settings.getState().isBiometricEnabled);
+        //       },
+        //     );
+        //   },
+        // ),
+      ),
     ];
 
 class SettingsScreen extends ConsumerWidget {
@@ -91,7 +111,11 @@ class SettingsScreen extends ConsumerWidget {
         children: [
           AppBar(
             backgroundColor: Colors.transparent,
-            title: Center(child: Text("Settings", style: theme.textTheme.titleLarge,)),
+            title: Center(
+                child: Text(
+              "Settings",
+              style: theme.textTheme.titleLarge,
+            )),
           ),
           Expanded(
             child: ListView.builder(
