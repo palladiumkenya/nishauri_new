@@ -4,7 +4,7 @@ import 'package:local_auth/local_auth.dart';
 class BiometricAuthService {
   static final _auth = LocalAuthentication();
 
-  static Future<bool> canCheckBiometrics() async {
+  Future<bool> canCheckBiometrics() async {
     try {
       return await _auth.canCheckBiometrics;
     } catch (e) {
