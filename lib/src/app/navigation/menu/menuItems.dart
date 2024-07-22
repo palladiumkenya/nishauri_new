@@ -215,45 +215,25 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
     //   onPressed: () => "",
     // ),
     MenuItem(
-        shortcutBackgroundColor: Constants.bmiCalculatorShortcutBgColor,
+        shortcutBackgroundColor: Constants.bpBgColor,
 
         icon: SvgPicture.asset(
-          "assets/images/calculator.svg",
+          "assets/images/healthcare-medical.svg",
           semanticsLabel: "Doctors",
           fit: BoxFit.contain,
           height: 80,
           width: 80,
         ),
         shortcutIcon: SvgPicture.asset(
-          "assets/images/calculator.svg",
+          "assets/images/healthcare-medical.svg",
           semanticsLabel: "Doctors",
           fit: BoxFit.contain,
           width: Constants.shortcutIconSize,
           height: Constants.shortcutIconSize,
         ),
-        title: MenuItemNames.BMI_CALCULATOR,
-        onPressed: () => context.goNamed(RouteNames.BMI_CALCULATOR),
-        color: Constants.bmiCalculatorColor),
-    MenuItem(
-        shortcutBackgroundColor: Constants.bmiCalculatorShortcutBgColor,
-
-        icon: SvgPicture.asset(
-          "assets/images/calculator.svg",
-          semanticsLabel: "Doctors",
-          fit: BoxFit.contain,
-          height: 80,
-          width: 80,
-        ),
-        shortcutIcon: SvgPicture.asset(
-          "assets/images/calculator.svg",
-          semanticsLabel: "Doctors",
-          fit: BoxFit.contain,
-          width: Constants.shortcutIconSize,
-          height: Constants.shortcutIconSize,
-        ),
-        title: MenuItemNames.BLOOD_PRESSURE,
-        onPressed: () => context.goNamed(RouteNames.BLOOD_PRESSURE),
-        color: Constants.bmiCalculatorColor),
+        title: MenuItemNames.SELF_SCREENING,
+        onPressed: () => context.goNamed(RouteNames.SELF_SCREENING),
+        color: Constants.bpShortCutBgColor),
 
     MenuItem(
       // icon: FaIcon(FontAwesomeIcons.capsules, size: Constants.iconSize, color: Colors.teal[200],),

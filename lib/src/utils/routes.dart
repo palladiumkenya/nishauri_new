@@ -58,6 +58,7 @@ class RouteNames {
   static const REMOVE_PROGRAM = "remove-program";
   static const BLOG_POST = "blog-post";
   static const BLOOD_PRESSURE = "blood-pressure";
+  static const SELF_SCREENING = "self-screening";
 }
 
 class MenuItemNames {
@@ -85,6 +86,7 @@ class MenuItemNames {
   static const DISPATCHED_DRUGS = "Dispatched Drugs";
   static const REMOVE_PROGRAM = "Remove Program";
   static const BLOOD_PRESSURE = "Blood Pressure Monitor";
+  static const SELF_SCREENING = "Self Screening";
 }
 
 class ProgramCodeNameIds {
