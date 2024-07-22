@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class CredentialStorage {
+class CredentialStorageRepository {
   final _storage = const FlutterSecureStorage();
 
   Future<void> saveCredentials(String phone_number, String password) async {
