@@ -6,6 +6,7 @@ import 'package:nishauri/src/features/auth/data/services/BiometricAuthService.da
 import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
+import 'package:nishauri/src/local_storage/LocalStorage.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/display/scafold_stack_body.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
@@ -26,6 +27,14 @@ class _SettingsItem {
       this.trailingIcon,
       this.leadingIcon});
 }
+
+// Get isBiometricEnabled from LocalStorage
+// Future<bool> _getBiometricEnabled() async {
+//   final isBiometricEnabled = await LocalStorage.get("isBiometricEnabled");
+//   // Print value of isBiometricEnabled
+//   debugPrint("Biometric Enabled: $isBiometricEnabled");
+//   return isBiometricEnabled.isNotEmpty ? isBiometricEnabled == "1" : false;
+// }
 
 List<_SettingsItem> _settingsItem(BuildContext context) => <_SettingsItem>[
       _SettingsItem(
@@ -80,10 +89,12 @@ List<_SettingsItem> _settingsItem(BuildContext context) => <_SettingsItem>[
           leadingIcon: Icons.fingerprint,
           trailingIcon: Consumer(
               builder: (BuildContext context, WidgetRef ref, Widget? child) {
-            final setting = ref.watch(settingsNotifierProvider);
+            final settings = ref.watch(settingsNotifierProvider.notifier);
+            final isBiometricEnabled = settings.getState().isBiometricEnabled;
+            debugPrint("Biometric Settings: ${isBiometricEnabled.toString()}");
             return Switch(
-              // value: false,
-              value: setting.isBiometricEnabled,
+              value: false,
+              // value: isBiometricEnabled,
               onChanged: (bool value) async {
                 if (value) {
                   await _enableBiometricSupport(context, ref);
@@ -100,7 +111,6 @@ Future<void> _enableBiometricSupport(BuildContext context, ref) async {
   final credentialStorage = CredentialStorageRepository();
   final bool canCheckBiometrics =
       await biometricAuthService.canCheckBiometrics();
-
   if (canCheckBiometrics) {
     // Prompt for credentials
     final phoneAndPassword = await _promptForCredentials(context);

@@ -9,6 +9,7 @@ import 'package:nishauri/src/features/auth/data/respositories/credential_storage
 import 'package:nishauri/src/features/auth/data/services/BiometricAuthService.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
+import 'package:nishauri/src/local_storage/LocalStorage.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/display/label_input_container.dart';
@@ -302,7 +303,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Consumer(
                     builder: (context, ref, child) {
                       return Button(
-                        title: "Login with biometrics",
+                        title: "Login with Biometrics",
                         backgroundColor: theme.colorScheme.secondary,
                         textColor: Colors.white,
                         onPress: () async {
@@ -321,7 +322,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ref.read(authStateProvider.notifier);
                                 final settings =
                                     ref.read(settingsNotifierProvider.notifier);
-                                final phoneNumber = credentials['username'] ?? '';
+                                final phoneNumber =
+                                    credentials['username'] ?? '';
                                 final password = credentials['password'] ?? '';
 
                                 var version = {"app_version": _appVersion};
@@ -340,21 +342,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                       firstTimeInstallation: false,
                                       isBiometricEnabled: true,
                                     );
+                                    // Saved isBiometricEnabled value to shared preference
+                                    // await LocalStorage.save(
+                                    //     "isBiometricEnabled", "1");
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text('Login successful!'),
                                       ),
                                     );
                                   },
-                                ).catchError((error) {
-                                  handleResponseError(
-                                    context,
-                                    _formKey.currentState!.fields,
-                                    error,
-                                    authNotifier.logout,
-                                  );
-                                }).whenComplete(
-                                  () {
+                                ).whenComplete(
+                                  () async {
                                     if (mounted) {
                                       setState(() {
                                         _loading = false;
