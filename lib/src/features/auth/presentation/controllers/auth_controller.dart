@@ -16,7 +16,7 @@ import 'package:nishauri/src/shared/models/token_pair.dart';
 import 'dart:developer' as developer;
 
 class AuthController extends StateNotifier<AsyncValue<AuthState>> {
-  /// Act as the view model that hold the state of component or screen
+  /// Act as the view models that hold the state of component or screen
   final AuthRepository _repository;
   final UserRepository _userRepository;
 

@@ -25,6 +25,7 @@ import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorResult
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMIHistoryScreen.dart';
 import 'package:nishauri/src/features/bp/presentation/pages/bpScreen.dart';
+import 'package:nishauri/src/features/bp/presentation/pages/bpMonitorScreen.dart';
 import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
 import 'package:nishauri/src/features/clinic_card/presentation/pages/ClinicCardScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/FaqPage.dart';
@@ -55,6 +56,7 @@ import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/DrugOrders.dart';
 import 'package:nishauri/src/features/lab/presentation/pages/LabResultsScreen.dart';
 import 'package:nishauri/src/features/programs/presentation/pages/programs.dart';
+import 'package:nishauri/src/features/self_screening/presentation/self_screening_menu.dart';
 import 'package:nishauri/src/features/treatment_support/presentation/pages/TreatmentSupport.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileScreen.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileWizardFormScreen.dart';
@@ -223,34 +225,6 @@ final List<RouteBase> secureRoutes = [
     },
   ),
   GoRoute(
-      name: RouteNames.BMI_CALCULATOR,
-      path: 'bmi-calculator',
-      builder: (BuildContext context, GoRouterState state) {
-        return const BMICalculatorScreen();
-      },
-      routes: [
-        GoRoute(
-            name: RouteNames.BMI_CALCULATOR_RESULTS,
-            path: "bmi-calculator-results",
-            builder: (BuildContext context, GoRouterState state) {
-              double extra = state.extra! as double;
-              return BMICalculatorResultsScreen(bmi: extra);
-            }),
-        GoRoute(
-            name: RouteNames.BMI_HISTORY,
-            path: "bmi-history",
-            builder: (BuildContext context, GoRouterState state) {
-              return const BMIHistoryScreen();
-            }),
-      ]),
-  GoRoute(
-    name: RouteNames.BLOOD_PRESSURE,
-    path: 'blood-pressure',
-    builder: (BuildContext context, GoRouterState state) {
-      return const BPScreen();
-    },
-  ),
-  GoRoute(
     name: RouteNames.PRIVACY_SETTINGS,
     path: 'privacy-settings',
     builder: (BuildContext context, GoRouterState state) {
@@ -294,6 +268,15 @@ final List<RouteBase> secureRoutes = [
       return const ProgramsMenuScreen();
     },
     routes: programMenu,
+  ),
+
+  GoRoute(
+    name: RouteNames.SELF_SCREENING,
+    path: 'self-screening',
+    builder: (BuildContext context, GoRouterState state) {
+      return const SelfScreening();
+    },
+    routes: selfScreeningRoutes,
   ),
   GoRoute(
     name: RouteNames.DAWA_DROP_MENU,
@@ -425,6 +408,37 @@ final List<RouteBase> openRoutes = [
     builder: (context, state) {
       final extras = state.extra as String;
       return VerifiedResetPassword(username: extras);
+    },
+  ),
+];
+
+final List<RouteBase> selfScreeningRoutes = [
+  GoRoute(
+      name: RouteNames.BMI_CALCULATOR,
+      path: 'bmi-calculator',
+      builder: (BuildContext context, GoRouterState state) {
+        return const BMICalculatorScreen();
+      },
+      routes: [
+        GoRoute(
+            name: RouteNames.BMI_CALCULATOR_RESULTS,
+            path: "bmi-calculator-results",
+            builder: (BuildContext context, GoRouterState state) {
+              double extra = state.extra! as double;
+              return BMICalculatorResultsScreen(bmi: extra);
+            }),
+        GoRoute(
+            name: RouteNames.BMI_HISTORY,
+            path: "bmi-history",
+            builder: (BuildContext context, GoRouterState state) {
+              return const BMIHistoryScreen();
+            }),
+      ]),
+  GoRoute(
+    name: RouteNames.BLOOD_PRESSURE,
+    path: 'blood-pressure',
+    builder: (BuildContext context, GoRouterState state) {
+      return BPMonitorScreen();
     },
   ),
 ];
