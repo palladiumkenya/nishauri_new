@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/features/appointments/data/repository/appointment_repository.dart';
 import 'package:nishauri/src/features/appointments/data/services/appointment_services.dart';
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
+import 'package:nishauri/src/features/auth/data/respositories/credential_storage_repository.dart';
 import 'package:nishauri/src/features/clinic_card/data/repository/ProgramRepository.dart';
 import 'package:nishauri/src/features/clinic_card/data/services/ProgramService.dart';
 import 'package:nishauri/src/features/hiv/data/repositories/art_appointment_repository.dart';
@@ -19,10 +21,16 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
   final UserRepository _userRepository;
 
   ProgramRepository programRepository = ProgramRepository(ProgramService());
-  ViralLoadRepository viralLoadRepository = ViralLoadRepository(ViralLoadService());
-  AppointmentRepository appointmentRepository = AppointmentRepository(AppointmentService(), false, ARTAppointmentRepository(ARTAppointmentService()));
-
-  AuthController(this._repository, this._userRepository) : super(const AsyncValue.loading()) {
+  ViralLoadRepository viralLoadRepository =
+      ViralLoadRepository(ViralLoadService());
+  AppointmentRepository appointmentRepository = AppointmentRepository(
+      AppointmentService(),
+      false,
+      ARTAppointmentRepository(ARTAppointmentService()));
+  final CredentialStorageRepository credentialStorageRepository =
+      CredentialStorageRepository();
+  AuthController(this._repository, this._userRepository)
+      : super(const AsyncValue.loading()) {
     loadAuthState();
   }
 
@@ -42,66 +50,72 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
     }
   }
 
-  Future<void> login(Map<String, dynamic> credentials) async {
-      final authResponse = await _repository.authenticate(credentials);
-      var msg = authResponse.accessToken ?? '';
-      if (msg.isEmpty){
-        throw authResponse.message??'';
-      }
-      await _repository.saveToken(TokenPair(
-        accessToken: authResponse.accessToken ?? '',
-        refreshToken: authResponse.refreshToken ?? '',
-      ));
-      await _repository.saveUserId(authResponse.userId??'');
-      await _repository.savePhoneNumber(authResponse.phoneNumber ?? '');
-      await _repository.saveIsVerified(authResponse.accountVerified);
-      state = AsyncValue.data(
-        AuthState(
-          isAccountVerified: authResponse.accountVerified,
-          isProfileComplete: authResponse.profileUpdated,
-          isAuthenticated: msg.isNotEmpty,
+  Future<void> login(Map<String, dynamic> credentials, type) async {
+    final authResponse = await _repository.authenticate(credentials);
+    debugPrint("login type: $type");
+    var msg = authResponse.accessToken ?? '';
+    if (msg.isEmpty) {
+      throw authResponse.message ?? '';
+    }
+    await _repository.saveToken(TokenPair(
+      accessToken: authResponse.accessToken ?? '',
+      refreshToken: authResponse.refreshToken ?? '',
+    ));
+    await _repository.saveUserId(authResponse.userId ?? '');
+    await _repository.savePhoneNumber(authResponse.phoneNumber ?? '');
+    await _repository.saveIsVerified(authResponse.accountVerified);
 
-        ),
-      );
-      await saveToLocal();
+    if (type == 'biometric') {
+      await credentialStorageRepository.saveBiometricPreference(true);
+      debugPrint("biometric preference saved");
+    }
+    state = AsyncValue.data(
+      AuthState(
+        isAccountVerified: authResponse.accountVerified,
+        isProfileComplete: authResponse.profileUpdated,
+        isAuthenticated: msg.isNotEmpty,
+      ),
+    );
+    await saveToLocal();
   }
+
   Future<void> saveToLocal() async {
     await appointmentRepository.saveAppointment();
     await _userRepository.saveGenderAge();
     await programRepository.saveRegimen();
     await viralLoadRepository.saveViralLoad();
   }
-  Future<bool> unlock(Map<String, dynamic> credentials) async {
-    var username = {"user_name" : await _repository.getUserPhoneNumber()};
-    final unlockCredentials = {...credentials, ...username};
-      final authResponse = await _repository.authenticate(unlockCredentials);
-      var msg = authResponse.accessToken ?? '';
-      if (msg.isEmpty){
-        throw authResponse.message??'';
-      }
-      await _repository.saveToken(TokenPair(
-        accessToken: authResponse.accessToken ?? '',
-        refreshToken: authResponse.refreshToken ?? '',
-      ));
-      await _repository.saveUserId(authResponse.userId??'');
-      await _repository.savePhoneNumber(authResponse.phoneNumber ?? '');
-      await _repository.saveIsVerified(authResponse.accountVerified);
-      return msg.isNotEmpty;
 
+  Future<bool> unlock(Map<String, dynamic> credentials) async {
+    var username = {"user_name": await _repository.getUserPhoneNumber()};
+    final unlockCredentials = {...credentials, ...username};
+    final authResponse = await _repository.authenticate(unlockCredentials);
+    var msg = authResponse.accessToken ?? '';
+    if (msg.isEmpty) {
+      throw authResponse.message ?? '';
+    }
+    await _repository.saveToken(TokenPair(
+      accessToken: authResponse.accessToken ?? '',
+      refreshToken: authResponse.refreshToken ?? '',
+    ));
+    await _repository.saveUserId(authResponse.userId ?? '');
+    await _repository.savePhoneNumber(authResponse.phoneNumber ?? '');
+    await _repository.saveIsVerified(authResponse.accountVerified);
+    return msg.isNotEmpty;
   }
 
   Future<void> register(Map<String, dynamic> data) async {
     try {
       final authResponse = await _repository.register(data);
       var isAuth = authResponse.accessToken ?? '';
-      if (isAuth.isEmpty){
-        throw authResponse.message??'';
+      if (isAuth.isEmpty) {
+        throw authResponse.message ?? '';
       }
       await _repository.saveToken(TokenPair(
         accessToken: authResponse.accessToken ?? '',
-        refreshToken: authResponse.refreshToken?? '',
+        refreshToken: authResponse.refreshToken ?? '',
       ));
-      await _repository.saveUserId(authResponse.userId??'');
+      await _repository.saveUserId(authResponse.userId ?? '');
       await _repository.savePhoneNumber(authResponse.phoneNumber ?? '');
       await _repository.saveIsVerified(authResponse.accountVerified);
       await appointmentRepository.saveAppointment();
@@ -127,14 +141,13 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
             isProfileComplete: true,
           ),
         ),
-        error: (error, stackTrace) => state = AsyncValue.error(error, stackTrace),
+        error: (error, stackTrace) =>
+            state = AsyncValue.error(error, stackTrace),
         loading: () => state = const AsyncValue.loading(),
       );
-    } catch (e)
-    {
+    } catch (e) {
       rethrow;
     }
-
   }
 
   Future<void> markProfileAsAccountVerified() async {
