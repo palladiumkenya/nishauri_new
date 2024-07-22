@@ -62,78 +62,6 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  Future<void> loginWithBiometrics(ref, context) async {
-    // final canCheckBiometrics = await _biometricAuthService.hasSavedBiometrics();
-    // if (canCheckBiometrics) {
-    //   final isAuthenticated =
-    //       await _biometricAuthService.authenticateWithBiometrics();
-    //   if (isAuthenticated) {
-    //     try {
-    //       final credentials =
-    //           await _credentialStorageRepository.fetchCredentials();
-    //       debugPrint("Credentials: $credentials");
-    //       final authNotifier = ref.read(authStateProvider.notifier);
-    //       final settings = ref.read(settingsNotifierProvider.notifier);
-    //       final phoneNumber = credentials['username']!;
-    //       final password = credentials['password']!;
-
-    //       var version = {"app_version": _appVersion};
-    //       var mergedData = {
-    //         "user_name": phoneNumber,
-    //         "password": password,
-    //         ...version
-    //       };
-
-    //       authNotifier.login(mergedData).then((_) {
-    //         //     Update user state
-    //         ref.read(userProvider.notifier).getUser();
-    //       }).then(
-    //         (_) {
-    //           settings.patchSettings(
-    //             firstTimeInstallation: false,
-    //             isBiometricEnabled: true,
-    //           );
-    //           ScaffoldMessenger.of(context).showSnackBar(
-    //             const SnackBar(
-    //               content: Text('Login successful!'),
-    //             ),
-    //           );
-    //         },
-    //       ).catchError((error) {
-    //         handleResponseError(
-    //           context,
-    //           _formKey.currentState!.fields,
-    //           error,
-    //           authNotifier.logout,
-    //         );
-    //       }).whenComplete(
-    //         () {
-    //           if (mounted) {
-    //             setState(() {
-    //               _loading = false;
-    //             });
-    //           }
-    //         },
-    //       );
-    //     } catch (error) {
-    //       debugPrint("Biometric login failed: $error");
-    //       ScaffoldMessenger.of(context).showSnackBar(
-    //         const SnackBar(
-    //           content: Text('Biometric login failed!'),
-    //         ),
-    //       );
-    //     }
-    //   }
-    // } else {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(
-    //       content: Text(
-    //           "No user registered for Biometric authentication on this device"),
-    //     ),
-    //   );
-    // }
-  }
-
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -263,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ...version
                             };
                             debugPrint("MergedData: $mergedData");
-                            authNotifier.login(mergedData).then((_) {
+                            authNotifier.login(mergedData, "").then((_) {
                               //     Update user state
                               ref.read(userProvider.notifier).getUser();
                             }).then(
@@ -333,7 +261,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ...version
                                 };
 
-                                authNotifier.login(mergedData).then((_) {
+                                authNotifier
+                                    .login(mergedData, 'biometric')
+                                    .then((_) {
                                   //     Update user state
                                   ref.read(userProvider.notifier).getUser();
                                 }).then(
@@ -342,9 +272,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                       firstTimeInstallation: false,
                                       isBiometricEnabled: true,
                                     );
-                                    // Saved isBiometricEnabled value to shared preference
-                                    // await LocalStorage.save(
-                                    //     "isBiometricEnabled", "1");
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text('Login successful!'),
@@ -391,7 +318,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       LinkedRichText(
                         linked: "Don't have account?  ",
-                        unlinked: 'Register   ',
+                        unlinked: 'Register',
                         onPress: () =>
                             context.goNamed(RouteNames.REGISTER_SCREEN),
                       ),
