@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nishauri/src/features/auth/data/respositories/secure_credential_repository.dart';
+import 'package:nishauri/src/features/auth/data/respositories/credential_storage_repository.dart';
 import 'package:nishauri/src/features/auth/data/services/BiometricAuthService.dart';
 import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
@@ -80,30 +80,24 @@ List<_SettingsItem> _settingsItem(BuildContext context) => <_SettingsItem>[
           leadingIcon: Icons.fingerprint,
           trailingIcon: Consumer(
               builder: (BuildContext context, WidgetRef ref, Widget? child) {
-            final user = ref.watch(userProvider);
+            final setting = ref.watch(settingsNotifierProvider);
             return Switch(
-              value: false,
-              // value: user.when(
-              //     data: (user) => user.isBiometricEnabled,
-              //     loading: () => false,
-              //     error: (error, stack) => false),
+              // value: false,
+              value: setting.isBiometricEnabled,
               onChanged: (bool value) async {
                 if (value) {
-                  await _enableBiometricSupport(context);
+                  await _enableBiometricSupport(context, ref);
                 }
-                // ref.read(userProvider.notifier).patchUser(
-                //     isBiometricEnabled: value,
-                //     phoneNumber: user.when(
-                //         data: (user) => user.phoneNumber,
-                //         loading: () => '',
-                //         error: (error, stack) => ''));
+                // ref.read(settingsNotifierProvider.notifier).patchSettings(
+                //       isBiometricEnabled: value,
+                //     );
               },
             );
           })),
     ];
-Future<void> _enableBiometricSupport(BuildContext context) async {
+Future<void> _enableBiometricSupport(BuildContext context, ref) async {
   final biometricAuthService = BiometricAuthService();
-  final credentialStorage = CredentialStorage();
+  final credentialStorage = CredentialStorageRepository();
   final bool canCheckBiometrics =
       await biometricAuthService.canCheckBiometrics();
 
@@ -113,6 +107,23 @@ Future<void> _enableBiometricSupport(BuildContext context) async {
     if (phoneAndPassword != null) {
       await credentialStorage.saveCredentials(
           phoneAndPassword['phone_number']!, phoneAndPassword['password']!);
+      ref.read(settingsNotifierProvider.notifier).patchSettings(
+            isBiometricEnabled: true,
+          );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text("Credentials saved. Biometric support enabled.")),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content:
+                Text("Credentials not saved. Biometric support disabled.")),
+      );
+      // Update the state to disable biometric support
+      ref.read(settingsNotifierProvider.notifier).patchSettings(
+            isBiometricEnabled: false,
+          );
     }
   } else {
     // Show a message if biometrics are not supported
@@ -121,17 +132,19 @@ Future<void> _enableBiometricSupport(BuildContext context) async {
           content: Text(
               "Biometric authentication is not supported on this device.")),
     );
+    ref.read(settingsNotifierProvider.notifier).patchSettings(
+          isBiometricEnabled: false,
+        );
   }
 }
 
 Future<Map<String, String>?> _promptForCredentials(BuildContext context) async {
   String phoneNumber = '';
   String password = '';
-  // Show dialog or another screen to collect phoneNumber and password
-
   try {
     final result = await showDialog<Map<String, String>>(
         context: context,
+        barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
             title: const Text('Enter your credentials'),

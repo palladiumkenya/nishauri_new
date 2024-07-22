@@ -5,6 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
+import 'package:nishauri/src/features/auth/data/respositories/credential_storage_repository.dart';
+import 'package:nishauri/src/features/auth/data/services/BiometricAuthService.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
@@ -36,6 +38,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   bool _hidePassword = true;
   bool _loading = false;
+  final BiometricAuthService _biometricAuthService = BiometricAuthService();
+  final CredentialStorageRepository _credentialStorageRepository =
+      CredentialStorageRepository();
 
   void _togglePassword() {
     setState(() {
@@ -54,6 +59,78 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _appVersion = appVersion;
     });
+  }
+
+  Future<void> loginWithBiometrics(ref, context) async {
+    // final canCheckBiometrics = await _biometricAuthService.hasSavedBiometrics();
+    // if (canCheckBiometrics) {
+    //   final isAuthenticated =
+    //       await _biometricAuthService.authenticateWithBiometrics();
+    //   if (isAuthenticated) {
+    //     try {
+    //       final credentials =
+    //           await _credentialStorageRepository.fetchCredentials();
+    //       debugPrint("Credentials: $credentials");
+    //       final authNotifier = ref.read(authStateProvider.notifier);
+    //       final settings = ref.read(settingsNotifierProvider.notifier);
+    //       final phoneNumber = credentials['username']!;
+    //       final password = credentials['password']!;
+
+    //       var version = {"app_version": _appVersion};
+    //       var mergedData = {
+    //         "user_name": phoneNumber,
+    //         "password": password,
+    //         ...version
+    //       };
+
+    //       authNotifier.login(mergedData).then((_) {
+    //         //     Update user state
+    //         ref.read(userProvider.notifier).getUser();
+    //       }).then(
+    //         (_) {
+    //           settings.patchSettings(
+    //             firstTimeInstallation: false,
+    //             isBiometricEnabled: true,
+    //           );
+    //           ScaffoldMessenger.of(context).showSnackBar(
+    //             const SnackBar(
+    //               content: Text('Login successful!'),
+    //             ),
+    //           );
+    //         },
+    //       ).catchError((error) {
+    //         handleResponseError(
+    //           context,
+    //           _formKey.currentState!.fields,
+    //           error,
+    //           authNotifier.logout,
+    //         );
+    //       }).whenComplete(
+    //         () {
+    //           if (mounted) {
+    //             setState(() {
+    //               _loading = false;
+    //             });
+    //           }
+    //         },
+    //       );
+    //     } catch (error) {
+    //       debugPrint("Biometric login failed: $error");
+    //       ScaffoldMessenger.of(context).showSnackBar(
+    //         const SnackBar(
+    //           content: Text('Biometric login failed!'),
+    //         ),
+    //       );
+    //     }
+    //   }
+    // } else {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(
+    //       content: Text(
+    //           "No user registered for Biometric authentication on this device"),
+    //     ),
+    //   );
+    // }
   }
 
   @override
@@ -184,6 +261,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ..._formKey.currentState!.value,
                               ...version
                             };
+                            debugPrint("MergedData: $mergedData");
                             authNotifier.login(mergedData).then((_) {
                               //     Update user state
                               ref.read(userProvider.notifier).getUser();
@@ -221,12 +299,90 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: Constants.SPACING),
                   //  Biometric icon button
-                  Button(
-                    title: "Login with biometrics",
-                    backgroundColor: theme.colorScheme.secondary,
-                    textColor: Colors.white,
-                    onPress: () {},
-                    surfixIcon: const Icon(Icons.fingerprint),
+                  Consumer(
+                    builder: (context, ref, child) {
+                      return Button(
+                        title: "Login with biometrics",
+                        backgroundColor: theme.colorScheme.secondary,
+                        textColor: Colors.white,
+                        onPress: () async {
+                          final canCheckBiometrics =
+                              await _biometricAuthService.hasSavedBiometrics();
+                          if (canCheckBiometrics) {
+                            final isAuthenticated = await _biometricAuthService
+                                .authenticateWithBiometrics();
+                            if (isAuthenticated) {
+                              try {
+                                final credentials =
+                                    await _credentialStorageRepository
+                                        .fetchCredentials();
+                                debugPrint("Credentials: $credentials");
+                                final authNotifier =
+                                    ref.read(authStateProvider.notifier);
+                                final settings =
+                                    ref.read(settingsNotifierProvider.notifier);
+                                final phoneNumber = credentials['username'] ?? '';
+                                final password = credentials['password'] ?? '';
+
+                                var version = {"app_version": _appVersion};
+                                var mergedData = {
+                                  "user_name": phoneNumber,
+                                  "password": password,
+                                  ...version
+                                };
+
+                                authNotifier.login(mergedData).then((_) {
+                                  //     Update user state
+                                  ref.read(userProvider.notifier).getUser();
+                                }).then(
+                                  (_) {
+                                    settings.patchSettings(
+                                      firstTimeInstallation: false,
+                                      isBiometricEnabled: true,
+                                    );
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Login successful!'),
+                                      ),
+                                    );
+                                  },
+                                ).catchError((error) {
+                                  handleResponseError(
+                                    context,
+                                    _formKey.currentState!.fields,
+                                    error,
+                                    authNotifier.logout,
+                                  );
+                                }).whenComplete(
+                                  () {
+                                    if (mounted) {
+                                      setState(() {
+                                        _loading = false;
+                                      });
+                                    }
+                                  },
+                                );
+                              } catch (error) {
+                                debugPrint("Biometric login failed: $error");
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Biometric login failed!'),
+                                  ),
+                                );
+                              }
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    "No user registered for Biometric authentication on this device"),
+                              ),
+                            );
+                          }
+                        },
+                        surfixIcon: const Icon(Icons.fingerprint),
+                      );
+                    },
                   ),
 
                   const SizedBox(
@@ -243,7 +399,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10.0,
                   ),
                   Text('App Version: $_appVersion',
