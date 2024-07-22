@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/biometric_auth_provider.dart';
 import 'package:nishauri/src/features/auth/data/respositories/credential_storage_repository.dart';
+import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
 import 'package:nishauri/src/features/auth/data/services/BiometricAuthService.dart';
 import 'package:nishauri/src/features/user/data/models/user.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
@@ -147,13 +148,16 @@ Future<void> _enableBiometricSupport(
 Future<Map<String, String>?> _promptForCredentials(BuildContext context) async {
   String phoneNumber = '';
   String password = '';
+  // Initialize Auth api service
+  AuthApiService authApiService = AuthApiService();
   try {
     final result = await showDialog<Map<String, String>>(
         context: context,
         barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
-            title: const Text('Enter your credentials'),
+            title: const Text('Kindly confirm your login details',
+                textAlign: TextAlign.center),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -169,9 +173,24 @@ Future<Map<String, String>?> _promptForCredentials(BuildContext context) async {
             ),
             actions: [
               Button(
-                onPress: () {
-                  Navigator.of(context)
-                      .pop({'phone_number': phoneNumber, 'password': password});
+                onPress: () async {
+                  // Test whether credentials are correct using authApiservice
+                  final credentials = {
+                    'user_name': phoneNumber,
+                    'password': password
+                  };
+                  final isAuthenticated =
+                      await authApiService.authenticate(credentials);
+                  if (isAuthenticated.accountVerified) {
+                    Navigator.of(context).pop(
+                        {'phone_number': phoneNumber, 'password': password});
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Credentials are incorrect."),
+                      ),
+                    );
+                  }
                 },
                 title: 'Submit',
               ),
