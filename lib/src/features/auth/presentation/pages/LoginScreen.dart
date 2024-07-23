@@ -232,7 +232,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     builder: (context, ref, child) {
                       return Button(
                         title: "Login with Biometrics",
-                        backgroundColor: theme.colorScheme.secondary,
+                        backgroundColor: Colors.green,
                         textColor: Colors.white,
                         onPress: () async {
                           final canCheckBiometrics =
