@@ -166,7 +166,7 @@ class PasswordUnlockScreen extends HookConsumerWidget {
                         final authState = ref.watch(authStateProvider);
                         return canCheckBiometrics
                             ? Button(
-                                title: "Use Biometrics",
+                                title: "Unlock with biometrics",
                                 backgroundColor: theme.colorScheme.primary,
                                 textColor: Colors.white,
                                 onPress: () async {
