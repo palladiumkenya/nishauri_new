@@ -11,6 +11,7 @@ import 'package:nishauri/src/features/auth/data/respositories/credential_storage
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
 import 'package:nishauri/src/features/auth/data/services/BiometricAuthService.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
+import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/shared/display/scafold_stack_body.dart';
 
 import '../../../../shared/display/LinkedRichText.dart';
@@ -21,6 +22,16 @@ import '../../../../shared/styles/input_styles.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/helpers.dart';
 import '../../../auth/data/providers/auth_provider.dart';
+
+final BiometricAuthService _biometricAuthService = BiometricAuthService();
+
+Future<void> initializeBiometricAuthService(WidgetRef ref) async {
+  var checkBiometrics = await _biometricAuthService.hasSavedBiometrics();
+  ref.read(canCheckBiometricsProvider.notifier).state = checkBiometrics;
+  if (checkBiometrics) {
+    ref.read(passwordVisibleProvider.notifier).state = false;
+  }
+}
 
 class PasswordUnlockScreen extends HookConsumerWidget {
   const PasswordUnlockScreen({super.key});
@@ -33,7 +44,9 @@ class PasswordUnlockScreen extends HookConsumerWidget {
     var theme = Theme.of(context);
     final userAsync = ref.watch(userProvider);
     final authNotifier = ref.read(authStateProvider.notifier);
-    final BiometricAuthService _biometricAuthService = BiometricAuthService();
+    final canCheckBiometrics = ref.watch(canCheckBiometricsProvider);
+    final passwordVisible = ref.watch(passwordVisibleProvider);
+
     final CredentialStorageRepository _credentialStorageRepository =
         CredentialStorageRepository();
     void togglePassword() {
@@ -61,13 +74,10 @@ class PasswordUnlockScreen extends HookConsumerWidget {
       }
     }
 
-    bool canCheckBiometrics = false;
-
-    Future<void> _initializeBiometricAuthService() async {
-      var checkBiometrics = await _biometricAuthService.hasSavedBiometrics();
-      canCheckBiometrics = checkBiometrics;
-    }
-
+    useEffect(() {
+      initializeBiometricAuthService(ref);
+      return null;
+    }, const []);
     return Scaffold(
       body: ScaffoldStackedBody(
         body: userAsync.when(
@@ -112,33 +122,45 @@ class PasswordUnlockScreen extends HookConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: Constants.SPACING * 3),
-                    LabelInputContainer(
-                      label: "Password",
-                      child: FormBuilderTextField(
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                        ]),
-                        name: "password",
-                        obscureText: hidePassword.value,
-                        decoration: outLineInputDecoration(
-                            // prefixIcon: Icons.lock,
-                            // label: "Password",
-                            placeholder: "Enter your password",
-                            onSurfixIconPressed: togglePassword,
-                            surfixIcon: hidePassword.value
-                                ? const Icon(Icons.visibility)
-                                : const Icon(Icons.visibility_off)),
-                      ),
-                    ),
-                    const SizedBox(height: Constants.SPACING * 2),
-                    Button(
-                      title: "Unlock",
-                      backgroundColor: theme.colorScheme.primary,
-                      textColor: Colors.white,
-                      onPress: handleSubmit,
-                      loading: loading.value,
-                    ),
-                    const SizedBox(height: Constants.SPACING * 2),
+                    passwordVisible
+                        ? Column(
+                            children: [
+                              LabelInputContainer(
+                                label: "Password",
+                                child: FormBuilderTextField(
+                                  validator: FormBuilderValidators.compose([
+                                    FormBuilderValidators.required(),
+                                  ]),
+                                  name: "password",
+                                  obscureText: hidePassword.value,
+                                  decoration: outLineInputDecoration(
+                                      // prefixIcon: Icons.lock,
+                                      // label: "Password",
+                                      placeholder: "Enter your password",
+                                      onSurfixIconPressed: togglePassword,
+                                      surfixIcon: hidePassword.value
+                                          ? const Icon(Icons.visibility)
+                                          : const Icon(Icons.visibility_off)),
+                                ),
+                              ),
+                              const SizedBox(height: Constants.SPACING * 2),
+                              Button(
+                                title: "Unlock",
+                                backgroundColor: theme.colorScheme.primary,
+                                textColor: Colors.white,
+                                onPress: handleSubmit,
+                                loading: loading.value,
+                              ),
+                              const SizedBox(height: Constants.SPACING * 2),
+                            ],
+                          )
+                        : TextButton(
+                            onPressed: () {
+                              ref.read(passwordVisibleProvider.notifier).state =
+                                  true;
+                            },
+                            child: const Text("Use password instead"),
+                          ),
                     Consumer(
                       builder: (context, ref, child) {
                         final authState = ref.watch(authStateProvider);
