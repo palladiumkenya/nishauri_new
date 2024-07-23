@@ -38,6 +38,8 @@ class Constants {
   static const clinicCardColor = Color.fromARGB(255,13,71,161);
   static const announcement = Color.fromARGB(255, 64, 87, 162);
   static const frequentlyAskedQuestions = Color.fromARGB(255, 123, 83, 162);
+  static const periodPlanner = Color.fromARGB(255, 244, 143, 177);
+  static const periodPlannerShortcutBgColor = Color.fromARGB(255, 255, 182, 193);
   static const iconSize = 70.0;
   static const shortcutIconSize = 30.0;
 

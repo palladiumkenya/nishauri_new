@@ -57,6 +57,7 @@ class RouteNames {
   static const DISPATCHED_DRUGS = "dispatched-drugs";
   static const REMOVE_PROGRAM = "remove-program";
   static const BLOG_POST = "blog-post";
+  static const PERIOD_PLANNER = "Period Planner";
 
 }
 
@@ -84,6 +85,7 @@ class MenuItemNames {
   static const REQUEST_DRUGS = "Request Drugs";
   static const DISPATCHED_DRUGS = "Dispached Drugs";
   static const REMOVE_PROGRAM = "Remove Program";
+  static const PERIOD_PLANNER = "Period Planner";
 }
 
 class ProgramCodeNameIds {

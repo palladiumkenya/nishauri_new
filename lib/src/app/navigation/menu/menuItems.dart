@@ -266,6 +266,26 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
     //   title: MenuItemNames.CHAT_HCW,
     //   onPressed: () => context.goNamed(RouteNames.CHAT_HCW),
     // ),
+    MenuItem(
+      shortcutBackgroundColor: Constants.periodPlannerShortcutBgColor,
+      icon: SvgPicture.asset(
+        "assets/images/period_planner4.svg",
+        semanticsLabel: "Doctors",
+        fit: BoxFit.contain,
+        width: 80,
+        height: 80,
+      ), 
+      shortcutIcon: SvgPicture.asset(
+        "assets/images/period_planner4.svg",
+        semanticsLabel: "Doctors",
+        fit: BoxFit.contain,
+        width: Constants.shortcutIconSize,
+        height: Constants.shortcutIconSize,
+      ),
+      title: MenuItemNames.PERIOD_PLANNER,
+      onPressed: () => context.goNamed(RouteNames.PERIOD_PLANNER),
+      color: Constants.periodPlanner,
+      ),
   ];
 }
 
