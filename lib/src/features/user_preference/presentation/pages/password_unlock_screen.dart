@@ -61,6 +61,13 @@ class PasswordUnlockScreen extends HookConsumerWidget {
       }
     }
 
+    bool canCheckBiometrics = false;
+
+    Future<void> _initializeBiometricAuthService() async {
+      var checkBiometrics = await _biometricAuthService.hasSavedBiometrics();
+      canCheckBiometrics = checkBiometrics;
+    }
+
     return Scaffold(
       body: ScaffoldStackedBody(
         body: userAsync.when(
@@ -135,48 +142,55 @@ class PasswordUnlockScreen extends HookConsumerWidget {
                     Consumer(
                       builder: (context, ref, child) {
                         final authState = ref.watch(authStateProvider);
-                        return Button(
-                          title: "Use Biometrics",
-                          backgroundColor: theme.colorScheme.primary,
-                          textColor: Colors.white,
-                          onPress: () async {
-                            final canCheckBiometrics =
-                                await _biometricAuthService
-                                    .hasSavedBiometrics();
-                            if (canCheckBiometrics) {
-                              final isAuthenticated =
-                                  await _biometricAuthService
-                                      .authenticateWithBiometrics();
-                              if (isAuthenticated) {
-                                try {
-                                  final credentials =
-                                      await _credentialStorageRepository
-                                          .fetchCredentials();
-                                  final password = credentials["password"];
-                                  debugPrint("Credentials: $credentials");
-                                  if (password != null) {
-                                    loading.value = true;
+                        return canCheckBiometrics
+                            ? Button(
+                                title: "Use Biometrics",
+                                backgroundColor: theme.colorScheme.primary,
+                                textColor: Colors.white,
+                                onPress: () async {
+                                  final canCheckBiometrics =
+                                      await _biometricAuthService
+                                          .hasSavedBiometrics();
+                                  if (canCheckBiometrics) {
+                                    final isAuthenticated =
+                                        await _biometricAuthService
+                                            .authenticateWithBiometrics();
+                                    if (isAuthenticated) {
+                                      try {
+                                        final credentials =
+                                            await _credentialStorageRepository
+                                                .fetchCredentials();
+                                        final password =
+                                            credentials["password"];
+                                        debugPrint("Credentials: $credentials");
+                                        if (password != null) {
+                                          loading.value = true;
 
-                                    final payload = {
-                                      "password": password,
-                                    };
-                                    authNotifier.unlock(payload).then((value) {
-                                      context.pop();
-                                    }).whenComplete(
-                                        () => loading.value = false);
+                                          final payload = {
+                                            "password": password,
+                                          };
+                                          authNotifier
+                                              .unlock(payload)
+                                              .then((value) {
+                                            context.pop();
+                                          }).whenComplete(
+                                                  () => loading.value = false);
+                                        }
+                                      } catch (e) {
+                                        debugPrint("Error: $e");
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content:
+                                                Text('Biometric login failed!'),
+                                          ),
+                                        );
+                                      }
+                                    }
                                   }
-                                } catch (e) {
-                                  debugPrint("Error: $e");
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Biometric login failed!'),
-                                    ),
-                                  );
-                                }
-                              }
-                            }
-                          },
-                        );
+                                },
+                              )
+                            : const SizedBox();
                       },
                     ),
                     const SizedBox(height: Constants.SPACING * 2),
