@@ -200,8 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ..._formKey.currentState!.value,
                               ...version
                             };
-                            debugPrint("MergedData: $mergedData");
-                            authNotifier.login(mergedData, "").then((_) {
+                            authNotifier.login(mergedData, null).then((_) {
                               //     Update user state
                               ref.read(userProvider.notifier).getUser();
                             }).then(
@@ -271,14 +270,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                       var version = {
                                         "app_version": _appVersion
                                       };
-                                      var mergedData = {
+                                      var biometricData = {
                                         "user_name": phoneNumber,
                                         "password": password,
                                         ...version
                                       };
 
                                       authNotifier
-                                          .login(mergedData, 'biometric')
+                                          .login(biometricData, 'biometric')
                                           .then((_) {
                                         //     Update user state
                                         ref
