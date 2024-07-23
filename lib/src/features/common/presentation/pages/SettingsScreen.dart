@@ -167,6 +167,7 @@ Future<Map<String, String>?> _promptForCredentials(BuildContext context) async {
                 ),
                 TextField(
                   decoration: const InputDecoration(labelText: 'Password'),
+                  obscureText: true,
                   onChanged: (value) => password = value,
                 ),
               ],
