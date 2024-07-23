@@ -7,7 +7,9 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
+import 'package:nishauri/src/features/auth/data/respositories/credential_storage_repository.dart';
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
+import 'package:nishauri/src/features/auth/data/services/BiometricAuthService.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/scafold_stack_body.dart';
 
@@ -30,16 +32,17 @@ class PasswordUnlockScreen extends HookConsumerWidget {
     final hidePassword = useState(true);
     var theme = Theme.of(context);
     final userAsync = ref.watch(userProvider);
-    final authNotifier =
-    ref.read(authStateProvider.notifier);
-
+    final authNotifier = ref.read(authStateProvider.notifier);
+    final BiometricAuthService _biometricAuthService = BiometricAuthService();
+    final CredentialStorageRepository _credentialStorageRepository =
+        CredentialStorageRepository();
     void togglePassword() {
-        hidePassword.value = !hidePassword.value;
+      hidePassword.value = !hidePassword.value;
     }
+
     void handleSubmit() {
       if (formKey.currentState!.saveAndValidate()) {
         loading.value = true;
-
 
         // Form payload
         final payload = {
@@ -55,11 +58,8 @@ class PasswordUnlockScreen extends HookConsumerWidget {
             authNotifier.logout,
           );
         }).whenComplete(() => loading.value = false);
-
-
       }
     }
-
 
     return Scaffold(
       body: ScaffoldStackedBody(
@@ -67,79 +67,128 @@ class PasswordUnlockScreen extends HookConsumerWidget {
           data: (user) => FormBuilder(
             key: formKey,
             child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                const DecoratedBox(
-                  decoration: BoxDecoration(),
-                  child: Logo(
-                    size: 100,
-                  ),
-                ),
-                const SizedBox(height: Constants.SMALL_SPACING),
-                const Text(
-                  "Privacy lock 🔏",
-                  style: TextStyle(fontSize: 40),
-                ),
-                const SizedBox(height: Constants.SPACING),
-                RichText(
-                  text: TextSpan(
-                    text: "Dear ",
-                    style: TextStyle(color: theme.colorScheme.onSurface),
-                    children: [
-                      TextSpan(
-                        text: user.username,
-                        style: TextStyle(
-                          color: theme.colorScheme.primary,
-                        ),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                    const DecoratedBox(
+                      decoration: BoxDecoration(),
+                      child: Logo(
+                        size: 100,
                       ),
-                      const TextSpan(
-                        text: ", Your application is locked due to privacy reasons, Please provide your password to unlock",
+                    ),
+                    const SizedBox(height: Constants.SMALL_SPACING),
+                    const Text(
+                      "Privacy lock 🔏",
+                      style: TextStyle(fontSize: 40),
+                    ),
+                    const SizedBox(height: Constants.SPACING),
+                    RichText(
+                      text: TextSpan(
+                        text: "Dear ",
+                        style: TextStyle(color: theme.colorScheme.onSurface),
+                        children: [
+                          TextSpan(
+                            text: user.username,
+                            style: TextStyle(
+                              color: theme.colorScheme.primary,
+                            ),
+                          ),
+                          const TextSpan(
+                            text:
+                                ", Your application is locked due to privacy reasons, Please provide your password to unlock",
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: Constants.SPACING * 3),
-                LabelInputContainer(
-                  label: "Password",
-                  child: FormBuilderTextField(
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                    ]),
-                    name: "password",
-                    obscureText: hidePassword.value,
-                    decoration: outLineInputDecoration(
-                      // prefixIcon: Icons.lock,
-                      // label: "Password",
-                        placeholder: "Enter your password",
-                        onSurfixIconPressed: togglePassword,
-                        surfixIcon: hidePassword.value
-                            ? const Icon(Icons.visibility)
-                            : const Icon(Icons.visibility_off)),
-                  ),
-                ),
-                const SizedBox(height: Constants.SPACING * 6),
-                Button(
-                  title: "Unlock",
-                  backgroundColor: theme.colorScheme.primary,
-                  textColor: Colors.white,
-                  onPress: handleSubmit,
-                  loading: loading.value,
-                ),
-                const SizedBox(height: Constants.SPACING * 2),
-                LinkedRichText(
-                    linked: "",
-                    unlinked: "Logout",
-                    onPress: authNotifier.logout),
-                const SizedBox(height: Constants.SPACING),
+                    ),
+                    const SizedBox(height: Constants.SPACING * 3),
+                    LabelInputContainer(
+                      label: "Password",
+                      child: FormBuilderTextField(
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
+                        name: "password",
+                        obscureText: hidePassword.value,
+                        decoration: outLineInputDecoration(
+                            // prefixIcon: Icons.lock,
+                            // label: "Password",
+                            placeholder: "Enter your password",
+                            onSurfixIconPressed: togglePassword,
+                            surfixIcon: hidePassword.value
+                                ? const Icon(Icons.visibility)
+                                : const Icon(Icons.visibility_off)),
+                      ),
+                    ),
+                    const SizedBox(height: Constants.SPACING * 2),
+                    Button(
+                      title: "Unlock",
+                      backgroundColor: theme.colorScheme.primary,
+                      textColor: Colors.white,
+                      onPress: handleSubmit,
+                      loading: loading.value,
+                    ),
+                    const SizedBox(height: Constants.SPACING * 2),
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final authState = ref.watch(authStateProvider);
+                        return Button(
+                          title: "Use Biometrics",
+                          backgroundColor: theme.colorScheme.primary,
+                          textColor: Colors.white,
+                          onPress: () async {
+                            final canCheckBiometrics =
+                                await _biometricAuthService
+                                    .hasSavedBiometrics();
+                            if (canCheckBiometrics) {
+                              final isAuthenticated =
+                                  await _biometricAuthService
+                                      .authenticateWithBiometrics();
+                              if (isAuthenticated) {
+                                try {
+                                  final credentials =
+                                      await _credentialStorageRepository
+                                          .fetchCredentials();
+                                  final password = credentials["password"];
+                                  debugPrint("Credentials: $credentials");
+                                  if (password != null) {
+                                    loading.value = true;
 
-                const SizedBox(height: Constants.SPACING),
-              ],
-            ),
-          ),
+                                    final payload = {
+                                      "password": password,
+                                    };
+                                    authNotifier.unlock(payload).then((value) {
+                                      context.pop();
+                                    }).whenComplete(
+                                        () => loading.value = false);
+                                  }
+                                } catch (e) {
+                                  debugPrint("Error: $e");
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Biometric login failed!'),
+                                    ),
+                                  );
+                                }
+                              }
+                            }
+                          },
+                        );
+                      },
+                    ),
+                    const SizedBox(height: Constants.SPACING * 2),
+                    LinkedRichText(
+                        linked: "",
+                        unlinked: "Logout",
+                        onPress: authNotifier.logout),
+                    const SizedBox(height: Constants.SPACING),
+                    const SizedBox(height: Constants.SPACING),
+                  ],
+                ),
+              ),
             ),
           ),
           error: (error, stack) => Center(child: Text("$error")),
