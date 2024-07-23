@@ -58,6 +58,7 @@ class RouteNames {
   static const REMOVE_PROGRAM = "remove-program";
   static const BLOG_POST = "blog-post";
   static const PERIOD_PLANNER = "Period Planner";
+  static const PERIOD_PLANNER_SCREEN = "Period Planner Screen";
 
 }
 

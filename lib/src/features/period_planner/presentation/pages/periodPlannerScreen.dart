@@ -76,7 +76,6 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
             ],
           ),
           const SizedBox(height: Constants.SPACING),
-  
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
