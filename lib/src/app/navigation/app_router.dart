@@ -53,6 +53,7 @@ import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroups.da
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/DrugOrderWizardFormScreen.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/DrugOrders.dart';
 import 'package:nishauri/src/features/lab/presentation/pages/LabResultsScreen.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlannerMenu.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlannerScreen.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlanner.dart';
 import 'package:nishauri/src/features/programs/presentation/pages/programs.dart';
@@ -388,6 +389,13 @@ final List<RouteBase> secureRoutes = [
       path: 'period-planner-screen',
       builder: (BuildContext context, GoRouterState state) {
         return const PeriodPlannerScreen();
+    },
+    ),
+    GoRoute(
+      name: RouteNames.PERIOD_PLANNER_MENU,
+      path: 'period-planner-menu',
+      builder: (BuildContext context, GoRouterState state) {
+        return const PeriodPlannerMenu();
     },
     ),
 ];

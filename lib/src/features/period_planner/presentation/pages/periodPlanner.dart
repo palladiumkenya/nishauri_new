@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlannerMenu.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlannerScreen.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -23,7 +24,7 @@ class PeriodPlanner extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
-                      color: Constants.periodPlanner.withOpacity(0.8),
+                      color: Constants.periodPlanner.withOpacity(1.0),
                       image: const DecorationImage(
                         image: AssetImage("assets/images/contours.png"),
                         opacity: 0.1,
@@ -67,7 +68,7 @@ class PeriodPlanner extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const PeriodPlannerScreen(),
+                                builder: (context) => const PeriodPlannerMenu(),
                               ),
                             );
                           },
