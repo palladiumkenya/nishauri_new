@@ -160,6 +160,15 @@ class BMICalculatorScreen extends HookWidget {
                         },
                       ),
                       const SizedBox(height: Constants.SPACING),
+                      // Button(
+                      //   title: "BMI History",
+                      //   // disabled: isPregnant.value,
+                      //   backgroundColor: activeColor,
+                      //   textColor: theme.canvasColor,
+                      //   onPress: () {
+                      //     context.goNamed(RouteNames.BMI_HISTORY);
+                      //   },
+                      // ),
                     ],
                   ),
                 ),

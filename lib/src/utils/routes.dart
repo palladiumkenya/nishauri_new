@@ -17,9 +17,10 @@ class RouteNames {
   static const UNLOCK_SCREEN = "unlock";
   static const BMI_CALCULATOR = "bmi-calculator";
   static const BMI_CALCULATOR_RESULTS = "bmi-calculator-results";
+  // static const BMI_HISTORY = "bmi-history";
   static const PRIVACY_SETTINGS = "privacy";
   static const PROFILE_SETTINGS = "profile";
-  static const PROFILE_EDIT_FORM = "profile-edit";
+  static const PROFILE_EDIT_FORM = "pFrofile-edit";
   static const HIV_PROGRAM = "hiv";
   static const HIV_DRUG_ORDERS = "drug-orders";
   static const HIV_ART_SITES = "art-sites";
@@ -42,13 +43,12 @@ class RouteNames {
   static const VERIFY_PROGRAM_OTP = "verify-program-otp";
   static const CONFIRM_DELIVERY = "confirm-delivery";
 
-
   static const LAB_RESULTS = "lab-results";
   static const MY_CLINIC_CARD = "clinic-card";
   static const CHAT_HCW = "chat-bot";
   static const SETTINGS = "settings";
 
-  static const Facility_Directory= "facility-directory";
+  static const Facility_Directory = "facility-directory";
   static const PROGRAM_MENU = "program-menu";
   static const DAWA_DROP = "dawa-drop";
   static const PROGRAM_APPOINTMENT = "program-appointment";
@@ -57,7 +57,6 @@ class RouteNames {
   static const DISPATCHED_DRUGS = "dispatched-drugs";
   static const REMOVE_PROGRAM = "remove-program";
   static const BLOG_POST = "blog-post";
-
 }
 
 class MenuItemNames {
@@ -77,7 +76,7 @@ class MenuItemNames {
   static const LAB_RESULTS = "Lab Results";
   static const MY_CLINIC_CARD = "My Clinic Card";
   static const CHAT_HCW = "Ask Nuru";
-  static const FACILITY_DIRECTORY= "Facility Directory";
+  static const FACILITY_DIRECTORY = "Facility Directory";
   static const PROGRAM_MENU = "Program Menu";
   static const DAWA_DROP = "Dawa Drop";
   static const DAWA_DROP_MENU = "Dawa Drop Menu";
