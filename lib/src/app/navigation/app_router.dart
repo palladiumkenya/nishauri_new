@@ -23,6 +23,7 @@ import 'package:nishauri/src/features/auth/presentation/pages/VerifyResetPasswor
 import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorResultsScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
+import 'package:nishauri/src/features/bmi/presentation/pages/BMIHistoryScreen.dart';
 import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
 import 'package:nishauri/src/features/clinic_card/presentation/pages/ClinicCardScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/FaqPage.dart';
@@ -159,29 +160,29 @@ class RouterNotifier extends ChangeNotifier {
         //     return VerificationScreen(username: extras);
         //   },
         // ),
-    GoRoute(
-      name: RouteNames.VERIFY_ACCOUNT,
-      path: '/account-verify',
-      builder: (BuildContext context, GoRouterState state) {
-        return FutureBuilder<String>(
-          future: getPhone(),
-          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (snapshot.hasData) {
-              final extras = snapshot.data!;
-              return VerificationScreen(username: extras);
-            } else {
-              return const Center(child: Text('No data available'));
-            }
+        GoRoute(
+          name: RouteNames.VERIFY_ACCOUNT,
+          path: '/account-verify',
+          builder: (BuildContext context, GoRouterState state) {
+            return FutureBuilder<String>(
+              future: getPhone(),
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (snapshot.hasData) {
+                  final extras = snapshot.data!;
+                  return VerificationScreen(username: extras);
+                } else {
+                  return const Center(child: Text('No data available'));
+                }
+              },
+            );
           },
-        );
-      },
-    ),
+        ),
 
-    GoRoute(
+        GoRoute(
           name: RouteNames.PROFILE_EDIT_FORM,
           path: '/profile-edit',
           builder: (BuildContext context, GoRouterState state) {
@@ -233,7 +234,13 @@ final List<RouteBase> secureRoutes = [
             builder: (BuildContext context, GoRouterState state) {
               double extra = state.extra! as double;
               return BMICalculatorResultsScreen(bmi: extra);
-            })
+            }),
+        // GoRoute(
+        //     name: RouteNames.BMI_HISTORY,
+        //     path: "bmi-history",
+        //     builder: (BuildContext context, GoRouterState state) {
+        //       return const BMIHistoryScreen();
+        //     }),
       ]),
   GoRoute(
     name: RouteNames.PRIVACY_SETTINGS,
@@ -250,24 +257,26 @@ final List<RouteBase> secureRoutes = [
     },
   ),
   GoRoute(
-    name: RouteNames.FAQs,
-    path: 'faqs',
-    builder: (BuildContext context, GoRouterState state) {
-      return const FAQPage(); 
-    }
-    ),
+      name: RouteNames.FAQs,
+      path: 'faqs',
+      builder: (BuildContext context, GoRouterState state) {
+        return const FAQPage();
+      }),
   GoRoute(
     name: RouteNames.PROFILE_SETTINGS,
     path: 'profile',
     builder: (BuildContext context, GoRouterState state) {
       return const ProfileScreen();
     },
-  ),GoRoute(
+  ),
+  GoRoute(
     name: RouteNames.BLOG_POST,
     path: 'blog',
     builder: (BuildContext context, GoRouterState state) {
       dynamic ann = state.extra;
-      return BlogPostScreen(announcement: ann,);
+      return BlogPostScreen(
+        announcement: ann,
+      );
     },
   ),
   GoRoute(
