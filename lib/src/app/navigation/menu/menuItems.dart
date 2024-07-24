@@ -269,14 +269,14 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
     MenuItem(
       shortcutBackgroundColor: Constants.periodPlannerShortcutBgColor,
       icon: SvgPicture.asset(
-        "assets/images/period_planner4.svg",
+        "assets/images/period_planner2.svg",
         semanticsLabel: "Doctors",
         fit: BoxFit.contain,
         width: 80,
         height: 80,
       ), 
       shortcutIcon: SvgPicture.asset(
-        "assets/images/period_planner4.svg",
+        "assets/images/period_planner2.svg",
         semanticsLabel: "Doctors",
         fit: BoxFit.contain,
         width: Constants.shortcutIconSize,
