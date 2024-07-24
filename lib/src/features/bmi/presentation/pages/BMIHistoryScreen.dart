@@ -8,8 +8,6 @@ class BMIHistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Provided dataset
-
     // Convert dataset to a list of FlSpot
     final dataPoints = dataset["data"]!.asMap().entries.map((entry) {
       final index = entry.key.toDouble();
