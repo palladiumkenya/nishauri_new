@@ -235,12 +235,12 @@ final List<RouteBase> secureRoutes = [
               double extra = state.extra! as double;
               return BMICalculatorResultsScreen(bmi: extra);
             }),
-        // GoRoute(
-        //     name: RouteNames.BMI_HISTORY,
-        //     path: "bmi-history",
-        //     builder: (BuildContext context, GoRouterState state) {
-        //       return const BMIHistoryScreen();
-        //     }),
+        GoRoute(
+            name: RouteNames.BMI_HISTORY,
+            path: "bmi-history",
+            builder: (BuildContext context, GoRouterState state) {
+              return const BMIHistoryScreen();
+            }),
       ]),
   GoRoute(
     name: RouteNames.PRIVACY_SETTINGS,
