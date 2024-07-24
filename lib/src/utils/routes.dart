@@ -17,7 +17,7 @@ class RouteNames {
   static const UNLOCK_SCREEN = "unlock";
   static const BMI_CALCULATOR = "bmi-calculator";
   static const BMI_CALCULATOR_RESULTS = "bmi-calculator-results";
-  // static const BMI_HISTORY = "bmi-history";
+  static const BMI_HISTORY = "bmi-history";
   static const PRIVACY_SETTINGS = "privacy";
   static const PROFILE_SETTINGS = "profile";
   static const PROFILE_EDIT_FORM = "pFrofile-edit";

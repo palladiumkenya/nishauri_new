@@ -36,9 +36,9 @@ class CustomLineChart extends StatelessWidget {
                 lineBarsData: [
                   LineChartBarData(
                     spots: dataPoints,
-                    isCurved: false,
+                    isCurved: true,
                     color: Colors.blue,
-                    barWidth: 4,
+                    barWidth: 6,
                     belowBarData: BarAreaData(
                       show: true,
                       color: Colors.blue.withOpacity(0.3),
