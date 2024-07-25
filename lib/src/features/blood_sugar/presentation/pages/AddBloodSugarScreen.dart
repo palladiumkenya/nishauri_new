@@ -13,13 +13,13 @@ class AddBloodSugarScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bloodLevel = useState<double>(0.0);
+    final bloodLevel = useState<double>(70.0);
     final bloodLevelUnits = useState<LevelPickerUnits>(LevelPickerUnits.mgdl);
     final bloodSugarNotifier = ref.read(bloodSugarEntriesProvider.notifier);
     final note = TextEditingController();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Blood Sugar Entry'),
+        title: const Text('Add Blood Sugar Entry'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -57,6 +57,10 @@ class AddBloodSugarScreen extends HookConsumerWidget {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      // Convert blood level to mmol if necessary
+                      if (bloodLevelUnits.value == LevelPickerUnits.mmol) {
+                        bloodLevel.value = bloodLevel.value * 18.018;
+                      }
                       final entry = BloodSugar(
                         id: DateTime.now().millisecondsSinceEpoch,
                         level: bloodLevel.value,

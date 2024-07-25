@@ -18,9 +18,9 @@ class BloodLevelPicker extends StatelessWidget {
     required this.onLevelChange,
     required this.bloodLevelUnits,
     required this.onLevelUnitsChange,
-    this.min = 0,
+    this.min = 40,
     this.activeColor,
-    this.max = 500,
+    this.max = 400,
   });
 
   @override
@@ -40,7 +40,6 @@ class BloodLevelPicker extends StatelessWidget {
               BloodLevelUnitsPicker(
                 bloodLevelUnits: bloodLevelUnits,
                 onBloodLevelUnitsChange: onLevelUnitsChange,
-                
               ),
             ],
           ),

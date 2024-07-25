@@ -7,7 +7,7 @@ double convertFromMgdlTo(LevelPickerUnits units, double mgdl) {
   if (units == LevelPickerUnits.mgdl) {
     return mgdl;
   } else {
-    return mgdl / 18.0;
+    return mgdl / 18.018;
   }
 }
 
