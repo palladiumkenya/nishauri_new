@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
@@ -63,6 +64,36 @@ class BMILogService extends HTTPService{
       );
     return response;
 
+}
+
+  Future<StreamedResponse> fetchBMI_(dynamic args) async {
+    final id = await _repository.getUserId();
+    final tokenPair = await getCachedToken();
+    var headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
+    var url = '${Constants.BASE_URL_NEW}get_bmi?user_id=$id';
+    final response = request(
+        url: url,
+        token: tokenPair,
+        method: 'GET',
+        requestHeaders: headers,
+        userId: id);
+    return response;
+  }
+
+  Future<List<BMILog>> fetchBMI() async {
+    List<BMILog> bp = [];
+    final response = await call(fetchBMI_, null);
+    if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+    // final String responseString = await rootBundle.loadString('assets/data/bmi_log.json');
+    final Map<String, dynamic> responseData = json.decode(responseString);
+    final List<dynamic> jsonList = responseData["data"]["bmi_log"];
+    bp.addAll(jsonList.map((json) => BMILog.fromJson(json)));
+    return bp;
+  }
+else {
+  throw "Failed to fetch data!";
+  }
 }
 
 

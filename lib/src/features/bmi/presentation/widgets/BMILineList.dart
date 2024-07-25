@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:nishauri/src/features/bmi/data/providers/bmi_log_provider.dart';
 import 'package:nishauri/src/features/bp/data/providers/blood_pressure_provider.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
-class BPLinelistScreen extends ConsumerWidget {
+class BMILinelist extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bloodPressureListAsyncValue = ref.watch(bloodPressureListProvider);
+    final bmiListAsyncValue = ref.watch(bmiListProvider);
 
-    return bloodPressureListAsyncValue.when(
-      data: (bloodPressureList) {
+    return bmiListAsyncValue.when(
+      data: (bmiList) {
         return ListView.builder(
-          itemCount: bloodPressureList.length + 1, // +1 for the header row
+          itemCount: bmiList.length + 1, // +1 for the header row
           itemBuilder: (context, index) {
             if (index == 0) {
               // Header row
@@ -23,33 +24,33 @@ class BPLinelistScreen extends ConsumerWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text('Systolic', style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text('Diastolic', style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text('Pulse Rate', style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text('Height', style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text('Weight', style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text('BMI', style: TextStyle(fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
               );
             } else {
               // Data rows
-              final bp = bloodPressureList[index - 1]; // Adjust index for data
+              final bmi = bmiList[index - 1]; // Adjust index for data
               return Card(
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 child: ExpansionTile(
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text(bp.systolic.toString(), style: TextStyle(color: Colors.red)),
-                      Text(bp.diastolic.toString(), style: TextStyle(color: Colors.orange)),
-                      Text(bp.pulse_rate.toString(), style: TextStyle(color: Constants.programsColor)),
+                      Text(bmi.height.toString(), style: TextStyle(color: Constants.bmiCalculatorColor)),
+                      Text(bmi.weight.toString(), style: TextStyle(color: Colors.orange)),
+                      Text(bmi.results.toString(), style: TextStyle(color: Colors.blue)),
                     ],
                   ),
                   children: <Widget>[
                     ListTile(
-                      title: Text('Time: ${DateFormat('HH:mm - dd-MM-yy').format(DateTime.parse(bp.date_time.toString()))}'),
-                      subtitle: bp.notes != null && bp.notes!.isNotEmpty
-                          ? Text('Notes: ${bp.notes}')
-                          : null,
+                      title: Text('Time: ${DateFormat('HH:mm - dd-MM-yy').format(DateTime.parse(bmi.date.toString()))}'),
+                      // subtitle: bp.notes != null && bp.notes!.isNotEmpty
+                      //     ? Text('Notes: ${bp.notes}')
+                      //     : null,
                     ),
                   ],
                 ),

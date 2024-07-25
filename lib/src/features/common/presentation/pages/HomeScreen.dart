@@ -92,15 +92,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 onTap: () => context.goNamed(RouteNames.PROFILE_SETTINGS),
               ),
 
-            // ListTile(
-            //   leading: const Icon(Icons.dashboard_customize_rounded),
-            //   title: const Text("Dashboard"),
-            //   onTap: () {
-            //     context.goNamed(RouteNames.DASHBOARD);
-            //     // Close drawer
-            //     Navigator.pop(context);
-            //   },
-            // ),
+            ListTile(
+              leading: const Icon(Icons.dashboard_customize_rounded),
+              title: const Text("Dashboard"),
+              onTap: () {
+                context.goNamed(RouteNames.DASHBOARD);
+                // Close drawer
+                Navigator.pop(context);
+              },
+            ),
 
             // ListTile(
             //   leading: const Icon(Icons.notifications),

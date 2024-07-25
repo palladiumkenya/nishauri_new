@@ -3,98 +3,89 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/features/bp/data/providers/blood_pressure_provider.dart';
+import 'package:nishauri/src/shared/charts/CustomeMultLineChart.dart';
+import 'package:nishauri/src/utils/constants.dart';
 
-class _LineChart extends ConsumerWidget {
-  final double height;
-
-  const _LineChart({this.height = 300});
+class TrendChartScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bloodPressureListAsyncValue = ref.watch(bloodPressureListProvider);
 
     return bloodPressureListAsyncValue.when(
-      data: (bloodPressureList) {
-        List<FlSpot> systolicSpots = bloodPressureList
-            .map((bp) => FlSpot(bp.bpTime.millisecondsSinceEpoch.toDouble(), bp.systolic.toDouble()))
-            .toList();
-        List<FlSpot> diastolicSpots = bloodPressureList
-            .map((bp) => FlSpot(bp.bpTime.millisecondsSinceEpoch.toDouble(), bp.diastolic.toDouble()))
-            .toList();
-        List<FlSpot> heartRateSpots = bloodPressureList
-            .map((bp) => FlSpot(bp.bpTime.millisecondsSinceEpoch.toDouble(), bp.pulse_rate.toDouble()))
-            .toList();
+      data: (bpiList) {
+        final systolicSpots = bpiList.asMap().entries.map((entry) {
+          final index = entry.key.toDouble();
+          final systolic = entry.value.systolic;
+          return FlSpot(index, systolic);
+        }).toList();
 
-        return SizedBox(
-          height: height,
-          child: Stack(
-            children: <Widget>[
-              AspectRatio(
-                aspectRatio: 1.5,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 0,
-                    left: 0,
-                    top: 24,
-                    bottom: 0,
-                  ),
-                  child: LineChart(
-                    LineChartData(
-                      borderData: FlBorderData(show: true),
-                      lineBarsData: [
-                        // The red line for systolic
-                        LineChartBarData(
-                          spots: systolicSpots,
-                          isCurved: true,
-                          barWidth: 2,
-                          color: Colors.red,
-                        ),
-                        // The orange line for diastolic
-                        LineChartBarData(
-                          spots: diastolicSpots,
-                          isCurved: true,
-                          barWidth: 2,
-                          color: Colors.orange,
-                        ),
-                        // The blue line for heart rate
-                        LineChartBarData(
-                          spots: heartRateSpots,
-                          isCurved: true,
-                          barWidth: 2,
-                          color: Colors.blue,
-                        ),
-                      ],
-                      titlesData: FlTitlesData(
-                        leftTitles: AxisTitles(
-                          sideTitles: SideTitles(showTitles: false),
-                        ),
-                        topTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                            showTitles: false,
-                          )
-                        ),
-                        rightTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                            showTitles: false,
-                          )
-                        ),
-                        bottomTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                            showTitles: false,
-                            getTitlesWidget: (value, meta) {
-                              final date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
-                              return Text('${date.month}/${date.day}');
-                            },
-                          ),
-                        ),
-                      ),
-                      gridData: FlGridData(show: true),
-                      // borderData: FlBorderData(show: true),
+        final diastolicSpots = bpiList.asMap().entries.map((entry) {
+          final index = entry.key.toDouble();
+          final diastolic = entry.value.diastolic;
+          return FlSpot(index, diastolic);
+        }).toList();
+
+        final pulseRateSpots = bpiList.asMap().entries.map((entry) {
+          final index = entry.key.toDouble();
+          final pulse = entry.value.pulse_rate;
+          return FlSpot(index, pulse);
+        }).toList();
+
+        final date = bpiList.asMap().entries.map((e) {
+          return e.value.date_time.toString();
+        }).toList();
+
+        return Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: CustomMultiLineChart(
+              lineBarsData: [
+                LineChartBarData(
+                  spots: systolicSpots,
+                  isCurved: true,
+                  color: Colors.red,
+                  barWidth: 5,
+                  belowBarData: BarAreaData(
+                    show: true,
+                    gradient: LinearGradient(
+                      colors: [Colors.red.withOpacity(0.3), Colors.red.withOpacity(0)],
                     ),
                   ),
+                  dotData: FlDotData(show: false),
                 ),
-              ),
-            ],
+                LineChartBarData(
+                  spots: diastolicSpots,
+                  isCurved: true,
+                  color: Colors.orange,
+                  barWidth: 5,
+                  belowBarData: BarAreaData(
+                    show: true,
+                    gradient: LinearGradient(
+                      colors: [Colors.orange.withOpacity(0.3), Colors.orange.withOpacity(0)],
+                    ),
+                  ),
+                  dotData: FlDotData(show: false),
+                ),
+                LineChartBarData(
+                  spots: pulseRateSpots,
+                  isCurved: true,
+                  color: Constants.programsColor,
+                  barWidth: 5,
+                  belowBarData: BarAreaData(
+                    show: true,
+                    gradient: LinearGradient(
+                      colors: [Constants.programsColor.withOpacity(0.3), Constants.programsColor.withOpacity(0)],
+                    ),
+                  ),
+                  dotData: FlDotData(show: false),
+                ),
+              ],
+              minX: 0,
+              maxX: pulseRateSpots.length - 1,
+              dateTimes: date,
+              showLeftTitles: false,
+            ),
           ),
         );
       },
@@ -102,24 +93,4 @@ class _LineChart extends ConsumerWidget {
       error: (error, stack) => Center(child: Text('Error: $error')),
     );
   }
-}
-
-class TrendChartScreen extends StatelessWidget {
-  final double height;
-
-  const TrendChartScreen({super.key, this.height = 300});
-
-  @override
-  Widget build(BuildContext context) => SizedBox(
-    height: height,
-    child: Padding(
-      padding: const EdgeInsets.only(right: 16, left: 6, top: 22),
-      child: Column(
-        children: [
-          _LineChart(height: height - 50),
-          // const IntervalPicker
-        ],
-      ),
-    ),
-  );
 }

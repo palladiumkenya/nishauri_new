@@ -54,7 +54,7 @@ class BloodPressureService extends HTTPService {
     final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
     var headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
-    var url = '${Constants.BASE_URL_NEW}drug_delivery_list?user_id=$id';
+    var url = '${Constants.BASE_URL_NEW}get_blood_pressure?user_id=$id';
     final response = request(
         url: url,
         token: tokenPair,
@@ -67,16 +67,16 @@ class BloodPressureService extends HTTPService {
   Future<List<BloodPressure>> fetchBloodPressures() async {
     List<BloodPressure> bp = [];
     final response = await call(fetchBloodPressures_, null);
-    // if (response.statusCode == 200) {
-    //   final responseString = await response.stream.bytesToString();
-    final String responseString = await rootBundle.loadString('assets/data/dummy_bp_data.json');
+    if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+    // final String responseString = await rootBundle.loadString('assets/data/dummy_bp_data.json');
       final Map<String, dynamic> responseData = json.decode(responseString);
-      final List<dynamic> jsonList = responseData["data"];
+      final List<dynamic> jsonList = responseData["data"]["blood_pressure"];
       bp.addAll(jsonList.map((json) => BloodPressure.fromJson(json)));
       return bp;
     }
-    // else {
-    //   throw "Failed to fetch data!";
-  //   // }
-  // }
+    else {
+      throw "Failed to fetch data!";
+    }
+  }
 }

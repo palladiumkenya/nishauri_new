@@ -33,7 +33,7 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
       systolic: systolic,
       diastolic: diastolic,
       pulse_rate: heartRate,
-      bpTime: measurementTime,
+      date_time: measurementTime,
       notes:notes,
     );
 
@@ -191,14 +191,7 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
             color: Constants.bpShortCutBgColor,
           ),
           Expanded(
-            child: OrientationBuilder(
-              builder: (context, orientation) {
-                if (orientation == Orientation.landscape) {
-                  return TrendChartScreen(
-                    height: MediaQuery.of(context).size.height,
-                  );
-                }
-                return Center(
+            child: Center(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: Column(
@@ -214,9 +207,7 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
                       ],
                     ),
                   ),
-                );
-              },
-            ),
+                ),
           ),
         ],
       ),

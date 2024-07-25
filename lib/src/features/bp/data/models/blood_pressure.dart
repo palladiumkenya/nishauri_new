@@ -10,7 +10,7 @@ class BloodPressure with _$BloodPressure {
     required double diastolic,
     required double pulse_rate,
     String? notes,
-    required DateTime bpTime,
+    required DateTime date_time,
 
   }) = _BloodPressure;
   factory BloodPressure.fromJson(Map<String, dynamic> json)=> _$BloodPressureFromJson(json);

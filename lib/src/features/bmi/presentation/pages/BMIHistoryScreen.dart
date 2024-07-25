@@ -1,6 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:nishauri/src/features/bmi/presentation/widgets/BMILineGraph.dart';
+import 'package:nishauri/src/features/bmi/presentation/widgets/BMILineList.dart';
 import 'package:nishauri/src/shared/charts/CustomLineChart.dart';
+import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/sampleBmi.dart';
 
 class BMIHistoryScreen extends StatelessWidget {
@@ -8,26 +12,34 @@ class BMIHistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Convert dataset to a list of FlSpot
-    final dataPoints = dataset["data"]!.asMap().entries.map((entry) {
-      final index = entry.key.toDouble();
-      final bmi = double.parse(entry.value["bmi"] ?? '');
-      return FlSpot(index, bmi);
-    }).toList();
-
     return Scaffold(
-      appBar: AppBar(title: Text('BMI Data Line Chart Example')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: CustomLineChart(
-          dataPoints: dataPoints,
-          xAxisLabel: 'Time (Days)',
-          yAxisLabel: 'BMI',
-          minX: 0,
-          maxX: dataPoints.length - 1,
-          minY: 22,
-          maxY: 28,
-        ),
+      body: Column(
+        children: [
+          const CustomAppBar(
+            title: "BMI Monitor 📈",
+            // icon: Icons.trending_up,
+            color: Constants.bmiCalculatorColor,
+          ),
+          Expanded(
+            child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: BMILinelist(),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: BMILineGraph(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+          ),
+        ],
       ),
     );
   }
