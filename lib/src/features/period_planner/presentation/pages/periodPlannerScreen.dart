@@ -2,6 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/carouselCard.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
+import 'package:nishauri/src/features/period_planner/presentation/widgets/logItems.dart';
+import 'package:nishauri/src/features/period_planner/presentation/widgets/logWidget.dart';
+import 'package:nishauri/src/features/period_planner/presentation/widgets/logger.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -92,30 +95,42 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                       "Please give your Daily Insights:",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 20.0,
+                        fontSize: 15.0,
                         color: Constants.periodPlanner,
                       ),
                     ),
                     CarouselSlider(
                       options: CarouselOptions(
-                        height: 180,
+                        height: 150,
                         enlargeCenterPage: true,
                         enableInfiniteScroll: false,
                         initialPage: 0,
                         autoPlay: false, 
                       ),
-                      items: const [
+                      items: [
                         CarouselCard(
-                          svgPath: "assets/images/period_planner2.svg", 
+                          svgPath: "assets/images/symptoms.svg", 
                           title: "Symptoms",
+                          destination: LoggerWidget(
+                            heading: "Log Symptoms",
+                            items: LogItems.getSymptoms(),
+                            )
                         ),
                         CarouselCard(
-                          svgPath: "assets/images/period_planner2.svg", 
+                          svgPath: "assets/images/discharge1.svg", 
                           title: "Discharge",
+                          destination: LoggerWidget(
+                            heading: "Log Discharge", 
+                            items: LogItems.getDischarge(),
+                            )
                         ),
                         CarouselCard(
-                          svgPath: "assets/images/period_planner2.svg", 
+                          svgPath: "assets/images/moods1.svg", 
                           title: "Mood",
+                          destination: LoggerWidget(
+                            heading: "How are you feeling?", 
+                            items: LogItems.getMoods(),
+                            ),
                         ),    
                       ],
                     ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nishauri/src/features/period_planner/presentation/widgets/logItems.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
@@ -8,7 +9,7 @@ class CarouselCard extends StatelessWidget {
   final String title;
   final double? width;
   final double? height;
-  final Function()? onTap;
+  final Widget destination; 
 
   const CarouselCard({
     super.key,
@@ -16,7 +17,7 @@ class CarouselCard extends StatelessWidget {
     required this.title,
     this.width,
     this.height,
-    this.onTap,
+    required this.destination,
     });
 
   @override
@@ -25,7 +26,6 @@ class CarouselCard extends StatelessWidget {
     return AppCard(
       clipBehaviour: Clip.antiAlias,
       svgImage: "assets/images/rect_bg.svg",
-      onTap: onTap,
       child: SizedBox(
         width: width,
         height: height,
@@ -36,7 +36,7 @@ class CarouselCard extends StatelessWidget {
               child: Container(
                 // height: 200,
                 // width: 336,
-                // color: Colors.red, // Set the background color to red
+                color: Constants.periodPlanner.withOpacity(0.5), // Set the background color to red
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,12 +49,23 @@ class CarouselCard extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 30),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Constants.periodPlanner,
                       ),
-                      onPressed: onTap,
+                      onPressed: () {
+                        showModalBottomSheet(
+                              context: context, 
+                              builder: (context) => FractionallySizedBox(
+                                heightFactor: 0.5,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: destination,
+                                  ),
+                              ),
+                              );
+                      },
                       child: Text(
                         'Click Me',
                         style: theme.textTheme.titleSmall?.copyWith(
