@@ -47,12 +47,15 @@ class BloodLevelUnitsPicker extends StatelessWidget {
               color: bloodLevelUnits == LevelPickerUnits.mgdl
                   ? bgColorActive
                   : bgColorInActive,
-              child: Text(
-                "mg/dl",
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: bloodLevelUnits == LevelPickerUnits.mgdl
-                      ? colorActive
-                      : colorInactive,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  "mg/dl",
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: bloodLevelUnits == LevelPickerUnits.mgdl
+                        ? colorActive
+                        : colorInactive,
+                  ),
                 ),
               ),
             ),
@@ -72,12 +75,15 @@ class BloodLevelUnitsPicker extends StatelessWidget {
               color: bloodLevelUnits == LevelPickerUnits.mmol
                   ? bgColorActive
                   : bgColorInActive,
-              child: Text(
-                "mmol/l",
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: bloodLevelUnits == LevelPickerUnits.mmol
-                      ? colorActive
-                      : colorInactive,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  "mmol/l",
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: bloodLevelUnits == LevelPickerUnits.mmol
+                        ? colorActive
+                        : colorInactive,
+                  ),
                 ),
               ),
             ),

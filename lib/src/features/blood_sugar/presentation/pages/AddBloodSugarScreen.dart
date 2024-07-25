@@ -9,6 +9,8 @@ import 'package:nishauri/src/features/blood_sugar/presentation/widgets/blood_lev
 class AddBloodSugarScreen extends HookConsumerWidget {
   final _formKey = GlobalKey<FormState>();
 
+  AddBloodSugarScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bloodLevel = useState<double>(0.0);
@@ -23,51 +25,53 @@ class AddBloodSugarScreen extends HookConsumerWidget {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              BloodLevelPicker(
-                bloodLevelUnits: bloodLevelUnits.value,
-                onLevelUnitsChange: (units) {
-                  bloodLevelUnits.value = units;
-                },
-                bloodLevel: bloodLevel.value,
-                onLevelChange: (level) {
-                  bloodLevel.value = level;
-                  debugPrint("Blood level on add: $level");
-                },
-              ),
-              // Field to take note of user
-              TextFormField(
-                controller: note,
-                decoration: const InputDecoration(
-                  labelText: 'Note',
-                  hintText: 'Enter a note',
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                BloodLevelPicker(
+                  bloodLevelUnits: bloodLevelUnits.value,
+                  onLevelUnitsChange: (units) {
+                    bloodLevelUnits.value = units;
+                  },
+                  bloodLevel: bloodLevel.value,
+                  onLevelChange: (level) {
+                    bloodLevel.value = level;
+                    debugPrint("Blood level on add: $level");
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a note';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    final entry = BloodSugar(
-                      id: DateTime.now().millisecondsSinceEpoch,
-                      level: bloodLevel.value,
-                      timestamp: DateTime.now(),
-                      note: note.text,
-                    );
-                    debugPrint("Adding entry: $entry");
-                    bloodSugarNotifier.addEntry(entry);
-                    Navigator.pop(context);
-                  }
-                },
-                child: const Text('Add Entry'),
-              ),
-            ],
+                // Field to take note of user
+                TextFormField(
+                  controller: note,
+                  decoration: const InputDecoration(
+                    labelText: 'Note',
+                    hintText: 'Enter a note',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a note';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      final entry = BloodSugar(
+                        id: DateTime.now().millisecondsSinceEpoch,
+                        level: bloodLevel.value,
+                        timestamp: DateTime.now(),
+                        note: note.text,
+                      );
+                      debugPrint("Adding entry: $entry");
+                      bloodSugarNotifier.addEntry(entry);
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: const Text('Add Entry'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
