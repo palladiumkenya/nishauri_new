@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -21,6 +20,8 @@ import 'package:nishauri/src/features/auth/presentation/pages/VerificationScreen
 import 'package:nishauri/src/features/auth/presentation/pages/VerifiedResetPassword.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/VerifyResetPasswordScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart';
+import 'package:nishauri/src/features/blood_sugar/presentation/pages/AddBloodSugarScreen.dart';
+import 'package:nishauri/src/features/blood_sugar/presentation/pages/BloodSugarScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorResultsScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMIHistoryScreen.dart';
@@ -331,6 +332,13 @@ final List<RouteBase> secureRoutes = [
           },
         ),
       ]),
+  GoRoute(
+    name: MenuItemNames.BLOOD_SUGAR,
+    path: 'blood-sugar',
+    builder: (BuildContext context, GoRouterState state) {
+      return BloodSugarScreen();
+    },
+  ),
   GoRoute(
     name: RouteNames.LAB_RESULTS,
     path: 'lab-results',

@@ -83,6 +83,7 @@ class MenuItemNames {
   static const REQUEST_DRUGS = "Request Drugs";
   static const DISPATCHED_DRUGS = "Dispached Drugs";
   static const REMOVE_PROGRAM = "Remove Program";
+  static const BLOOD_SUGAR = "Blood Sugar";
 }
 
 class ProgramCodeNameIds {
