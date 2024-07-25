@@ -10,8 +10,8 @@ class BloodSugarEntryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: Text('Level: ${entry.level}'),
-        subtitle: Text('Date: ${entry.timestamp}'),
+        title: Text('Blood Sugar Level: ${entry.level}'),
+        subtitle: Text('Note: ${entry.note ?? 'No note'}'),
       ),
     );
   }

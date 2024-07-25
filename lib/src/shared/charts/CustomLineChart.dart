@@ -43,7 +43,7 @@ class CustomLineChart extends StatelessWidget {
                       show: true,
                       color: Colors.blue.withOpacity(0.3),
                     ),
-                    dotData: FlDotData(show: false),
+                    dotData: const FlDotData(show: false),
                   ),
                 ],
                 titlesData: FlTitlesData(
@@ -79,10 +79,10 @@ class CustomLineChart extends StatelessWidget {
                     ),
                     axisNameWidget: Text(yAxisLabel),
                   ),
-                  topTitles: AxisTitles(
+                  topTitles: const AxisTitles(
                     sideTitles: SideTitles(showTitles: false),
                   ),
-                  rightTitles: AxisTitles(
+                  rightTitles: const AxisTitles(
                     sideTitles: SideTitles(showTitles: false),
                   ),
                 ),
@@ -96,13 +96,13 @@ class CustomLineChart extends StatelessWidget {
                   drawVerticalLine: true,
                   drawHorizontalLine: true,
                   getDrawingHorizontalLine: (value) {
-                    return FlLine(strokeWidth: 1, color: Colors.grey);
+                    return const FlLine(strokeWidth: 1, color: Colors.grey);
                   },
                   getDrawingVerticalLine: (value) {
                     if (value.toInt() % 1 == 0) {
-                      return FlLine(strokeWidth: 1, color: Colors.grey);
+                      return const FlLine(strokeWidth: 1, color: Colors.grey);
                     }
-                    return FlLine(
+                    return const FlLine(
                         strokeWidth: 0); // Hide lines for non-integer values
                   },
                 ),
