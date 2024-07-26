@@ -71,9 +71,14 @@ class BloodPressureService extends HTTPService {
       final responseString = await response.stream.bytesToString();
     // final String responseString = await rootBundle.loadString('assets/data/dummy_bp_data.json');
       final Map<String, dynamic> responseData = json.decode(responseString);
-      final List<dynamic> jsonList = responseData["data"]["blood_pressure"];
-      bp.addAll(jsonList.map((json) => BloodPressure.fromJson(json)));
-      return bp;
+      if (responseData["success"] == true) {
+        final List<dynamic> jsonList = responseData["data"]["blood_pressure"];
+        bp.addAll(jsonList.map((json) => BloodPressure.fromJson(json)));
+        return bp;
+      } else {
+        throw responseData["msg"];
+      }
+
     }
     else {
       throw "Failed to fetch data!";

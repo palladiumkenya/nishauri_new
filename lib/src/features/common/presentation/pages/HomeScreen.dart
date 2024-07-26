@@ -152,19 +152,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                       actions: [
                         ElevatedButton(
-                            onPressed: () {
-                              ref
-                                  .watch(authStateProvider.notifier)
-                                  .logout()
-                                  .then((value) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('Logout successfully')));
-                                context.goNamed(RouteNames.LOGIN_SCREEN);
-                              });
-                              // context.goNamed(RouteNames.LOGIN_SCREEN);
-                            },
-                            child: const Text("Log out"))
+                          onPressed: () async {
+                            try {
+                              final value = await ref.watch(authStateProvider.notifier).logout();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(value)),
+                              );
+                              context.goNamed(RouteNames.LOGIN_SCREEN);
+                            } catch (error) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Logout failed: $error')),
+                              );
+                            }
+                          },
+                          child: const Text("Log out"),
+                        )
+
                       ],
                     );
                   },
