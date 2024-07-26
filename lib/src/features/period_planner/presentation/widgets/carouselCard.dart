@@ -34,18 +34,13 @@ class CarouselCard extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Container(
-                // height: 200,
-                // width: 336,
-                color: Constants.periodPlanner.withOpacity(0.5), // Set the background color to red
+                color: Constants.periodPlanner.withOpacity(0.5),
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
-                      // style: theme.textTheme.titleMedium?.copyWith(
-                      //   color: Constants.announcement,
-                      // ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
