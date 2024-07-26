@@ -61,6 +61,7 @@ class RouteNames {
   static const PERIOD_PLANNER_SCREEN = "Period Planner Screen";
   static const PERIOD_PLANNER_MENU = "Period Planner Menu";
   static const PERIOD_PLANNER_CALENDAR = "Period Planner Calendar";
+  static const PERIOD_PLANNER_EDIT_PERIOD_CALENDAR = "period-planner-edit-period-calendar";
 
 }
 

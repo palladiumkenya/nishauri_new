@@ -34,7 +34,7 @@ class LogItems {
       ),
       Logger(
         icon: Icons.water_drop,
-        label: 'Spotting',
+        label: 'Egg whites',
         color: dischargeColor,
       ),
       Logger(
@@ -44,7 +44,12 @@ class LogItems {
       ),
       Logger(
         icon: Icons.water_drop,
-        label: 'Creamy',
+        label: 'Brown',
+        color: dischargeColor,
+      ),
+      Logger(
+        icon: Icons.water_drop,
+        label: 'Yellow or Green',
         color: dischargeColor,
       ),
       // Add more discharge loggers as needed

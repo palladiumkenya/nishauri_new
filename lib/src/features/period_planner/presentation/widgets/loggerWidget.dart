@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/logger.dart';
+import 'package:nishauri/src/utils/constants.dart';
 
 class LoggerWidget extends StatefulWidget {
   final String heading;
@@ -24,6 +25,7 @@ class _LoggerWidgetState extends State<LoggerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -43,6 +45,26 @@ class _LoggerWidgetState extends State<LoggerWidget> {
                 .toList(),
           ),
         ),
+        Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Constants.periodPlanner,
+                ),
+                onPressed: () {
+                  // To add functionality later       
+                },
+                child: Text(
+                  'Click to Apply',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
       ],
     );
   }

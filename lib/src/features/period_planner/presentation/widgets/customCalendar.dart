@@ -57,6 +57,9 @@ class _CustomCalendarState extends State<CustomCalendar> {
       },
       calendarFormat: _calendarFormat,
       headerVisible: true,
+      headerStyle: const HeaderStyle(
+        formatButtonVisible: false,
+      ),
       calendarStyle: const CalendarStyle(
         isTodayHighlighted: true,
         // selectedDecoration: BoxDecoration(

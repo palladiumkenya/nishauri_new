@@ -44,24 +44,24 @@ _menuItems(BuildContext context) => [
         onPressed: () => context.goNamed(RouteNames.PERIOD_PLANNER_CALENDAR),
         color: Constants.periodPlanner.withOpacity(1.0),
       ),
-      MenuItem(
-        shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,
-        icon: SvgPicture.asset(
-          "assets/images/partners2.svg",
-          semanticsLabel: "Periods",
-          fit: BoxFit.contain,
-          width: 80,
-          height: 80,
-        ),
-        shortcutIcon: SvgPicture.asset("assets/images/partners2.svg",
-            semanticsLabel: "Periods",
-            fit: BoxFit.contain,
-            width: Constants.shortcutIconSize,
-            height: Constants.shortcutIconSize),
-        title: "Partners",
-        onPressed: () => context.goNamed(RouteNames.PERIOD_PLANNER),
-        color: Constants.periodPlanner.withOpacity(1.0),
-      ),
+      // MenuItem(
+      //   shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,
+      //   icon: SvgPicture.asset(
+      //     "assets/images/partners2.svg",
+      //     semanticsLabel: "Periods",
+      //     fit: BoxFit.contain,
+      //     width: 80,
+      //     height: 80,
+      //   ),
+      //   shortcutIcon: SvgPicture.asset("assets/images/partners2.svg",
+      //       semanticsLabel: "Periods",
+      //       fit: BoxFit.contain,
+      //       width: Constants.shortcutIconSize,
+      //       height: Constants.shortcutIconSize),
+      //   title: "Partners",
+      //   onPressed: () => context.goNamed(RouteNames.PERIOD_PLANNER),
+      //   color: Constants.periodPlanner.withOpacity(1.0),
+      // ),
     ];
 
 class PeriodPlannerMenu extends StatelessWidget {
