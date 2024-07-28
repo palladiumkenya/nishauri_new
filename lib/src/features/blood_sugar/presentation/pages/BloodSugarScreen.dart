@@ -24,6 +24,8 @@ class BloodSugarScreen extends ConsumerWidget {
               entry.value.level,
             ))
         .toList();
+    final minChartValue = 40.0;
+    final maxChartValue = 400.0;
 
     return Scaffold(
       body: Column(
@@ -73,14 +75,15 @@ class BloodSugarScreen extends ConsumerWidget {
                                           padding: const EdgeInsets.all(4.0),
                                           child: Text(
                                             DateFormat('MM-dd').format(date),
-                                            style: const TextStyle(fontSize: 10),
+                                            style:
+                                                const TextStyle(fontSize: 10),
                                           ),
                                         );
                                       }
                                       return const Text('');
                                     },
                                     reservedSize: 30,
-            
+
                                     interval:
                                         1, // Show labels at an interval of 1 unit
                                   ),
@@ -101,9 +104,10 @@ class BloodSugarScreen extends ConsumerWidget {
                                     },
                                     reservedSize: 30,
                                     interval:
-                                        10, // Adjust interval to show fewer labels
+                                        80, // Adjust interval to show fewer labels
                                   ),
-                                  axisNameWidget: const Text('Blood Sugar Level'),
+                                  axisNameWidget:
+                                      const Text('Blood Sugar Level'),
                                 ),
                                 topTitles: const AxisTitles(
                                   sideTitles: SideTitles(showTitles: false),
@@ -114,12 +118,14 @@ class BloodSugarScreen extends ConsumerWidget {
                               ),
                               minX: 0,
                               maxX: dataPoints.length.toDouble() - 1,
-                              minY: dataPoints
-                                  .map((e) => e.y)
-                                  .reduce((a, b) => a < b ? a : b),
-                              maxY: dataPoints
-                                  .map((e) => e.y)
-                                  .reduce((a, b) => a > b ? a : b),
+                              minY: minChartValue,
+                              // dataPoints
+                              //     .map((e) => e.y)
+                              //     .reduce((a, b) => a < b ? a : b),
+                              maxY: maxChartValue,
+                              // dataPoints
+                              //     .map((e) => e.y)
+                              //     .reduce((a, b) => a > b ? a : b),
                               borderData: FlBorderData(
                                 show: true,
                                 border: Border.all(
