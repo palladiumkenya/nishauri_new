@@ -28,7 +28,7 @@ class AddBloodSugarScreen extends HookConsumerWidget {
           child: Column(
             children: [
               const CustomAppBar(
-                title: "Add Blood Sugar Entry🍚",
+                title: "Add Blood Sugar🍚",
                 // icon: Icons.calculate_outlined,
                 color: Constants.bloodSugarColor,
               ),
