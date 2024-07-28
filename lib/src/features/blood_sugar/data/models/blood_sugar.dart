@@ -9,6 +9,7 @@ class BloodSugar with _$BloodSugar {
     required int id,
     required double level,
     required DateTime timestamp,
+    required String condition,
     required String note,
   }) = _BloodSugar;
 
