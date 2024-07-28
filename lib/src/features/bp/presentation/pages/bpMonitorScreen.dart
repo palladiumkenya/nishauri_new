@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/features/bp/data/models/blood_pressure.dart';
@@ -33,19 +34,19 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
       systolic: systolic,
       diastolic: diastolic,
       pulse_rate: heartRate,
-      bpTime: measurementTime,
+      date_time: measurementTime,
       notes:notes,
     );
 
     ref.read(bloodPressureRepositoryProvider).saveBloodPressure(bp).then((value) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Blood pressure data saved successfully!')),
+        SnackBar(content: Text(value)),
       );
       _clearForm(systolic, diastolic, heartRate, notesController);
       Navigator.of(context).pop();
     }).catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to save blood pressure data!')),
+        SnackBar(content: Text(error)),
       );
     });
   }
@@ -191,14 +192,7 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
             color: Constants.bpShortCutBgColor,
           ),
           Expanded(
-            child: OrientationBuilder(
-              builder: (context, orientation) {
-                if (orientation == Orientation.landscape) {
-                  return TrendChartScreen(
-                    height: MediaQuery.of(context).size.height,
-                  );
-                }
-                return Center(
+            child: Center(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: Column(
@@ -214,9 +208,7 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
                       ],
                     ),
                   ),
-                );
-              },
-            ),
+                ),
           ),
         ],
       ),

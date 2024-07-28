@@ -164,18 +164,11 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
     );
   }
 
-  Future<void> logout() async {
+  Future<String> logout() async {
     var resp = await _userRepository.revokeToken();
-    print(resp);
-    if (resp == "Logout Successful") {
       _repository.deleteToken();
       _repository.deleteUserId();
       _repository.deletePhoneNumber();
-    }
-    _userRepository.revokeToken();
-    print(_userRepository.revokeToken());
-    // _repository.deleteToken();
-    // _repository.deleteUserId();
     state.when(
       data: (value) => state = AsyncValue.data(
         value.copyWith(
@@ -185,5 +178,6 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
       error: (error, stackTrace) => state = AsyncValue.error(error, stackTrace),
       loading: () => state = const AsyncValue.loading(),
     );
+    return resp;
   }
 }

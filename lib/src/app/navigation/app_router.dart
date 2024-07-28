@@ -24,7 +24,6 @@ import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorResultsScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMIHistoryScreen.dart';
-import 'package:nishauri/src/features/bp/presentation/pages/bpScreen.dart';
 import 'package:nishauri/src/features/bp/presentation/pages/bpMonitorScreen.dart';
 import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
 import 'package:nishauri/src/features/clinic_card/presentation/pages/ClinicCardScreen.dart';

@@ -12,7 +12,7 @@ _$BloodPressureImpl _$$BloodPressureImplFromJson(Map<String, dynamic> json) =>
       diastolic: (json['diastolic'] as num).toDouble(),
       pulse_rate: (json['pulse_rate'] as num).toDouble(),
       notes: json['notes'] as String?,
-      bpTime: DateTime.parse(json['bpTime'] as String),
+      date_time: DateTime.parse(json['date_time'] as String),
     );
 
 Map<String, dynamic> _$$BloodPressureImplToJson(_$BloodPressureImpl instance) =>
@@ -21,5 +21,5 @@ Map<String, dynamic> _$$BloodPressureImplToJson(_$BloodPressureImpl instance) =>
       'diastolic': instance.diastolic,
       'pulse_rate': instance.pulse_rate,
       'notes': instance.notes,
-      'bpTime': instance.bpTime.toIso8601String(),
+      'date_time': instance.date_time.toIso8601String(),
     };
