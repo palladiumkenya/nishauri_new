@@ -28,7 +28,7 @@ class BloodLevelUnitsPicker extends StatelessWidget {
     final theme = Theme.of(context);
     final colorActive = theme.canvasColor;
     final colorInactive = theme.colorScheme.onSurface;
-    final bgColorActive = activeColor ?? theme.colorScheme.primary;
+    final bgColorActive = activeColor ?? Constants.bloodSugarColor;
     final bgColorInActive = theme.disabledColor;
 
     return Wrap(
