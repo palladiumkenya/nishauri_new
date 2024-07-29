@@ -11,7 +11,7 @@ class BloodSugarEntryCard extends StatelessWidget {
     return Card(
       child: ListTile(
         title: Text('Level: ${entry.level.toStringAsFixed(1)} mg/dl'),
-        subtitle: Text('${entry.condition}'),
+        subtitle: Text(entry.condition),
         // trailing timestamp of the entry in the format: 2021-09-01
         trailing: Text(entry.timestamp.toString().substring(0, 10)),
       ),

@@ -8,7 +8,7 @@ import 'package:nishauri/src/features/blood_sugar/presentation/widgets/blood_lev
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
-// TODO: Add Normal Blood Sugar categories i.e Fasting(before meals) and Postprandial(after meals) blood sugar
+
 class AddBloodSugarScreen extends HookConsumerWidget {
   final _formKey = GlobalKey<FormState>();
 
@@ -94,9 +94,11 @@ class AddBloodSugarScreen extends HookConsumerWidget {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           // Convert blood level to mmol if necessary
-                          if (bloodLevelUnits.value == LevelPickerUnits.mmol) {
-                            bloodLevel.value = bloodLevel.value * 18.018;
-                          }
+                          // if (bloodLevelUnits.value == LevelPickerUnits.mmol) {
+                          //   bloodLevel.value = bloodLevel.value * 18.018;
+                          // } else {
+                          //   bloodLevel.value = bloodLevel.value / 18.018;
+                          // }
                           final entry = BloodSugar(
                             id: DateTime.now().millisecondsSinceEpoch,
                             level: bloodLevel.value,
