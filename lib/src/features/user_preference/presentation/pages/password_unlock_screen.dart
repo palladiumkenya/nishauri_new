@@ -30,6 +30,8 @@ Future<void> initializeBiometricAuthService(WidgetRef ref) async {
   ref.read(canCheckBiometricsProvider.notifier).state = checkBiometrics;
   if (checkBiometrics) {
     ref.read(passwordVisibleProvider.notifier).state = false;
+  } else {
+    ref.read(passwordVisibleProvider.notifier).state = true;
   }
 }
 
