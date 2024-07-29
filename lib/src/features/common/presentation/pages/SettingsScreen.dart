@@ -163,6 +163,7 @@ Future<Map<String, String>?> _promptForCredentials(BuildContext context) async {
               children: [
                 TextField(
                   decoration: const InputDecoration(labelText: 'Phone number'),
+                  keyboardType: TextInputType.phone,
                   onChanged: (value) => phoneNumber = value,
                 ),
                 TextField(
