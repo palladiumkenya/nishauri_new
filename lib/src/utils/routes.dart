@@ -87,6 +87,7 @@ class MenuItemNames {
   static const REMOVE_PROGRAM = "Remove Program";
   static const BLOOD_PRESSURE = "Blood Pressure Monitor";
   static const SELF_SCREENING = "Self Screening";
+  static const BLOOD_SUGAR = "Blood Sugar";
 }
 
 class ProgramCodeNameIds {
