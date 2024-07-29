@@ -14,6 +14,7 @@ class UserController extends StateNotifier<AsyncValue<User>> {
     state = const AsyncValue.loading();
     try {
       User user = await _repository.getUser();
+      print(user);
       state = AsyncValue.data(user);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);

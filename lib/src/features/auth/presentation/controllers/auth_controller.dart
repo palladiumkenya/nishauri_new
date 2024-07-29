@@ -16,7 +16,7 @@ import 'package:nishauri/src/shared/models/token_pair.dart';
 import 'dart:developer' as developer;
 
 class AuthController extends StateNotifier<AsyncValue<AuthState>> {
-  /// Act as the view model that hold the state of component or screen
+  /// Act as the view models that hold the state of component or screen
   final AuthRepository _repository;
   final UserRepository _userRepository;
 
@@ -164,18 +164,11 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
     );
   }
 
-  Future<void> logout() async {
+  Future<String> logout() async {
     var resp = await _userRepository.revokeToken();
-    print(resp);
-    if (resp == "Logout Successful") {
       _repository.deleteToken();
       _repository.deleteUserId();
       _repository.deletePhoneNumber();
-    }
-    _userRepository.revokeToken();
-    print(_userRepository.revokeToken());
-    // _repository.deleteToken();
-    // _repository.deleteUserId();
     state.when(
       data: (value) => state = AsyncValue.data(
         value.copyWith(
@@ -185,5 +178,6 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
       error: (error, stackTrace) => state = AsyncValue.error(error, stackTrace),
       loading: () => state = const AsyncValue.loading(),
     );
+    return resp;
   }
 }

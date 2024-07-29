@@ -57,6 +57,8 @@ class RouteNames {
   static const DISPATCHED_DRUGS = "dispatched-drugs";
   static const REMOVE_PROGRAM = "remove-program";
   static const BLOG_POST = "blog-post";
+  static const BLOOD_PRESSURE = "blood-pressure";
+  static const SELF_SCREENING = "self-screening";
 }
 
 class MenuItemNames {
@@ -81,8 +83,10 @@ class MenuItemNames {
   static const DAWA_DROP = "Dawa Drop";
   static const DAWA_DROP_MENU = "Dawa Drop Menu";
   static const REQUEST_DRUGS = "Request Drugs";
-  static const DISPATCHED_DRUGS = "Dispached Drugs";
+  static const DISPATCHED_DRUGS = "Dispatched Drugs";
   static const REMOVE_PROGRAM = "Remove Program";
+  static const BLOOD_PRESSURE = "Blood Pressure Monitor";
+  static const SELF_SCREENING = "Self Screening";
   static const BLOOD_SUGAR = "Blood Sugar";
 }
 

@@ -1,12 +1,19 @@
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nishauri/src/features/bmi/data/model/bmi_log.dart';
+import 'package:nishauri/src/features/bmi/data/providers/bmi_log_provider.dart';
+import 'package:nishauri/src/features/bmi/data/services/bmi_log_service.dart';
 import 'package:nishauri/src/features/bmi/presentation/widgets/GenderPicker.dart';
 import 'package:nishauri/src/features/bmi/presentation/widgets/HeightPicker.dart';
 import 'package:nishauri/src/features/bmi/presentation/widgets/HeightUnitsPicker.dart';
+import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/shared/display/RadioGroup.dart';
@@ -16,11 +23,11 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
-class BMICalculatorScreen extends HookWidget {
+class BMICalculatorScreen extends HookConsumerWidget {
   const BMICalculatorScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     const activeColor = Constants.activeSelectionColor;
     final gender = useState<GenderPickerChoices>(GenderPickerChoices.male);
@@ -30,6 +37,7 @@ class BMICalculatorScreen extends HookWidget {
         useState<HeightUnitsPickerOptions>(HeightUnitsPickerOptions.In);
     final weight = useState<int>(65);
     final age = useState<int>(27);
+    final isForSelf = useState(true);
     return Scaffold(
       body: Column(
         children: [
@@ -47,9 +55,49 @@ class BMICalculatorScreen extends HookWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Card(
+                        child: Container(
+                          padding: const EdgeInsets.all(Constants.SPACING),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Calculating BMI for",
+                                    style: theme.textTheme.titleMedium,
+                                  ),
+                                  const SizedBox(height: Constants.SPACING),
+                                  ToggleButtons(
+                                        isSelected: [isForSelf.value, !isForSelf.value], 
+                                        onPressed:(index) {
+                                          isForSelf.value = index == 0;
+                                        },
+                                        selectedColor: Colors.white, //color for selected button
+                                        fillColor: activeColor,                              
+                                        children: const [
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                            child: Text("Myself"),
+                                            
+                                            ),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                            child: Text("Other"),
+                                            ),
+                                        ],
+                                        ),
+                                        const SizedBox(height: Constants.SPACING), 
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: Constants.SPACING),      
                       Text(
-                        "Choose your gender",
-                        style: theme.textTheme.titleMedium,
+                          "Choose your gender",
+                          style: theme.textTheme.titleMedium,
                       ),
                       const SizedBox(height: Constants.SPACING),
                       GenderPicker(
@@ -153,11 +201,22 @@ class BMICalculatorScreen extends HookWidget {
                         disabled: isPregnant.value,
                         backgroundColor: activeColor,
                         textColor: theme.canvasColor,
-                        onPress: () {
+                        onPress: () {             
                           final bmi = calculateBMI(height.value, weight.value);
-                          context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS,
-                              extra: bmi);
-                        },
+                          print('height.value: ${height.value}');
+                          print('bmi: $bmi');
+
+                          if (isForSelf.value) {
+                            ref.read(bmiLogProvider.notifier).logBMI(height.value.toString(), weight.value.toString(), bmi.toString()).then((_) {
+                              context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
+                            });
+                            
+                          }
+                          else{
+                            context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
+                          }
+                          
+                        }         
                       ),
                       const SizedBox(height: Constants.SPACING),
                       Button(
@@ -180,3 +239,7 @@ class BMICalculatorScreen extends HookWidget {
     );
   }
 }
+
+//Awaiting Endpoints
+
+
