@@ -269,7 +269,6 @@ final List<RouteBase> secureRoutes = [
     },
     routes: programMenu,
   ),
-
   GoRoute(
     name: RouteNames.SELF_SCREENING,
     path: 'self-screening',
@@ -322,13 +321,6 @@ final List<RouteBase> secureRoutes = [
           },
         ),
       ]),
-  GoRoute(
-    name: MenuItemNames.BLOOD_SUGAR,
-    path: 'blood-sugar',
-    builder: (BuildContext context, GoRouterState state) {
-      return BloodSugarScreen();
-    },
-  ),
   GoRoute(
     name: RouteNames.LAB_RESULTS,
     path: 'lab-results',
@@ -446,6 +438,13 @@ final List<RouteBase> selfScreeningRoutes = [
     path: 'blood-pressure',
     builder: (BuildContext context, GoRouterState state) {
       return BPMonitorScreen();
+    },
+  ),
+  GoRoute(
+    name: MenuItemNames.BLOOD_SUGAR,
+    path: 'blood-sugar',
+    builder: (BuildContext context, GoRouterState state) {
+      return BloodSugarScreen();
     },
   ),
 ];
