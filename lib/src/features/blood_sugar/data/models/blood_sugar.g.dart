@@ -12,7 +12,7 @@ _$BloodSugarImpl _$$BloodSugarImplFromJson(Map<String, dynamic> json) =>
       level: (json['level'] as num).toDouble(),
       timestamp: DateTime.parse(json['timestamp'] as String),
       condition: json['condition'] as String,
-      note: json['note'] as String,
+      note: json['note'] as String?,
     );
 
 Map<String, dynamic> _$$BloodSugarImplToJson(_$BloodSugarImpl instance) =>

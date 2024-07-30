@@ -10,7 +10,7 @@ class BloodSugar with _$BloodSugar {
     required double level,
     required DateTime timestamp,
     required String condition,
-    required String note,
+    String? note,
   }) = _BloodSugar;
 
   factory BloodSugar.fromJson(Map<String, dynamic> json) =>

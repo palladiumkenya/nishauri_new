@@ -24,7 +24,7 @@ mixin _$BloodSugar {
   double get level => throw _privateConstructorUsedError;
   DateTime get timestamp => throw _privateConstructorUsedError;
   String get condition => throw _privateConstructorUsedError;
-  String get note => throw _privateConstructorUsedError;
+  String? get note => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +43,7 @@ abstract class $BloodSugarCopyWith<$Res> {
       double level,
       DateTime timestamp,
       String condition,
-      String note});
+      String? note});
 }
 
 /// @nodoc
@@ -63,7 +63,7 @@ class _$BloodSugarCopyWithImpl<$Res, $Val extends BloodSugar>
     Object? level = null,
     Object? timestamp = null,
     Object? condition = null,
-    Object? note = null,
+    Object? note = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -82,10 +82,10 @@ class _$BloodSugarCopyWithImpl<$Res, $Val extends BloodSugar>
           ? _value.condition
           : condition // ignore: cast_nullable_to_non_nullable
               as String,
-      note: null == note
+      note: freezed == note
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -103,7 +103,7 @@ abstract class _$$BloodSugarImplCopyWith<$Res>
       double level,
       DateTime timestamp,
       String condition,
-      String note});
+      String? note});
 }
 
 /// @nodoc
@@ -121,7 +121,7 @@ class __$$BloodSugarImplCopyWithImpl<$Res>
     Object? level = null,
     Object? timestamp = null,
     Object? condition = null,
-    Object? note = null,
+    Object? note = freezed,
   }) {
     return _then(_$BloodSugarImpl(
       id: null == id
@@ -140,10 +140,10 @@ class __$$BloodSugarImplCopyWithImpl<$Res>
           ? _value.condition
           : condition // ignore: cast_nullable_to_non_nullable
               as String,
-      note: null == note
+      note: freezed == note
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -156,7 +156,7 @@ class _$BloodSugarImpl implements _BloodSugar {
       required this.level,
       required this.timestamp,
       required this.condition,
-      required this.note});
+      this.note});
 
   factory _$BloodSugarImpl.fromJson(Map<String, dynamic> json) =>
       _$$BloodSugarImplFromJson(json);
@@ -170,7 +170,7 @@ class _$BloodSugarImpl implements _BloodSugar {
   @override
   final String condition;
   @override
-  final String note;
+  final String? note;
 
   @override
   String toString() {
@@ -216,7 +216,7 @@ abstract class _BloodSugar implements BloodSugar {
       required final double level,
       required final DateTime timestamp,
       required final String condition,
-      required final String note}) = _$BloodSugarImpl;
+      final String? note}) = _$BloodSugarImpl;
 
   factory _BloodSugar.fromJson(Map<String, dynamic> json) =
       _$BloodSugarImpl.fromJson;
@@ -230,7 +230,7 @@ abstract class _BloodSugar implements BloodSugar {
   @override
   String get condition;
   @override
-  String get note;
+  String? get note;
   @override
   @JsonKey(ignore: true)
   _$$BloodSugarImplCopyWith<_$BloodSugarImpl> get copyWith =>

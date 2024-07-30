@@ -8,7 +8,6 @@ import 'package:nishauri/src/features/blood_sugar/presentation/widgets/blood_lev
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
-
 class AddBloodSugarScreen extends HookConsumerWidget {
   final _formKey = GlobalKey<FormState>();
 
@@ -82,12 +81,12 @@ class AddBloodSugarScreen extends HookConsumerWidget {
                         labelText: 'Note',
                         hintText: 'Enter a note',
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a note';
-                        }
-                        return null;
-                      },
+                      // validator: (value) {
+                      //   if (value == null || value.isEmpty) {
+                      //     return 'Please enter a note';
+                      //   }
+                      //   return null;
+                      // },
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
