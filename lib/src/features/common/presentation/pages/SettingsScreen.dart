@@ -174,33 +174,46 @@ Future<Map<String, String>?> _promptForCredentials(BuildContext context) async {
               ],
             ),
             actions: [
-              Button(
-                onPress: () async {
-                  // Test whether credentials are correct using authApiservice
-                  final credentials = {
-                    'user_name': phoneNumber,
-                    'password': password
-                  };
-                  final isAuthenticated =
-                      await authApiService.authenticate(credentials);
-                  if (isAuthenticated.accountVerified) {
-                    Navigator.of(context).pop(
-                        {'phone_number': phoneNumber, 'password': password});
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Credentials are incorrect."),
+              Container(
+                width: double.infinity,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Button(
+                        onPress: () async {
+                          // Test whether credentials are correct using authApiservice
+                          final credentials = {
+                            'user_name': phoneNumber,
+                            'password': password
+                          };
+                          final isAuthenticated =
+                              await authApiService.authenticate(credentials);
+                          if (isAuthenticated.accountVerified) {
+                            Navigator.of(context).pop({
+                              'phone_number': phoneNumber,
+                              'password': password
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Credentials are incorrect."),
+                              ),
+                            );
+                          }
+                        },
+                        title: 'Submit',
                       ),
-                    );
-                  }
-                },
-                title: 'Submit',
+                    ),
+                    Expanded(
+                      child: Button(
+                          title: 'Cancel',
+                          onPress: () {
+                            Navigator.of(context).pop();
+                          }),
+                    ),
+                  ],
+                ),
               ),
-              Button(
-                  title: 'Cancel',
-                  onPress: () {
-                    Navigator.of(context).pop();
-                  }),
             ],
           );
         });
