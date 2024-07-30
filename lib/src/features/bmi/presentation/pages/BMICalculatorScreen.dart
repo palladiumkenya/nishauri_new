@@ -61,43 +61,49 @@ class BMICalculatorScreen extends HookConsumerWidget {
                           child: Column(
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "Calculating BMI for",
+                                    "BMI for: ",
                                     style: theme.textTheme.titleMedium,
                                   ),
                                   const SizedBox(height: Constants.SPACING),
                                   ToggleButtons(
-                                        isSelected: [isForSelf.value, !isForSelf.value], 
-                                        onPressed:(index) {
-                                          isForSelf.value = index == 0;
-                                        },
-                                        selectedColor: Colors.white, //color for selected button
-                                        fillColor: activeColor,                              
-                                        children: const [
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 16.0),
-                                            child: Text("Myself"),
-                                            
-                                            ),
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 16.0),
-                                            child: Text("Other"),
-                                            ),
-                                        ],
-                                        ),
-                                        const SizedBox(height: Constants.SPACING), 
+                                    isSelected: [
+                                      isForSelf.value,
+                                      !isForSelf.value
+                                    ],
+                                    onPressed: (index) {
+                                      isForSelf.value = index == 0;
+                                    },
+                                    selectedColor: Colors
+                                        .white, //color for selected button
+                                    fillColor: activeColor,
+                                    children: const [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16.0),
+                                        child: Text("Myself"),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16.0),
+                                        child: Text("Other"),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: Constants.SPACING),
                                 ],
                               ),
                             ],
                           ),
                         ),
                       ),
-                      const SizedBox(height: Constants.SPACING),      
+                      const SizedBox(height: Constants.SPACING),
                       Text(
-                          "Choose your gender",
-                          style: theme.textTheme.titleMedium,
+                        "Choose your gender",
+                        style: theme.textTheme.titleMedium,
                       ),
                       const SizedBox(height: Constants.SPACING),
                       GenderPicker(
@@ -192,32 +198,36 @@ class BMICalculatorScreen extends HookConsumerWidget {
                       ),
                       const SizedBox(height: Constants.SPACING),
                       Button(
-                        title: "Calculate",
-                        surfixIcon: SvgPicture.asset(
-                          "assets/images/refresh-circle.svg",
-                          semanticsLabel: "Doctors",
-                          fit: BoxFit.contain,
-                        ),
-                        disabled: isPregnant.value,
-                        backgroundColor: activeColor,
-                        textColor: theme.canvasColor,
-                        onPress: () {             
-                          final bmi = calculateBMI(height.value, weight.value);
-                          print('height.value: ${height.value}');
-                          print('bmi: $bmi');
+                          title: "Calculate",
+                          surfixIcon: SvgPicture.asset(
+                            "assets/images/refresh-circle.svg",
+                            semanticsLabel: "Doctors",
+                            fit: BoxFit.contain,
+                          ),
+                          disabled: isPregnant.value,
+                          backgroundColor: activeColor,
+                          textColor: theme.canvasColor,
+                          onPress: () {
+                            final bmi =
+                                calculateBMI(height.value, weight.value);
+                            print('height.value: ${height.value}');
+                            print('bmi: $bmi');
 
-                          if (isForSelf.value) {
-                            ref.read(bmiLogProvider.notifier).logBMI(height.value.toString(), weight.value.toString(), bmi.toString()).then((_) {
-                              context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
-                            });
-                            
-                          }
-                          else{
-                            context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
-                          }
-                          
-                        }         
-                      ),
+                            if (isForSelf.value) {
+                              ref
+                                  .read(bmiLogProvider.notifier)
+                                  .logBMI(height.value.toString(),
+                                      weight.value.toString(), bmi.toString())
+                                  .then((_) {
+                                context.goNamed(
+                                    RouteNames.BMI_CALCULATOR_RESULTS,
+                                    extra: bmi);
+                              });
+                            } else {
+                              context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS,
+                                  extra: bmi);
+                            }
+                          }),
                       const SizedBox(height: Constants.SPACING),
                       Button(
                         title: "BMI History",
