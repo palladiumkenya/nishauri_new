@@ -1,7 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
+import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:uuid/uuid.dart';
+
+//printing List which is acting as a Database
+void printCycles(List<Cycle> cycles) {
+  for (var cycle in cycles) {
+    debugPrint('Cycle ID: ${cycle.cycleId}');
+    debugPrint('Period Start: ${cycle.periodStart}');
+    debugPrint('Period End: ${cycle.periodEnd}');
+    debugPrint('Fertile Start: ${cycle.fertileStart}');
+    debugPrint('Fertile End: ${cycle.fertileEnd}');
+    debugPrint('Ovulation: ${cycle.ovulation}');
+    debugPrint('Predicted Period Start: ${cycle.predictedPeriodStart}');
+    debugPrint('Predicted Period End: ${cycle.predictedPeriodEnd}');
+    debugPrint('---'); // Separator between cycles for clarity
+  }
+}
 
 class EditPeriodCalendar extends StatefulWidget {
   @override
@@ -9,58 +29,89 @@ class EditPeriodCalendar extends StatefulWidget {
 }
 
 class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
-  // List of selected dates
-  final List<DateTime> _selectedDates = [];
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _startDate;
+  DateTime? _endDate;
 
-  // Callback when a day is selected
-  void _onDaySelected(DateTime day, DateTime focusedDay) {
+  void _onRangeSelected(DateTime? start, DateTime? end, DateTime? focusedDay) {
     setState(() {
-      if (_selectedDates.contains(day)) {
-        _selectedDates.remove(day);
-      } else {
-        _selectedDates.add(day);
-      }
+      _startDate = start;
+      _endDate = end;
+      _focusedDay = focusedDay ?? _focusedDay;
     });
-  }
-
-  // Check if a day is selected
-  bool _isDaySelected(DateTime day) {
-    return _selectedDates.contains(day);
-  }
+  } 
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       body: Column(
         children: [
           CustomAppBar(
-            title: "Log Periods",
+            title: "Log Periods 📅",
+            subTitle: "Please Log the start and end date of your previous periods to get started.",
             color: Constants.periodPlanner.withOpacity(1.0),
           ),
           TableCalendar(
-            focusedDay: DateTime.now(),
-            firstDay: DateTime(2010),
-            lastDay: DateTime(2100),
-            selectedDayPredicate: (day) => _isDaySelected(day),
-            onDaySelected: _onDaySelected,
-            calendarStyle:  CalendarStyle(
-              todayDecoration: const BoxDecoration(
+            focusedDay: _focusedDay,
+            firstDay: DateTime(2020),
+            lastDay: DateTime.now(),
+            rangeStartDay: _startDate,
+            rangeEndDay: _endDate,
+            onRangeSelected: _onRangeSelected,
+            rangeSelectionMode: RangeSelectionMode.toggledOn,
+            calendarStyle: const CalendarStyle(
+              todayDecoration: BoxDecoration(
                 color: Colors.blue,
                 shape: BoxShape.circle,
               ),
-              markerDecoration: BoxDecoration(
+              rangeStartDecoration: BoxDecoration(
                 color: Colors.pink,
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.black, width: 2),
               ),
-              selectedDecoration: const BoxDecoration(
-                color: Colors.transparent,
+              rangeEndDecoration: BoxDecoration(
+                color: Colors.pink,
                 shape: BoxShape.circle,
               ),
-              selectedTextStyle: const TextStyle(color: Colors.pink),
+              rangeHighlightColor: Constants.periodPlanner,
             ),
             headerStyle: const HeaderStyle(
               formatButtonVisible: false,
+            ),
+          ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Constants.periodPlanner,
+                  ),
+                  onPressed: () {
+                    if (_startDate != null && _endDate != null) {
+                      final Cycle predictedCycle = predictCycle(
+                        _startDate!,
+                        _endDate!,
+                      );
+                      cycles.add(predictedCycle);
+                      // Print the list of cycles
+                      printCycles(cycles);
+                      context.goNamed(RouteNames.PERIOD_PLANNER_MENU);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Please select your Period start and end dates.'))
+                      );
+                    }
+                  },
+                  child: Text(
+                    'Apply',
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ],

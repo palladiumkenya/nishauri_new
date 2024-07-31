@@ -17,7 +17,7 @@ class PeriodCalendar extends StatelessWidget {
       body: Column(
         children: [
           CustomAppBar(
-            title: "Calendar",
+            title: "Calendar 🗓️",
             color: Constants.periodPlanner.withOpacity(1.0),
           ),
           Expanded(

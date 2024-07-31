@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/carouselCard.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/logItems.dart';
@@ -16,8 +17,68 @@ class PeriodPlannerScreen extends StatefulWidget {
 }
 
 class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
+  final DateTime _currentDate = DateTime.now();
+  late DateTime _periodStart;
+  late DateTime _periodEnd; 
+  late DateTime _ovulationDate; 
+  late DateTime _nextPeriodStart;
+
+  @override
+  void initState() {
+    super.initState();
+    if (cycles.isNotEmpty) {
+      Cycle latestCycle = cycles.last;
+      _periodStart = latestCycle.periodStart;
+      _periodEnd = latestCycle.periodEnd;
+      _ovulationDate = latestCycle.ovulation;
+      _nextPeriodStart = latestCycle.predictedPeriodStart;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    //handling the days before, after or during the various phases in the Menstrual Cycle
+    int daysToOvulation = _ovulationDate.difference(_currentDate).inDays;
+    int daysToNextPeriod = _nextPeriodStart.difference(_currentDate).inDays;
+
+    bool isInPeriod = _currentDate.isAfter(_periodStart) && _currentDate.isBefore(_periodEnd);
+    bool isCloseToOvulation = _currentDate.isBefore(_ovulationDate) && (daysToOvulation <= 5 && daysToOvulation>=1);
+    bool veryCloseToOvulation = _currentDate.isBefore(_ovulationDate) && daysToOvulation == 0;
+    bool isOvulation = (_ovulationDate == _currentDate) || (_currentDate.isAfter(_ovulationDate) && daysToOvulation == 0);
+    //two days after ovulation -- I'm thinking about it
+    bool afterOvulation = _currentDate.isAfter(_ovulationDate) && _currentDate.isBefore(_nextPeriodStart);
+
+    // Determine progress value and messages based on the current date
+    double progressValue = 0.0;
+    String message = '';
+    String buttonText = '';
+
+    if (isInPeriod) {
+      progressValue = 0.2;
+      message = 'Day ${DateTime.now().difference(_periodStart).inDays + 1} of your period';
+      buttonText = 'Log End Period';
+    } else if (isCloseToOvulation) {
+      progressValue = 0.3;
+      message = '$daysToOvulation days';
+      buttonText = '';
+    } else if (veryCloseToOvulation) {
+      progressValue = 0.4;
+      message = 'Tomorrow';
+      buttonText = '';
+    } else if (isOvulation) {
+      progressValue = 0.5;
+      message = 'Today';
+      buttonText = '';
+    } else if (afterOvulation) {
+      progressValue = 0.7; 
+      message = '$daysToNextPeriod days';
+      buttonText = 'Log Period';
+    } else {
+      progressValue = 1.0;
+      message = 'Cycle Complete';
+      buttonText = '';
+    }
+
     return Scaffold(
       body: Column(
         children: [
@@ -41,50 +102,53 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                     Stack(
                       alignment: Alignment.center,
                       children: [
-                        const SizedBox(
+                        SizedBox(
                           width: Constants.SPACING * 30, // Adjust the width as needed
                           height: Constants.SPACING * 30, // Adjust the height as needed
                           child: CircularProgressIndicator(
-                            value: 0.5, // example value for the progress
+                            value: progressValue, 
                             strokeWidth: 10,
                             backgroundColor: Colors.grey,
-                            valueColor: AlwaysStoppedAnimation<Color>(Constants.periodPlanner),
+                            valueColor: const AlwaysStoppedAnimation<Color>(Constants.periodPlanner),
                           ),
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              'Period',
-                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            Text(
+                              isInPeriod ? 'Period' : isCloseToOvulation ? 'Ovulation in': veryCloseToOvulation ? 'Ovulation is':  isOvulation ? 'Ovulation is' : 'Next Period in',
+                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                             ),
-                            const SizedBox(height: Constants.SPACING), 
-                            const Text(
-                              'Day 3',
-                              style: TextStyle(fontSize: 38, color: Constants.periodPlanner,fontWeight: FontWeight.bold),
+                            const SizedBox(height: Constants.SPACING),
+                            Text(
+                              message,
+                              style: const TextStyle(fontSize: 38, color: Constants.periodPlanner, fontWeight: FontWeight.bold),
                             ),
-                            const SizedBox(height: Constants.SPACING), 
-                            const Text(
-                              'Low Chances of getting Pregnant',
-                              style: TextStyle(fontSize: 16),
+                            const SizedBox(height: Constants.SPACING),
+                            Text(
+                              isInPeriod ? 'Low Chances of Getting Pregnant' : isCloseToOvulation ? 'High Chances of Getting Pregnant': veryCloseToOvulation ? 'High Chances of Getting Pregnant' : isOvulation ? 'High Chances of Getting Pregnant' : 'Low Chances of Getting Pregnant',
+                              style: const TextStyle(fontSize: 16),
                             ),
-                            const SizedBox(height: Constants.SPACING), 
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.black, 
-                                backgroundColor: Constants.periodPlanner, // background
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
+                            const SizedBox(height: Constants.SPACING),
+                            if (buttonText.isNotEmpty)
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Handle button press
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.black,
+                                  backgroundColor: Constants.periodPlanner,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                                 ),
-                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Adjust padding as needed
+                                child: Text(
+                                  buttonText,
+                                  style: const TextStyle(fontSize: 18),
+                                ),
                               ),
-                              child: const Text(
-                                'Daily Log',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            ),
-                            const SizedBox(height: 20,),
+                            const SizedBox(height: 20),
                           ],
                         ),
                       ],

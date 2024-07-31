@@ -67,7 +67,7 @@ class PeriodPlanner extends StatelessWidget {
                         const SizedBox(height: 20.0),
                         ElevatedButton(
                           onPressed: () {
-                            context.goNamed(RouteNames.PERIOD_PLANNER_MENU);
+                            context.goNamed(RouteNames.PERIOD_PLANNER_EDIT_PERIOD_CALENDAR);
                           },
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(

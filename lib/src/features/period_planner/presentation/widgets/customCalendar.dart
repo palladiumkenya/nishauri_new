@@ -1,5 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:uuid/uuid.dart';
+
+//Algorithm
+Cycle predictCycle(DateTime periodStart, DateTime periodEnd, {int averageCycleLength = 28, int averagePeriodLength = 7}) {
+  var uuid = const Uuid();
+  String cycleId = uuid.v4(); //Generating a unique id
+
+  DateTime predictedPeriodStart = periodStart.add(Duration(days: averageCycleLength));
+  DateTime predictedPeriodEnd = predictedPeriodStart.add(Duration(days: averagePeriodLength));
+
+  //calculating ovulation day (14 days before predicted period start)
+  DateTime ovulation = predictedPeriodStart.subtract(const Duration(days: 14));
+
+  //calculating fertile window (5 days leading up to and including ovulation day)
+  DateTime fertileStart = ovulation.subtract(const Duration(days: 5));
+  DateTime fertileEnd = ovulation.subtract(const Duration(days: 1));
+
+  return Cycle(
+    cycleId: cycleId, 
+    periodStart: periodStart, 
+    periodEnd: periodEnd, 
+    fertileStart: fertileStart, 
+    fertileEnd: fertileEnd, 
+    ovulation: ovulation, 
+    predictedPeriodStart: predictedPeriodStart, 
+    predictedPeriodEnd: predictedPeriodEnd,
+  );
+}
 
 class CustomCalendar extends StatefulWidget {
   final CalendarFormat initialFormat;
@@ -12,7 +41,6 @@ class CustomCalendar extends StatefulWidget {
 
 class _CustomCalendarState extends State<CustomCalendar> {
   DateTime _focusedDay = DateTime.now();
-  //DateTime _selectedDay = DateTime.now();
   late CalendarFormat _calendarFormat;
 
   // Define ovulation and period days
@@ -32,12 +60,21 @@ class _CustomCalendarState extends State<CustomCalendar> {
     DateTime(2024, 8, 9),
   ];
 
-  final DateTime ovulationDay = DateTime(2024, 8 ,18);
+  final DateTime ovulationDay = DateTime(2024, 8, 18);
 
   @override
   void initState() {
     super.initState();
     _calendarFormat = widget.initialFormat;
+  }
+
+  double _getOpacity(DateTime day, DateTime eventDay) {
+    // Calculate the number of days between the event and the current day
+    final difference = day.difference(eventDay).inDays;
+    // Adjust the opacity based on the difference
+    final maxDays = 5; // Maximum days after the event for full opacity
+    final opacity = (1 - (difference / maxDays)).clamp(0.2, 1.0);
+    return opacity;
   }
 
   @override
@@ -46,12 +83,8 @@ class _CustomCalendarState extends State<CustomCalendar> {
       firstDay: DateTime(2010),
       lastDay: DateTime(2100),
       focusedDay: _focusedDay,
-      // selectedDayPredicate: (day) {
-      //   return isSameDay(_selectedDay, day);
-      // },
       onDaySelected: (selectedDay, focusedDay) {
         setState(() {
-          //_selectedDay = selectedDay;
           _focusedDay = focusedDay;
         });
       },
@@ -62,10 +95,6 @@ class _CustomCalendarState extends State<CustomCalendar> {
       ),
       calendarStyle: const CalendarStyle(
         isTodayHighlighted: true,
-        // selectedDecoration: BoxDecoration(
-        //   color: Colors.pink,
-        //   shape: BoxShape.circle,
-        // ),
         todayDecoration: BoxDecoration(
           color: Colors.red,
           shape: BoxShape.circle,
@@ -83,12 +112,12 @@ class _CustomCalendarState extends State<CustomCalendar> {
       ),
       calendarBuilders: CalendarBuilders(
         defaultBuilder: (context, day, focusedDay) {
-          for (DateTime ovulationDay in fertileDays) {
-            if (isSameDay(day, ovulationDay)) {
+          for (DateTime eventDay in fertileDays) {
+            if (isSameDay(day, eventDay)) {
               return Container(
                 margin: const EdgeInsets.all(6.0),
-                decoration: const BoxDecoration(
-                  color: Colors.green,
+                decoration: BoxDecoration(
+                  color: Colors.green.withOpacity(_getOpacity(day, eventDay)),
                   shape: BoxShape.circle,
                 ),
                 child: Center(
@@ -101,12 +130,12 @@ class _CustomCalendarState extends State<CustomCalendar> {
             }
           }
 
-          for (DateTime periodDay in periodDays) {
-            if (isSameDay(day, periodDay)) {
+          for (DateTime eventDay in periodDays) {
+            if (isSameDay(day, eventDay)) {
               return Container(
                 margin: const EdgeInsets.all(6.0),
-                decoration: const BoxDecoration(
-                  color: Colors.pink,
+                decoration: BoxDecoration(
+                  color: Colors.pink.withOpacity(_getOpacity(day, eventDay)),
                   shape: BoxShape.circle,
                 ),
                 child: Center(
@@ -119,19 +148,19 @@ class _CustomCalendarState extends State<CustomCalendar> {
             }
           }
 
-          if(isSameDay(day, ovulationDay)) {
+          if (isSameDay(day, ovulationDay)) {
             return Container(
               margin: const EdgeInsets.all(6.0),
-                decoration: const BoxDecoration(
-                  color: Colors.blue,
-                  shape: BoxShape.circle,
+              decoration: BoxDecoration(
+                color: Colors.blue.withOpacity(0.8), // Fixed opacity for ovulation day
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text(
+                  '${day.day}',
+                  style: const TextStyle(color: Colors.white),
                 ),
-                child: Center(
-                  child: Text(
-                    '${day.day}',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
+              ),
             );
           }
 
