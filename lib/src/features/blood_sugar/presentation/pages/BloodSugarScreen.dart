@@ -83,9 +83,12 @@ class BloodSugarScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddBloodSugarScreen()),
+          // Show add blood sugar screen as dialog
+          await showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(content: AddBloodSugarScreen());
+            },
           );
           ref.read(bloodSugarEntriesProvider.notifier).refreshEntries();
         },

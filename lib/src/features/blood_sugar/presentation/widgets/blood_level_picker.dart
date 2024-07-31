@@ -30,16 +30,18 @@ class BloodLevelPicker extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(Constants.SPACING),
         child: Column(children: [
+          Text(
+            "Select unit",
+            style: theme.textTheme.titleMedium,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "Blood Level",
-                style: theme.textTheme.titleMedium,
-              ),
-              BloodLevelUnitsPicker(
-                bloodLevelUnits: bloodLevelUnits,
-                onBloodLevelUnitsChange: onLevelUnitsChange,
+              Expanded(
+                child: BloodLevelUnitsPicker(
+                  bloodLevelUnits: bloodLevelUnits,
+                  onBloodLevelUnitsChange: onLevelUnitsChange,
+                ),
               ),
             ],
           ),
