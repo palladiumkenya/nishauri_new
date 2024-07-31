@@ -13,9 +13,9 @@ class CustomLineChart extends StatelessWidget {
   final double? minY;
   final double? maxY;
   final bool leftTile;
+
    final Color? barColor;
    final bool bottomTile;
-  final List<Color> gradientColors;
 
   const CustomLineChart({
     Key? key,
@@ -29,6 +29,7 @@ class CustomLineChart extends StatelessWidget {
     required this.dateTimes,
     required this.leftTile,
     this.barColor,
+    this.interval,
     required this.gradientColors,
     required this.bottomTile,
   }) : super(key: key);
@@ -48,7 +49,7 @@ class CustomLineChart extends StatelessWidget {
                     spots: dataPoints,
                     isCurved: true,
                     color: barColor,
-                    barWidth: 6,
+                    barWidth: 4,
                     belowBarData: BarAreaData(
                       show: true,
                       gradient: LinearGradient(
@@ -65,12 +66,17 @@ class CustomLineChart extends StatelessWidget {
                     sideTitles: SideTitles(
                       showTitles: bottomTile,
                       getTitlesWidget: (value, meta) {
+
                         int index = value.toInt();
                         if (index >= 0 && index < dateTimes.length) {
                           DateTime date = DateTime.parse(dateTimes[index]);
+
                           return Padding(
                             padding: const EdgeInsets.all(4.0),
-                            child: Text(DateFormat('dd-MM-yy').format(date)),
+                            child: Text(
+                              DateFormat('MM-dd').format(date),
+                              style: const TextStyle(fontSize: 10),
+                            ),
                           );
                         }
                         return const Text('');
@@ -79,18 +85,23 @@ class CustomLineChart extends StatelessWidget {
                       // rotateAngle: 45,
                       interval: 1, // Show labels at an interval of 1 unit
                     ),
-                    axisNameWidget: Text(xAxisLabel??''),
+                    axisNameWidget: Text(xAxisLabel ?? ''),
                   ),
                   leftTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: leftTile,
                       getTitlesWidget: (value, meta) {
-                        return Text(value.toString());
+                        return Text(
+                          value.toStringAsFixed(1),
+                          style: const TextStyle(
+                            fontSize: 10,
+                          ),
+                        );
                       },
                       reservedSize: 30,
-                      interval: 1, // Show labels at an interval of 1 unit
+                      interval: interval ?? 1,
                     ),
-                    axisNameWidget: Text(yAxisLabel??''),
+                    axisNameWidget: Text(yAxisLabel ?? ''),
                   ),
                   topTitles: const AxisTitles(
                     sideTitles: SideTitles(showTitles: false),
