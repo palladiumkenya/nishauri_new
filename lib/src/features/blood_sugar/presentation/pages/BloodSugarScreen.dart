@@ -53,7 +53,7 @@ class BloodSugarScreen extends ConsumerWidget {
                           padding: const EdgeInsets.all(16.0),
                           child: CustomLineChart(
                             dataPoints: dataPoints,
-                            dateTime: dateTimeList.first,
+                            dateTimes: dateTimeList,
                             gradientColors: [
                               Constants.bloodSugarColor,
                               Constants.bloodSugarColor.withOpacity(0.3),
@@ -63,7 +63,7 @@ class BloodSugarScreen extends ConsumerWidget {
                             minY: minChartValue,
                             maxY: maxChartValue,
                             leftTile: true,
-                            interval: 80,
+                            bottomTile: true,
                           ),
                         ),
                       ),
@@ -87,7 +87,10 @@ class BloodSugarScreen extends ConsumerWidget {
           await showDialog(
             context: context,
             builder: (context) {
-              return AlertDialog(content: AddBloodSugarScreen());
+              return AlertDialog(
+                content: AddBloodSugarScreen(),
+                scrollable: true,
+              );
             },
           );
           ref.read(bloodSugarEntriesProvider.notifier).refreshEntries();
