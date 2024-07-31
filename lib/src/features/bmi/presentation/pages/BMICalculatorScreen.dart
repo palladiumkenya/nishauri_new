@@ -30,7 +30,7 @@ class BMICalculatorScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     const activeColor = Constants.activeSelectionColor;
-    final gender = useState<GenderPickerChoices>(GenderPickerChoices.male);
+    var gender = useState<GenderPickerChoices>(GenderPickerChoices.male);
     final isPregnant = useState(false);
     final height = useState<double>(180);
     final heightUnits =
@@ -38,6 +38,8 @@ class BMICalculatorScreen extends HookConsumerWidget {
     final weight = useState<int>(65);
     final age = useState<int>(27);
     final isForSelf = useState(true);
+    final userAsync = ref.watch(userProvider);
+
     return Scaffold(
       body: Column(
         children: [
@@ -76,6 +78,22 @@ class BMICalculatorScreen extends HookConsumerWidget {
                                     ],
                                     onPressed: (index) {
                                       isForSelf.value = index == 0;
+                                      // fetch user gender
+                                      userAsync.whenData((user) async {
+                                        if (user.gender != null) {
+                                          debugPrint(
+                                              'user gender: ${user.gender}');
+                                          if (user.gender == 'Male') {
+                                            gender =
+                                                useState<GenderPickerChoices>(
+                                                    GenderPickerChoices.male);
+                                          } else {
+                                            gender =
+                                                useState<GenderPickerChoices>(
+                                                    GenderPickerChoices.female);
+                                          }
+                                        }
+                                      });
                                     },
                                     selectedColor: Colors
                                         .white, //color for selected button
@@ -106,60 +124,69 @@ class BMICalculatorScreen extends HookConsumerWidget {
                         style: theme.textTheme.titleMedium,
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      GenderPicker(
-                        gender: gender.value,
-                        onGenderChange: (gender_) {
-                          if (gender_ == GenderPickerChoices.female) {
-                            showDialog<bool>(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                  title: const Text("Warning!"),
-                                  content: SingleChildScrollView(
-                                    child: Wrap(
-                                      children: [
-                                        const Text(
-                                          "BMI Calculation for pregnant lady is highly discouraged and not supported to avoid drastic decisions.Please confirm your pregnancy status",
-                                        ),
-                                        RadioGroup(
-                                          // value: pregnant.value ? "no":"yes",
-                                          onValueChanged: (val) {
-                                            context.pop(val == "no");
-                                          },
-                                          items: [
-                                            RadioGroupItem(
-                                                value: "yes",
-                                                title: "Not Pregnant",
-                                                icon: Icons.woman_rounded),
-                                            RadioGroupItem(
-                                                value: "no",
-                                                title: "Pregnant",
-                                                icon: Icons.pregnant_woman),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  )),
-                            ).then((isPregnant_) {
-                              if (isPregnant_ != null) {
-                                if (isPregnant_ == false) {
-                                  gender.value = gender_;
-                                  isPregnant.value = false;
+                      // Check is forself is true
+                      isForSelf.value == false
+                          ? GenderPicker(
+                              gender: gender.value,
+                              onGenderChange: (gender_) {
+                                if (gender_ == GenderPickerChoices.female) {
+                                  showDialog<bool>(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                        title: const Text("Warning!"),
+                                        content: SingleChildScrollView(
+                                          child: Wrap(
+                                            children: [
+                                              const Text(
+                                                "BMI Calculation for pregnant lady is highly discouraged and not supported to avoid drastic decisions.Please confirm your pregnancy status",
+                                              ),
+                                              RadioGroup(
+                                                // value: pregnant.value ? "no":"yes",
+                                                onValueChanged: (val) {
+                                                  context.pop(val == "no");
+                                                },
+                                                items: [
+                                                  RadioGroupItem(
+                                                      value: "yes",
+                                                      title: "Not Pregnant",
+                                                      icon:
+                                                          Icons.woman_rounded),
+                                                  RadioGroupItem(
+                                                      value: "no",
+                                                      title: "Pregnant",
+                                                      icon:
+                                                          Icons.pregnant_woman),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        )),
+                                  ).then((isPregnant_) {
+                                    if (isPregnant_ != null) {
+                                      if (isPregnant_ == false) {
+                                        gender.value = gender_;
+                                        isPregnant.value = false;
+                                      } else {
+                                        gender.value = gender_;
+                                        isPregnant.value = true;
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content: Text(
+                                                    "BMI calculation for pregnant lady ain't supported")));
+                                      }
+                                    }
+                                  });
                                 } else {
                                   gender.value = gender_;
-                                  isPregnant.value = true;
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              "BMI calculation for pregnant lady ain't supported")));
                                 }
-                              }
-                            });
-                          } else {
-                            gender.value = gender_;
-                          }
-                        },
-                        activeColor: activeColor,
-                      ),
+                              },
+                              activeColor: activeColor,
+                            )
+                          : GenderPicker(
+                              gender: gender.value,
+                              onGenderChange: (gender) {},
+                              isEnabled: isForSelf.value,
+                            ),
                       const SizedBox(height: Constants.SPACING),
                       HeightPicker(
                         activeColor: activeColor,
