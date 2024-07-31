@@ -27,20 +27,23 @@ class ViralLoadTrend extends StatelessWidget {
       final bmi = double.parse(entry.value.plot.toString());
       return FlSpot(index, bmi);
     }).toList();
-    final date = data.asMap().values.first.date;
+    final date = data.asMap().entries.map((e) {
+      return e.value.date.toString();
+    }).toList();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: CustomLineChart(
           dataPoints: dataPoints,
-          dateTime: date,
+          dateTimes: date,
           minX: 0,
           maxX: dataPoints.length - 1,
-          // minY: 22,
+          minY: 0,
           // maxY: 28,
           leftTile: false,
           barColor: Constants.bmiCalculatorColor,
           gradientColors: gradientColors,
+          bottomTile: true,
         ),
       ),
     );

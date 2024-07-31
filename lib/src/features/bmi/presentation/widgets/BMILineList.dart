@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:nishauri/src/features/bmi/data/model/bmi_log.dart';
 import 'package:nishauri/src/features/bmi/data/providers/bmi_log_provider.dart';
 import 'package:nishauri/src/features/bp/data/providers/blood_pressure_provider.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
-class BMILinelist extends ConsumerWidget {
+class BMILinelist extends StatelessWidget {
+  final List<BMILog> data;
+  const BMILinelist({required this.data, Key? key}) : super(key: key);
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final bmiListAsyncValue = ref.watch(bmiListProvider);
-
-    return bmiListAsyncValue.when(
-      data: (bmiList) {
+  Widget build(BuildContext context) {
         return ListView.builder(
-          itemCount: bmiList.length + 1, // +1 for the header row
+          itemCount: data.length + 1, // +1 for the header row
           itemBuilder: (context, index) {
             if (index == 0) {
               // Header row
@@ -33,7 +32,7 @@ class BMILinelist extends ConsumerWidget {
               );
             } else {
               // Data rows
-              final bmi = bmiList[index - 1]; // Adjust index for data
+              final bmi = data[index - 1]; // Adjust index for data
               return Card(
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 child: ExpansionTile(
@@ -58,9 +57,5 @@ class BMILinelist extends ConsumerWidget {
             }
           },
         );
-      },
-      loading: () => Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text('No Data Available for BMI')),
-    );
   }
 }

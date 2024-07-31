@@ -7,13 +7,14 @@ class CustomLineChart extends StatelessWidget {
   final List<FlSpot> dataPoints;
   final String? xAxisLabel;
   final String? yAxisLabel;
-  final String dateTime;
+  final List<String> dateTimes;
   final double? minX;
   final double? maxX;
   final double? minY;
   final double? maxY;
   final bool leftTile;
    final Color? barColor;
+   final bool bottomTile;
   final List<Color> gradientColors;
 
   const CustomLineChart({
@@ -25,10 +26,11 @@ class CustomLineChart extends StatelessWidget {
     this.maxX,
     this.minY,
     this.maxY,
-    required this.dateTime,
+    required this.dateTimes,
     required this.leftTile,
     this.barColor,
     required this.gradientColors,
+    required this.bottomTile,
   }) : super(key: key);
 
   @override
@@ -61,12 +63,11 @@ class CustomLineChart extends StatelessWidget {
                 titlesData: FlTitlesData(
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
-                      showTitles: true,
+                      showTitles: bottomTile,
                       getTitlesWidget: (value, meta) {
-                        int intValue = value.toInt();
-                        if (intValue < dataPoints.length) {
-                          DateTime date = DateTime.parse(
-                              dateTime);
+                        int index = value.toInt();
+                        if (index >= 0 && index < dateTimes.length) {
+                          DateTime date = DateTime.parse(dateTimes[index]);
                           return Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: Text(DateFormat('dd-MM-yy').format(date)),

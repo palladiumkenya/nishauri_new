@@ -6,6 +6,7 @@ import 'package:nishauri/src/features/bp/data/providers/blood_pressure_provider.
 import 'package:nishauri/src/features/bp/presentation/pages/BPLinelistScreen.dart';
 import 'package:nishauri/src/features/bp/presentation/pages/trend_chart_screen.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class BPMonitorScreen extends ConsumerStatefulWidget {
@@ -35,7 +36,7 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
       diastolic: diastolic,
       pulse_rate: heartRate,
       date_time: measurementTime,
-      notes:notes,
+      notes: notes,
     );
 
     ref.read(bloodPressureRepositoryProvider).saveBloodPressure(bp).then((value) {
@@ -181,40 +182,89 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
     );
   }
 
+  void _reloadData() {
+    ref.refresh(bloodPressureListProvider);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          const CustomAppBar(
-            title: "Blood Pressure Monitor 📈",
-            // icon: Icons.trending_up,
-            color: Constants.bpShortCutBgColor,
-          ),
-          Expanded(
-            child: Center(
+    final bloodPressureListAsync = ref.watch(bloodPressureListProvider);
+    final theme = Theme.of(context);
+    return bloodPressureListAsync.when(
+      data: (data) {
+
+        final displayedData = data.length > 5 ? data.sublist(data.length - 5) : data;
+        return Scaffold(
+          body: Column(
+            children: [
+              const CustomAppBar(
+                title: "Blood Pressure Monitor 📈",
+                color: Constants.bpShortCutBgColor,
+              ),
+              Expanded(
+                child: Center(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: Column(
                       children: [
                         Expanded(
                           flex: 1,
-                          child: TrendChartScreen(),
+                          child: TrendChartScreen(data: displayedData),
                         ),
                         Expanded(
                           flex: 1,
-                          child: BPLinelistScreen(),
+                          child: BPLinelistScreen(data: data),
                         ),
                       ],
                     ),
                   ),
                 ),
+              ),
+            ],
           ),
-        ],
+          floatingActionButton: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                onPressed: _reloadData,
+                child: Icon(Icons.refresh),
+                heroTag: null,
+              ),
+              SizedBox(height: 10),
+              FloatingActionButton(
+                onPressed: () => _showDialogForm(context),
+                child: Icon(Icons.add),
+                heroTag: null,
+              ),
+            ],
+          ),
+        );
+      },
+      error: (error, _) => BackgroundImageWidget(
+        customAppBar: const CustomAppBar(
+          title: "Blood Pressure Monitor 📈",
+          color: Constants.bpShortCutBgColor,
+        ),
+        svgImage: 'assets/images/lab-empty-state.svg',
+        notFoundText: error.toString(),
+        floatingButtonIcon: Icons.refresh,
+        floatingButtonAction: () {
+          _reloadData();
+        },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showDialogForm(context),
-        child: Icon(Icons.add),
+      loading: () => Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Loading Blood Pressure",
+              style: theme.textTheme.headline6,
+            ),
+            const SizedBox(height: Constants.SPACING * 2),
+            const CircularProgressIndicator(),
+          ],
+        ),
       ),
     );
   }

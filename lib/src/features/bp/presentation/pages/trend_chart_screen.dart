@@ -1,49 +1,42 @@
-import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nishauri/src/features/bp/data/providers/blood_pressure_provider.dart';
+import 'package:nishauri/src/features/bp/data/models/blood_pressure.dart';
 import 'package:nishauri/src/shared/charts/CustomeMultLineChart.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
-class TrendChartScreen extends ConsumerWidget {
+class TrendChartScreen extends StatelessWidget {
+  final List<BloodPressure> data;
+  const TrendChartScreen({
+    required this.data,
+    Key? key,
+  }) : super(key: key);
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final bloodPressureListAsyncValue = ref.watch(bloodPressureListProvider);
+  Widget build(BuildContext context) {
 
-    Future<void> _refresh() async {
-      // Re-fetch the data by invalidating the provider
-      ref.refresh(bloodPressureListProvider);
-    }
-
-    return bloodPressureListAsyncValue.when(
-      data: (bpiList) {
-        final systolicSpots = bpiList.asMap().entries.map((entry) {
+        final systolicSpots = data.asMap().entries.map((entry) {
           final index = entry.key.toDouble();
           final systolic = entry.value.systolic;
           return FlSpot(index, systolic);
         }).toList();
 
-        final diastolicSpots = bpiList.asMap().entries.map((entry) {
+        final diastolicSpots = data.asMap().entries.map((entry) {
           final index = entry.key.toDouble();
           final diastolic = entry.value.diastolic;
           return FlSpot(index, diastolic);
         }).toList();
 
-        final pulseRateSpots = bpiList.asMap().entries.map((entry) {
+        final pulseRateSpots = data.asMap().entries.map((entry) {
           final index = entry.key.toDouble();
           final pulse = entry.value.pulse_rate;
           return FlSpot(index, pulse);
         }).toList();
 
-        final date = bpiList.asMap().entries.map((e) {
+        final date = data.asMap().entries.map((e) {
           return e.value.date_time.toString();
         }).toList();
 
         return Scaffold(
-          body: RefreshIndicator(
-            onRefresh: _refresh,
-            child: Padding(
+          body: Padding(
               padding: const EdgeInsets.all(16.0),
               child: CustomMultiLineChart(
                 lineBarsData: [
@@ -93,15 +86,6 @@ class TrendChartScreen extends ConsumerWidget {
                 showLeftTitles: false,
               ),
             ),
-          ),
         );
-      },
-      loading: () => Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      ),
-      error: (error, stack) => Scaffold(
-        body: Center(child: Text('No Data Available For Blood Pressure')),
-      ),
-    );
   }
 }

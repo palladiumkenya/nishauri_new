@@ -122,6 +122,19 @@ class UserService extends HTTPService {
     return response;
   }
 
+  Future<http.StreamedResponse> patientData_(dynamic args) async {
+    final id = await _repository.getUserId();
+
+    final tokenPair = await getCachedToken();
+    var headers = {
+      'Authorization': "Bearer ${tokenPair.accessToken}",
+      'Content-Type': 'application/json'
+    };
+    var url = '${Constants.BASE_URL_NEW}/patient_data?user_id=$id';
+    final response = await request(url: url, token: tokenPair, method: 'GET', requestHeaders: headers, userId: id);
+    return response;
+  }
+
   int calculateAge(String dob) {
     if (dob.isEmpty) return 0;
     DateTime dateOfBirth = DateTime.parse(dob);
@@ -133,25 +146,24 @@ class UserService extends HTTPService {
         (now.month == dateOfBirth.month && now.day < dateOfBirth.day)) {
       age--;
     }
-
     return age;
   }
 
 
   Future<void> saveGenderAge() async {
     try{
-      final resp = await call(getUser_, null);
+      final resp = await call(patientData_, null);
       if (resp.statusCode == 200) {
         final responseString = await resp.stream.bytesToString();
         final respData = json.decode(responseString);
         if (respData["success"] == true) {
-          final gender = respData["data"]["profile"]["gender"];
-          final dob = respData["data"]["profile"]["dob"];
+          final gender = respData["data"]["patient_data"]["gender"];
+          final dob = respData["data"]["patient_data"]["dob"];
           await _repository.saveGender(gender);
           await _repository.saveAge(calculateAge(dob).toString());
         }
         else{
-          throw respData["msg"];
+          throw respData["message"];
         }
       }
     } catch (e) {

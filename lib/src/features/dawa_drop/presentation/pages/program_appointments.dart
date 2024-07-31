@@ -11,8 +11,13 @@ import 'package:nishauri/src/utils/routes.dart';
 class ProgramAppointmentsScreen extends ConsumerWidget {
   const ProgramAppointmentsScreen({Key? key}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    void _reloadData() {
+      ref.refresh(drugOrderProvider);
+      ref.refresh(appointmentProvider(false));
+    }
     final theme = Theme.of(context);
     final appointmentAsync = ref.watch(appointmentProvider(false));
     final orderAsync = ref.watch(drugOrderProvider);
@@ -193,6 +198,16 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
               ),
             ],
           ),
+          floatingActionButton: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                onPressed: _reloadData,
+                child: Icon(Icons.refresh),
+                heroTag: null,
+              ),
+            ],
+          ),
         );
       },
       error: (error, _) => BackgroundImageWidget(
@@ -203,6 +218,10 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
         ),
         svgImage: 'assets/images/background.svg',
         notFoundText: error.toString(),
+        floatingButtonIcon: Icons.refresh,
+        floatingButtonAction: () {
+          _reloadData;
+        },
       ),
       loading: () => Center(
         child: Column(

@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:nishauri/src/features/bp/data/providers/blood_pressure_provider.dart';
+import 'package:nishauri/src/features/bp/data/models/blood_pressure.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
-class BPLinelistScreen extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final bloodPressureListAsyncValue = ref.watch(bloodPressureListProvider);
+class BPLinelistScreen extends StatelessWidget {
+  final List<BloodPressure> data;
+  const BPLinelistScreen({
+    required this.data,
+    Key? key,
+  }) : super(key: key);
 
-    return bloodPressureListAsyncValue.when(
-      data: (bloodPressureList) {
+  @override
+  Widget build(BuildContext context) {
+
         return ListView.builder(
-          itemCount: bloodPressureList.length + 1, // +1 for the header row
+          itemCount: data.length + 1,
           itemBuilder: (context, index) {
             if (index == 0) {
               // Header row
@@ -31,8 +33,7 @@ class BPLinelistScreen extends ConsumerWidget {
                 ),
               );
             } else {
-              // Data rows
-              final bp = bloodPressureList[index - 1]; // Adjust index for data
+              final bp = data[index - 1];
               return Card(
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 child: ExpansionTile(
@@ -57,9 +58,5 @@ class BPLinelistScreen extends ConsumerWidget {
             }
           },
         );
-      },
-      loading: () => Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text('No Data Available For Blood Pressure')),
-    );
   }
 }
