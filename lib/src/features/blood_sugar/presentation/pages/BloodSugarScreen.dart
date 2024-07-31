@@ -64,6 +64,7 @@ class BloodSugarScreen extends ConsumerWidget {
                             maxY: maxChartValue,
                             leftTile: true,
                             bottomTile: true,
+                            interval: 80,
                           ),
                         ),
                       ),

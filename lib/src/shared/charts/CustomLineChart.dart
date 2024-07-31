@@ -13,9 +13,10 @@ class CustomLineChart extends StatelessWidget {
   final double? minY;
   final double? maxY;
   final bool leftTile;
-
-   final Color? barColor;
-   final bool bottomTile;
+  final Color? barColor;
+  final bool bottomTile;
+  final List<Color> gradientColors;
+  final double? interval;
 
   const CustomLineChart({
     Key? key,
@@ -29,9 +30,9 @@ class CustomLineChart extends StatelessWidget {
     required this.dateTimes,
     required this.leftTile,
     this.barColor,
-    this.interval,
     required this.gradientColors,
     required this.bottomTile,
+    this.interval,
   }) : super(key: key);
 
   @override
@@ -49,7 +50,7 @@ class CustomLineChart extends StatelessWidget {
                     spots: dataPoints,
                     isCurved: true,
                     color: barColor,
-                    barWidth: 4,
+                    barWidth: 6,
                     belowBarData: BarAreaData(
                       show: true,
                       gradient: LinearGradient(
@@ -66,17 +67,12 @@ class CustomLineChart extends StatelessWidget {
                     sideTitles: SideTitles(
                       showTitles: bottomTile,
                       getTitlesWidget: (value, meta) {
-
                         int index = value.toInt();
                         if (index >= 0 && index < dateTimes.length) {
                           DateTime date = DateTime.parse(dateTimes[index]);
-
                           return Padding(
                             padding: const EdgeInsets.all(4.0),
-                            child: Text(
-                              DateFormat('MM-dd').format(date),
-                              style: const TextStyle(fontSize: 10),
-                            ),
+                            child: Text(DateFormat('dd-MM-yy').format(date)),
                           );
                         }
                         return const Text('');
@@ -92,14 +88,13 @@ class CustomLineChart extends StatelessWidget {
                       showTitles: leftTile,
                       getTitlesWidget: (value, meta) {
                         return Text(
-                          value.toStringAsFixed(1),
-                          style: const TextStyle(
-                            fontSize: 10,
-                          ),
+                          value.toString(),
+                          style: const TextStyle(fontSize: 10),
                         );
                       },
                       reservedSize: 30,
-                      interval: interval ?? 1,
+                      interval:
+                          interval ?? 1, // Show labels at an interval of 1 unit
                     ),
                     axisNameWidget: Text(yAxisLabel ?? ''),
                   ),
