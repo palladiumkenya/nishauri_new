@@ -9,7 +9,8 @@ class BackgroundImageWidget extends StatelessWidget {
   final Color? backgroundColor;
   final double? svgWidth;
   final double? svgHeight;
-  // final BoxFit? svgFit;
+  final IconData? floatingButtonIcon;
+  final VoidCallback? floatingButtonAction;
 
   const BackgroundImageWidget({
     Key? key,
@@ -19,7 +20,8 @@ class BackgroundImageWidget extends StatelessWidget {
     this.backgroundColor,
     this.svgWidth,
     this.svgHeight,
-    // this.svgFit,
+    this.floatingButtonIcon,
+    this.floatingButtonAction,
   }) : super(key: key);
 
   @override
@@ -55,6 +57,12 @@ class BackgroundImageWidget extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: floatingButtonIcon != null && floatingButtonAction != null
+          ? FloatingActionButton(
+        onPressed: floatingButtonAction,
+        child: Icon(floatingButtonIcon),
+      )
+          : null,
     );
   }
 }

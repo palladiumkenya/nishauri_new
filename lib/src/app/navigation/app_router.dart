@@ -430,7 +430,7 @@ final List<RouteBase> selfScreeningRoutes = [
             name: RouteNames.BMI_HISTORY,
             path: "bmi-history",
             builder: (BuildContext context, GoRouterState state) {
-              return const BMIHistoryScreen();
+              return BMIHistoryScreen();
             }),
       ]),
   GoRoute(

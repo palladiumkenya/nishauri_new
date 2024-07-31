@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/dawa_drop/data/models/order_request/drug_order.dart';
 import 'package:nishauri/src/features/dawa_drop/data/providers/drug_order_provider.dart';
-import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/active_orders.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/FulfilledOrders.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/active_orders.dart';
 import 'package:nishauri/src/shared/display/CustomTabBar.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
@@ -21,13 +21,13 @@ class DrugOrdersScreen extends HookConsumerWidget {
     final currIndex = useState(0);
 
     return orderAsync.when(
-      data: (data) => _buildData(context, data, currIndex),
-      error: (error, _) => _buildError(context, error),
+      data: (data) => _buildData(context, data, currIndex, ref),
+      error: (error, _) => _buildError(context, error, ref),
       loading: () => _buildLoading(theme),
     );
   }
 
-  Widget _buildData(BuildContext context, List<DrugOrder> data, ValueNotifier<int> currIndex) {
+  Widget _buildData(BuildContext context, List<DrugOrder> data, ValueNotifier<int> currIndex, WidgetRef ref) {
     List<DrugOrder> pendingOrders = data.where((order) => order.status != 'Fullfilled').toList();
     List<DrugOrder> fulfilledOrders = data.where((order) => order.status == 'Fullfilled').toList();
 
@@ -41,7 +41,6 @@ class DrugOrdersScreen extends HookConsumerWidget {
         children: [
           CustomAppBar(
             title: "Drug Requests 🛒",
-            // icon: Icons.shopping_cart_checkout_sharp,
             color: Constants.dawaDropColor.withOpacity(0.5),
           ),
           CustomTabBar(
@@ -64,18 +63,33 @@ class DrugOrdersScreen extends HookConsumerWidget {
           Expanded(child: screens[currIndex.value]),
         ],
       ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              ref.refresh(drugOrderProvider);
+            },
+            child: const Icon(Icons.refresh),
+            heroTag: null,
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _buildError(BuildContext context, Object error) {
+  Widget _buildError(BuildContext context, Object error, WidgetRef ref) {
     return BackgroundImageWidget(
       customAppBar: CustomAppBar(
-        title: "Confirm Delivery",
-        icon: Icons.vaccines_sharp,
+        title: "Drug Requests 🛒",
         color: Constants.dawaDropColor.withOpacity(0.5),
       ),
       svgImage: 'assets/images/background.svg',
       notFoundText: error.toString(),
+      floatingButtonIcon: Icons.refresh,
+      floatingButtonAction: () {
+        ref.refresh(drugOrderProvider);
+      },
     );
   }
 
@@ -87,7 +101,7 @@ class DrugOrdersScreen extends HookConsumerWidget {
         children: [
           Text(
             "Loading Drug requests",
-            style: theme.textTheme.headline6,
+            style: theme.textTheme.bodySmall,
           ),
           const SizedBox(height: Constants.SPACING * 2),
           const CircularProgressIndicator(),
