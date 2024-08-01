@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
+import 'package:nishauri/src/features/period_planner/data/models/events.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/carouselCard.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/logItems.dart';
@@ -79,6 +80,8 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
       buttonText = '';
     }
 
+    Map<DateTime, List<Event>> events = _generateEvents(cycles);
+
     return Scaffold(
       body: Column(
         children: [
@@ -96,7 +99,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                   children: [
                     SizedBox(
                       height: 150,
-                      child: CustomCalendar(initialFormat: CalendarFormat.week,),
+                      child: CustomCalendar(initialFormat: CalendarFormat.week, events: events),
                     ),
                     const SizedBox(height: 20),
                     Stack(
@@ -205,5 +208,38 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
         ],
       ),
     );
+  }
+
+  Map<DateTime, List<Event>> _generateEvents(List<Cycle> cycles) {
+    Map<DateTime, List<Event>> events = {};
+
+    for (Cycle cycle in cycles) {
+      // Add period days
+      for (DateTime date = cycle.periodStart;
+          date.isBefore(cycle.periodEnd) || date.isAtSameMomentAs(cycle.periodEnd);
+          date = date.add(const Duration(days: 1))) {
+        events.update(date, (existingEvents) => existingEvents..add(Event('Period Day', Colors.pink)), ifAbsent: () => [Event('Period Day', Colors.pink)]);
+      }
+
+      // Add fertile window days
+      for (DateTime date = cycle.fertileStart;
+          date.isBefore(cycle.fertileEnd) || date.isAtSameMomentAs(cycle.fertileEnd);
+          date = date.add(const Duration(days: 1))) {
+        events.update(date, (existingEvents) => existingEvents..add(Event('Fertile Day', Colors.green)), ifAbsent: () => [Event('Fertile Day', Colors.green)]);
+      }
+
+      // Add ovulation day
+      events.update(cycle.ovulation, (existingEvents) => existingEvents..add(Event('Ovulation Day', Colors.blue)), ifAbsent: () => [Event('Ovulation Day', Colors.blue)]);
+
+      // Add predicted period start
+      for (DateTime date = cycle.predictedPeriodStart;
+          date.isBefore(cycle.predictedPeriodEnd) || date.isAtSameMomentAs(cycle.predictedPeriodEnd);
+          date = date.add(const Duration(days: 1))) {
+        events.update(date, (existingEvents) => existingEvents..add(Event('Predicted Period Day', Colors.pink)), ifAbsent: () => [Event('Predicted Period Day', Colors.orange)]);
+      }
+      //events.update(cycle.predictedPeriodStart, (existingEvents) => existingEvents..add(Event('Predicted Period Start', Colors.orange)), ifAbsent: () => [Event('Predicted Period Start', Colors.orange)]);
+    }
+
+    return events;
   }
 }

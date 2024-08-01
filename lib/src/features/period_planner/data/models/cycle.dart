@@ -16,6 +16,8 @@
 //   factory Cycle.fromJson(Map<String, dynamic> json)=> _$CycleFromJson(json);
 // }
 
+import 'dart:ui';
+
 class Cycle{
   final String cycleId;
   final DateTime periodStart;
@@ -40,3 +42,4 @@ class Cycle{
 
 //Acting as database for now
 List <Cycle> cycles = [];
+
