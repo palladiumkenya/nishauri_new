@@ -37,7 +37,7 @@ class PeriodPlanner extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         DecoratedBox(
-                          decoration: BoxDecoration(),
+                          decoration: const BoxDecoration(),
                           child: SvgPicture.asset(
                             "assets/images/period_planner2.svg",
                             fit: BoxFit.contain,

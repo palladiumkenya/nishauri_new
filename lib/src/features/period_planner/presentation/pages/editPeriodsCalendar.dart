@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
+import 'package:nishauri/src/features/period_planner/data/models/events.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -49,13 +50,12 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
         children: [
           CustomAppBar(
             title: "Log Periods 📅",
-            subTitle: "Please Log the start and end date of your previous periods to get started.",
             color: Constants.periodPlanner.withOpacity(1.0),
           ),
           TableCalendar(
             focusedDay: _focusedDay,
             firstDay: DateTime(2020),
-            lastDay: DateTime.now(),
+            lastDay: DateTime(2100),
             rangeStartDay: _startDate,
             rangeEndDay: _endDate,
             onRangeSelected: _onRangeSelected,
@@ -119,3 +119,5 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
     );
   }
 }
+
+

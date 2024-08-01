@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/data/models/events.dart';
+import 'package:nishauri/src/features/period_planner/presentation/widgets/eventsMaker.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart';
 
+//Algorithm
+//Make the following parameter optional
 Cycle predictCycle(DateTime periodStart, DateTime periodEnd, {int averageCycleLength = 28, int averagePeriodLength = 7}) {
   var uuid = const Uuid();
   String cycleId = uuid.v4(); //Generating a unique id
@@ -102,30 +105,10 @@ class _CustomCalendarState extends State<CustomCalendar> {
           final eventList = events.cast<Event>();
           //debugPrint('Successfully cast events for date: $date, events: $eventList');
 
-          return _buildEventsMarker(date, eventList);
+          return EventsMaker(date: date, events: eventList);
         },
       ),
     );
   }
-
-  Widget _buildEventsMarker(DateTime date, List<Event> events) {
-    return Positioned(
-      right: 1,
-      bottom: 1,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: events.map((event) {
-          return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 0.5),
-            width: 7.0,
-            height: 7.0,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: event.color,
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
 }
+

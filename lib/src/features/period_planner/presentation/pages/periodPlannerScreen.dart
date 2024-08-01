@@ -1,13 +1,16 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/data/models/events.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/editPeriodsCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/carouselCard.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/logItems.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/loggerWidget.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class PeriodPlannerScreen extends StatefulWidget {
@@ -18,7 +21,7 @@ class PeriodPlannerScreen extends StatefulWidget {
 }
 
 class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
-  final DateTime _currentDate = DateTime.now();
+  DateTime _currentDate = DateTime.now();
   late DateTime _periodStart;
   late DateTime _periodEnd; 
   late DateTime _ovulationDate; 
@@ -36,17 +39,24 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
     }
   }
 
+  //Function to check if two dates are on the same day by truncating the time part
+  bool isSameDay(DateTime date1, DateTime date2) {
+    return date1.year == date2.year &&
+        date1.month == date2.month &&
+        date1.day == date2.day;
+  }
+
   @override
   Widget build(BuildContext context) {
     //handling the days before, after or during the various phases in the Menstrual Cycle
     int daysToOvulation = _ovulationDate.difference(_currentDate).inDays;
     int daysToNextPeriod = _nextPeriodStart.difference(_currentDate).inDays;
 
-    bool isInPeriod = _currentDate.isAfter(_periodStart) && _currentDate.isBefore(_periodEnd);
+    bool isInPeriod = (isSameDay(_currentDate, _periodStart) || _currentDate.isAfter(_periodStart)) && _currentDate.isBefore(_periodEnd);
     bool isCloseToOvulation = _currentDate.isBefore(_ovulationDate) && (daysToOvulation <= 5 && daysToOvulation>=1);
     bool veryCloseToOvulation = _currentDate.isBefore(_ovulationDate) && daysToOvulation == 0;
-    bool isOvulation = (_ovulationDate == _currentDate) || (_currentDate.isAfter(_ovulationDate) && daysToOvulation == 0);
-    //two days after ovulation -- I'm thinking about it
+    bool isOvulation = (isSameDay(_currentDate, _ovulationDate)) || (_currentDate.isAfter(_ovulationDate) && daysToOvulation == 0);
+    //two days after ovulation -- I'm thinking about it though
     bool afterOvulation = _currentDate.isAfter(_ovulationDate) && _currentDate.isBefore(_nextPeriodStart);
 
     // Determine progress value and messages based on the current date
@@ -56,7 +66,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
 
     if (isInPeriod) {
       progressValue = 0.2;
-      message = 'Day ${DateTime.now().difference(_periodStart).inDays + 1} of your period';
+      message = 'Day ${DateTime.now().difference(_periodStart).inDays + 1}';
       buttonText = 'Log End Period';
     } else if (isCloseToOvulation) {
       progressValue = 0.3;
@@ -80,6 +90,13 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
       buttonText = '';
     }
 
+    // Debug prints to trace the logic
+    debugPrint('Current Date: $_currentDate');
+    debugPrint('Period Start: $_periodStart');
+    debugPrint('Period End: $_periodEnd');
+    debugPrint('Is In Period: $isInPeriod');
+
+    //Mapping the events
     Map<DateTime, List<Event>> events = _generateEvents(cycles);
 
     return Scaffold(
@@ -136,7 +153,58 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                             if (buttonText.isNotEmpty)
                               ElevatedButton(
                                 onPressed: () {
-                                  // Handle button press
+                                  if (afterOvulation == true) { 
+                                    showDialog<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text('Confirm Log Period'),
+                                          content: const Text('Are you sure you want to log your period?'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              child: const Text('Cancel'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop(); // Close the dialog
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: const Text('Confirm'),
+                                              onPressed: () {
+                                                setState(() {
+                                                   // Log the period start here
+                                                  isInPeriod = true;
+                                                  _currentDate = DateTime.now();
+                                                  
+                                                  final Cycle predictedCycle = predictCycle(
+                                                  _periodStart = DateTime.now(),
+                                                  _periodEnd = DateTime.now().add(const Duration(days: 6)),
+                                                  );
+                                                  cycles.add(predictedCycle);  
+
+                                                  _ovulationDate = predictedCycle.ovulation;
+                                                  _nextPeriodStart = predictedCycle.predictedPeriodStart;
+
+                                                  // Debug print to check the state update
+                                                  debugPrint('Period Start after update: $_periodStart');
+                                                  debugPrint('Period End after update: $_periodEnd');
+                                                  debugPrint('Predicted Next Period Date after update: $_nextPeriodStart');
+                                                  debugPrint('Current Date after update: $_currentDate');
+                                                  debugPrint('Is In Period after update: $isInPeriod');
+                                                }); 
+                                                //printCycles(cycles);
+                                                Navigator.of(context).pop();           
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                    
+                                  }
+                                  else{
+                                    // Handle button press
+                                  }
+                                  
                                 },
                                 style: ElevatedButton.styleFrom(
                                   foregroundColor: Colors.black,
@@ -210,6 +278,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
     );
   }
 
+  //Generating Events from the Cycles List
   Map<DateTime, List<Event>> _generateEvents(List<Cycle> cycles) {
     Map<DateTime, List<Event>> events = {};
 
@@ -235,7 +304,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
       for (DateTime date = cycle.predictedPeriodStart;
           date.isBefore(cycle.predictedPeriodEnd) || date.isAtSameMomentAs(cycle.predictedPeriodEnd);
           date = date.add(const Duration(days: 1))) {
-        events.update(date, (existingEvents) => existingEvents..add(Event('Predicted Period Day', Colors.pink)), ifAbsent: () => [Event('Predicted Period Day', Colors.orange)]);
+        events.update(date, (existingEvents) => existingEvents..add(Event('Predicted Period Day', Colors.orange)), ifAbsent: () => [Event('Predicted Period Day', Colors.orange)]);
       }
       //events.update(cycle.predictedPeriodStart, (existingEvents) => existingEvents..add(Event('Predicted Period Start', Colors.orange)), ifAbsent: () => [Event('Predicted Period Start', Colors.orange)]);
     }

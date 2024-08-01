@@ -11,6 +11,8 @@ import 'package:table_calendar/table_calendar.dart';
 class PeriodCalendar extends StatelessWidget {
   const PeriodCalendar({super.key});
 
+ 
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -83,7 +85,6 @@ class PeriodCalendar extends StatelessWidget {
     );
   }
 
-  //Generating Events from the Cycles List
   Map<DateTime, List<Event>> _generateEvents(List<Cycle> cycles) {
     Map<DateTime, List<Event>> events = {};
 
@@ -115,11 +116,12 @@ class PeriodCalendar extends StatelessWidget {
     }
 
     // Debugging: Print events map
-    events.forEach((key, value) {
-      debugPrint('Date: $key, Events: $value');
-    });
+    // events.forEach((key, value) {
+    //   debugPrint('Date: $key, Events: $value');
+    // });
 
     return events;
   }
-  
 }
+  
+
