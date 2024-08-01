@@ -1,14 +1,21 @@
+import 'dart:convert';
+import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
+
+import 'package:http/http.dart';
 import 'package:nishauri/src/features/blood_sugar/data/models/blood_sugar.dart';
+import 'package:nishauri/src/features/blood_sugar/data/services/blood_sugar_service.dart';
+import 'package:nishauri/src/utils/constants.dart';
 
 class BloodSugarRepository {
-  final List<BloodSugar> _entries = [];
+  final BloodSugarService _service;
 
-  List<BloodSugar> getAllEntries() {
-    return _entries;
+  BloodSugarRepository(this._service);
+
+  Future<String> saveBloodSugar(BloodSugar data) async {
+    return await _service.saveBloodSugar(data);
   }
 
-  void addEntry(BloodSugar entry) {
-    print("Adding entry repository: $entry");
-    _entries.add(entry);
+  Future<List<BloodSugar>> getBloodSugars() async {
+    return await _service.fetchBloodSugars();
   }
 }
