@@ -375,6 +375,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         .then((value) {
                                       //     Update user state
                                       ref.read(userProvider.notifier).getUser();
+                                      // ref.read(userProvider.notifier).getOTPCode("sms");
                                     }).then((value) {
                                       settings.patchSettings(firstTimeInstallation: false);
 
@@ -384,8 +385,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                           content:
                                               Text(value.toString())
                                         ),
+                                        
                                       );
-                                      context.goNamed(RouteNames.VERIFY_ACCOUNT);
+                                      // context.goNamed(RouteNames.VERIFY_ACCOUNT);
                                     }).catchError((error) {
                                       handleResponseError(
                                         context,

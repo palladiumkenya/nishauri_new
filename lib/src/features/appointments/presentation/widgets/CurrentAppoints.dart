@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
-import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
 
@@ -17,85 +16,107 @@ class CurrentAppointments extends HookConsumerWidget {
         final activeProgramAppointments =
         data.where((element) => element.program_status.toString() == "1");
         if (activeProgramAppointments.isEmpty) {
-          return const BackgroundImageWidget(
-              svgImage: "assets/images/appointments-empty.svg",
-              notFoundText: "No upcoming appointments");
+          return BackgroundImageWidget(
+            svgImage: "assets/images/appointments-empty.svg",
+            notFoundText: "No upcoming appointments",
+            floatingButtonIcon: Icons.refresh,
+            floatingButtonAction: () {
+              ref.refresh(appointmentProvider(false));
+            }
+          );
         }
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: activeProgramAppointments.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final currAppointment =
-                  activeProgramAppointments.elementAt(index);
-                  return Column(
-                    children: [
-                      const Divider(),
-                      ListTile(
-                        title: Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(Constants.SPACING),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  currAppointment.program_name ?? '',
-                                  style: theme.textTheme.headline6,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
-                                const SizedBox(height: Constants.SPACING),
-                                Row(
+        return Scaffold(
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: activeProgramAppointments.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final currAppointment =
+                      activeProgramAppointments.elementAt(index);
+                      return Column(
+                        children: [
+                          const Divider(),
+                          ListTile(
+                            title: Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(Constants.SPACING),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Icon(
-                                      Icons.app_registration_outlined,
-                                      color: Constants.appointmentsColor,
-                                    ),
-                                    const SizedBox(width: Constants.SPACING),
                                     Text(
-                                        currAppointment.appointment_type ?? ''),
-                                  ],
-                                ),
-                                const SizedBox(height: Constants.SPACING),
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.calendar_month_outlined,
-                                      color: Constants.appointmentsColor,
+                                      currAppointment.program_name ?? '',
+                                      style: theme.textTheme.headline6,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
                                     ),
-                                    const SizedBox(width: Constants.SPACING),
-                                    Text(currAppointment.appointment_date),
-                                  ],
-                                ),
-                                const SizedBox(height: Constants.SPACING),
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.local_hospital_sharp,
-                                      color: Constants.appointmentsColor,
+                                    const SizedBox(height: Constants.SPACING),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.app_registration_outlined,
+                                          color: Constants.appointmentsColor,
+                                        ),
+                                        const SizedBox(width: Constants.SPACING),
+                                        Text(
+                                          currAppointment.appointment_type ?? '',
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(width: Constants.SPACING),
-                                    Text(currAppointment.facility_name??''),
+                                    const SizedBox(height: Constants.SPACING),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.calendar_month_outlined,
+                                          color: Constants.appointmentsColor,
+                                        ),
+                                        const SizedBox(width: Constants.SPACING),
+                                        Text(
+                                          currAppointment.appointment_date,
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: Constants.SPACING),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.local_hospital_sharp,
+                                          color: Constants.appointmentsColor,
+                                        ),
+                                        const SizedBox(width: Constants.SPACING),
+                                        Text(
+                                          currAppointment.facility_name ?? '',
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ],
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              ref.refresh(appointmentProvider(false));
+            },
+            child: Icon(Icons.refresh),
+          ),
         );
       },
       error: (error, _) => BackgroundImageWidget(
         svgImage: 'assets/images/background.svg',
         notFoundText: error.toString(),
+          floatingButtonIcon: Icons.refresh,
+          floatingButtonAction: () {
+            ref.refresh(appointmentProvider(false));
+          }
       ),
       loading: () => Center(
         child: Column(

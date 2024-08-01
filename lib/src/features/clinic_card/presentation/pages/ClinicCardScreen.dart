@@ -22,6 +22,11 @@ class ClinicCardScreen extends HookConsumerWidget {
     final programAsync = ref.watch(programProvider);
     final userPrograms = ref.watch(userProgramProvider);
 
+    void _reloadData() {
+      ref.refresh(programProvider);
+      ref.refresh(userProgramProvider);
+    }
+
     final currIndex = useState(0);
     return programAsync.when(
       data: (data) {
@@ -44,6 +49,10 @@ class ClinicCardScreen extends HookConsumerWidget {
             ),
             svgImage: 'assets/images/lab-empty-state.svg',
             notFoundText: "No programs available",
+            floatingButtonIcon: Icons.refresh,
+            floatingButtonAction: () {
+              _reloadData();
+            },
           );
         }
         final screens = activePrograms
@@ -53,8 +62,8 @@ class ClinicCardScreen extends HookConsumerWidget {
           body: Column(
             children: [
               CustomAppBar(
-                title: "My Clinic Card",
-                icon: Icons.file_present,
+                title: "My Clinic Card 🎫",
+                // icon: Icons.file_present,
                 color: Colors.blue[900],
                 subTitle: "Access medical services using \nyour clinic cards",
               ),
@@ -76,24 +85,50 @@ class ClinicCardScreen extends HookConsumerWidget {
               Expanded(child: screens.elementAt(currIndex.value))
             ],
           ),
+          floatingActionButton: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                onPressed: _reloadData,
+                child: Icon(Icons.refresh),
+                heroTag: null,
+              ),
+            ],
+          ),
         );
       },
       error: (error, _) => BackgroundImageWidget(
+        customAppBar: CustomAppBar(
+          title: "My Clinic Card 🎫",
+          // icon: Icons.file_present,
+          subTitle: "Access medical services using \nyour clinic cards",
+          color: Colors.blue[900],
+        ),
         svgImage: 'assets/images/lab-empty-state.svg',
         notFoundText: error.toString(),
+        floatingButtonIcon: Icons.refresh,
+        floatingButtonAction: () {
+          _reloadData();
+        },
       ),
-      loading: () => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "Loading Programs",
-              style: theme.textTheme.headline6,
-            ),
-            const SizedBox(height: Constants.SPACING * 2),
-            const CircularProgressIndicator(),
-          ],
+      loading: () => Scaffold(
+        body: Column(
+            // mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CustomAppBar(
+                title: "My Clinic Card 🎫",
+                // icon: Icons.file_present,
+                color: Colors.blue[900],
+                subTitle: "Access medical services using \nyour clinic cards",
+              ),
+              Text(
+                "Loading Programs",
+                style: theme.textTheme.headline6,
+              ),
+              const SizedBox(height: Constants.SPACING * 2),
+              const CircularProgressIndicator(),
+            ],
         ),
       ),
     );

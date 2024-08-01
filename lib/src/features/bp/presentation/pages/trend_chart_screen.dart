@@ -82,6 +82,7 @@ class TrendChartScreen extends StatelessWidget {
                 ],
                 minX: 0,
                 maxX: pulseRateSpots.length - 1,
+                minY: 29,
                 dateTimes: date,
                 showLeftTitles: false,
               ),

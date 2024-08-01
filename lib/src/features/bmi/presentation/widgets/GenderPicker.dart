@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/constants.dart';
 import '../../../../utils/helpers.dart';
 
 enum GenderPickerChoices { male, female }
@@ -22,7 +24,7 @@ class GenderPicker extends StatelessWidget {
     final screenSize = getOrientationAwareScreenSize(context);
     final theme = Theme.of(context);
     final color = theme.canvasColor;
-    final bgColor = activeColor ?? theme.colorScheme.primary;
+    final bgColor = activeColor ?? Constants.activeSelectionColor;
     final disabledColor = Colors.grey;
 
     return Row(

@@ -17,7 +17,7 @@ class IdleTimeoutNotifier extends StateNotifier<int> {
 
   void _startTimer() {
     _timer?.cancel();
-    _timer = Timer(const Duration(minutes: 5), _logoutUser);
+    _timer = Timer(const Duration(minutes: 15), _logoutUser);
   }
 
   void _logoutUser() {
