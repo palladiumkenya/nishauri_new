@@ -43,6 +43,7 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(value)),
       );
+      _reloadData();
       _clearForm(systolic, diastolic, heartRate, notesController);
       Navigator.of(context).pop();
     }).catchError((error) {
@@ -171,6 +172,7 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
                 ElevatedButton(
                   onPressed: () {
                     _submitData(context, systolic, diastolic, heartRate, notesController);
+                    _reloadData();
                   },
                   child: Text('Submit'),
                 ),
@@ -232,7 +234,10 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
               ),
               SizedBox(height: 10),
               FloatingActionButton(
-                onPressed: () => _showDialogForm(context),
+                onPressed: () {
+                  _showDialogForm(context);
+                  _reloadData();
+                  },
                 child: Icon(Icons.add),
                 heroTag: null,
               ),
@@ -246,7 +251,7 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
           color: Constants.bpShortCutBgColor,
         ),
         svgImage: 'assets/images/lab-empty-state.svg',
-        notFoundText: error.toString(),
+        notFoundText: "No BP Data Available to display",
         floatingButtonIcon: Icons.refresh,
         floatingButtonAction: () {
           _reloadData();
@@ -259,7 +264,7 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
           children: [
             Text(
               "Loading Blood Pressure",
-              style: theme.textTheme.headline6,
+              style: theme.textTheme.bodySmall,
             ),
             const SizedBox(height: Constants.SPACING * 2),
             const CircularProgressIndicator(),

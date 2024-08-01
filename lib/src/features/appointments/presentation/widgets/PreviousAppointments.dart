@@ -24,78 +24,86 @@ class PreviousAppointments extends HookConsumerWidget {
               svgImage: "assets/images/appointments-empty.svg",
               notFoundText: "No Past appointments");
         }
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: activeProgramAppointments.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final color = data[index].appt_status == "Missed"
-                      ? Colors.red
-                      : theme.colorScheme.primary;
-                  final currAppointment =
-                  activeProgramAppointments.elementAt(index);
-                  return Column(
-                    children: [
-                      const Divider(),
-                      ListTile(
-                        title: Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(Constants.SPACING),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  currAppointment.program_name ?? '',
-                                  style: theme.textTheme.headline6,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
-                                const SizedBox(height: Constants.SPACING),
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.app_registration_outlined,
-                                      color: Constants.appointmentsColor,
-                                    ),
-                                    const SizedBox(width: Constants.SPACING),
-                                    Text(currAppointment.appointment_type ?? ''),
-                                  ],
-                                ),
-                                const SizedBox(height: Constants.SPACING),
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.calendar_month_outlined,
-                                      color: Constants.appointmentsColor,
-                                    ),
-                                    const SizedBox(width: Constants.SPACING),
-                                    Text(currAppointment.appointment_date),
-                                  ],
-                                ),
-                                const SizedBox(height: Constants.SPACING),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.rotate_left_outlined,
-                                      color: color,
-                                    ),
-                                    const SizedBox(width: Constants.SPACING),
-                                    Text(currAppointment.appt_status ?? ''),
-                                  ],
-                                ),
-                              ],
+        return Scaffold(
+          body:Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: activeProgramAppointments.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final color = data[index].appt_status == "Missed"
+                        ? Colors.red
+                        : theme.colorScheme.primary;
+                    final currAppointment =
+                    activeProgramAppointments.elementAt(index);
+                    return Column(
+                      children: [
+                        const Divider(),
+                        ListTile(
+                          title: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(Constants.SPACING),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    currAppointment.program_name ?? '',
+                                    style: theme.textTheme.headline6,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                  const SizedBox(height: Constants.SPACING),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.app_registration_outlined,
+                                        color: Constants.appointmentsColor,
+                                      ),
+                                      const SizedBox(width: Constants.SPACING),
+                                      Text(currAppointment.appointment_type ?? ''),
+                                    ],
+                                  ),
+                                  const SizedBox(height: Constants.SPACING),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.calendar_month_outlined,
+                                        color: Constants.appointmentsColor,
+                                      ),
+                                      const SizedBox(width: Constants.SPACING),
+                                      Text(currAppointment.appointment_date),
+                                    ],
+                                  ),
+                                  const SizedBox(height: Constants.SPACING),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.rotate_left_outlined,
+                                        color: color,
+                                      ),
+                                      const SizedBox(width: Constants.SPACING),
+                                      Text(currAppointment.appt_status ?? ''),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                },
+                      ],
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              ref.refresh(appointmentProvider(true));
+            },
+            child: Icon(Icons.refresh),
+          ),
         );
       },
       error: (error, _) => BackgroundImageWidget(

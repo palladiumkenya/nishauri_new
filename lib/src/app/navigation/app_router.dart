@@ -58,6 +58,7 @@ import 'package:nishauri/src/features/lab/presentation/pages/LabResultsScreen.da
 import 'package:nishauri/src/features/programs/presentation/pages/programs.dart';
 import 'package:nishauri/src/features/self_screening/presentation/self_screening_menu.dart';
 import 'package:nishauri/src/features/treatment_support/presentation/pages/TreatmentSupport.dart';
+import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileScreen.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileWizardFormScreen.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
