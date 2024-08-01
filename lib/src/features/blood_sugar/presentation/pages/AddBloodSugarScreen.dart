@@ -17,7 +17,6 @@ class AddBloodSugarScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bloodLevel = useState<double>(70.0);
     final bloodLevelUnits = useState<LevelPickerUnits>(LevelPickerUnits.mgdl);
-    final bloodSugarNotifier = ref.read(bloodSugarEntriesProvider.notifier);
     final note = TextEditingController();
     final condition = useState<String>('Fasting');
     return Form(
@@ -81,8 +80,23 @@ class AddBloodSugarScreen extends HookConsumerWidget {
                   condition: condition.value,
                 );
                 debugPrint("Adding entry: $entry");
-                bloodSugarNotifier.addEntry(entry);
-                Navigator.pop(context);
+                ref
+                    .read(bloodSugarProvider)
+                    .saveBloodSugar(entry)
+                    .then((value) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Blood sugar entry added successfully'),
+                    ),
+                  );
+                  Navigator.of(context).pop();
+                }).catchError((error) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Failed to add blood sugar entry: $error'),
+                    ),
+                  );
+                });
               }
             },
             child: const Text('Add Entry'),
