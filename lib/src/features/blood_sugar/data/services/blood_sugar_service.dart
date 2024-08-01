@@ -1,18 +1,20 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
+import 'package:nishauri/src/features/blood_sugar/data/models/blood_sugar.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class BloodSugarService extends HTTPService {
   final AuthRepository _repository = AuthRepository(AuthApiService());
-  Future<StreamedResponse> saveBloodSugar_(dynamic data) async {
+  Future<StreamedResponse> saveBloodSugar_(BloodSugar data) async {
     final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
     final userId = {'user_id': id};
-    Map<String, dynamic> mergedData = {...data, ...userId};
+    var mergedData = {...data.toJson(), ...userId};
     var headers = {
       'Authorization': 'Bearer ${tokenPair.accessToken}',
       'Content-Type': 'application/json',
@@ -30,7 +32,7 @@ class BloodSugarService extends HTTPService {
 
   Future<String> saveBloodSugar(dynamic data) async {
     try {
-      final response = await call(saveBloodSugar_, data);
+      final response = await call<BloodSugar>(saveBloodSugar_, data);
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final Map<String, dynamic> orderData = json.decode(responseString);
@@ -59,5 +61,24 @@ class BloodSugarService extends HTTPService {
         requestHeaders: headers,
         userId: id);
     return response;
+  }
+
+  Future<List<BloodSugar>> fetchBloodSugars() async {
+    try {
+      final response = await call(fetchBloodSugars_, null);
+      if (response.statusCode == 200) {
+        final responseString = await response.stream.bytesToString();
+        final List<dynamic> orderData = json.decode(responseString);
+        List<BloodSugar> bloodSugars = [];
+        orderData.forEach((element) {
+          bloodSugars.add(BloodSugar.fromJson(element));
+        });
+        return bloodSugars;
+      } else {
+        throw "Something Went Wrong Try Again Later ${response.statusCode}";
+      }
+    } catch (e) {
+      throw "$e";
+    }
   }
 }
