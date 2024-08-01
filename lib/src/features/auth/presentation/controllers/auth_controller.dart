@@ -120,9 +120,6 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
       await _repository.saveUserId(authResponse.userId ?? '');
       await _repository.savePhoneNumber(authResponse.phoneNumber ?? '');
       await _repository.saveIsVerified(authResponse.accountVerified);
-      await appointmentRepository.saveAppointment();
-      await _userRepository.saveGenderAge();
-      await viralLoadRepository.saveViralLoad();
       state = AsyncValue.data(AuthState(
         isAccountVerified: authResponse.accountVerified,
         isProfileComplete: authResponse.profileUpdated,

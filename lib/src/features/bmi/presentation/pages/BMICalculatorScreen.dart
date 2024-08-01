@@ -250,6 +250,7 @@ class BMICalculatorScreen extends HookConsumerWidget {
                                     RouteNames.BMI_CALCULATOR_RESULTS,
                                     extra: bmi);
                               });
+                              ref.refresh(bmiListProvider);
                             } else {
                               context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS,
                                   extra: bmi);
@@ -262,6 +263,7 @@ class BMICalculatorScreen extends HookConsumerWidget {
                         backgroundColor: activeColor,
                         textColor: theme.canvasColor,
                         onPress: () {
+                          ref.refresh(bmiListProvider);
                           context.goNamed(RouteNames.BMI_HISTORY);
                         },
                       ),

@@ -72,13 +72,15 @@ class CustomLineChart extends StatelessWidget {
                           DateTime date = DateTime.parse(dateTimes[index]);
                           return Padding(
                             padding: const EdgeInsets.all(4.0),
-                            child: Text(DateFormat('dd-MM-yy').format(date)),
+                            child: Transform.rotate(
+                              angle: -45 * (3.14 / 180), // Rotate the text by -45 degrees
+                              child: Text(DateFormat('dd/MM/yy').format(date)),
+                            ),
                           );
                         }
                         return const Text('');
                       },
                       reservedSize: 30,
-                      // rotateAngle: 45,
                       interval: 1, // Show labels at an interval of 1 unit
                     ),
                     axisNameWidget: Text(xAxisLabel ?? ''),

@@ -15,9 +15,6 @@ class GeneralDashboard extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('General Dashboard'),
-      ),
       body: ListView(
         children: [
           Card(

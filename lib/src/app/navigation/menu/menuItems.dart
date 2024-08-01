@@ -232,7 +232,7 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
         ),
         title: MenuItemNames.SELF_SCREENING,
         onPressed: () => context.goNamed(RouteNames.SELF_SCREENING),
-        color: Constants.bpShortCutBgColor),
+        color: Constants.bmiCalculatorColor),
 
     MenuItem(
       // icon: FaIcon(FontAwesomeIcons.capsules, size: Constants.iconSize, color: Colors.teal[200],),
