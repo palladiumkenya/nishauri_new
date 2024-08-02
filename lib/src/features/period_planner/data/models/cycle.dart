@@ -3,14 +3,14 @@
 // @Freezed()
 // class Cycle with _$Cycle {
 //   const factory Cycle({
-//     final String cycleId, 
-//     final DateTime periodStart,
-//     final DateTime periodEnd,
-//     final DateTime fertileStart,
-//     final DateTime fertileEnd,
-//     final DateTime ovulation,
-//     final DateTime predictedPeriodStart,
-//     final DateTime predictedPeriodEnd,
+//       String cycleId, 
+//       DateTime periodStart,
+//       DateTime periodEnd,
+//       DateTime fertileStart,
+//       DateTime fertileEnd,
+//       DateTime ovulation,
+//       DateTime predictedPeriodStart,
+//       DateTime predictedPeriodEnd,
 //   }) = _Cycle;
 
 //   factory Cycle.fromJson(Map<String, dynamic> json)=> _$CycleFromJson(json);
@@ -19,14 +19,14 @@
 import 'dart:ui';
 
 class Cycle{
-  final String cycleId;
-  final DateTime periodStart;
-  final DateTime periodEnd;
-  final DateTime fertileStart;
-  final DateTime fertileEnd;
-  final DateTime ovulation;
-  final DateTime predictedPeriodStart;
-  final DateTime predictedPeriodEnd;
+   String cycleId;
+   DateTime periodStart;
+   DateTime periodEnd;
+   DateTime fertileStart;
+   DateTime fertileEnd;
+   DateTime ovulation;
+   DateTime predictedPeriodStart;
+   DateTime predictedPeriodEnd;
 
   Cycle({
     required this.cycleId,

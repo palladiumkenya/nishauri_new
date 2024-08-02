@@ -48,16 +48,19 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //late bool endOfPeriod; // handling when user has logged end of period
     //handling the days before, after or during the various phases in the Menstrual Cycle
     int daysToOvulation = _ovulationDate.difference(_currentDate).inDays;
     int daysToNextPeriod = _nextPeriodStart.difference(_currentDate).inDays;
 
     bool isInPeriod = (isSameDay(_currentDate, _periodStart) || _currentDate.isAfter(_periodStart)) && _currentDate.isBefore(_periodEnd);
-    bool isCloseToOvulation = _currentDate.isBefore(_ovulationDate) && (daysToOvulation <= 5 && daysToOvulation>=1);
+    bool veryCloseToPeriod = _currentDate.isBefore(_nextPeriodStart) && daysToNextPeriod == 0;
+    bool isCloseToOvulation = _currentDate.isBefore(_ovulationDate) && !isInPeriod && daysToOvulation>=1 ;
     bool veryCloseToOvulation = _currentDate.isBefore(_ovulationDate) && daysToOvulation == 0;
     bool isOvulation = (isSameDay(_currentDate, _ovulationDate)) || (_currentDate.isAfter(_ovulationDate) && daysToOvulation == 0);
     //two days after ovulation -- I'm thinking about it though
-    bool afterOvulation = _currentDate.isAfter(_ovulationDate) && _currentDate.isBefore(_nextPeriodStart);
+    bool afterOvulation = _currentDate.isAfter(_ovulationDate) && (_currentDate.isBefore(_nextPeriodStart) && daysToNextPeriod>0);
+
 
     // Determine progress value and messages based on the current date
     double progressValue = 0.0;
@@ -84,17 +87,26 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
       progressValue = 0.7; 
       message = '$daysToNextPeriod days';
       buttonText = 'Log Period';
-    } else {
+    } else if (veryCloseToPeriod) {
+      progressValue = 0.7; 
+      message = 'Tomorrow';
+      buttonText = 'Log Period';
+    } 
+    else {
       progressValue = 1.0;
       message = 'Cycle Complete';
       buttonText = '';
     }
 
-    // Debug prints to trace the logic
-    debugPrint('Current Date: $_currentDate');
-    debugPrint('Period Start: $_periodStart');
-    debugPrint('Period End: $_periodEnd');
+    //Debug prints to trace the logic
+    // debugPrint('Current Date: $_currentDate');
+    // debugPrint('Period Start: $_periodStart');
+    // debugPrint('Period End: $_periodEnd');
+    // debugPrint('Is In Period: $isInPeriod');
+    debugPrint('-----Widget Rebuild-----');
     debugPrint('Is In Period: $isInPeriod');
+    debugPrint('Is close to Ovulation: $isCloseToOvulation');
+  
 
     //Mapping the events
     Map<DateTime, List<Event>> events = _generateEvents(cycles);
@@ -114,6 +126,15 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
+                    // Align(
+                    //   alignment: Alignment.topRight,
+                    //   child: IconButton(
+                    //     onPressed: () {
+                    //       context.goNamed(RouteNames.PERIOD_PLANNER_CALENDAR);
+                    //     }, 
+                    //     icon: const Icon(Icons.calendar_month),
+                    //     ),
+                    // ),
                     SizedBox(
                       height: 150,
                       child: CustomCalendar(initialFormat: CalendarFormat.week, events: events),
@@ -136,7 +157,14 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              isInPeriod ? 'Period' : isCloseToOvulation ? 'Ovulation in': veryCloseToOvulation ? 'Ovulation is':  isOvulation ? 'Ovulation is' : 'Next Period in',
+                              isInPeriod 
+                              ? 'Period' : veryCloseToPeriod 
+                                ? 'Next Period is':  isCloseToOvulation 
+                                  ? 'Ovulation in': veryCloseToOvulation 
+                                    ? 'Ovulation is':  isOvulation 
+                                      ? 'Ovulation is' : afterOvulation 
+                                        ? 'Next Period in' 
+                                          : 'Error',
                               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: Constants.SPACING),
@@ -146,14 +174,21 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                             ),
                             const SizedBox(height: Constants.SPACING),
                             Text(
-                              isInPeriod ? 'Low Chances of Getting Pregnant' : isCloseToOvulation ? 'High Chances of Getting Pregnant': veryCloseToOvulation ? 'High Chances of Getting Pregnant' : isOvulation ? 'High Chances of Getting Pregnant' : 'Low Chances of Getting Pregnant',
+                              isInPeriod 
+                              ? 'Low Chances of Getting Pregnant': veryCloseToPeriod 
+                                ? 'Low Chances of Getting Pregnant' : isCloseToOvulation 
+                                  ? 'High Chances of Getting Pregnant': veryCloseToOvulation 
+                                    ? 'High Chances of Getting Pregnant' : isOvulation 
+                                      ? 'High Chances of Getting Pregnant' 
+                                        : 'Low Chances of Getting Pregnant',
                               style: const TextStyle(fontSize: 16),
                             ),
                             const SizedBox(height: Constants.SPACING),
                             if (buttonText.isNotEmpty)
                               ElevatedButton(
                                 onPressed: () {
-                                  if (afterOvulation == true) { 
+                                  //Logging Start of new period
+                                  if (buttonText == 'Log Period') { 
                                     showDialog<void>(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -177,7 +212,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                                   
                                                   final Cycle predictedCycle = predictCycle(
                                                   _periodStart = DateTime.now(),
-                                                  _periodEnd = DateTime.now().add(const Duration(days: 6)),
+                                                  _periodEnd = DateTime.now().add(const Duration(days: 7)),
                                                   );
                                                   cycles.add(predictedCycle);  
 
@@ -185,11 +220,13 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                                   _nextPeriodStart = predictedCycle.predictedPeriodStart;
 
                                                   // Debug print to check the state update
+                                                  debugPrint("After User has logged Period");
                                                   debugPrint('Period Start after update: $_periodStart');
                                                   debugPrint('Period End after update: $_periodEnd');
                                                   debugPrint('Predicted Next Period Date after update: $_nextPeriodStart');
                                                   debugPrint('Current Date after update: $_currentDate');
                                                   debugPrint('Is In Period after update: $isInPeriod');
+                                                  debugPrint("--------");
                                                 }); 
                                                 //printCycles(cycles);
                                                 Navigator.of(context).pop();           
@@ -201,8 +238,56 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                     );
                                     
                                   }
+                                  //Logging end of new period
                                   else{
-                                    // Handle button press
+                                    showDialog<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text('Confirming End of Period'),
+                                          content: const Text('Are you sure you want to log the end of your period?'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              child: const Text('Cancel'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop(); // Close the dialog
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: const Text('Confirm'),
+                                              onPressed: () {
+                                                setState(() {
+                                                   // Log the period start here
+                                                  isCloseToOvulation = true;
+                                                  isInPeriod = false;
+                                                  _currentDate = DateTime.now();
+                                                  _periodEnd = _currentDate;
+                                                  
+                                                  //updating period end in my List for now
+                                                  for (var cycle in cycles) {
+                                                    if (cycle.periodStart == _periodStart) {
+                                                      cycle.periodEnd = _periodEnd;
+                                                    }
+                                                  }
+
+                                                  // Debug print to check the state update
+                                                  debugPrint("After User has logged end of Period");
+                                                  debugPrint('Period Start after update: $_periodStart');
+                                                  debugPrint('Period End after update: $_periodEnd');
+                                                  debugPrint('Predicted Next Period Date after update: $_nextPeriodStart');
+                                                  debugPrint('Current Date after update: $_currentDate');
+                                                  debugPrint('Is In Period after update: $isInPeriod');
+                                                  debugPrint('Is Close to Ovulation after update: $isCloseToOvulation'); 
+                                                  debugPrint("--------");
+                                                }); 
+                                                //printCycles(cycles);
+                                                Navigator.of(context).pop();           
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   }
                                   
                                 },
