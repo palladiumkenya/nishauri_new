@@ -49,8 +49,8 @@ class ClinicCardScreen extends HookConsumerWidget {
             ),
             svgImage: 'assets/images/lab-empty-state.svg',
             notFoundText: "No programs available",
-            floatingButtonIcon: Icons.refresh,
-            floatingButtonAction: () {
+            floatingButtonIcon1: Icons.refresh,
+            floatingButtonAction1: () {
               _reloadData();
             },
           );
@@ -106,8 +106,8 @@ class ClinicCardScreen extends HookConsumerWidget {
         ),
         svgImage: 'assets/images/lab-empty-state.svg',
         notFoundText: error.toString(),
-        floatingButtonIcon: Icons.refresh,
-        floatingButtonAction: () {
+        floatingButtonIcon1: Icons.refresh,
+        floatingButtonAction1: () {
           _reloadData();
         },
       ),

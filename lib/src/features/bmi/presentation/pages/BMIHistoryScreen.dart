@@ -59,8 +59,8 @@ class BMIHistoryScreen extends HookWidget {
               ),
               svgImage: 'assets/images/lab-empty-state.svg',
               notFoundText: "No BMI Data",
-              floatingButtonIcon: Icons.refresh,
-              floatingButtonAction: () {
+              floatingButtonIcon1: Icons.refresh,
+              floatingButtonAction1: () {
                 ref.refresh(bmiListProvider);
               },
             ),
