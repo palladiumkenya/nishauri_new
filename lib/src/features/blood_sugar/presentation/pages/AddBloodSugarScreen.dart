@@ -5,7 +5,6 @@ import 'package:nishauri/src/features/blood_sugar/data/models/blood_sugar.dart';
 import 'package:nishauri/src/features/blood_sugar/data/providers/blood_sugar_provider.dart';
 import 'package:nishauri/src/features/blood_sugar/presentation/widgets/blood_level_picker.dart';
 import 'package:nishauri/src/features/blood_sugar/presentation/widgets/blood_level_units_picker.dart';
-import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class AddBloodSugarScreen extends HookConsumerWidget {
