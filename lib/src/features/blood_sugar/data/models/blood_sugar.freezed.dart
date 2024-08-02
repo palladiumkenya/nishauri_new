@@ -20,11 +20,10 @@ BloodSugar _$BloodSugarFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$BloodSugar {
-  int get id => throw _privateConstructorUsedError;
   double get level => throw _privateConstructorUsedError;
-  DateTime get timestamp => throw _privateConstructorUsedError;
+  DateTime get date => throw _privateConstructorUsedError;
   String get condition => throw _privateConstructorUsedError;
-  String? get note => throw _privateConstructorUsedError;
+  String? get notes => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,12 +37,7 @@ abstract class $BloodSugarCopyWith<$Res> {
           BloodSugar value, $Res Function(BloodSugar) then) =
       _$BloodSugarCopyWithImpl<$Res, BloodSugar>;
   @useResult
-  $Res call(
-      {int id,
-      double level,
-      DateTime timestamp,
-      String condition,
-      String? note});
+  $Res call({double level, DateTime date, String condition, String? notes});
 }
 
 /// @nodoc
@@ -59,32 +53,27 @@ class _$BloodSugarCopyWithImpl<$Res, $Val extends BloodSugar>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? level = null,
-    Object? timestamp = null,
+    Object? date = null,
     Object? condition = null,
-    Object? note = freezed,
+    Object? notes = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
       level: null == level
           ? _value.level
           : level // ignore: cast_nullable_to_non_nullable
               as double,
-      timestamp: null == timestamp
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
       condition: null == condition
           ? _value.condition
           : condition // ignore: cast_nullable_to_non_nullable
               as String,
-      note: freezed == note
-          ? _value.note
-          : note // ignore: cast_nullable_to_non_nullable
+      notes: freezed == notes
+          ? _value.notes
+          : notes // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -98,12 +87,7 @@ abstract class _$$BloodSugarImplCopyWith<$Res>
       __$$BloodSugarImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int id,
-      double level,
-      DateTime timestamp,
-      String condition,
-      String? note});
+  $Res call({double level, DateTime date, String condition, String? notes});
 }
 
 /// @nodoc
@@ -117,32 +101,27 @@ class __$$BloodSugarImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? level = null,
-    Object? timestamp = null,
+    Object? date = null,
     Object? condition = null,
-    Object? note = freezed,
+    Object? notes = freezed,
   }) {
     return _then(_$BloodSugarImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
       level: null == level
           ? _value.level
           : level // ignore: cast_nullable_to_non_nullable
               as double,
-      timestamp: null == timestamp
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
       condition: null == condition
           ? _value.condition
           : condition // ignore: cast_nullable_to_non_nullable
               as String,
-      note: freezed == note
-          ? _value.note
-          : note // ignore: cast_nullable_to_non_nullable
+      notes: freezed == notes
+          ? _value.notes
+          : notes // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -152,29 +131,26 @@ class __$$BloodSugarImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$BloodSugarImpl implements _BloodSugar {
   const _$BloodSugarImpl(
-      {required this.id,
-      required this.level,
-      required this.timestamp,
+      {required this.level,
+      required this.date,
       required this.condition,
-      this.note});
+      this.notes});
 
   factory _$BloodSugarImpl.fromJson(Map<String, dynamic> json) =>
       _$$BloodSugarImplFromJson(json);
 
   @override
-  final int id;
-  @override
   final double level;
   @override
-  final DateTime timestamp;
+  final DateTime date;
   @override
   final String condition;
   @override
-  final String? note;
+  final String? notes;
 
   @override
   String toString() {
-    return 'BloodSugar(id: $id, level: $level, timestamp: $timestamp, condition: $condition, note: $note)';
+    return 'BloodSugar(level: $level, date: $date, condition: $condition, notes: $notes)';
   }
 
   @override
@@ -182,19 +158,16 @@ class _$BloodSugarImpl implements _BloodSugar {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$BloodSugarImpl &&
-            (identical(other.id, id) || other.id == id) &&
             (identical(other.level, level) || other.level == level) &&
-            (identical(other.timestamp, timestamp) ||
-                other.timestamp == timestamp) &&
+            (identical(other.date, date) || other.date == date) &&
             (identical(other.condition, condition) ||
                 other.condition == condition) &&
-            (identical(other.note, note) || other.note == note));
+            (identical(other.notes, notes) || other.notes == notes));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, level, timestamp, condition, note);
+  int get hashCode => Object.hash(runtimeType, level, date, condition, notes);
 
   @JsonKey(ignore: true)
   @override
@@ -212,25 +185,22 @@ class _$BloodSugarImpl implements _BloodSugar {
 
 abstract class _BloodSugar implements BloodSugar {
   const factory _BloodSugar(
-      {required final int id,
-      required final double level,
-      required final DateTime timestamp,
+      {required final double level,
+      required final DateTime date,
       required final String condition,
-      final String? note}) = _$BloodSugarImpl;
+      final String? notes}) = _$BloodSugarImpl;
 
   factory _BloodSugar.fromJson(Map<String, dynamic> json) =
       _$BloodSugarImpl.fromJson;
 
   @override
-  int get id;
-  @override
   double get level;
   @override
-  DateTime get timestamp;
+  DateTime get date;
   @override
   String get condition;
   @override
-  String? get note;
+  String? get notes;
   @override
   @JsonKey(ignore: true)
   _$$BloodSugarImplCopyWith<_$BloodSugarImpl> get copyWith =>

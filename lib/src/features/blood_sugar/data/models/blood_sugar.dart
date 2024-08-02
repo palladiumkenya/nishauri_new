@@ -6,11 +6,10 @@ part 'blood_sugar.g.dart';
 @freezed
 class BloodSugar with _$BloodSugar {
   const factory BloodSugar({
-    required int id,
-    required double level,
-    required DateTime timestamp,
-    required String condition,
-    String? note,
+    required final double level,
+    required final DateTime date,
+    required final String condition,
+    final String? notes,
   }) = _BloodSugar;
 
   factory BloodSugar.fromJson(Map<String, dynamic> json) =>

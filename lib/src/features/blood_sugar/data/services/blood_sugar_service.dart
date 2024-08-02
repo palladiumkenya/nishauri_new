@@ -68,12 +68,29 @@ class BloodSugarService extends HTTPService {
       final response = await call(fetchBloodSugars_, null);
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
-        final List<dynamic> orderData = json.decode(responseString);
-        List<BloodSugar> bloodSugars = [];
-        orderData.forEach((element) {
-          bloodSugars.add(BloodSugar.fromJson(element));
-        });
-        return bloodSugars;
+        final Map<String, dynamic> responseData = json.decode(responseString);
+
+        if (responseData.containsKey('data')) {
+          final orderData = responseData['data'];
+          debugPrint("Blood Sugar Data: $orderData");
+
+          if (orderData is Map && orderData.containsKey('blood_sugar')) {
+            final bloodSugarList = orderData['blood_sugar'];
+            if (bloodSugarList is List) {
+              List<BloodSugar> bloodSugars = [];
+              bloodSugarList.forEach((element) {
+                bloodSugars.add(BloodSugar.fromJson(element));
+              });
+              return bloodSugars;
+            } else {
+              throw "Blood sugar data is not a list";
+            }
+          } else {
+            throw "Data does not contain blood sugar list";
+          }
+        } else {
+          throw "Invalid response format";
+        }
       } else {
         throw "Something Went Wrong Try Again Later ${response.statusCode}";
       }
