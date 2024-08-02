@@ -18,21 +18,6 @@ class BloodSugarScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bloodSugarListProvider = ref.watch(bloodSugarEntriesProvider);
     final theme = Theme.of(context);
-    // List<FlSpot> dataPoints = bloodSugarListProvider
-    //     .asMap()
-    //     .entries
-    //     .map((entry) => FlSpot(
-    //           entry.key.toDouble(),
-    //           entry.value.level,
-    //         ))
-    //     .toList();
-
-    // List<String> dateTimeList = bloodSugarListProvider
-    //     .map((entry) => entry.timestamp.toIso8601String())
-    //     .toList();
-
-    // final minChartValue = 40.0;
-    // final maxChartValue = 400.0;
 
     return bloodSugarListProvider.when(
         data: (data) {
@@ -46,8 +31,8 @@ class BloodSugarScreen extends ConsumerWidget {
               .toList();
 
           List<String> dateTimeList = data
-              .map((entry) => DateFormat('dd/MM/yyyy hh:mm a')
-                  .format(entry.timestamp.toLocal()))
+              .map((entry) =>
+                  DateFormat('yyyy-MM-dd').format(entry.date.toLocal()))
               .toList();
 
           const minChartValue = 40.0;
@@ -97,21 +82,33 @@ class BloodSugarScreen extends ConsumerWidget {
                 ),
               ],
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () async {
-                // Show add blood sugar screen as dialog
-                await showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      content: AddBloodSugarScreen(),
-                      scrollable: true,
+            floatingActionButton: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                  onPressed: () async {
+                    // Show add blood sugar screen as dialog
+                    await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          content: AddBloodSugarScreen(),
+                          scrollable: true,
+                        );
+                      },
                     );
+                    ref.refresh(bloodSugarEntriesProvider);
                   },
-                );
-                ref.refresh(bloodSugarEntriesProvider);
-              },
-              child: const Icon(Icons.add),
+                  child: const Icon(Icons.add),
+                ),
+                const SizedBox(height: Constants.SPACING),
+                FloatingActionButton(
+                  onPressed: () async {
+                    ref.refresh(bloodSugarEntriesProvider);
+                  },
+                  child: const Icon(Icons.refresh),
+                ),
+              ],
             ),
           );
         },
@@ -127,17 +124,52 @@ class BloodSugarScreen extends ConsumerWidget {
                 ],
               ),
             ),
-        error: (error, _) => BackgroundImageWidget(
-              customAppBar: const CustomAppBar(
-                title: "Blood Pressure Monitor 📈",
-                color: Constants.bpShortCutBgColor,
-              ),
-              svgImage: 'assets/images/lab-empty-state.svg',
-              notFoundText: "No BP Data Available to display",
-              floatingButtonIcon: Icons.refresh,
-              floatingButtonAction: () {
-                ref.refresh(bloodSugarEntriesProvider);
-              },
-            ));
+        error: (error, _) {
+          debugPrint("Blood sugar fetch: ${error.toString()}");
+          return Scaffold(
+            body: const Column(
+              children: [
+                const CustomAppBar(
+                  title: "Blood Sugar level 🍚",
+                  // subTitle: "Keep a record of your blood sugar levels",
+                  color: Constants.bloodSugarColor,
+                ),
+                Expanded(
+                  child: BackgroundImageWidget(
+                      svgImage: 'assets/images/lab-empty-state.svg',
+                      notFoundText: "No Blood sugar Data Available to display"),
+                )
+              ],
+            ),
+            floatingActionButton: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                  onPressed: () async {
+                    // Show add blood sugar screen as dialog
+                    await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          content: AddBloodSugarScreen(),
+                          scrollable: true,
+                        );
+                      },
+                    );
+                    ref.refresh(bloodSugarEntriesProvider);
+                  },
+                  child: const Icon(Icons.add),
+                ),
+                SizedBox(height: Constants.SPACING),
+                FloatingActionButton(
+                  onPressed: () async {
+                    ref.refresh(bloodSugarEntriesProvider);
+                  },
+                  child: const Icon(Icons.refresh),
+                ),
+              ],
+            ),
+          );
+        });
   }
 }
