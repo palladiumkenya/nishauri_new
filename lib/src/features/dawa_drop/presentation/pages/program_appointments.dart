@@ -218,8 +218,8 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
         ),
         svgImage: 'assets/images/background.svg',
         notFoundText: error.toString(),
-        floatingButtonIcon: Icons.refresh,
-        floatingButtonAction: () {
+        floatingButtonIcon1: Icons.refresh,
+        floatingButtonAction1: () {
           _reloadData;
         },
       ),

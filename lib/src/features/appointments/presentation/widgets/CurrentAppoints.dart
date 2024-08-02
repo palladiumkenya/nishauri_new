@@ -19,8 +19,8 @@ class CurrentAppointments extends HookConsumerWidget {
           return BackgroundImageWidget(
             svgImage: "assets/images/appointments-empty.svg",
             notFoundText: "No upcoming appointments",
-            floatingButtonIcon: Icons.refresh,
-            floatingButtonAction: () {
+            floatingButtonIcon1: Icons.refresh,
+            floatingButtonAction1: () {
               ref.refresh(appointmentProvider(false));
             }
           );
@@ -113,8 +113,8 @@ class CurrentAppointments extends HookConsumerWidget {
       error: (error, _) => BackgroundImageWidget(
         svgImage: 'assets/images/background.svg',
         notFoundText: error.toString(),
-          floatingButtonIcon: Icons.refresh,
-          floatingButtonAction: () {
+          floatingButtonIcon1: Icons.refresh,
+          floatingButtonAction1: () {
             ref.refresh(appointmentProvider(false));
           }
       ),

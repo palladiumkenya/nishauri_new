@@ -41,8 +41,8 @@ class DispatchedDrugs extends ConsumerWidget {
                 ),
                 svgImage: 'assets/images/lab-empty-state.svg',
                 notFoundText: "No Dispatched drug orders",
-              floatingButtonIcon: Icons.refresh,
-              floatingButtonAction: () {
+              floatingButtonIcon1: Icons.refresh,
+              floatingButtonAction1: () {
                 ref.refresh(drugOrderProvider);
               },
             ),
@@ -177,8 +177,8 @@ class DispatchedDrugs extends ConsumerWidget {
           ),
           svgImage: 'assets/images/lab-empty-state.svg',
           notFoundText: "No Dispatched order",
-          floatingButtonIcon: Icons.refresh,
-          floatingButtonAction: () {
+          floatingButtonIcon1: Icons.refresh,
+          floatingButtonAction1: () {
             ref.refresh(drugOrderProvider);
           },
         ),
