@@ -73,7 +73,9 @@ class CustomLineChart extends StatelessWidget {
                           return Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: Transform.rotate(
-                              angle: -45 * (3.14 / 180), // Rotate the text by -45 degrees
+                              angle: -45 *
+                                  (3.14 /
+                                      180), // Rotate the text by -45 degrees
                               child: Text(DateFormat('dd/MM/yy').format(date)),
                             ),
                           );
