@@ -72,10 +72,9 @@ class AddBloodSugarScreen extends HookConsumerWidget {
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 final entry = BloodSugar(
-                  id: DateTime.now().millisecondsSinceEpoch,
                   level: bloodLevel.value,
-                  timestamp: DateTime.now(),
-                  note: note.text,
+                  date: DateTime.now(),
+                  notes: note.text,
                   condition: condition.value,
                 );
                 debugPrint("Adding entry: $entry");
