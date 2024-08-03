@@ -30,7 +30,7 @@ class AddBloodSugarScreen extends HookConsumerWidget {
             bloodLevel: bloodLevel.value,
             onLevelChange: (level) {
               bloodLevel.value = level;
-              debugPrint("Blood level on add: $level");
+              // debugPrint("Blood level on add: $level");
             },
             activeColor: Constants.bloodSugarColor,
           ),
@@ -68,36 +68,48 @@ class AddBloodSugarScreen extends HookConsumerWidget {
             ),
           ),
           const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                final entry = BloodSugar(
-                  level: bloodLevel.value,
-                  date: DateTime.now(),
-                  notes: note.text,
-                  condition: condition.value,
-                );
-                debugPrint("Adding entry: $entry");
-                ref
-                    .read(bloodSugarProvider)
-                    .saveBloodSugar(entry)
-                    .then((value) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Blood sugar entry added successfully'),
-                    ),
-                  );
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () {
                   Navigator.of(context).pop();
-                }).catchError((error) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Failed to add blood sugar entry: $error'),
-                    ),
-                  );
-                });
-              }
-            },
-            child: const Text('Add Entry'),
+                },
+                child: Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    final entry = BloodSugar(
+                      level: bloodLevel.value,
+                      date: DateTime.now(),
+                      notes: note.text,
+                      condition: condition.value,
+                    );
+                    debugPrint("Adding entry: $entry");
+                    ref
+                        .read(bloodSugarProvider)
+                        .saveBloodSugar(entry)
+                        .then((value) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Blood sugar entry added successfully'),
+                        ),
+                      );
+                      Navigator.of(context).pop();
+                    }).catchError((error) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content:
+                              Text('Failed to add blood sugar entry: $error'),
+                        ),
+                      );
+                    });
+                  }
+                },
+                child: const Text('Submit'),
+              ),
+            ],
           ),
         ],
       ),

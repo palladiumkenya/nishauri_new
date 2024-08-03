@@ -92,6 +92,7 @@ class BloodSugarScreen extends ConsumerWidget {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
+                          title: const Text("Enter Blood Sugar data"),
                           content: AddBloodSugarScreen(),
                           scrollable: true,
                         );
@@ -145,6 +146,15 @@ class BloodSugarScreen extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FloatingActionButton(
+                  heroTag: "refreshButton",
+                  onPressed: () async {
+                    ref.refresh(bloodSugarEntriesProvider);
+                  },
+                  child: const Icon(Icons.refresh),
+                ),
+                const SizedBox(height: 10),
+                FloatingActionButton(
+                  heroTag: "addButton",
                   onPressed: () async {
                     // Show add blood sugar screen as dialog
                     await showDialog(
@@ -159,13 +169,6 @@ class BloodSugarScreen extends ConsumerWidget {
                     ref.refresh(bloodSugarEntriesProvider);
                   },
                   child: const Icon(Icons.add),
-                ),
-                SizedBox(height: Constants.SPACING),
-                FloatingActionButton(
-                  onPressed: () async {
-                    ref.refresh(bloodSugarEntriesProvider);
-                  },
-                  child: const Icon(Icons.refresh),
                 ),
               ],
             ),

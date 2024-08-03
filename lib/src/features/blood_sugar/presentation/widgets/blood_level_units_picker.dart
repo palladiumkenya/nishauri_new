@@ -31,65 +31,67 @@ class BloodLevelUnitsPicker extends StatelessWidget {
     final bgColorActive = activeColor ?? Constants.bloodSugarColor;
     final bgColorInActive = theme.disabledColor;
 
-    return Wrap(
-      children: [
-        Card(
-          elevation: 0,
-          clipBehavior: Clip.antiAlias,
-          shape: const CircleBorder(),
-          child: InkWell(
-            onTap: () {
-              onBloodLevelUnitsChange(LevelPickerUnits.mgdl);
-            },
-            splashColor: theme.colorScheme.primary,
-            child: Container(
-              padding: const EdgeInsets.all(Constants.SPACING),
-              color: bloodLevelUnits == LevelPickerUnits.mgdl
-                  ? bgColorActive
-                  : bgColorInActive,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                  "mg/dl",
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: bloodLevelUnits == LevelPickerUnits.mgdl
-                        ? colorActive
-                        : colorInactive,
+    return Center(
+      child: Wrap(
+        children: [
+          Card(
+            elevation: 0,
+            clipBehavior: Clip.antiAlias,
+            shape: const CircleBorder(),
+            child: InkWell(
+              onTap: () {
+                onBloodLevelUnitsChange(LevelPickerUnits.mgdl);
+              },
+              splashColor: theme.colorScheme.primary,
+              child: Container(
+                padding: const EdgeInsets.all(Constants.SPACING),
+                color: bloodLevelUnits == LevelPickerUnits.mgdl
+                    ? bgColorActive
+                    : bgColorInActive,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    "mg/dl",
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      color: bloodLevelUnits == LevelPickerUnits.mgdl
+                          ? colorActive
+                          : colorInactive,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-        Card(
-          elevation: 0,
-          clipBehavior: Clip.antiAlias,
-          shape: const CircleBorder(),
-          child: InkWell(
-            onTap: () {
-              onBloodLevelUnitsChange(LevelPickerUnits.mmol);
-            },
-            splashColor: theme.colorScheme.primary,
-            child: Container(
-              padding: const EdgeInsets.all(Constants.SPACING),
-              color: bloodLevelUnits == LevelPickerUnits.mmol
-                  ? bgColorActive
-                  : bgColorInActive,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                  "mmol/l",
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: bloodLevelUnits == LevelPickerUnits.mmol
-                        ? colorActive
-                        : colorInactive,
+          Card(
+            elevation: 0,
+            clipBehavior: Clip.antiAlias,
+            shape: const CircleBorder(),
+            child: InkWell(
+              onTap: () {
+                onBloodLevelUnitsChange(LevelPickerUnits.mmol);
+              },
+              splashColor: theme.colorScheme.primary,
+              child: Container(
+                padding: const EdgeInsets.all(Constants.SPACING),
+                color: bloodLevelUnits == LevelPickerUnits.mmol
+                    ? bgColorActive
+                    : bgColorInActive,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    "mmol/l",
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      color: bloodLevelUnits == LevelPickerUnits.mmol
+                          ? colorActive
+                          : colorInactive,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

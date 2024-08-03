@@ -22,15 +22,15 @@ _menuItems(BuildContext context) => [
           shortcutBackgroundColor: Constants.bpShortCutBgColor,
           title: "B P Monitor",
           onPressed: () => context.goNamed(RouteNames.BLOOD_PRESSURE)),
-      // MenuItem(
-      //   // icon: FaIcon(FontAwesomeIcons.capsules, size: Constants.iconSize, color: Colors.teal[200],),
-      //   shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,
-      //   icon: const Icon(Icons.sanitizer),
-      //   shortcutIcon: Icon(Icons.sanitizer),
-      //   title: MenuItemNames.BLOOD_SUGAR,
-      //   onPressed: () => context.goNamed(MenuItemNames.BLOOD_SUGAR),
-      //   color: Constants.bloodSugarColor.withOpacity(0.5),
-      // ),
+      MenuItem(
+        // icon: FaIcon(FontAwesomeIcons.capsules, size: Constants.iconSize, color: Colors.teal[200],),
+        shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,
+        icon: const Icon(Icons.sanitizer),
+        shortcutIcon: Icon(Icons.sanitizer),
+        title: MenuItemNames.BLOOD_SUGAR,
+        onPressed: () => context.goNamed(MenuItemNames.BLOOD_SUGAR),
+        color: Constants.bloodSugarColor.withOpacity(0.5),
+      ),
     ];
 
 class SelfScreening extends StatelessWidget {
