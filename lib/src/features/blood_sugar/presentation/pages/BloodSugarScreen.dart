@@ -30,10 +30,14 @@ class BloodSugarScreen extends ConsumerWidget {
                   ))
               .toList();
 
-          List<String> dateTimeList = data
-              .map((entry) =>
-                  DateFormat('yyyy-MM-dd').format(entry.date.toLocal()))
-              .toList();
+          final dateTimeList = data.asMap().entries.map((e) {
+            return e.value.created_at.toString();
+          }).toList();
+
+          // List<String> dateTimeList = data
+          //     .map((entry) =>
+          //         entry.date.toString()
+          //     .toList();
 
           const minChartValue = 40.0;
           const maxChartValue = 400.0;
@@ -43,7 +47,7 @@ class BloodSugarScreen extends ConsumerWidget {
                 const CustomAppBar(
                   title: "Blood Sugar level 🍚",
                   subTitle: "Keep a record of your blood sugar levels",
-                  color: Constants.bloodSugarColor,
+                  color: Constants.bmiCalculatorColor,
                 ),
                 const SizedBox(height: Constants.SPACING),
                 Expanded(
@@ -66,6 +70,7 @@ class BloodSugarScreen extends ConsumerWidget {
                             leftTile: true,
                             bottomTile: true,
                             interval: 80,
+                            dateFormat: "HH:mm-dd/MM",
                           ),
                         ),
                       ),
@@ -132,7 +137,7 @@ class BloodSugarScreen extends ConsumerWidget {
                 const CustomAppBar(
                   title: "Blood Sugar level 🍚",
                   // subTitle: "Keep a record of your blood sugar levels",
-                  color: Constants.bloodSugarColor,
+                  color: Constants.bmiCalculatorColor,
                 ),
                 Expanded(
                   child: BackgroundImageWidget(

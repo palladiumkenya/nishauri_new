@@ -24,7 +24,7 @@ mixin _$BloodPressure {
   double get diastolic => throw _privateConstructorUsedError;
   double get pulse_rate => throw _privateConstructorUsedError;
   String? get notes => throw _privateConstructorUsedError;
-  DateTime get date_time => throw _privateConstructorUsedError;
+  DateTime get created_at => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +43,7 @@ abstract class $BloodPressureCopyWith<$Res> {
       double diastolic,
       double pulse_rate,
       String? notes,
-      DateTime date_time});
+      DateTime created_at});
 }
 
 /// @nodoc
@@ -63,7 +63,7 @@ class _$BloodPressureCopyWithImpl<$Res, $Val extends BloodPressure>
     Object? diastolic = null,
     Object? pulse_rate = null,
     Object? notes = freezed,
-    Object? date_time = null,
+    Object? created_at = null,
   }) {
     return _then(_value.copyWith(
       systolic: null == systolic
@@ -82,9 +82,9 @@ class _$BloodPressureCopyWithImpl<$Res, $Val extends BloodPressure>
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String?,
-      date_time: null == date_time
-          ? _value.date_time
-          : date_time // ignore: cast_nullable_to_non_nullable
+      created_at: null == created_at
+          ? _value.created_at
+          : created_at // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ) as $Val);
   }
@@ -103,7 +103,7 @@ abstract class _$$BloodPressureImplCopyWith<$Res>
       double diastolic,
       double pulse_rate,
       String? notes,
-      DateTime date_time});
+      DateTime created_at});
 }
 
 /// @nodoc
@@ -121,7 +121,7 @@ class __$$BloodPressureImplCopyWithImpl<$Res>
     Object? diastolic = null,
     Object? pulse_rate = null,
     Object? notes = freezed,
-    Object? date_time = null,
+    Object? created_at = null,
   }) {
     return _then(_$BloodPressureImpl(
       systolic: null == systolic
@@ -140,9 +140,9 @@ class __$$BloodPressureImplCopyWithImpl<$Res>
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String?,
-      date_time: null == date_time
-          ? _value.date_time
-          : date_time // ignore: cast_nullable_to_non_nullable
+      created_at: null == created_at
+          ? _value.created_at
+          : created_at // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ));
   }
@@ -156,7 +156,7 @@ class _$BloodPressureImpl implements _BloodPressure {
       required this.diastolic,
       required this.pulse_rate,
       this.notes,
-      required this.date_time});
+      required this.created_at});
 
   factory _$BloodPressureImpl.fromJson(Map<String, dynamic> json) =>
       _$$BloodPressureImplFromJson(json);
@@ -170,11 +170,11 @@ class _$BloodPressureImpl implements _BloodPressure {
   @override
   final String? notes;
   @override
-  final DateTime date_time;
+  final DateTime created_at;
 
   @override
   String toString() {
-    return 'BloodPressure(systolic: $systolic, diastolic: $diastolic, pulse_rate: $pulse_rate, notes: $notes, date_time: $date_time)';
+    return 'BloodPressure(systolic: $systolic, diastolic: $diastolic, pulse_rate: $pulse_rate, notes: $notes, created_at: $created_at)';
   }
 
   @override
@@ -189,14 +189,14 @@ class _$BloodPressureImpl implements _BloodPressure {
             (identical(other.pulse_rate, pulse_rate) ||
                 other.pulse_rate == pulse_rate) &&
             (identical(other.notes, notes) || other.notes == notes) &&
-            (identical(other.date_time, date_time) ||
-                other.date_time == date_time));
+            (identical(other.created_at, created_at) ||
+                other.created_at == created_at));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, systolic, diastolic, pulse_rate, notes, date_time);
+      runtimeType, systolic, diastolic, pulse_rate, notes, created_at);
 
   @JsonKey(ignore: true)
   @override
@@ -218,7 +218,7 @@ abstract class _BloodPressure implements BloodPressure {
       required final double diastolic,
       required final double pulse_rate,
       final String? notes,
-      required final DateTime date_time}) = _$BloodPressureImpl;
+      required final DateTime created_at}) = _$BloodPressureImpl;
 
   factory _BloodPressure.fromJson(Map<String, dynamic> json) =
       _$BloodPressureImpl.fromJson;
@@ -232,7 +232,7 @@ abstract class _BloodPressure implements BloodPressure {
   @override
   String? get notes;
   @override
-  DateTime get date_time;
+  DateTime get created_at;
   @override
   @JsonKey(ignore: true)
   _$$BloodPressureImplCopyWith<_$BloodPressureImpl> get copyWith =>

@@ -32,8 +32,10 @@ class TrendChartScreen extends StatelessWidget {
         }).toList();
 
         final date = data.asMap().entries.map((e) {
-          return e.value.date_time.toString();
+          return e.value.created_at.toString();
         }).toList();
+        print(data);
+        print(date);
 
         return Scaffold(
           body: Padding(

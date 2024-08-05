@@ -24,7 +24,7 @@ const BMILineGraph({required this.data, Key? key}): super(key: key);
         }).toList();
 
     final date = data.asMap().entries.map((e) {
-      return e.value.date.toString();
+      return e.value.created_at.toString();
     }).toList();
 
         return Scaffold(
@@ -35,11 +35,12 @@ const BMILineGraph({required this.data, Key? key}): super(key: key);
               dateTimes: date,
               minX: 0,
               maxX: dataPoints.length - 1,
-              minY: 0,
+              minY: 5,
               leftTile: false,
               barColor: Constants.bmiCalculatorColor,
               gradientColors: gradientColors,
               bottomTile: true,
+              dateFormat: "dd/MM/yy",
             ),
           ),
         );

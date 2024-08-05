@@ -17,6 +17,7 @@ class CustomLineChart extends StatelessWidget {
   final bool bottomTile;
   final List<Color> gradientColors;
   final double? interval;
+  final String dateFormat;
 
   const CustomLineChart({
     Key? key,
@@ -33,6 +34,7 @@ class CustomLineChart extends StatelessWidget {
     required this.gradientColors,
     required this.bottomTile,
     this.interval,
+    required this.dateFormat,
   }) : super(key: key);
 
   @override
@@ -76,7 +78,7 @@ class CustomLineChart extends StatelessWidget {
                               angle: -45 *
                                   (3.14 /
                                       180), // Rotate the text by -45 degrees
-                              child: Text(DateFormat('dd/MM/yy').format(date)),
+                              child: Text(DateFormat(dateFormat).format(date)),
                             ),
                           );
                         }
