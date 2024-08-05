@@ -26,41 +26,39 @@ class BloodLevelPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Card(
-      child: Container(
-        padding: const EdgeInsets.all(Constants.SPACING),
-        child: Column(children: [
-          Text(
-            "Select unit",
-            style: theme.textTheme.titleMedium,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: BloodLevelUnitsPicker(
-                  bloodLevelUnits: bloodLevelUnits,
-                  onBloodLevelUnitsChange: onLevelUnitsChange,
-                ),
+    return Container(
+      padding: const EdgeInsets.all(Constants.SPACING),
+      child: Column(children: [
+        Text(
+          "Select unit",
+          style: theme.textTheme.titleMedium,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: BloodLevelUnitsPicker(
+                bloodLevelUnits: bloodLevelUnits,
+                onBloodLevelUnitsChange: onLevelUnitsChange,
               ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(Constants.SPACING),
-            child: Text(
-              convertFromMgdlTo(bloodLevelUnits, bloodLevel).toStringAsFixed(1),
-              style: theme.textTheme.displayLarge,
             ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.all(Constants.SPACING),
+          child: Text(
+            convertFromMgdlTo(bloodLevelUnits, bloodLevel).toStringAsFixed(1),
+            style: theme.textTheme.displayLarge,
           ),
-          Slider(
-            value: bloodLevel,
-            min: min!,
-            max: max!,
-            onChanged: onLevelChange,
-            activeColor: activeColor ?? theme.colorScheme.primary,
-          ),
-        ]),
-      ),
+        ),
+        Slider(
+          value: bloodLevel,
+          min: min!,
+          max: max!,
+          onChanged: onLevelChange,
+          activeColor: activeColor ?? theme.colorScheme.primary,
+        ),
+      ]),
     );
   }
 }
