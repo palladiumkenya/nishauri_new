@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
+import 'package:nishauri/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/LoginScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/widget/Terms.dart';
 // import 'package:nishauri/src/features/auth/data/services/Terms.dart';
@@ -366,8 +367,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     });
                                     final authNotifier =
                                         ref.read(authStateProvider.notifier);
-                                    final settings = ref.read(settingsNotifierProvider.notifier);
-                                    var version = {"app_version" : _appVersion};
+                                    final settings = ref.read(
+                                        settingsNotifierProvider.notifier);
+                                    var version = {"app_version": _appVersion};
+                                    final fcmToken = AuthController.getFCM();
+                                    debugPrint(
+                                        "Registration FCM token: $fcmToken");
                                     var mergedData = {...formState, ...version};
 
                                     authNotifier
@@ -377,15 +382,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       ref.read(userProvider.notifier).getUser();
                                       // ref.read(userProvider.notifier).getOTPCode("sms");
                                     }).then((value) {
-                                      settings.patchSettings(firstTimeInstallation: false);
+                                      settings.patchSettings(
+                                          firstTimeInstallation: false);
 
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
-                                          content:
-                                              Text(value.toString())
-                                        ),
-                                        
+                                            content: Text(value.toString())),
                                       );
                                       // context.goNamed(RouteNames.VERIFY_ACCOUNT);
                                     }).catchError((error) {

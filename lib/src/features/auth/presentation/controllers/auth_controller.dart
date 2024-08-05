@@ -12,6 +12,7 @@ import 'package:nishauri/src/features/hiv/data/services/art_appointments.dart';
 import 'package:nishauri/src/features/lab/data/repository/ViralLoadRepository.dart';
 import 'package:nishauri/src/features/lab/data/services/ViralLoadService.dart';
 import 'package:nishauri/src/features/user/data/respositories/UserRepository.dart';
+import 'package:nishauri/src/local_storage/LocalStorage.dart';
 import 'package:nishauri/src/shared/models/token_pair.dart';
 import 'dart:developer' as developer;
 
@@ -32,6 +33,12 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
   AuthController(this._repository, this._userRepository)
       : super(const AsyncValue.loading()) {
     loadAuthState();
+  }
+
+  static Future<String> getFCM() async {
+    final fcmToken = await LocalStorage.get("FCM_Token");
+    debugPrint("Get FCM: $fcmToken");
+    return fcmToken;
   }
 
   Future<void> loadAuthState() async {
@@ -163,9 +170,9 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
 
   Future<String> logout() async {
     var resp = await _userRepository.revokeToken();
-      _repository.deleteToken();
-      _repository.deleteUserId();
-      _repository.deletePhoneNumber();
+    _repository.deleteToken();
+    _repository.deleteUserId();
+    _repository.deletePhoneNumber();
     state.when(
       data: (value) => state = AsyncValue.data(
         value.copyWith(

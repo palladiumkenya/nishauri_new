@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/auth/data/respositories/credential_storage_repository.dart';
 import 'package:nishauri/src/features/auth/data/services/BiometricAuthService.dart';
+import 'package:nishauri/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/local_storage/LocalStorage.dart';
@@ -27,12 +28,6 @@ Future<String> version() async {
   final packageInfo = await PackageInfo.fromPlatform();
   final version = packageInfo.version;
   return version;
-}
-
-Future<String> getFCM() async {
-  final fcmToken = await LocalStorage.get("FCM_Token");
-  debugPrint("Get FCM: $fcmToken");
-  return fcmToken;
 }
 
 class LoginScreen extends StatefulWidget {
@@ -204,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             final settings =
                                 ref.read(settingsNotifierProvider.notifier);
                             var version = {"app_version": _appVersion};
-                            final fcmToken = await getFCM();
+                            final fcmToken = await AuthController.getFCM();
                             debugPrint(
                                 "Login FCM token: ${fcmToken.toString()}");
                             var mergedData = {
@@ -281,7 +276,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       var version = {
                                         "app_version": _appVersion
                                       };
-                                      final fcmToken = getFCM();
+                                      final fcmToken = AuthController.getFCM();
                                       debugPrint("Login FCM token: $fcmToken");
                                       var biometricData = {
                                         "user_name": phoneNumber,
