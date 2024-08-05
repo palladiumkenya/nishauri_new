@@ -35,7 +35,7 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
       systolic: systolic,
       diastolic: diastolic,
       pulse_rate: heartRate,
-      date_time: measurementTime,
+      created_at: measurementTime,
       notes: notes,
     );
 

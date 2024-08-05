@@ -46,7 +46,7 @@ class BMILinelist extends StatelessWidget {
                   ),
                   children: <Widget>[
                     ListTile(
-                      title: Text('Time: ${DateFormat('HH:mm - dd-MM-yy').format(DateTime.parse(bmi.date.toString()))}'),
+                      title: Text('Time: ${DateFormat('HH:mm - dd-MM-yy').format(DateTime.parse(bmi.created_at.toString()))}'),
                       // subtitle: bp.notes != null && bp.notes!.isNotEmpty
                       //     ? Text('Notes: ${bp.notes}')
                       //     : null,

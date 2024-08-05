@@ -1,14 +1,16 @@
 import 'package:nishauri/src/features/blood_sugar/data/models/blood_sugar.dart';
+import 'package:nishauri/src/features/blood_sugar/data/services/blood_sugar_service.dart';
 
 class BloodSugarRepository {
-  final List<BloodSugar> _entries = [];
+  final BloodSugarService _service;
 
-  List<BloodSugar> getAllEntries() {
-    return _entries;
+  BloodSugarRepository(this._service);
+
+  Future<String> saveBloodSugar(BloodSugar data) async {
+    return await _service.saveBloodSugar(data);
   }
 
-  void addEntry(BloodSugar entry) {
-    print("Adding entry repository: $entry");
-    _entries.add(entry);
+  Future<List<BloodSugar>> getBloodSugars() async {
+    return await _service.fetchBloodSugars();
   }
 }

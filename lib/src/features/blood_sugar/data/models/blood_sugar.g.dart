@@ -8,18 +8,16 @@ part of 'blood_sugar.dart';
 
 _$BloodSugarImpl _$$BloodSugarImplFromJson(Map<String, dynamic> json) =>
     _$BloodSugarImpl(
-      id: (json['id'] as num).toInt(),
       level: (json['level'] as num).toDouble(),
-      timestamp: DateTime.parse(json['timestamp'] as String),
+      created_at: DateTime.parse(json['created_at'] as String),
       condition: json['condition'] as String,
-      note: json['note'] as String?,
+      notes: json['notes'] as String?,
     );
 
 Map<String, dynamic> _$$BloodSugarImplToJson(_$BloodSugarImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'level': instance.level,
-      'timestamp': instance.timestamp.toIso8601String(),
+      'created_at': instance.created_at.toIso8601String(),
       'condition': instance.condition,
-      'note': instance.note,
+      'notes': instance.notes,
     };
