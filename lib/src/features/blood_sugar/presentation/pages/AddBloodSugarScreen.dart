@@ -82,7 +82,7 @@ class AddBloodSugarScreen extends HookConsumerWidget {
                   if (_formKey.currentState!.validate()) {
                     final entry = BloodSugar(
                       level: bloodLevel.value,
-                      date: DateTime.now(),
+                      created_at: DateTime.now(),
                       notes: note.text,
                       condition: condition.value,
                     );
