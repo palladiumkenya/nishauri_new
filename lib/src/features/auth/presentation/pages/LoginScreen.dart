@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,6 +27,12 @@ Future<String> version() async {
   final packageInfo = await PackageInfo.fromPlatform();
   final version = packageInfo.version;
   return version;
+}
+
+Future<String> getFCM() async {
+  final fcmToken = await LocalStorage.get("FCM_Token");
+  debugPrint("Get FCM: $fcmToken");
+  return fcmToken;
 }
 
 class LoginScreen extends StatefulWidget {
@@ -185,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         loading: _loading,
                         backgroundColor: theme.colorScheme.primary,
                         textColor: Colors.white,
-                        onPress: () {
+                        onPress: () async {
                           if (_formKey.currentState != null &&
                               _formKey.currentState!.saveAndValidate()) {
                             setState(() {
@@ -196,6 +204,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             final settings =
                                 ref.read(settingsNotifierProvider.notifier);
                             var version = {"app_version": _appVersion};
+                            final fcmToken = await getFCM();
+                            debugPrint(
+                                "Login FCM token: ${fcmToken.toString()}");
                             var mergedData = {
                               ..._formKey.currentState!.value,
                               ...version
@@ -270,6 +281,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       var version = {
                                         "app_version": _appVersion
                                       };
+                                      final fcmToken = getFCM();
+                                      debugPrint("Login FCM token: $fcmToken");
                                       var biometricData = {
                                         "user_name": phoneNumber,
                                         "password": password,
