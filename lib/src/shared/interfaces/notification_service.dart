@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
 import 'package:nishauri/src/features/dawa_drop/data/models/order_request/drug_order.dart';
+import 'package:nishauri/src/local_storage/LocalStorage.dart';
 
 enum SubscriptionType {
   appointments,
@@ -35,6 +36,8 @@ abstract class NotificationService {
     // Get device FCM token
     final token = await firebaseMessaging.getToken();
     debugPrint('FCM Token: $token');
+    // Cache FCM token
+    await LocalStorage.save("FCM_Token", token.toString());
 
     // Set foreground notification presentation options
     await FirebaseMessaging.instance
