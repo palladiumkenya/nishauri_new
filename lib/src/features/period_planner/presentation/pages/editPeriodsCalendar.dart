@@ -42,6 +42,18 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
     });
   } 
 
+  //Function to handle adding and updating log entries in list Database
+  void _updateOrAddCycle(DateTime start, DateTime end) {
+    if (cycles.isNotEmpty) {
+      // Update existing cycle
+      cycles[0] = predictCycle(start, end);
+    } else {
+      // Add new cycle
+      final Cycle newCycle = predictCycle(start, end);
+      cycles.add(newCycle);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -55,7 +67,7 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
           TableCalendar(
             focusedDay: _focusedDay,
             firstDay: DateTime(2020),
-            lastDay: DateTime(2100),
+            lastDay: DateTime.now(),
             rangeStartDay: _startDate,
             rangeEndDay: _endDate,
             onRangeSelected: _onRangeSelected,
@@ -90,11 +102,8 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
                   ),
                   onPressed: () {
                     if (_startDate != null && _endDate != null) {
-                      final Cycle predictedCycle = predictCycle(
-                        _startDate!,
-                        _endDate!,
-                      );
-                      cycles.add(predictedCycle);
+                      _updateOrAddCycle(_startDate!, _endDate!);
+                      printCycles(cycles);
                       // Print the list of cycles
                       printCycles(cycles);
                       context.goNamed(RouteNames.PERIOD_PLANNER_MENU);

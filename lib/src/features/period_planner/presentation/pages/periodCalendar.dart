@@ -25,6 +25,15 @@ class PeriodCalendar extends StatelessWidget {
             title: "Calendar 🗓️",
             color: Constants.periodPlanner.withOpacity(1.0),
           ),
+          Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        onPressed: () {
+                          context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
+                        }, 
+                        icon: const Icon(Icons.home),
+                        ),
+                    ),
           Expanded(
             child: Column(
               children: [

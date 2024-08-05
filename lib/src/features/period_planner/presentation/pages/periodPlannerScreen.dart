@@ -126,15 +126,15 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    // Align(
-                    //   alignment: Alignment.topRight,
-                    //   child: IconButton(
-                    //     onPressed: () {
-                    //       context.goNamed(RouteNames.PERIOD_PLANNER_CALENDAR);
-                    //     }, 
-                    //     icon: const Icon(Icons.calendar_month),
-                    //     ),
-                    // ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        onPressed: () {
+                          context.goNamed(RouteNames.PERIOD_PLANNER_CALENDAR);
+                        }, 
+                        icon: const Icon(Icons.calendar_month),
+                        ),
+                    ),
                     SizedBox(
                       height: 150,
                       child: CustomCalendar(initialFormat: CalendarFormat.week, events: events),
