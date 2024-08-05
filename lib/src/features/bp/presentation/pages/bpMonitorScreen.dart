@@ -35,7 +35,7 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
       systolic: systolic,
       diastolic: diastolic,
       pulse_rate: heartRate,
-      date_time: measurementTime,
+      created_at: measurementTime,
       notes: notes,
     );
 
@@ -201,7 +201,7 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
             children: [
               const CustomAppBar(
                 title: "Blood Pressure Monitor 📈",
-                color: Constants.bpShortCutBgColor,
+                color: Constants.bmiCalculatorColor,
               ),
               Expanded(
                 child: Center(
@@ -248,12 +248,17 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
       error: (error, _) => BackgroundImageWidget(
         customAppBar: const CustomAppBar(
           title: "Blood Pressure Monitor 📈",
-          color: Constants.bpShortCutBgColor,
+          color: Constants.bmiCalculatorColor,
         ),
         svgImage: 'assets/images/lab-empty-state.svg',
         notFoundText: "No BP Data Available to display",
-        floatingButtonIcon: Icons.refresh,
-        floatingButtonAction: () {
+        floatingButtonIcon1: Icons.refresh,
+        floatingButtonAction1: () {
+          _reloadData();
+        },
+        floatingButtonIcon2: Icons.add,
+        floatingButtonAction2: () {
+          _showDialogForm(context);
           _reloadData();
         },
       ),

@@ -86,8 +86,8 @@ class DrugOrdersScreen extends HookConsumerWidget {
       ),
       svgImage: 'assets/images/background.svg',
       notFoundText: error.toString(),
-      floatingButtonIcon: Icons.refresh,
-      floatingButtonAction: () {
+      floatingButtonIcon1: Icons.refresh,
+      floatingButtonAction1: () {
         ref.refresh(drugOrderProvider);
       },
     );

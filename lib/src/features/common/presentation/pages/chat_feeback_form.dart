@@ -85,6 +85,7 @@ class ChatFeedbackForm extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     RatingBar(
+                      spacing: 1.0,
                       mainAxisAlignment: MainAxisAlignment.center,
                       maxRating: 6,
                       rating: state.value,

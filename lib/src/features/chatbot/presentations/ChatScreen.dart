@@ -1,20 +1,16 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:nishauri/custom_icons.dart';
-import 'package:nishauri/src/features/auth/presentation/widget/Terms.dart';
 import 'package:nishauri/src/features/chatbot/data/models/message.dart';
 import 'package:nishauri/src/features/chatbot/data/repository/ChatbotRepository.dart';
 import 'package:nishauri/src/features/chatbot/data/services/ChatbotService.dart';
 import 'package:nishauri/src/features/clinic_card/data/providers/programProvider.dart';
-import 'package:nishauri/src/features/consent/data/models/consent.dart';
 import 'package:nishauri/src/features/consent/data/providers/consent_provider.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
-import 'package:nishauri/src/features/user_programs/data/providers/program_provider.dart';
-import 'package:nishauri/src/local_storage/LocalStorage.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 
@@ -197,7 +193,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     try {
       final response = await _repository.sendMessage(message);
       if (response != null && response.msg != null) {
-        print(response.msg);
         setState(() {
           _messages.add(Message(question: response.msg, isSentByUser: false));
           _isBotTyping = false; // Bot stops typing after receiving a response
@@ -237,7 +232,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       final userAsyncValue = ref.read(userProvider);
       userAsyncValue.when(
         data: (user) {
-          debugPrint("User data: ${user.firstName}");
+          debugPrint("--_fetchUserData()");
           setState(() {
             currentUser = user.firstName as String;
             _messages = [
@@ -267,31 +262,63 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         barrierDismissible: false,
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Nuru Consent'),
+          title: Text('Informed Consent for Nuru Chatbot',
+              style: Theme.of(context).textTheme.titleLarge),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(type == ConsentType.accept
-                  ? 'Nuru is a chatbot that can assist you with your health queries.\nNuru is able to personalize your responses.\nDo you consent for Nuru to use your data for personalized responses?'
-                  : 'Are you sure you want to revoke your consent for personalized response by Nuru?'),
               type == ConsentType.accept
-                  ? GestureDetector(
-                      onTap: () => showTermsDialog(context),
-                      // Show terms dialog on tap
-                      child: const Text(
-                        "Terms and Conditions",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          // Change color to indicate it's a link
-                          decoration: TextDecoration
-                              .underline, // Add underline to indicate it's a link
+                  ? SingleChildScrollView(
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(height: 16, width: 20,), // Add some spacing
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: MediaQuery.of(context).size.height * 0.4,
+                          ),
+                          child: Scaffold(
+                            body: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                    child: Markdown(
+                                      data: """
+  Nuru chatbot provides personalized health information and support.\nWe respect your privacy and want to clarify how it works.
+  ## What You Need to Know:
+  1. ### Purpose:
+  - The chatbot offers general health advice and answers common queries.
+  - It does not access or store personal data.
+  2. ### Data Usage:
+  - The chatbot analyzes your clinical information and interactions to tailor responses.
+  - No personal details like name or health identifiers are linked to these interactions.
+  3. ### Benefits:
+  - Quick, relevant answers without sharing sensitive data.
+  - Enhances your app experience.
+  4. ### Voluntary Participation:
+  - Using the chatbot is optional.
+  - You can stop anytime using the unsubscribe/leave option.\n
+  `*By continuing to use the chatbot, you agree to the terms above. Your privacy matters to us!*`
+  """,
+                                      styleSheet: MarkdownStyleSheet(
+                                        code: TextStyle(
+                                            fontSize: 12,
+                                            color: Theme.of(context).primaryColor),
+                                      ),
+                                    )
+                                )
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                    )
-                  : const SizedBox(),
+                      ]
+                  )
+              )
+                  : Text('Are you sure you want to revoke your consent for personalized response by Nuru?'),
             ],
           ),
+          scrollable: true,
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -308,13 +335,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             ),
             TextButton(
               onPressed: () {
-                // ref
-                //     .read(settingsNotifierProvider.notifier)
-                //     .updateSettings(firstNuruAccess: false);
-                // setState(() {
-                //   type == ConsentType.accept ? _consent = false : _consent;
-                // });
-                // _updateConsent(type == ConsentType.accept ? true : false);
                 Navigator.of(context).pop();
               },
               child: const Text('No'),

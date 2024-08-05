@@ -44,6 +44,7 @@ class ViralLoadTrend extends StatelessWidget {
           barColor: Constants.bmiCalculatorColor,
           gradientColors: gradientColors,
           bottomTile: true,
+          dateFormat: "dd/MM/yy",
         ),
       ),
     );

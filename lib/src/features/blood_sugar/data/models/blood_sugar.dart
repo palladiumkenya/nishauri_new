@@ -7,7 +7,7 @@ part 'blood_sugar.g.dart';
 class BloodSugar with _$BloodSugar {
   const factory BloodSugar({
     required final double level,
-    required final DateTime date,
+    required final DateTime created_at,
     required final String condition,
     final String? notes,
   }) = _BloodSugar;

@@ -47,7 +47,7 @@ class BPLinelistScreen extends StatelessWidget {
                   ),
                   children: <Widget>[
                     ListTile(
-                      title: Text('Time: ${DateFormat('HH:mm - dd-MM-yy').format(DateTime.parse(bp.date_time.toString()))}'),
+                      title: Text('Time: ${DateFormat('HH:mm - dd-MM-yy').format(DateTime.parse(bp.created_at.toString()))}'),
                       subtitle: bp.notes != null && bp.notes!.isNotEmpty
                           ? Text('Notes: ${bp.notes}')
                           : null,

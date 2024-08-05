@@ -10,7 +10,7 @@ class BMILog with _$BMILog {
     required double weight,
     required double height,
     required double results,
-    required String date,
+    required String created_at,
   }) = _BMILog;
 
   factory BMILog.fromJson(Map<String, Object?> json)
