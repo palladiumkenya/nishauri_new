@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/data/models/events.dart';
-import 'package:nishauri/src/features/period_planner/presentation/pages/editPeriodsCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/carouselCard.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/logItems.dart';
@@ -26,6 +25,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
   late DateTime _periodEnd; 
   late DateTime _ovulationDate; 
   late DateTime _nextPeriodStart;
+  late DateTime _nextPeriodEnd;
 
   @override
   void initState() {
@@ -36,6 +36,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
       _periodEnd = latestCycle.periodEnd;
       _ovulationDate = latestCycle.ovulation;
       _nextPeriodStart = latestCycle.predictedPeriodStart;
+      _nextPeriodEnd = latestCycle.predictedPeriodEnd;
     }
   }
 
@@ -52,6 +53,8 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
     //handling the days before, after or during the various phases in the Menstrual Cycle
     int daysToOvulation = _ovulationDate.difference(_currentDate).inDays;
     int daysToNextPeriod = _nextPeriodStart.difference(_currentDate).inDays;
+    int overdueDays = _currentDate.difference(_nextPeriodEnd).inDays;
+    //int predictedDays = _nextPeriodEnd.difference(_nextPeriodStart).inDays;
 
     bool isInPeriod = (isSameDay(_currentDate, _periodStart) || _currentDate.isAfter(_periodStart)) && _currentDate.isBefore(_periodEnd);
     bool veryCloseToPeriod = _currentDate.isBefore(_nextPeriodStart) && daysToNextPeriod == 0;
@@ -60,52 +63,84 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
     bool isOvulation = (isSameDay(_currentDate, _ovulationDate)) || (_currentDate.isAfter(_ovulationDate) && daysToOvulation == 0);
     //two days after ovulation -- I'm thinking about it though
     bool afterOvulation = _currentDate.isAfter(_ovulationDate) && (_currentDate.isBefore(_nextPeriodStart) && daysToNextPeriod>0);
+    bool duringPredictedPeriodRange = _currentDate.isAfter(_nextPeriodStart) &&
+                                      _currentDate.isBefore(_nextPeriodEnd) ||
+                                      isSameDay(_currentDate, _nextPeriodStart) ||
+                                      isSameDay(_currentDate, _nextPeriodEnd);
+    bool isDangerZone = _currentDate.isAfter(_nextPeriodEnd);  
+
 
 
     // Determine progress value and messages based on the current date
     double progressValue = 0.0;
     String message = '';
     String buttonText = '';
+    String title = '';
+    String chances = '';
 
     if (isInPeriod) {
       progressValue = 0.2;
+      title = 'Period';
       message = 'Day ${DateTime.now().difference(_periodStart).inDays + 1}';
       buttonText = 'Log End Period';
+      chances = 'Low Chances of Getting Pregnant';
     } else if (isCloseToOvulation) {
       progressValue = 0.3;
+      title = 'Ovulation in';
       message = '$daysToOvulation days';
       buttonText = '';
+      chances = 'High Chances of Getting Pregnant';
     } else if (veryCloseToOvulation) {
       progressValue = 0.4;
+      title = 'Ovulation is';
       message = 'Tomorrow';
       buttonText = '';
+      chances = 'High Chances of Getting Pregnant';
     } else if (isOvulation) {
       progressValue = 0.5;
+      title = 'Ovulation is';
       message = 'Today';
       buttonText = '';
+      chances = 'High Chances of Getting Pregnant';
     } else if (afterOvulation) {
-      progressValue = 0.7; 
+      progressValue = 0.7;
+      title = 'Next Period in'; 
       message = '$daysToNextPeriod days';
       buttonText = 'Log Period';
+      chances = 'High Chances of Getting Pregnant';
     } else if (veryCloseToPeriod) {
       progressValue = 0.7; 
+      title = 'Next Period is';
       message = 'Tomorrow';
       buttonText = 'Log Period';
-    } 
-    else {
+      chances = 'Low Chances of Getting Pregnant';
+    } else if (duringPredictedPeriodRange) {
       progressValue = 1.0;
-      message = 'Cycle Complete';
-      buttonText = '';
+      title = 'Periods May happen';
+      message = 'Today';
+      buttonText = 'Log Period';
+      chances = 'Low Chances of Getting Pregnant';
+    } else if(isDangerZone) {
+      progressValue = 1.0;
+      title = 'Periods Overdue by';
+      message = '$overdueDays Day${overdueDays > 1 ? 's': ''}';
+      buttonText = 'Log Period';
+      chances = 'High Chances of Getting Pregnant';
     }
+    // else {
+    //   progressValue = 1.0;
+    //   message = 'Cycle Complete';
+    //   buttonText = '';
+    // }
 
     //Debug prints to trace the logic
     // debugPrint('Current Date: $_currentDate');
     // debugPrint('Period Start: $_periodStart');
     // debugPrint('Period End: $_periodEnd');
     // debugPrint('Is In Period: $isInPeriod');
-    debugPrint('-----Widget Rebuild-----');
-    debugPrint('Is In Period: $isInPeriod');
-    debugPrint('Is close to Ovulation: $isCloseToOvulation');
+    // debugPrint('-----Widget Rebuild-----');
+    // debugPrint('Is In Period: $isInPeriod');
+    // debugPrint('Is close to Ovulation: $isCloseToOvulation');
   
 
     //Mapping the events
@@ -150,37 +185,29 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                             value: progressValue, 
                             strokeWidth: 10,
                             backgroundColor: Colors.grey,
-                            valueColor: const AlwaysStoppedAnimation<Color>(Constants.periodPlanner),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              isDangerZone ? Colors.red : Constants.periodPlanner,
+                            ) ,
                           ),
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              isInPeriod 
-                              ? 'Period' : veryCloseToPeriod 
-                                ? 'Next Period is':  isCloseToOvulation 
-                                  ? 'Ovulation in': veryCloseToOvulation 
-                                    ? 'Ovulation is':  isOvulation 
-                                      ? 'Ovulation is' : afterOvulation 
-                                        ? 'Next Period in' 
-                                          : 'Error',
-                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                              title,
+                              style: const TextStyle(
+                                fontSize: 20, 
+                                fontWeight: FontWeight.bold,
+                                ),
                             ),
                             const SizedBox(height: Constants.SPACING),
                             Text(
                               message,
-                              style: const TextStyle(fontSize: 38, color: Constants.periodPlanner, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 38, color: isDangerZone ? Colors.red: Constants.periodPlanner, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: Constants.SPACING),
                             Text(
-                              isInPeriod 
-                              ? 'Low Chances of Getting Pregnant': veryCloseToPeriod 
-                                ? 'Low Chances of Getting Pregnant' : isCloseToOvulation 
-                                  ? 'High Chances of Getting Pregnant': veryCloseToOvulation 
-                                    ? 'High Chances of Getting Pregnant' : isOvulation 
-                                      ? 'High Chances of Getting Pregnant' 
-                                        : 'Low Chances of Getting Pregnant',
+                              chances,
                               style: const TextStyle(fontSize: 16),
                             ),
                             const SizedBox(height: Constants.SPACING),
@@ -293,7 +320,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                 },
                                 style: ElevatedButton.styleFrom(
                                   foregroundColor: Colors.black,
-                                  backgroundColor: Constants.periodPlanner,
+                                  backgroundColor: isDangerZone ? Colors.red: Constants.periodPlanner,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
