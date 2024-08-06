@@ -19,23 +19,35 @@ class CredentialStorageRepository {
     };
   }
 
-  Future<void> saveBiometricPreference(bool isEnabled) async {
-    await _storage.write(key: 'biometricEnabled', value: isEnabled.toString());
+  Future<void> saveBiometricPreference(bool enabled) async {
+    try {
+      await _storage.write(key: 'biometricEnabled', value: enabled.toString());
+    } catch (e) {
+      debugPrint("Error saving biometric preference: $e");
+      throw e;
+    }
   }
 
   Future<bool> fetchBiometricPreference() async {
-    final String? isEnabled = await _storage.read(key: 'biometricEnabled');
-    if (isEnabled == 'true') {
-      return true;
-    } else {
+    try {
+      final String? isEnabled = await _storage.read(key: 'biometricEnabled');
+      return isEnabled == 'true';
+    } catch (e) {
+      debugPrint("Error fetching biometric preference: $e");
       return false;
     }
   }
 
+
+
   // delete credentials
   Future<void> deleteCredentials() async {
-    await _storage.delete(key: 'username');
-    await _storage.delete(key: 'password');
-    debugPrint('Credentials deleted');
+    try {
+      await _storage.delete(key: 'username');
+      await _storage.delete(key: 'password');
+    } catch (e) {
+      debugPrint("Error deleting credentials: $e");
+      throw e;
+    }
   }
 }
