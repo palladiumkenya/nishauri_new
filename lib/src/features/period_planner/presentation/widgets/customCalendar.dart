@@ -42,22 +42,13 @@ class CustomCalendar extends StatefulWidget {
   @override
   _CustomCalendarState createState() => _CustomCalendarState();
 }
-
-class _CustomCalendarState extends State<CustomCalendar> {
-  DateTime _focusedDay = DateTime.now();
+class _CustomCalendarState extends State<CustomCalendar>{
   late CalendarFormat _calendarFormat;
 
-  @override
+   @override
   void initState() {
     super.initState();
     _calendarFormat = widget.initialFormat;
-  }
-
-  double _getOpacity(DateTime day, DateTime eventDay) {
-    final difference = day.difference(eventDay).inDays;
-    final maxDays = 5;
-    final opacity = (1 - (difference / maxDays)).clamp(0.2, 1.0);
-    return opacity;
   }
 
   @override
@@ -65,12 +56,12 @@ class _CustomCalendarState extends State<CustomCalendar> {
     return TableCalendar(
       firstDay: DateTime(2010),
       lastDay: DateTime(2100),
-      focusedDay: _focusedDay,
-      onDaySelected: (selectedDay, focusedDay) {
-        setState(() {
-          _focusedDay = focusedDay;
-        });
-      },
+      focusedDay: DateTime.now(),
+      // onDaySelected: (selectedDay, focusedDay) {
+      //   setState(() {
+      //     _focusedDay = focusedDay;
+      //   });
+      // },
       calendarFormat: _calendarFormat,
       eventLoader: (day) {
         return widget.events[day] ?? [];

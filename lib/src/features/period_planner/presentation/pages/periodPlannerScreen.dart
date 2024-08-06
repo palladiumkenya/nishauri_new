@@ -7,6 +7,7 @@ import 'package:nishauri/src/features/period_planner/presentation/widgets/carous
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/logItems.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/loggerWidget.dart';
+import 'package:nishauri/src/features/period_planner/utility/event_utils.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
@@ -26,10 +27,14 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
   late DateTime _ovulationDate; 
   late DateTime _nextPeriodStart;
   late DateTime _nextPeriodEnd;
+  Map<DateTime, List<Event>> events = {};
+  
 
   @override
   void initState() {
     super.initState();
+
+    //events = _generateEvents(cycles);
     if (cycles.isNotEmpty) {
       Cycle latestCycle = cycles.last;
       _periodStart = latestCycle.periodStart;
@@ -37,6 +42,8 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
       _ovulationDate = latestCycle.ovulation;
       _nextPeriodStart = latestCycle.predictedPeriodStart;
       _nextPeriodEnd = latestCycle.predictedPeriodEnd;
+
+      
     }
   }
 
@@ -46,6 +53,12 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
         date1.month == date2.month &&
         date1.day == date2.day;
   }
+
+  // void _updateEvents() {
+  //   setState(() {
+  //     events = _generateEvents(cycles);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -141,11 +154,8 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
     // debugPrint('-----Widget Rebuild-----');
     // debugPrint('Is In Period: $isInPeriod');
     // debugPrint('Is close to Ovulation: $isCloseToOvulation');
-  
 
-    //Mapping the events
-    Map<DateTime, List<Event>> events = _generateEvents(cycles);
-
+    Map<DateTime, List<Event>> events = EventUtils.generateEvents(cycles);
     return Scaffold(
       body: Column(
         children: [
@@ -172,7 +182,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                     ),
                     SizedBox(
                       height: 150,
-                      child: CustomCalendar(initialFormat: CalendarFormat.week, events: events),
+                      child: CustomCalendar(initialFormat: CalendarFormat.week, events: events,),
                     ),
                     const SizedBox(height: 20),
                     Stack(
@@ -246,6 +256,9 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                                   _ovulationDate = predictedCycle.ovulation;
                                                   _nextPeriodStart = predictedCycle.predictedPeriodStart;
 
+                                                  //updating events
+                                                  //_updateEvents();
+
                                                   // Debug print to check the state update
                                                   debugPrint("After User has logged Period");
                                                   debugPrint('Period Start after update: $_periodStart');
@@ -296,6 +309,9 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                                       cycle.periodEnd = _periodEnd;
                                                     }
                                                   }
+
+                                                  //Upodating events
+                                                  //_updateEvents();
 
                                                   // Debug print to check the state update
                                                   debugPrint("After User has logged end of Period");
@@ -389,38 +405,4 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
       ),
     );
   }
-
-  //Generating Events from the Cycles List
-  Map<DateTime, List<Event>> _generateEvents(List<Cycle> cycles) {
-    Map<DateTime, List<Event>> events = {};
-
-    for (Cycle cycle in cycles) {
-      // Add period days
-      for (DateTime date = cycle.periodStart;
-          date.isBefore(cycle.periodEnd) || date.isAtSameMomentAs(cycle.periodEnd);
-          date = date.add(const Duration(days: 1))) {
-        events.update(date, (existingEvents) => existingEvents..add(Event('Period Day', Colors.pink)), ifAbsent: () => [Event('Period Day', Colors.pink)]);
-      }
-
-      // Add fertile window days
-      for (DateTime date = cycle.fertileStart;
-          date.isBefore(cycle.fertileEnd) || date.isAtSameMomentAs(cycle.fertileEnd);
-          date = date.add(const Duration(days: 1))) {
-        events.update(date, (existingEvents) => existingEvents..add(Event('Fertile Day', Colors.green)), ifAbsent: () => [Event('Fertile Day', Colors.green)]);
-      }
-
-      // Add ovulation day
-      events.update(cycle.ovulation, (existingEvents) => existingEvents..add(Event('Ovulation Day', Colors.blue)), ifAbsent: () => [Event('Ovulation Day', Colors.blue)]);
-
-      // Add predicted period start
-      for (DateTime date = cycle.predictedPeriodStart;
-          date.isBefore(cycle.predictedPeriodEnd) || date.isAtSameMomentAs(cycle.predictedPeriodEnd);
-          date = date.add(const Duration(days: 1))) {
-        events.update(date, (existingEvents) => existingEvents..add(Event('Predicted Period Day', Colors.orange)), ifAbsent: () => [Event('Predicted Period Day', Colors.orange)]);
-      }
-      //events.update(cycle.predictedPeriodStart, (existingEvents) => existingEvents..add(Event('Predicted Period Start', Colors.orange)), ifAbsent: () => [Event('Predicted Period Start', Colors.orange)]);
-    }
-
-    return events;
-  }
-}
+} 

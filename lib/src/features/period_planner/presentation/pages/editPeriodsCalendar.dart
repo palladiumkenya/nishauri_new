@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
-import 'package:nishauri/src/features/period_planner/data/models/events.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:uuid/uuid.dart';
+
+
 
 //printing List which is acting as a Database
 void printCycles(List<Cycle> cycles) {
@@ -103,7 +103,6 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
                   onPressed: () {
                     if (_startDate != null && _endDate != null) {
                       _updateOrAddCycle(_startDate!, _endDate!);
-                      printCycles(cycles);
                       // Print the list of cycles
                       printCycles(cycles);
                       context.goNamed(RouteNames.PERIOD_PLANNER_MENU);

@@ -4,10 +4,11 @@ import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/data/models/events.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/calendarKey.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
+import 'package:nishauri/src/features/period_planner/utility/event_utils.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
-import 'package:table_calendar/table_calendar.dart';
+
 class PeriodCalendar extends StatelessWidget {
   const PeriodCalendar({super.key});
 
@@ -16,8 +17,7 @@ class PeriodCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
-    Map<DateTime, List<Event>> events = _generateEvents(cycles);
+    Map<DateTime, List<Event>> events = EventUtils.generateEvents(cycles);
     return Scaffold(
       body: Column(
         children: [
@@ -26,18 +26,18 @@ class PeriodCalendar extends StatelessWidget {
             color: Constants.periodPlanner.withOpacity(1.0),
           ),
           Align(
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                        onPressed: () {
-                          context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
-                        }, 
-                        icon: const Icon(Icons.home),
-                        ),
-                    ),
+            alignment: Alignment.topRight,
+            child: IconButton(
+              onPressed: () {
+                context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
+              }, 
+              icon: const Icon(Icons.home),
+            ),
+          ),
           Expanded(
             child: Column(
               children: [
-                CustomCalendar(initialFormat: CalendarFormat.month, events: events,),
+                CustomCalendar(events: events),
                 const SizedBox(height: 20),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -94,43 +94,6 @@ class PeriodCalendar extends StatelessWidget {
     );
   }
 
-  Map<DateTime, List<Event>> _generateEvents(List<Cycle> cycles) {
-    Map<DateTime, List<Event>> events = {};
-
-    for (Cycle cycle in cycles) {
-      // Add period days
-      for (DateTime date = cycle.periodStart;
-          date.isBefore(cycle.periodEnd) || date.isAtSameMomentAs(cycle.periodEnd);
-          date = date.add(const Duration(days: 1))) {
-        events.update(date, (existingEvents) => existingEvents..add(Event('Period Day', Colors.pink)), ifAbsent: () => [Event('Period Day', Colors.pink)]);
-      }
-
-      // Add fertile window days
-      for (DateTime date = cycle.fertileStart;
-          date.isBefore(cycle.fertileEnd) || date.isAtSameMomentAs(cycle.fertileEnd);
-          date = date.add(const Duration(days: 1))) {
-        events.update(date, (existingEvents) => existingEvents..add(Event('Fertile Day', Colors.green)), ifAbsent: () => [Event('Fertile Day', Colors.green)]);
-      }
-
-      // Add ovulation day
-      events.update(cycle.ovulation, (existingEvents) => existingEvents..add(Event('Ovulation Day', Colors.blue)), ifAbsent: () => [Event('Ovulation Day', Colors.blue)]);
-
-      // Add predicted period start
-      for (DateTime date = cycle.predictedPeriodStart;
-          date.isBefore(cycle.predictedPeriodEnd) || date.isAtSameMomentAs(cycle.predictedPeriodEnd);
-          date = date.add(const Duration(days: 1))) {
-        events.update(date, (existingEvents) => existingEvents..add(Event('Predicted Period Day', Colors.pink)), ifAbsent: () => [Event('Predicted Period Day', Colors.orange)]);
-      }
-      //events.update(cycle.predictedPeriodStart, (existingEvents) => existingEvents..add(Event('Predicted Period Start', Colors.orange)), ifAbsent: () => [Event('Predicted Period Start', Colors.orange)]);
-    }
-
-    // Debugging: Print events map
-    // events.forEach((key, value) {
-    //   debugPrint('Date: $key, Events: $value');
-    // });
-
-    return events;
-  }
 }
   
 
