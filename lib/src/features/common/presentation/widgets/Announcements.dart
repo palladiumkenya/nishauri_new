@@ -42,10 +42,9 @@ class Announcements extends HookConsumerWidget {
                    width: 336,
                    svgPath: announcement.image,
                    title: announcement.title,
-                    // onTap: (){},
-                    // onTap: (){
-                    //  context.goNamed(RouteNames.BLOG_POST, extra: announcement);
-                    // },
+                    onTap: (){
+                     context.goNamed(RouteNames.BLOG_POST, extra: announcement);
+                    },
                  );
                },
              );
