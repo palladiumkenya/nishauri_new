@@ -6,9 +6,7 @@ import 'package:http/http.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
 import 'package:nishauri/src/features/bmi/data/model/bmi_log.dart';
-import 'package:http/http.dart' as http;
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
-import 'package:nishauri/src/shared/models/token_pair.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class BMILogService extends HTTPService{
@@ -22,7 +20,6 @@ class BMILogService extends HTTPService{
       if (response.statusCode == 200) {       
         final responseString = await response.stream.bytesToString();
         final responseData = jsonDecode(responseString);
-        print("Sucessfully sent data to end point");
         if(responseData["success"] == true) {
           return responseData["msg"];
         }

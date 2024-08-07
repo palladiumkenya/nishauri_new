@@ -78,72 +78,81 @@ List<_SettingsItem> _settingsItem(BuildContext context) => <_SettingsItem>[
         onPress: () => context.goNamed(RouteNames.CHANGE_PASSWORD),
       ),
       // Enable biometric support option
-      _SettingsItem(
-        title: "Enable Biometric support",
-        leadingIcon: Icons.fingerprint,
-        trailingIcon: Consumer(
-            builder: (BuildContext context, WidgetRef ref, Widget? child) {
+  _SettingsItem(
+    title: "Enable Biometric support",
+    leadingIcon: Icons.fingerprint,
+    trailingIcon:  Consumer(
+        builder: (context, ref, child) {
           final biometricState = ref.watch(biometricPreferenceProvider);
           return biometricState.when(
-              data: (bool isBiometricEnabled) {
-                debugPrint("Biometric Settings: $isBiometricEnabled");
-                return Switch(
-                  value: isBiometricEnabled,
-                  onChanged: (bool value) async {
-                    try {
-                      if (value) {
-                        await _enableBiometricSupport(context, ref);
-                      } else {
-                        final credentialStorage = CredentialStorageRepository();
-                        await credentialStorage.saveBiometricPreference(false);
-                        await credentialStorage.deleteCredentials();
-                      }
-                      // Forces provider to refresh
-                      ref.invalidate(biometricPreferenceProvider);
-                    } catch (e) {
-                      debugPrint("Error updating biometric preference: $e");
+            data: (bool? isBiometricEnabled) {
+              if (isBiometricEnabled == null) {
+                return Center(child: Text('Biometric preference not set'));
+              }
+              debugPrint("Biometric Settings: $isBiometricEnabled");
+              return Switch(
+                value: isBiometricEnabled,
+                onChanged: (bool value) async {
+                  try {
+                    if (value) {
+                      await _enableBiometricSupport(context, ref);
+                    } else {
+                      final credentialStorage = CredentialStorageRepository();
+                      await credentialStorage.saveBiometricPreference(false);
+                      await credentialStorage.deleteCredentials();
                     }
-                  },
-                );
-              },
-              error: (e, stack) => Text('Error: $e'),
-              loading: () => const CircularProgressIndicator());
-        }),
+                    // Forces provider to refresh
+                    ref.invalidate(biometricPreferenceProvider);
+                  } catch (e) {
+                    debugPrint("Error updating biometric preference: $e");
+                  }
+                },
+              );
+            },
+            error: (e, stack) => Center(
+              child: Text('$e'),
+            ),
+            loading: () => const CircularProgressIndicator(),
+          );
+        },
       ),
+  ),
     ];
 
-Future<void> _enableBiometricSupport(
-    BuildContext context, WidgetRef ref) async {
+Future<void> _enableBiometricSupport(BuildContext context, WidgetRef ref) async {
   final biometricAuthService = BiometricAuthService();
   final credentialStorage = CredentialStorageRepository();
-  final bool canCheckBiometrics =
-      await biometricAuthService.canCheckBiometrics();
+  final bool canCheckBiometrics = await biometricAuthService.canCheckBiometrics();
   if (canCheckBiometrics) {
     final phoneAndPassword = await _promptForCredentials(context);
     if (phoneAndPassword != null) {
-      await credentialStorage.saveCredentials(
-          phoneAndPassword['phone_number']!, phoneAndPassword['password']!);
-      await credentialStorage.saveBiometricPreference(true);
-      // Manually refresh the biometricPreferenceProvider to reflect the updated state
-      ref.invalidate(biometricPreferenceProvider);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Credentials saved. Biometric support enabled.")));
+      try {
+        await credentialStorage.saveCredentials(
+            phoneAndPassword['phone_number']!, phoneAndPassword['password']!);
+        await credentialStorage.saveBiometricPreference(true);
+        ref.invalidate(biometricPreferenceProvider);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Credentials saved. Biometric support enabled.")));
+      } catch (e) {
+        debugPrint("Error saving credentials: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Error enabling biometric support: $e")));
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Credentials not saved. Biometric support disabled.")));
       await credentialStorage.saveBiometricPreference(false);
-      // Manually refresh the biometricPreferenceProvider
       ref.invalidate(biometricPreferenceProvider);
     }
   } else {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content:
-            Text("Biometric authentication is not supported on this device.")));
+        Text("Biometric authentication is not supported on this device.")));
     await credentialStorage.saveBiometricPreference(false);
-    // Refresh the provider to update the UI
     ref.invalidate(biometricPreferenceProvider);
   }
 }
+
 
 Future<Map<String, String>?> _promptForCredentials(BuildContext context) async {
   String phoneNumber = '';
