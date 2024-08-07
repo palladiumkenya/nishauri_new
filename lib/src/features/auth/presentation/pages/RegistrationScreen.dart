@@ -373,7 +373,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     final fcmToken = AuthController.getFCM();
                                     debugPrint(
                                         "Registration FCM token: $fcmToken");
-                                    var mergedData = {...formState, ...version};
+                                    var mergedData = {
+                                      "fcm_token": fcmToken,
+                                      ...formState,
+                                      ...version
+                                    };
 
                                     authNotifier
                                         .register(mergedData)

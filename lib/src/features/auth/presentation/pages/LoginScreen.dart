@@ -203,6 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             debugPrint(
                                 "Login FCM token: ${fcmToken.toString()}");
                             var mergedData = {
+                              "fcm_token": fcmToken,
                               ..._formKey.currentState!.value,
                               ...version
                             };
@@ -281,7 +282,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       var biometricData = {
                                         "user_name": phoneNumber,
                                         "password": password,
-                                        ...version
+                                        "fcm_token": fcmToken,
+                                        ...version,
                                       };
 
                                       authNotifier
