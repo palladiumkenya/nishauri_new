@@ -215,7 +215,7 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
     //   onPressed: () => "",
     // ),
     MenuItem(
-        shortcutBackgroundColor: Constants.bpBgColor,
+        shortcutBackgroundColor: Constants.bmiCalculatorShortcutBgColor,
         icon: SvgPicture.asset(
           "assets/images/healthcare-medical.svg",
           semanticsLabel: "Doctors",
