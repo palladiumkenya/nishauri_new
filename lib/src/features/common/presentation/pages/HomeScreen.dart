@@ -155,7 +155,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ElevatedButton(
                           onPressed: () async {
                             try {
-                              await LocalStorage.delete("FCM_Token");
+                              // await LocalStorage.delete("FCM_Token");
                               final value = await ref
                                   .watch(authStateProvider.notifier)
                                   .logout();

@@ -35,11 +35,11 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
     loadAuthState();
   }
 
-  static Future<String> getFCM() async {
-    final fcmToken = await LocalStorage.get("FCM_Token");
-    debugPrint("Get FCM: $fcmToken");
-    return fcmToken;
-  }
+  // static Future<String> getFCM() async {
+  //   final fcmToken = await LocalStorage.get("FCM_Token");
+  //   debugPrint("Get FCM: $fcmToken");
+  //   return fcmToken;
+  // }
 
   Future<void> loadAuthState() async {
     try {

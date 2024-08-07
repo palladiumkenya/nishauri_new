@@ -17,6 +17,7 @@ import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/display/label_input_container.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
+import 'package:nishauri/src/shared/interfaces/notification_service.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -199,9 +200,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             final settings =
                                 ref.read(settingsNotifierProvider.notifier);
                             var version = {"app_version": _appVersion};
-                            final fcmToken = await AuthController.getFCM();
+                            // final fcmToken = await AuthController.getFCM();
+                            final fcmToken = await NotificationService
+                                .firebaseMessaging
+                                .getToken();
+                            // debugPrint("Login FCM fcm token: $fcmToken");
                             debugPrint(
-                                "Login FCM token: ${fcmToken.toString()}");
+                                "Firebase messaging fcm token: $fcmToken");
                             var mergedData = {
                               "fcm_token": fcmToken,
                               ..._formKey.currentState!.value,
@@ -277,7 +282,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                       var version = {
                                         "app_version": _appVersion
                                       };
-                                      final fcmToken = AuthController.getFCM();
+                                      // final fcmToken = AuthController.getFCM();
+                                       final fcmToken = await NotificationService
+                                          .firebaseMessaging
+                                          .getToken();
                                       debugPrint("Login FCM token: $fcmToken");
                                       var biometricData = {
                                         "user_name": phoneNumber,
