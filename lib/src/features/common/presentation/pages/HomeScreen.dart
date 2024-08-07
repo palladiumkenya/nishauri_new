@@ -17,6 +17,7 @@ import 'package:nishauri/src/features/common/presentation/widgets/ShortcutsUi.da
 import 'package:nishauri/src/features/hiv/data/providers/art_appointmen_provider.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/hooks/use_local_avatar.dart';
+import 'package:nishauri/src/local_storage/LocalStorage.dart';
 import 'package:nishauri/src/shared/display/AppAvatar.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -154,20 +155,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ElevatedButton(
                           onPressed: () async {
                             try {
-                              final value = await ref.watch(authStateProvider.notifier).logout();
+                              await LocalStorage.delete("FCM_Token");
+                              final value = await ref
+                                  .watch(authStateProvider.notifier)
+                                  .logout();
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text(value)),
                               );
                               context.goNamed(RouteNames.LOGIN_SCREEN);
                             } catch (error) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Logout failed: $error')),
+                                SnackBar(
+                                    content: Text('Logout failed: $error')),
                               );
                             }
                           },
                           child: const Text("Log out"),
                         )
-
                       ],
                     );
                   },
