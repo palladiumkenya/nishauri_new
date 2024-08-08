@@ -61,7 +61,7 @@ class CustomLineChart extends StatelessWidget {
                             .toList(),
                       ),
                     ),
-                    dotData: const FlDotData(show: false),
+                    dotData: const FlDotData(show: true),
                   ),
                 ],
                 titlesData: FlTitlesData(

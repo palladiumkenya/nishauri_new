@@ -53,7 +53,7 @@ class TrendChartScreen extends StatelessWidget {
                         colors: [Colors.red.withOpacity(0.3), Colors.red.withOpacity(0)],
                       ),
                     ),
-                    dotData: FlDotData(show: false),
+                    dotData: FlDotData(show: true),
                   ),
                   LineChartBarData(
                     spots: diastolicSpots,
@@ -66,7 +66,7 @@ class TrendChartScreen extends StatelessWidget {
                         colors: [Colors.orange.withOpacity(0.3), Colors.orange.withOpacity(0)],
                       ),
                     ),
-                    dotData: FlDotData(show: false),
+                    dotData: FlDotData(show: true),
                   ),
                   LineChartBarData(
                     spots: pulseRateSpots,
@@ -79,7 +79,7 @@ class TrendChartScreen extends StatelessWidget {
                         colors: [Constants.programsColor.withOpacity(0.3), Constants.programsColor.withOpacity(0)],
                       ),
                     ),
-                    dotData: FlDotData(show: false),
+                    dotData: FlDotData(show: true),
                   ),
                 ],
                 minX: 0,
