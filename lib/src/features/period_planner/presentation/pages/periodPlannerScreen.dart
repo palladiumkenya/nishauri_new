@@ -7,7 +7,7 @@ import 'package:nishauri/src/features/period_planner/presentation/widgets/carous
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/logItems.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/loggerWidget.dart';
-import 'package:nishauri/src/features/period_planner/utility/event_utils.dart';
+import 'package:nishauri/src/features/period_planner/utils/event_utils.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
@@ -29,7 +29,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
   late DateTime _nextPeriodEnd;
   Map<DateTime, List<Event>> events = {};
   
-
+ 
   @override
   void initState() {
     super.initState();
@@ -40,11 +40,18 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
       _periodStart = latestCycle.periodStart;
       _periodEnd = latestCycle.periodEnd;
       _ovulationDate = latestCycle.ovulation;
-      _nextPeriodStart = latestCycle.predictedPeriodStart;
-      _nextPeriodEnd = latestCycle.predictedPeriodEnd;
-
-      
+      _nextPeriodStart = latestCycle.predictedPeriodStart;  
+      _nextPeriodEnd = latestCycle.predictedPeriodEnd;    
     }
+    events = EventUtils.generateEvents(cycles); 
+    //_updateEvents();
+  }
+
+  void _updateEvents() {
+    setState(() {
+      events = EventUtils.generateEvents(cycles);
+      debugPrint("Updated Events: $events");
+    });
   }
 
   //Function to check if two dates are on the same day by truncating the time part
@@ -54,11 +61,6 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
         date1.day == date2.day;
   }
 
-  // void _updateEvents() {
-  //   setState(() {
-  //     events = _generateEvents(cycles);
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +157,8 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
     // debugPrint('Is In Period: $isInPeriod');
     // debugPrint('Is close to Ovulation: $isCloseToOvulation');
 
-    Map<DateTime, List<Event>> events = EventUtils.generateEvents(cycles);
+    
+
     return Scaffold(
       body: Column(
         children: [
@@ -182,7 +185,11 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                     ),
                     SizedBox(
                       height: 150,
-                      child: CustomCalendar(initialFormat: CalendarFormat.week, events: events,),
+                      child: CustomCalendar(
+                        //key: ValueKey(events),
+                        initialFormat: CalendarFormat.week, 
+                        events: events,
+                        ),
                     ),
                     const SizedBox(height: 20),
                     Stack(
@@ -256,8 +263,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                                   _ovulationDate = predictedCycle.ovulation;
                                                   _nextPeriodStart = predictedCycle.predictedPeriodStart;
 
-                                                  //updating events
-                                                  //_updateEvents();
+                                                  _updateEvents();
 
                                                   // Debug print to check the state update
                                                   debugPrint("After User has logged Period");
@@ -310,8 +316,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                                     }
                                                   }
 
-                                                  //Upodating events
-                                                  //_updateEvents();
+                                                  _updateEvents();
 
                                                   // Debug print to check the state update
                                                   debugPrint("After User has logged end of Period");

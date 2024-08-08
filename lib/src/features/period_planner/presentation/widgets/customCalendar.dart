@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/data/models/events.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/eventsMaker.dart';
+import 'package:nishauri/src/features/period_planner/utils/event_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart';
 
@@ -37,23 +38,39 @@ class CustomCalendar extends StatefulWidget {
   final CalendarFormat initialFormat;
   final Map<DateTime, List<Event>> events;
 
-  CustomCalendar({this.initialFormat = CalendarFormat.month, required this.events});
+   CustomCalendar({
+    //Key? key,
+    this.initialFormat = CalendarFormat.month, 
+    required this.events,
+    });
 
   @override
   _CustomCalendarState createState() => _CustomCalendarState();
 }
 class _CustomCalendarState extends State<CustomCalendar>{
   late CalendarFormat _calendarFormat;
+  //late Map<DateTime, List<Event>> _events;
 
    @override
   void initState() {
     super.initState();
     _calendarFormat = widget.initialFormat;
+    //events = EventUtils.generateEvents(cycles);
+    //events = widget.events;
+    //_events = widget.events;
   }
+
+  // void updateEvents(Map<DateTime, List<Event>> newEvents) {
+  //   setState(() {
+  //     _events = newEvents;
+  //     debugPrint("Updated Calendar Events: $_events");
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return TableCalendar(
+      //key: ValueKey(_events),
       firstDay: DateTime(2010),
       lastDay: DateTime(2100),
       focusedDay: DateTime.now(),
@@ -64,6 +81,7 @@ class _CustomCalendarState extends State<CustomCalendar>{
       // },
       calendarFormat: _calendarFormat,
       eventLoader: (day) {
+        // return widget.events[day] ?? [];
         return widget.events[day] ?? [];
       },
       headerVisible: true,
@@ -94,7 +112,9 @@ class _CustomCalendarState extends State<CustomCalendar>{
             return null;
           }
           final eventList = events.cast<Event>();
-          //debugPrint('Successfully cast events for date: $date, events: $eventList');
+          
+          debugPrint("-----From CustomCalendar------");
+          debugPrint('Successfully cast events for date: $date, events: $eventList');
 
           return EventsMaker(date: date, events: eventList);
         },
