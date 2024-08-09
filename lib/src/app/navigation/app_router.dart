@@ -414,14 +414,15 @@ final List<RouteBase> periodPlannerRoutes = [
           return const PeriodCalendar();
         },
       ),
+      GoRoute(
+        name: RouteNames.PERIOD_PLANNER_EDIT_PERIOD_CALENDAR,
+        path: 'period-planner-edit-period-calendar',
+        builder: (BuildContext context, GoRouterState state) {
+          return EditPeriodCalendar();
+        },
+      ),
     ]),
-  GoRoute(
-    name: RouteNames.PERIOD_PLANNER_EDIT_PERIOD_CALENDAR,
-    path: 'period-planner-edit-period-calendar',
-    builder: (BuildContext context, GoRouterState state) {
-      return EditPeriodCalendar();
-    },
-  ),
+  
 
 ]; 
 

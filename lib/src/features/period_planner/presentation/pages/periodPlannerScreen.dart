@@ -95,6 +95,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                       isSameDay(_currentDate, _nextPeriodStart) ||
                                       isSameDay(_currentDate, _nextPeriodEnd);
     bool isDangerZone = _currentDate.isAfter(_nextPeriodEnd);  
+    
 
 
 
@@ -104,6 +105,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
     String buttonText = '';
     String title = '';
     String chances = '';
+
 
     if (isInPeriod) {
       progressValue = 0.2;
@@ -153,7 +155,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
       message = '$overdueDays Day${overdueDays > 1 ? 's': ''}';
       buttonText = 'Log Period';
       chances = 'High Chances of Getting Pregnant';
-    }
+    } 
     // else {
     //   progressValue = 1.0;
     //   message = 'Cycle Complete';
@@ -186,15 +188,6 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                        onPressed: () {
-                          context.goNamed(RouteNames.PERIOD_PLANNER_CALENDAR);
-                        }, 
-                        icon: const Icon(Icons.calendar_month),
-                        ),
-                    ),
                     SizedBox(
                       height: 150,
                       child: CustomCalendar(
@@ -264,6 +257,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                                 setState(() {
                                                    // Log the period start here
                                                   isInPeriod = true;
+                                                  isDangerZone = false;
                                                   _currentDate = DateTime.now();
                                                   
                                                   final Cycle predictedCycle = predictCycle(
@@ -287,7 +281,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                                   debugPrint("--------");
                                                 }); 
                                                 printCycles(cycles);
-                                                Navigator.of(context).pop();           
+                                                context.goNamed(RouteNames.PERIOD_PLANNER_EDIT_PERIOD_CALENDAR);           
                                               },
                                             ),
                                           ],

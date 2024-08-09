@@ -6,64 +6,7 @@ import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
-
-_menuItems(BuildContext context) => [
-      MenuItem(
-        shortcutBackgroundColor: Constants.periodPlannerShortcutBgColor,
-        icon: SvgPicture.asset(
-          "assets/images/period_planner4.svg",
-          semanticsLabel: "Periods",
-          fit: BoxFit.contain,
-          width: 80,
-          height: 80,
-        ),
-        shortcutIcon: SvgPicture.asset("assets/images/period_planner4.svg",
-            semanticsLabel: "Periods",
-            fit: BoxFit.contain,
-            width: Constants.shortcutIconSize,
-            height: Constants.shortcutIconSize),
-        title: "Track Periods",
-        onPressed: () => context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN),
-        color: Constants.periodPlanner.withOpacity(1.0),
-      ),
-      MenuItem(
-        shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,
-        icon: SvgPicture.asset(
-          "assets/images/period_calender1.svg",
-          semanticsLabel: "Periods",
-          fit: BoxFit.contain,
-          width: 80,
-          height: 80,
-        ),
-        shortcutIcon: SvgPicture.asset("assets/images/period_calender1.svg",
-            semanticsLabel: "Periods",
-            fit: BoxFit.contain,
-            width: Constants.shortcutIconSize,
-            height: Constants.shortcutIconSize),
-        title: "Calendar",
-        onPressed: () => context.goNamed(RouteNames.PERIOD_PLANNER_CALENDAR),
-        color: Constants.periodPlanner.withOpacity(1.0),
-      ),
-      // MenuItem(
-      //   shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,
-      //   icon: SvgPicture.asset(
-      //     "assets/images/partners2.svg",
-      //     semanticsLabel: "Periods",
-      //     fit: BoxFit.contain,
-      //     width: 80,
-      //     height: 80,
-      //   ),
-      //   shortcutIcon: SvgPicture.asset("assets/images/partners2.svg",
-      //       semanticsLabel: "Periods",
-      //       fit: BoxFit.contain,
-      //       width: Constants.shortcutIconSize,
-      //       height: Constants.shortcutIconSize),
-      //   title: "Partners",
-      //   onPressed: () => context.goNamed(RouteNames.PERIOD_PLANNER),
-      //   color: Constants.periodPlanner.withOpacity(1.0),
-      // ),
-    ];
-
+import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 class PeriodPlannerMenu extends StatelessWidget {
   const PeriodPlannerMenu({super.key});
 
@@ -128,3 +71,68 @@ class PeriodPlannerMenu extends StatelessWidget {
     );
   }
 }
+
+
+_menuItems(BuildContext context) => [
+      MenuItem(
+        shortcutBackgroundColor: Constants.periodPlannerShortcutBgColor,
+        icon: SvgPicture.asset(
+          "assets/images/period_planner4.svg",
+          semanticsLabel: "Periods",
+          fit: BoxFit.contain,
+          width: 80,
+          height: 80,
+        ),
+        shortcutIcon: SvgPicture.asset("assets/images/period_planner4.svg",
+            semanticsLabel: "Periods",
+            fit: BoxFit.contain,
+            width: Constants.shortcutIconSize,
+            height: Constants.shortcutIconSize),
+        title: "Track Periods",
+        onPressed: () {
+          if(cycles.isEmpty) {
+            context.goNamed(RouteNames.PERIOD_PLANNER_EDIT_PERIOD_CALENDAR);
+          }
+          else {
+            context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
+          }       
+        } ,
+        color: Constants.periodPlanner.withOpacity(1.0),
+      ),
+      MenuItem(
+        shortcutBackgroundColor: Constants.periodPlannerShortcutBgColor,
+        icon: SvgPicture.asset(
+          "assets/images/period_calender1.svg",
+          semanticsLabel: "Periods",
+          fit: BoxFit.contain,
+          width: 80,
+          height: 80,
+        ),
+        shortcutIcon: SvgPicture.asset("assets/images/period_calender1.svg",
+            semanticsLabel: "Periods",
+            fit: BoxFit.contain,
+            width: Constants.shortcutIconSize,
+            height: Constants.shortcutIconSize),
+        title: "Calendar",
+        onPressed: () => context.goNamed(RouteNames.PERIOD_PLANNER_CALENDAR),
+        color: Constants.periodPlanner.withOpacity(1.0),
+      ),
+      // MenuItem(
+      //   shortcutBackgroundColor: Constants.periodPlannerShortcutBgColor,
+      //   icon: SvgPicture.asset(
+      //     "assets/images/partners2.svg",
+      //     semanticsLabel: "Periods",
+      //     fit: BoxFit.contain,
+      //     width: 80,
+      //     height: 80,
+      //   ),
+      //   shortcutIcon: SvgPicture.asset("assets/images/partners2.svg",
+      //       semanticsLabel: "Periods",
+      //       fit: BoxFit.contain,
+      //       width: Constants.shortcutIconSize,
+      //       height: Constants.shortcutIconSize),
+      //   title: "Partners",
+      //   onPressed: () => context.goNamed(RouteNames.PERIOD_PLANNER),
+      //   color: Constants.periodPlanner.withOpacity(1.0),
+      // ),
+    ];

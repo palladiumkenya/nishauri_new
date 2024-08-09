@@ -7,13 +7,10 @@ import 'package:nishauri/src/features/period_planner/presentation/widgets/custom
 import 'package:nishauri/src/features/period_planner/utils/event_utils.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
-import 'package:nishauri/src/utils/routes.dart';
 
 class PeriodCalendar extends StatelessWidget {
   const PeriodCalendar({super.key});
-
- 
-
+  
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -25,15 +22,6 @@ class PeriodCalendar extends StatelessWidget {
           CustomAppBar(
             title: "Calendar 🗓️",
             color: Constants.periodPlanner.withOpacity(1.0),
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: IconButton(
-              onPressed: () {
-                context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
-              }, 
-              icon: const Icon(Icons.home),
-            ),
           ),
           Expanded(
             child: Column(
