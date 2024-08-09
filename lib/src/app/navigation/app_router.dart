@@ -384,38 +384,47 @@ final List<RouteBase> secureRoutes = [
       name: RouteNames.PERIOD_PLANNER,
       path: 'period-planner',
       builder: (BuildContext context, GoRouterState state) {
-        return const PeriodPlanner();
-    },
-    ),
-    GoRoute(
-      name: RouteNames.PERIOD_PLANNER_SCREEN,
-      path: 'period-planner-screen',
-      builder: (BuildContext context, GoRouterState state) {
-        return const PeriodPlannerScreen();
-    },
-    ),
-    GoRoute(
-      name: RouteNames.PERIOD_PLANNER_MENU,
-      path: 'period-planner-menu',
-      builder: (BuildContext context, GoRouterState state) {
-        return const PeriodPlannerMenu();
-    },
-    ),
-    GoRoute(
-      name: RouteNames.PERIOD_PLANNER_CALENDAR,
-      path: 'period-planner-calendar',
-      builder: (BuildContext context, GoRouterState state) {
-        return const PeriodCalendar();
-    },
-    ),
-    GoRoute(
-      name: RouteNames.PERIOD_PLANNER_EDIT_PERIOD_CALENDAR,
-      path: 'period-planner-edit-period-calendar',
-      builder: (BuildContext context, GoRouterState state) {
-        return EditPeriodCalendar();
-    },
-    ),
+        return const PeriodPlanner();  
+      },
+      routes: periodPlannerRoutes,
+
+    ),  
 ];
+
+final List<RouteBase> periodPlannerRoutes = [
+  GoRoute(
+    name: RouteNames.PERIOD_PLANNER_MENU,
+    path: 'period-planner-menu',
+    builder: (BuildContext context, GoRouterState state) {
+      return const PeriodPlannerMenu();
+    },
+    routes: [
+      GoRoute(
+        name: RouteNames.PERIOD_PLANNER_SCREEN,
+        path: 'period-planner-screen',
+        builder: (BuildContext context, GoRouterState state) {
+          return const PeriodPlannerScreen();
+        },
+      ),
+
+      GoRoute(
+        name: RouteNames.PERIOD_PLANNER_CALENDAR,
+        path: 'period-planner-calendar',
+        builder: (BuildContext context, GoRouterState state) {
+          return const PeriodCalendar();
+        },
+      ),
+    ]),
+  GoRoute(
+    name: RouteNames.PERIOD_PLANNER_EDIT_PERIOD_CALENDAR,
+    path: 'period-planner-edit-period-calendar',
+    builder: (BuildContext context, GoRouterState state) {
+      return EditPeriodCalendar();
+    },
+  ),
+
+]; 
+
 final List<RouteBase> openRoutes = [
   GoRoute(
     name: RouteNames.LOGIN_SCREEN,

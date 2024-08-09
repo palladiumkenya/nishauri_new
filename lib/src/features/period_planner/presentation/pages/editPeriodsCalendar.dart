@@ -44,14 +44,16 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
 
   //Function to handle adding and updating log entries in list Database
   void _updateOrAddCycle(DateTime start, DateTime end) {
-    if (cycles.isNotEmpty) {
-      // Update existing cycle
-      cycles[0] = predictCycle(start, end);
-    } else {
-      // Add new cycle
-      final Cycle newCycle = predictCycle(start, end);
+    // if (cycles.isNotEmpty) {
+    //   // Update existing cycle
+    //   cycles[0] = predictCycle(start, end);
+    // } else {
+    //   // Add new cycle
+    //   final Cycle newCycle = predictCycle(start, end);
+    //   cycles.add(newCycle);
+    // }
+    final Cycle newCycle = predictCycle(start, end);
       cycles.add(newCycle);
-    }
   }
 
   @override

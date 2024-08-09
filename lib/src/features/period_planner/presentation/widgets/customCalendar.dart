@@ -41,7 +41,7 @@ class CustomCalendar extends StatefulWidget {
     Key? key,
     this.initialFormat = CalendarFormat.month, 
     required this.events,
-    });
+    }) : super(key: key);
 
   @override
   _CustomCalendarState createState() => _CustomCalendarState();
@@ -59,20 +59,24 @@ class _CustomCalendarState extends State<CustomCalendar>{
 
   //To flatten the events so that it can be in the form of DateTime as the key and the events as the values
   Map<DateTime, List<Event>> _flattenEvents(Map<String, Map<DateTime, List<Event>>> nestedEvents) {
-    final Map<DateTime, List<Event>> flattenedEvents = {};
+  final Map<DateTime, List<Event>> flattenedEvents = {};
 
-    nestedEvents.forEach((cycleId, dateMap) {
-      dateMap.forEach((date, events) {
-        if (flattenedEvents.containsKey(date)) {
-          flattenedEvents[date]!.addAll(events);
-        } else {
-          flattenedEvents[date] = List.from(events);
-        }
-      });
+  nestedEvents.forEach((cycleId, dateMap) {
+    print("Processing cycle: $cycleId"); // Debug: Print current cycleId
+    dateMap.forEach((date, events) {
+      print("Date: $date, Events: $events"); // Debug: Print date and events being processed
+      if (flattenedEvents.containsKey(date)) {
+        flattenedEvents[date]!.addAll(events);
+      } else {
+        flattenedEvents[date] = List.from(events);
+      }
     });
+  });
 
-    return flattenedEvents;
-  }
+  print("Flattened Events: $flattenedEvents"); // Debug: Print final flattened events
+  return flattenedEvents;
+}
+
 
   @override
   Widget build(BuildContext context) {
