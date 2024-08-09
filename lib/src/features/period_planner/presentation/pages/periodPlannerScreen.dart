@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/data/models/events.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/editPeriodsCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/carouselCard.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/logItems.dart';
@@ -27,7 +28,8 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
   late DateTime _ovulationDate; 
   late DateTime _nextPeriodStart;
   late DateTime _nextPeriodEnd;
-  Map<DateTime, List<Event>> events = {};
+  Map<String, Map<DateTime, List<Event>>> events = {};
+
   
  
   @override
@@ -50,9 +52,19 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
   void _updateEvents() {
     setState(() {
       events = EventUtils.generateEvents(cycles);
-      debugPrint("Updated Events: $events");
+      // print("Updated Events: $events");
+      // print("Updated Events");
+      // events.forEach((cycleId, dateMap) {
+      //   dateMap.forEach((date, events) { 
+      //     print("Cycle ID $cycleId ,Date: $date, Events: $events");
+      //   });
+      // });
+      //print("Updated Events: $events"); 
+      //print("-------------"); 
     });
   }
+
+
 
   //Function to check if two dates are on the same day by truncating the time part
   bool isSameDay(DateTime date1, DateTime date2) {
@@ -186,7 +198,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                     SizedBox(
                       height: 150,
                       child: CustomCalendar(
-                        //key: ValueKey(events),
+                        key: ValueKey(events),
                         initialFormat: CalendarFormat.week, 
                         events: events,
                         ),
@@ -204,7 +216,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                             backgroundColor: Colors.grey,
                             valueColor: AlwaysStoppedAnimation<Color>(
                               isDangerZone ? Colors.red : Constants.periodPlanner,
-                            ) ,
+                            ),
                           ),
                         ),
                         Column(
@@ -274,7 +286,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                                   debugPrint('Is In Period after update: $isInPeriod');
                                                   debugPrint("--------");
                                                 }); 
-                                                //printCycles(cycles);
+                                                printCycles(cycles);
                                                 Navigator.of(context).pop();           
                                               },
                                             ),

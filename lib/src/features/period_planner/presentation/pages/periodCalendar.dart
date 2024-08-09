@@ -17,7 +17,8 @@ class PeriodCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    Map<DateTime, List<Event>> events = EventUtils.generateEvents(cycles);
+    Map<String, Map<DateTime, List<Event>>> events = {};
+    events = EventUtils.generateEvents(cycles);
     return Scaffold(
       body: Column(
         children: [

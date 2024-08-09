@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/data/models/events.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/eventsMaker.dart';
-import 'package:nishauri/src/features/period_planner/utils/event_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart';
 
@@ -36,10 +35,10 @@ Cycle predictCycle(DateTime periodStart, DateTime periodEnd, {int averageCycleLe
 
 class CustomCalendar extends StatefulWidget {
   final CalendarFormat initialFormat;
-  final Map<DateTime, List<Event>> events;
+  final Map<String, Map<DateTime, List<Event>>> events;
 
    CustomCalendar({
-    //Key? key,
+    Key? key,
     this.initialFormat = CalendarFormat.month, 
     required this.events,
     });
@@ -49,28 +48,36 @@ class CustomCalendar extends StatefulWidget {
 }
 class _CustomCalendarState extends State<CustomCalendar>{
   late CalendarFormat _calendarFormat;
-  //late Map<DateTime, List<Event>> _events;
+  late Map<DateTime, List<Event>> _flatEvents;
 
    @override
   void initState() {
     super.initState();
     _calendarFormat = widget.initialFormat;
-    //events = EventUtils.generateEvents(cycles);
-    //events = widget.events;
-    //_events = widget.events;
+    _flatEvents = _flattenEvents(widget.events);
   }
 
-  // void updateEvents(Map<DateTime, List<Event>> newEvents) {
-  //   setState(() {
-  //     _events = newEvents;
-  //     debugPrint("Updated Calendar Events: $_events");
-  //   });
-  // }
+  //To flatten the events so that it can be in the form of DateTime as the key and the events as the values
+  Map<DateTime, List<Event>> _flattenEvents(Map<String, Map<DateTime, List<Event>>> nestedEvents) {
+    final Map<DateTime, List<Event>> flattenedEvents = {};
+
+    nestedEvents.forEach((cycleId, dateMap) {
+      dateMap.forEach((date, events) {
+        if (flattenedEvents.containsKey(date)) {
+          flattenedEvents[date]!.addAll(events);
+        } else {
+          flattenedEvents[date] = List.from(events);
+        }
+      });
+    });
+
+    return flattenedEvents;
+  }
 
   @override
   Widget build(BuildContext context) {
     return TableCalendar(
-      //key: ValueKey(_events),
+      key: ValueKey(widget.events),
       firstDay: DateTime(2010),
       lastDay: DateTime(2100),
       focusedDay: DateTime.now(),
@@ -81,8 +88,9 @@ class _CustomCalendarState extends State<CustomCalendar>{
       // },
       calendarFormat: _calendarFormat,
       eventLoader: (day) {
-        // return widget.events[day] ?? [];
-        return widget.events[day] ?? [];
+        print("---Event Loader");
+        print(day);
+        return _flatEvents[day] ?? [];
       },
       headerVisible: true,
       headerStyle: const HeaderStyle(
@@ -107,14 +115,16 @@ class _CustomCalendarState extends State<CustomCalendar>{
       ),
       calendarBuilders: CalendarBuilders(
         markerBuilder: (context, date, events) {
+          //debugPrint("----From CustomCalendar-----");
+          //print(events);
           if (events.isEmpty) {
             //debugPrint('Error getting Events!! - List is empty for date: $date');
             return null;
           }
           final eventList = events.cast<Event>();
           
-          debugPrint("-----From CustomCalendar------");
-          debugPrint('Successfully cast events for date: $date, events: $eventList');
+          // debugPrint("-----From CustomCalendar------");
+          // debugPrint('Successfully cast events for date: $date, events: $eventList');
 
           return EventsMaker(date: date, events: eventList);
         },

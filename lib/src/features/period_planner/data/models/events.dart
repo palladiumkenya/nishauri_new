@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 //Event 
 class Event {
-  final String title;
-  final Color color;
+  String title;
+  Color color;
 
   Event(this.title, this.color);
 
