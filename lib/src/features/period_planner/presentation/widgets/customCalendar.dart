@@ -6,8 +6,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart';
 
 //Algorithm
-//Make the following parameter optional
-Cycle predictCycle(DateTime periodStart, DateTime periodEnd, {int averageCycleLength = 28, int averagePeriodLength = 7}) {
+Cycle predictCycle(DateTime periodStart, DateTime periodEnd, {int averageCycleLength = 28, int averagePeriodLength = 6}) {
   var uuid = const Uuid();
   String cycleId = uuid.v4(); //Generating a unique id
 
@@ -49,12 +48,14 @@ class CustomCalendar extends StatefulWidget {
 class _CustomCalendarState extends State<CustomCalendar>{
   late CalendarFormat _calendarFormat;
   late Map<DateTime, List<Event>> _flatEvents;
+  late Map<DateTime, List<Event>> _filteredEvents;
 
    @override
   void initState() {
     super.initState();
     _calendarFormat = widget.initialFormat;
     _flatEvents = _flattenEvents(widget.events);
+    _filteredEvents = _filterEventsForLatestCycle();
   }
 
   //To flatten the events so that it can be in the form of DateTime as the key and the events as the values
@@ -62,9 +63,7 @@ class _CustomCalendarState extends State<CustomCalendar>{
   final Map<DateTime, List<Event>> flattenedEvents = {};
 
   nestedEvents.forEach((cycleId, dateMap) {
-    print("Processing cycle: $cycleId"); // Debug: Print current cycleId
     dateMap.forEach((date, events) {
-      print("Date: $date, Events: $events"); // Debug: Print date and events being processed
       if (flattenedEvents.containsKey(date)) {
         flattenedEvents[date]!.addAll(events);
       } else {
@@ -72,11 +71,45 @@ class _CustomCalendarState extends State<CustomCalendar>{
       }
     });
   });
-
-  print("Flattened Events: $flattenedEvents"); // Debug: Print final flattened events
   return flattenedEvents;
-}
+  }
 
+  Map<DateTime, List<Event>> _filterEventsForLatestCycle() {
+    final Map<DateTime, List<Event>> filteredEvents = {};
+
+    //Finding the latest cycleId
+    final latestCycleId = widget.events.keys.last;
+
+    if (widget.events.containsKey(latestCycleId)) {
+      final latestCycleEvents = widget.events[latestCycleId]!;
+
+      //Add events from the latest cycle
+      latestCycleEvents.forEach((date, events) {
+        if (filteredEvents.containsKey(date)) {
+          filteredEvents[date]!.addAll(events);
+        } else {
+          filteredEvents[date] = List.from(events);
+        }
+       });
+
+       //Removing predicted period days from previous cycles
+       widget.events.forEach((cycleId, dateMap) {
+        if (cycleId != latestCycleId) {
+          dateMap.forEach((date, events) {
+            final newEventList = events.where((event) =>  event.title != 'Predicted Period Day').toList();
+            if (newEventList.isNotEmpty) {
+              if (filteredEvents.containsKey(date)) {
+                filteredEvents[date]!.addAll(newEventList);
+              } else {
+                filteredEvents[date] = List.from(newEventList);
+              }
+            }
+           });
+        }
+        });
+    }
+    return filteredEvents;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,9 +125,7 @@ class _CustomCalendarState extends State<CustomCalendar>{
       // },
       calendarFormat: _calendarFormat,
       eventLoader: (day) {
-        print("---Event Loader");
-        print(day);
-        return _flatEvents[day] ?? [];
+        return _filteredEvents[day] ?? [];
       },
       headerVisible: true,
       headerStyle: const HeaderStyle(

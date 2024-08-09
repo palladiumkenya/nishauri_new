@@ -262,13 +262,12 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                                   
                                                   final Cycle predictedCycle = predictCycle(
                                                   _periodStart = DateTime.now(),
-                                                  _periodEnd = DateTime.now().add(const Duration(days: 7)),
+                                                  _periodEnd = DateTime.now().add(const Duration(days: 6)),
                                                   );
                                                   cycles.add(predictedCycle);  
 
                                                   _ovulationDate = predictedCycle.ovulation;
                                                   _nextPeriodStart = predictedCycle.predictedPeriodStart;
-
                                                   _updateEvents();
 
                                                   // Debug print to check the state update

@@ -10,7 +10,7 @@ class EventUtils {
     debugPrint("-----Generating New Events From Event Utils-----");
 
     for (Cycle cycle in cycles) {
-      String cycleId = cycle.cycleId;
+      String cycleId = cycle.cycleId; 
       if(!events.containsKey(cycleId)) {
         events[cycleId] = {};
       }
