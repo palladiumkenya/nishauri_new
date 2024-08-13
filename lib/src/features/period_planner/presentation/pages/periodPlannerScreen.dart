@@ -14,6 +14,13 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+
+//Function to check if two dates are on the same day by truncating the time part
+  bool isSameDay(DateTime date1, DateTime date2) {
+    return date1.year == date2.year &&
+        date1.month == date2.month &&
+        date1.day == date2.day;
+  }
 class PeriodPlannerScreen extends StatefulWidget {
   const PeriodPlannerScreen({super.key});
 
@@ -66,12 +73,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
 
 
 
-  //Function to check if two dates are on the same day by truncating the time part
-  bool isSameDay(DateTime date1, DateTime date2) {
-    return date1.year == date2.year &&
-        date1.month == date2.month &&
-        date1.day == date2.day;
-  }
+  
 
 
   @override
@@ -254,31 +256,31 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                             TextButton(
                                               child: const Text('Confirm'),
                                               onPressed: () {
-                                                setState(() {
-                                                   // Log the period start here
-                                                  isInPeriod = true;
-                                                  isDangerZone = false;
-                                                  _currentDate = DateTime.now();
+                                                // setState(() {
+                                                //    // Log the period start here
+                                                //   isInPeriod = true;
+                                                //   isDangerZone = false;
+                                                //   _currentDate = DateTime.now();
                                                   
-                                                  final Cycle predictedCycle = predictCycle(
-                                                  _periodStart = DateTime.now(),
-                                                  _periodEnd = DateTime.now().add(const Duration(days: 6)),
-                                                  );
-                                                  cycles.add(predictedCycle);  
+                                                //   final Cycle predictedCycle = predictCycle(
+                                                //   _periodStart = DateTime.now(),
+                                                //   _periodEnd = DateTime.now().add(const Duration(days: 6)),
+                                                //   );
+                                                //   cycles.add(predictedCycle);  
 
-                                                  _ovulationDate = predictedCycle.ovulation;
-                                                  _nextPeriodStart = predictedCycle.predictedPeriodStart;
-                                                  _updateEvents();
+                                                //   _ovulationDate = predictedCycle.ovulation;
+                                                //   _nextPeriodStart = predictedCycle.predictedPeriodStart;
+                                                //   _updateEvents();
 
-                                                  // Debug print to check the state update
-                                                  debugPrint("After User has logged Period");
-                                                  debugPrint('Period Start after update: $_periodStart');
-                                                  debugPrint('Period End after update: $_periodEnd');
-                                                  debugPrint('Predicted Next Period Date after update: $_nextPeriodStart');
-                                                  debugPrint('Current Date after update: $_currentDate');
-                                                  debugPrint('Is In Period after update: $isInPeriod');
-                                                  debugPrint("--------");
-                                                }); 
+                                                //   // Debug print to check the state update
+                                                //   debugPrint("After User has logged Period");
+                                                //   debugPrint('Period Start after update: $_periodStart');
+                                                //   debugPrint('Period End after update: $_periodEnd');
+                                                //   debugPrint('Predicted Next Period Date after update: $_nextPeriodStart');
+                                                //   debugPrint('Current Date after update: $_currentDate');
+                                                //   debugPrint('Is In Period after update: $isInPeriod');
+                                                //   debugPrint("--------");
+                                                // }); 
                                                 printCycles(cycles);
                                                 context.goNamed(RouteNames.PERIOD_PLANNER_EDIT_PERIOD_CALENDAR);           
                                               },

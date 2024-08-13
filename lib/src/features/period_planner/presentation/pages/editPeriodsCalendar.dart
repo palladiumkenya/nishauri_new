@@ -11,11 +11,9 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-
-
-
 //printing List which is acting as a Database
 void printCycles(List<Cycle> cycles) {
+  debugPrint('----Cycle Printed----');
   for (var cycle in cycles) {
     debugPrint('Cycle ID: ${cycle.cycleId}');
     debugPrint('Period Start: ${cycle.periodStart}');
@@ -29,6 +27,8 @@ void printCycles(List<Cycle> cycles) {
   }
 }
 
+enum SelectionMode { range, multiple }
+
 class EditPeriodCalendar extends StatefulWidget {
 
   @override
@@ -41,6 +41,8 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
   DateTime? _endDate;
   Map<String, Map<DateTime, List<Event>>> events = EventUtils.generateEvents(cycles);
   late Map<DateTime, List<Event>> _flatEvents;
+  SelectionMode _selectionMode = SelectionMode.range;
+  Set<DateTime> _selectedDates = {};
 
    @override
   void initState() {
@@ -76,11 +78,70 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
     });
   } 
 
+  //Handling selection of individual dates
+    void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    setState(() {
+      _focusedDay = focusedDay;
+
+      // if (_selectionMode == SelectionMode.range) {
+      //   if (_startDate == null) {
+      //     _startDate = selectedDay;
+      //   } else if (_endDate == null) {
+      //     _endDate = selectedDay.isAfter(_startDate!) ? selectedDay : _startDate;
+      //     _startDate = selectedDay.isAfter(_startDate!) ? _startDate : selectedDay;
+      //   } else {
+      //     _startDate = selectedDay;
+      //     _endDate = null;
+      //   }
+      // } 
+        if (_selectedDates.contains(selectedDay)) {
+          _selectedDates.remove(selectedDay);
+        } else {
+          _selectedDates.add(selectedDay);
+        }
+    });
+  }
+
+
+
   //Function to handle adding and updating log entries in list Database
   void _updateOrAddCycle(DateTime start, DateTime end) {
     final Cycle newCycle = predictCycle(start, end);
       cycles.add(newCycle);
   }
+
+  // Logic to handle individual date addition
+  void _updateOrAddDates() {
+  if (_selectedDates.isNotEmpty) {
+    final List<DateTime> sortedDates = _selectedDates.toList()..sort();
+    DateTime periodStart = sortedDates.first;
+    DateTime periodEnd = sortedDates.last;
+
+    // If only one date is selected
+    if (_selectedDates.length == 1) {
+      // Check if the selected date is DateTime.now()
+      if (isSameDay(periodStart, DateTime.now())) {
+        // Set the end date to six days after the selected date
+        periodEnd = periodStart.add(const Duration(days: 6));
+      } else {
+        // If not, just set periodEnd to periodStart (one-day period)
+        periodEnd = periodStart;
+      }
+    }
+
+    final Cycle newCycle = predictCycle(periodStart, periodEnd);
+    cycles.add(newCycle);
+
+    printCycles(cycles);
+  } else {
+    // Handle case where no dates are selected
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please select your Period start and end dates.')),
+    );
+  }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -93,14 +154,47 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
             title: "Log Periods 📅",
             color: Constants.periodPlanner.withOpacity(1.0),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ToggleButtons(
+              isSelected: [
+                _selectionMode == SelectionMode.range,
+                _selectionMode == SelectionMode.multiple,
+              ],
+              onPressed: (index) {
+                setState(() {
+                  _selectionMode = index == 0 ? SelectionMode.range : SelectionMode.multiple;
+                  _startDate = null;
+                  _endDate = null;
+                  _selectedDates.clear();
+                });
+              },
+              children: const [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text('Range'),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text('Multiple Dates'),
+                ),
+              ],
+            ),
+          ),
           TableCalendar(
             focusedDay: _focusedDay,
             firstDay: DateTime(2020),
             lastDay: DateTime.now(),
-            rangeStartDay: _startDate,
-            rangeEndDay: _endDate,
+            rangeStartDay: _selectionMode == SelectionMode.range ? _startDate : null,
+            rangeEndDay: _selectionMode == SelectionMode.range ? _endDate : null,
             onRangeSelected: _onRangeSelected,
-            rangeSelectionMode: RangeSelectionMode.toggledOn,
+            onDaySelected: _onDaySelected,
+            selectedDayPredicate: (day) {
+              return _selectedDates.contains(day);
+            },
+            rangeSelectionMode: _selectionMode == SelectionMode.range
+                ? RangeSelectionMode.toggledOn
+                : RangeSelectionMode.disabled,
             eventLoader: (day) {
               return _flatEvents[day] ?? [];
             },
@@ -134,6 +228,10 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
                 shape: BoxShape.circle,
               ),
               rangeHighlightColor: Constants.periodPlanner,
+              selectedDecoration: BoxDecoration(
+                color: Constants.periodPlanner,
+                shape: BoxShape.circle,
+              ),
             ),
             headerStyle: const HeaderStyle(
               formatButtonVisible: false,
@@ -149,15 +247,20 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
                     backgroundColor: Constants.periodPlanner,
                   ),
                   onPressed: () {
-                    if (_startDate != null && _endDate != null) {
-                      _updateOrAddCycle(_startDate!, _endDate!);
-                      // Print the list of cycles
-                      printCycles(cycles);
+                    if (_selectionMode == SelectionMode.range) {
+                      if (_startDate != null) {
+                        final endDate = _endDate ?? _startDate!;
+                        _updateOrAddCycle(_startDate!, endDate);
+                        printCycles(cycles);
+                        context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Please select your Period start and end dates.')),
+                        );
+                      }
+                    } else if (_selectionMode == SelectionMode.multiple) {
+                      _updateOrAddDates();
                       context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Please select your Period start and end dates.'))
-                      );
                     }
                   },
                   child: Text(
