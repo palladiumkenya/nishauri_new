@@ -79,30 +79,29 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
   } 
 
   //Handling selection of individual dates
-    void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    setState(() {
-      _focusedDay = focusedDay;
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+  setState(() {
+    _focusedDay = focusedDay;
 
-      // if (_selectionMode == SelectionMode.range) {
-      //   if (_startDate == null) {
-      //     _startDate = selectedDay;
-      //   } else if (_endDate == null) {
-      //     _endDate = selectedDay.isAfter(_startDate!) ? selectedDay : _startDate;
-      //     _startDate = selectedDay.isAfter(_startDate!) ? _startDate : selectedDay;
-      //   } else {
-      //     _startDate = selectedDay;
-      //     _endDate = null;
-      //   }
-      // } 
-        if (_selectedDates.contains(selectedDay)) {
-          _selectedDates.remove(selectedDay);
-        } else {
-          _selectedDates.add(selectedDay);
+    if (_selectedDates.contains(selectedDay)) {
+      // If the selected day is already in the set, remove it (deselect)
+      _selectedDates.remove(selectedDay);
+    } else {
+      // If it's the first selection in a new series (or a standalone date), clear the set
+      if (_selectedDates.isEmpty || _selectedDates.last != selectedDay.subtract(const Duration(days: 4))) {
+        _selectedDates.clear();
+        
+        // Add the selected day and the next four days
+        for (int i = 0; i <= 6; i++) {
+          _selectedDates.add(selectedDay.add(Duration(days: i)));
         }
-    });
+      } else {
+        // Add the selected day if it’s a continuation of the previous selection
+        _selectedDates.add(selectedDay);
+      }
+    }
+  });
   }
-
-
 
   //Function to handle adding and updating log entries in list Database
   void _updateOrAddCycle(DateTime start, DateTime end) {
