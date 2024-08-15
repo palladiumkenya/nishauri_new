@@ -26,8 +26,6 @@ void printCycles(List<Cycle> cycles) {
   }
 }
 
-enum SelectionMode { range, multiple }
-
 class EditPeriodCalendar extends StatefulWidget {
 
   @override
@@ -40,8 +38,6 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
   DateTime? _endDate;
   Map<String, Map<DateTime, List<Event>>> events = EventUtils.generateEvents(cycles);
   late Map<DateTime, List<Event>> _flatEvents;
-  SelectionMode _selectionMode = SelectionMode.range;
-  Set<DateTime> _selectedDates = {};
 
    @override
   void initState() {
@@ -77,30 +73,6 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
     });
   } 
 
-  //Handling selection of individual dates
-  // void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-  // setState(() {
-  //   _focusedDay = focusedDay;
-
-  //   if (_selectedDates.contains(selectedDay)) {
-  //     // If the selected day is already in the set, remove it (deselect)
-  //     _selectedDates.remove(selectedDay);
-  //   } else {
-  //     // If it's the first selection in a new series (or a standalone date), clear the set
-  //     if (_selectedDates.isEmpty || _selectedDates.last != selectedDay.subtract(const Duration(days: 6))) {
-  //       _selectedDates.clear();
-        
-  //       // Add the selected day and the next six days
-  //       for (int i = 0; i <= 6; i++) {
-  //         _selectedDates.add(selectedDay.add(Duration(days: i)));
-  //       }
-  //     } else {
-  //       // Add the selected day if it’s a continuation of the previous selection
-  //       _selectedDates.add(selectedDay);
-  //     }
-  //   }
-  // });
-  // }
 
   //Function to handle adding and updating log entries in list Database
   void _updateOrAddCycle(DateTime start, [DateTime? end]) {
@@ -113,44 +85,27 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
       end = start.add(const Duration(days: 6));
     }
 
+    for (Cycle cycle in cycles) {
+      if (_datesOverlap(cycle.periodStart, cycle.periodEnd, start, end)) {
+        // Show an alert or a Snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('The selected period overlaps with an existing cycle. Please choose different dates.'),
+          ),
+        );
+        return; // Exit the function without adding the cycle
+    }
+  }
+
     // Predict the cycle with the (potentially modified) start and end dates
     final Cycle newCycle = predictCycle(start, end);
     cycles.add(newCycle);
   }
 
-  // Logic to handle individual date addition
-  //Was for allowing selection of multiple dates
-  // void _updateOrAddDates() {
-  // if (_selectedDates.isNotEmpty) {
-  //   final List<DateTime> sortedDates = _selectedDates.toList()..sort();
-  //   DateTime periodStart = sortedDates.first;
-  //   DateTime periodEnd = sortedDates.last;
-
-  //   // If only one date is selected
-  //   if (_selectedDates.length == 1) {
-  //     // Check if the selected date is DateTime.now()
-  //     if (isSameDay(periodStart, DateTime.now())) {
-  //       // Set the end date to six days after the selected date
-  //       periodEnd = periodStart.add(const Duration(days: 6));
-  //     } else {
-  //       // If not, just set periodEnd to periodStart (one-day period)
-  //       periodEnd = periodStart;
-  //     }
-  //   }
-
-  //   final Cycle newCycle = predictCycle(periodStart, periodEnd);
-  //   cycles.add(newCycle);
-
-  //   printCycles(cycles);
-  // } else {
-  //   // Handle case where no dates are selected
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     const SnackBar(content: Text('Please select your Period start and end dates.')),
-  //   );
-  // }
-  // }
-
-
+  // Function to check if two date ranges overlap
+  bool _datesOverlap(DateTime start1, DateTime end1, DateTime start2, DateTime end2) {
+    return start1.isBefore(end2) && start2.isBefore(end1);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,16 +122,10 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
             focusedDay: _focusedDay,
             firstDay: DateTime(2020),
             lastDay: DateTime.now(),
-            rangeStartDay: _selectionMode == SelectionMode.range ? _startDate : null,
-            rangeEndDay: _selectionMode == SelectionMode.range ? _endDate : null,
+            rangeStartDay: _startDate,
+            rangeEndDay: _endDate,
             onRangeSelected: _onRangeSelected,
-            //onDaySelected: _onDaySelected,
-            selectedDayPredicate: (day) {
-              return _selectedDates.contains(day);
-            },
-            rangeSelectionMode: _selectionMode == SelectionMode.range
-                ? RangeSelectionMode.toggledOn
-                : RangeSelectionMode.disabled,
+            rangeSelectionMode: RangeSelectionMode.toggledOn,
             eventLoader: (day) {
               return _flatEvents[day] ?? [];
             },
