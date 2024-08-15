@@ -55,7 +55,7 @@ class EventUtils {
         updatedEvents.update(
           date,
           (existingEvents) => existingEvents
-            ..add(Event( 'Predicted Period Day', Colors.pink)),
+            ..add(Event( 'Predicted Period Day', Colors.orange)),
           ifAbsent: () => [Event( 'Predicted Period Day', Colors.orange)],
         );
       }

@@ -65,12 +65,36 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
   return flattenedEvents;
 }
 
+    // Method to validate date range
+  bool _isDateRangeValid(DateTime start, DateTime end) {
+    final difference = end.difference(start).inDays + 1; // +1 to include the start day
+    return difference <= 7; // Ensure the range does not exceed 7 days
+  }
+
   void _onRangeSelected(DateTime? start, DateTime? end, DateTime? focusedDay) {
-    setState(() {
-      _startDate = start;
-      _endDate = end;
-      _focusedDay = focusedDay ?? _focusedDay;
-    });
+    if (start != null && end != null && !_isDateRangeValid(start, end)) {
+      showDialog(
+        context: context, 
+        builder: (context) => AlertDialog(
+          title: const Text('Invalid Selection'),
+          content: const Text('Please select a date range of 7 days or less. The average period typically lasts between 3 to 7 days.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              }, 
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      setState(() {
+        _startDate = start;
+        _endDate = end;
+        _focusedDay = focusedDay ?? _focusedDay;
+      });
+    }
   } 
 
 
@@ -79,7 +103,6 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
     // If end date is not provided, set it to the start date
     end ??= start;
 
-    // If either start or end date is the same as DateTime.now(), set end date to 6 days after start date
     final DateTime now = DateTime.now();
     if (isSameDay(start, now) || isSameDay(end, now)) {
       end = start.add(const Duration(days: 6));
@@ -94,18 +117,36 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
           ),
         );
         return; // Exit the function without adding the cycle
+      }
     }
-  }
 
-    // Predict the cycle with the (potentially modified) start and end dates
+    // If no overlap, add a new cycle
     final Cycle newCycle = predictCycle(start, end);
     cycles.add(newCycle);
+    //_updateEventsForCycle(newCycle);
   }
+
+  // void _updateEventsForCycle(Cycle cycle) {
+  //   // Remove old events for this cycle from the events map
+  //   events.remove(cycle.cycleId);
+
+  //   // Generate and add new events for the updated cycle
+  //   final newEvents = EventUtils.generateEvents([cycle]);
+  //   events[cycle.cycleId] = newEvents[cycle.cycleId]!;
+
+  //   // Update the flattened events map for display
+  //   setState(() {
+  //     _flatEvents = _flattenEvents(events);
+  //   });
+  // }
 
   // Function to check if two date ranges overlap
   bool _datesOverlap(DateTime start1, DateTime end1, DateTime start2, DateTime end2) {
-    return start1.isBefore(end2) && start2.isBefore(end1);
+    return (start1.isBefore(end2) || isSameDay(start1, end2)) && 
+    (start2.isBefore(end1) || isSameDay(start2, end1));
   }
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -131,17 +172,10 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
             },
             calendarBuilders: CalendarBuilders(
               markerBuilder: (context, date, events) {
-                //debugPrint("----From CustomCalendar-----");
-                //print(events);
                 if (events.isEmpty) {
-                  //debugPrint('Error getting Events!! - List is empty for date: $date');
                   return null;
                 }
                 final eventList = events.cast<Event>();
-                
-                // debugPrint("-----From CustomCalendar------");
-                // debugPrint('Successfully cast events for date: $date, events: $eventList');
-
                 return EventsMaker(date: date, events: eventList);
               },
             ),
