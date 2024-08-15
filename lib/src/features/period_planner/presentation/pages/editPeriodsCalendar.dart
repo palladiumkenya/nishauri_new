@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/data/models/events.dart';
-import 'package:nishauri/src/features/period_planner/presentation/widgets/calendarKey.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/eventsMaker.dart';
 import 'package:nishauri/src/features/period_planner/utils/event_utils.dart';
@@ -79,66 +78,77 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
   } 
 
   //Handling selection of individual dates
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-  setState(() {
-    _focusedDay = focusedDay;
+  // void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+  // setState(() {
+  //   _focusedDay = focusedDay;
 
-    if (_selectedDates.contains(selectedDay)) {
-      // If the selected day is already in the set, remove it (deselect)
-      _selectedDates.remove(selectedDay);
-    } else {
-      // If it's the first selection in a new series (or a standalone date), clear the set
-      if (_selectedDates.isEmpty || _selectedDates.last != selectedDay.subtract(const Duration(days: 4))) {
-        _selectedDates.clear();
+  //   if (_selectedDates.contains(selectedDay)) {
+  //     // If the selected day is already in the set, remove it (deselect)
+  //     _selectedDates.remove(selectedDay);
+  //   } else {
+  //     // If it's the first selection in a new series (or a standalone date), clear the set
+  //     if (_selectedDates.isEmpty || _selectedDates.last != selectedDay.subtract(const Duration(days: 6))) {
+  //       _selectedDates.clear();
         
-        // Add the selected day and the next four days
-        for (int i = 0; i <= 6; i++) {
-          _selectedDates.add(selectedDay.add(Duration(days: i)));
-        }
-      } else {
-        // Add the selected day if it’s a continuation of the previous selection
-        _selectedDates.add(selectedDay);
-      }
-    }
-  });
-  }
+  //       // Add the selected day and the next six days
+  //       for (int i = 0; i <= 6; i++) {
+  //         _selectedDates.add(selectedDay.add(Duration(days: i)));
+  //       }
+  //     } else {
+  //       // Add the selected day if it’s a continuation of the previous selection
+  //       _selectedDates.add(selectedDay);
+  //     }
+  //   }
+  // });
+  // }
 
   //Function to handle adding and updating log entries in list Database
-  void _updateOrAddCycle(DateTime start, DateTime end) {
+  void _updateOrAddCycle(DateTime start, [DateTime? end]) {
+    // If end date is not provided, set it to the start date
+    end ??= start;
+
+    // If either start or end date is the same as DateTime.now(), set end date to 6 days after start date
+    final DateTime now = DateTime.now();
+    if (isSameDay(start, now) || isSameDay(end, now)) {
+      end = start.add(const Duration(days: 6));
+    }
+
+    // Predict the cycle with the (potentially modified) start and end dates
     final Cycle newCycle = predictCycle(start, end);
-      cycles.add(newCycle);
+    cycles.add(newCycle);
   }
 
   // Logic to handle individual date addition
-  void _updateOrAddDates() {
-  if (_selectedDates.isNotEmpty) {
-    final List<DateTime> sortedDates = _selectedDates.toList()..sort();
-    DateTime periodStart = sortedDates.first;
-    DateTime periodEnd = sortedDates.last;
+  //Was for allowing selection of multiple dates
+  // void _updateOrAddDates() {
+  // if (_selectedDates.isNotEmpty) {
+  //   final List<DateTime> sortedDates = _selectedDates.toList()..sort();
+  //   DateTime periodStart = sortedDates.first;
+  //   DateTime periodEnd = sortedDates.last;
 
-    // If only one date is selected
-    if (_selectedDates.length == 1) {
-      // Check if the selected date is DateTime.now()
-      if (isSameDay(periodStart, DateTime.now())) {
-        // Set the end date to six days after the selected date
-        periodEnd = periodStart.add(const Duration(days: 6));
-      } else {
-        // If not, just set periodEnd to periodStart (one-day period)
-        periodEnd = periodStart;
-      }
-    }
+  //   // If only one date is selected
+  //   if (_selectedDates.length == 1) {
+  //     // Check if the selected date is DateTime.now()
+  //     if (isSameDay(periodStart, DateTime.now())) {
+  //       // Set the end date to six days after the selected date
+  //       periodEnd = periodStart.add(const Duration(days: 6));
+  //     } else {
+  //       // If not, just set periodEnd to periodStart (one-day period)
+  //       periodEnd = periodStart;
+  //     }
+  //   }
 
-    final Cycle newCycle = predictCycle(periodStart, periodEnd);
-    cycles.add(newCycle);
+  //   final Cycle newCycle = predictCycle(periodStart, periodEnd);
+  //   cycles.add(newCycle);
 
-    printCycles(cycles);
-  } else {
-    // Handle case where no dates are selected
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Please select your Period start and end dates.')),
-    );
-  }
-  }
+  //   printCycles(cycles);
+  // } else {
+  //   // Handle case where no dates are selected
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     const SnackBar(content: Text('Please select your Period start and end dates.')),
+  //   );
+  // }
+  // }
 
 
 
@@ -153,33 +163,6 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
             title: "Log Periods 📅",
             color: Constants.periodPlanner.withOpacity(1.0),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ToggleButtons(
-              isSelected: [
-                _selectionMode == SelectionMode.range,
-                _selectionMode == SelectionMode.multiple,
-              ],
-              onPressed: (index) {
-                setState(() {
-                  _selectionMode = index == 0 ? SelectionMode.range : SelectionMode.multiple;
-                  _startDate = null;
-                  _endDate = null;
-                  _selectedDates.clear();
-                });
-              },
-              children: const [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text('Range'),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text('Multiple Dates'),
-                ),
-              ],
-            ),
-          ),
           TableCalendar(
             focusedDay: _focusedDay,
             firstDay: DateTime(2020),
@@ -187,7 +170,7 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
             rangeStartDay: _selectionMode == SelectionMode.range ? _startDate : null,
             rangeEndDay: _selectionMode == SelectionMode.range ? _endDate : null,
             onRangeSelected: _onRangeSelected,
-            onDaySelected: _onDaySelected,
+            //onDaySelected: _onDaySelected,
             selectedDayPredicate: (day) {
               return _selectedDates.contains(day);
             },
@@ -246,22 +229,17 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
                     backgroundColor: Constants.periodPlanner,
                   ),
                   onPressed: () {
-                    if (_selectionMode == SelectionMode.range) {
-                      if (_startDate != null) {
-                        final endDate = _endDate ?? _startDate!;
-                        _updateOrAddCycle(_startDate!, endDate);
-                        printCycles(cycles);
-                        context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Please select your Period start and end dates.')),
-                        );
-                      }
-                    } else if (_selectionMode == SelectionMode.multiple) {
-                      _updateOrAddDates();
+                    if (_startDate != null) {
+                      final endDate = _endDate ?? _startDate!;
+                      _updateOrAddCycle(_startDate!, endDate);
+                      printCycles(cycles);
                       context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Please select your Period start and end dates.')),
+                      );
                     }
-                  },
+                    }, 
                   child: Text(
                     'Apply',
                     style: theme.textTheme.titleSmall?.copyWith(
