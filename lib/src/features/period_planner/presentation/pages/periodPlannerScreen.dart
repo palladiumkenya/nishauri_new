@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/data/models/events.dart';
-import 'package:nishauri/src/features/period_planner/presentation/pages/editPeriodsCalendar.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/logPeriods.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/carouselCard.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/logItems.dart';
@@ -282,7 +282,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                                 //   debugPrint("--------");
                                                 // }); 
                                                 printCycles(cycles);
-                                                context.goNamed(RouteNames.PERIOD_PLANNER_EDIT_PERIOD_CALENDAR);           
+                                                context.goNamed(RouteNames.PERIOD_PLANNER_LOG_PERIODS);           
                                               },
                                             ),
                                           ],

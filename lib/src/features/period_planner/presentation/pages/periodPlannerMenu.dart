@@ -91,7 +91,7 @@ _menuItems(BuildContext context) => [
         title: "Track Periods",
         onPressed: () {
           if(cycles.isEmpty) {
-            context.goNamed(RouteNames.PERIOD_PLANNER_EDIT_PERIOD_CALENDAR);
+            context.goNamed(RouteNames.PERIOD_PLANNER_LOG_PERIODS);
           }
           else {
             context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
@@ -114,7 +114,14 @@ _menuItems(BuildContext context) => [
             width: Constants.shortcutIconSize,
             height: Constants.shortcutIconSize),
         title: "Calendar",
-        onPressed: () => context.goNamed(RouteNames.PERIOD_PLANNER_CALENDAR),
+        onPressed: () {
+          if(cycles.isEmpty) {
+            context.goNamed(RouteNames.PERIOD_PLANNER_LOG_PERIODS);
+          }
+          else {
+            context.goNamed(RouteNames.PERIOD_PLANNER_CALENDAR);
+          }
+        },
         color: Constants.periodPlanner.withOpacity(1.0),
       ),
       // MenuItem(

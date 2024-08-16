@@ -26,13 +26,13 @@ void printCycles(List<Cycle> cycles) {
   }
 }
 
-class EditPeriodCalendar extends StatefulWidget {
+class LogPeriodScreen extends StatefulWidget {
 
   @override
-  State<EditPeriodCalendar> createState() => _EditPeriodCalendarState();
+  State<LogPeriodScreen> createState() => _LogPeriodScreenState();
 }
 
-class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
+class _LogPeriodScreenState extends State<LogPeriodScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _startDate;
   DateTime? _endDate;
@@ -167,6 +167,9 @@ class _EditPeriodCalendarState extends State<EditPeriodCalendar> {
             rangeEndDay: _endDate,
             onRangeSelected: _onRangeSelected,
             rangeSelectionMode: RangeSelectionMode.toggledOn,
+            onPageChanged: (focusedDay) {
+              _focusedDay = focusedDay;
+            },
             eventLoader: (day) {
               return _flatEvents[day] ?? [];
             },

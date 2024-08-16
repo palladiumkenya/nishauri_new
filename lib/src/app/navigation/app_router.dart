@@ -53,7 +53,9 @@ import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroups.da
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/DrugOrderWizardFormScreen.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/DrugOrders.dart';
 import 'package:nishauri/src/features/lab/presentation/pages/LabResultsScreen.dart';
-import 'package:nishauri/src/features/period_planner/presentation/pages/editPeriodsCalendar.dart';
+import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/editPeriodsScreen.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/logPeriods.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlannerMenu.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlannerScreen.dart';
@@ -413,12 +415,21 @@ final List<RouteBase> periodPlannerRoutes = [
         builder: (BuildContext context, GoRouterState state) {
           return const PeriodCalendar();
         },
+        routes: [
+          GoRoute(
+            name: RouteNames.PERIOD_PLANNER_EDIT_PERIODS,
+            path: 'period-planner-edit-period-calendar',
+            builder: (BuildContext context, GoRouterState state) {
+              return  EditPeriodsScreen();
+            },
+          ),
+        ]
       ),
       GoRoute(
-        name: RouteNames.PERIOD_PLANNER_EDIT_PERIOD_CALENDAR,
-        path: 'period-planner-edit-period-calendar',
+        name: RouteNames.PERIOD_PLANNER_LOG_PERIODS,
+        path: 'period-planner-log-period-calendar',
         builder: (BuildContext context, GoRouterState state) {
-          return EditPeriodCalendar();
+          return LogPeriodScreen();
         },
       ),
     ]),

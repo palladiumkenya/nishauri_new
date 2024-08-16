@@ -7,6 +7,7 @@ import 'package:nishauri/src/features/period_planner/presentation/widgets/custom
 import 'package:nishauri/src/features/period_planner/utils/event_utils.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class PeriodCalendar extends StatelessWidget {
   const PeriodCalendar({super.key});
@@ -59,27 +60,27 @@ class PeriodCalendar extends StatelessWidget {
               ],
             ),
           ),
-          // Align(
-          //   alignment: Alignment.bottomCenter,
-          //   child: Padding(
-          //     padding: const EdgeInsets.all(16.0),
-          //     child: ElevatedButton(
-          //       style: ElevatedButton.styleFrom(
-          //         backgroundColor: Constants.periodPlanner,
-          //       ),
-          //       onPressed: () {
-          //         // To add functionality later       
-          //         context.goNamed(RouteNames.PERIOD_PLANNER_EDIT_PERIOD_CALENDAR);
-          //       },
-          //       child: Text(
-          //         'Edit period dates',
-          //         style: theme.textTheme.titleSmall?.copyWith(
-          //           color: Colors.white,
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Constants.periodPlanner,
+                ),
+                onPressed: () {
+                  // To add functionality later       
+                  context.goNamed(RouteNames.PERIOD_PLANNER_EDIT_PERIODS);
+                },
+                child: Text(
+                  'Edit period dates',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
