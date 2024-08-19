@@ -18,6 +18,7 @@ class _EditPeriodsScreenState extends State<EditPeriodsScreen> {
   // DateTime? _periodEnd;
   // Cycle? _cycle;
   Map<DateTime, DateTime> _periodRanges = {};
+  
 
   @override
   void initState() {

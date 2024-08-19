@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/data/models/events.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/eventsMaker.dart';
+import 'package:nishauri/src/features/period_planner/presentation/widgets/modalContent.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart';
 
@@ -35,11 +36,13 @@ Cycle predictCycle(DateTime periodStart, DateTime periodEnd, {int averageCycleLe
 class CustomCalendar extends StatefulWidget {
   final CalendarFormat initialFormat;
   final Map<String, Map<DateTime, List<Event>>> events;
+  final bool headerButton;
 
    CustomCalendar({
     Key? key,
     this.initialFormat = CalendarFormat.month, 
-    required this.events,
+    required this.events, 
+    this.headerButton = false,
     }) : super(key: key);
 
   @override
@@ -128,9 +131,18 @@ class _CustomCalendarState extends State<CustomCalendar>{
         return _filteredEvents[day] ?? [];
       },
       headerVisible: true,
-      headerStyle: const HeaderStyle(
-        formatButtonVisible: false,
+      headerStyle: HeaderStyle(
+        formatButtonVisible: widget.headerButton,        
       ),
+      onFormatChanged: (format) {
+        // Show the modal when the format button is pressed
+        showModalBottomSheet(
+          context: context,
+          builder: (context) => const ModalContent(),
+          showDragHandle: true,
+          isScrollControlled: true,
+        );
+      },
       calendarStyle: const CalendarStyle(
         isTodayHighlighted: true,
         todayDecoration: BoxDecoration(

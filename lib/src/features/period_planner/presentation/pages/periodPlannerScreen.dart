@@ -158,11 +158,8 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
       buttonText = 'Log Period';
       chances = 'High Chances of Getting Pregnant';
     } 
-    // else {
-    //   progressValue = 1.0;
-    //   message = 'Cycle Complete';
-    //   buttonText = '';
-    // }
+
+    final theme = Theme.of(context);
 
     //Debug prints to trace the logic
     // debugPrint('Current Date: $_currentDate');
@@ -196,9 +193,10 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                         key: ValueKey(events),
                         initialFormat: CalendarFormat.week, 
                         events: events,
+                        headerButton: true,
                         ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 40),
                     Stack(
                       alignment: Alignment.center,
                       children: [
@@ -364,52 +362,74 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20,),
-                    const Text(
-                      "Please give your Daily Insights:",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15.0,
-                        color: Constants.periodPlanner,
-                      ),
-                    ),
-                    CarouselSlider(
-                      options: CarouselOptions(
-                        height: 150,
-                        enlargeCenterPage: true,
-                        enableInfiniteScroll: false,
-                        initialPage: 0,
-                        autoPlay: false, 
-                      ),
-                      items: [
-                        CarouselCard(
-                          svgPath: "assets/images/symptoms.svg", 
-                          title: "Symptoms",
-                          destination: LoggerWidget(
-                            heading: "Log Symptoms",
-                            items: LogItems.getSymptoms(),
-                            )
-                        ),
-                        CarouselCard(
-                          svgPath: "assets/images/discharge1.svg", 
-                          title: "Discharge",
-                          destination: LoggerWidget(
-                            heading: "Log Discharge", 
-                            items: LogItems.getDischarge(),
-                            )
-                        ),
-                        CarouselCard(
-                          svgPath: "assets/images/moods1.svg", 
-                          title: "Mood",
-                          destination: LoggerWidget(
-                            heading: "How are you feeling?", 
-                            items: LogItems.getMoods(),
-                            ),
-                        ),    
-                      ],
-                    ),
+                    
+                    //const SizedBox(height: 20,),
+                    // const Text(
+                    //   "Please give your Daily Insights:",
+                    //   style: TextStyle(
+                    //     fontWeight: FontWeight.bold,
+                    //     fontSize: 15.0,
+                    //     color: Constants.periodPlanner,
+                    //   ),
+                    // ),
+                    // CarouselSlider(
+                    //   options: CarouselOptions(
+                    //     height: 150,
+                    //     enlargeCenterPage: true,
+                    //     enableInfiniteScroll: false,
+                    //     initialPage: 0,
+                    //     autoPlay: false, 
+                    //   ),
+                    //   items: [
+                    //     CarouselCard(
+                    //       svgPath: "assets/images/symptoms.svg", 
+                    //       title: "Symptoms",
+                    //       destination: LoggerWidget(
+                    //         heading: "Log Symptoms",
+                    //         items: LogItems.getSymptoms(),
+                    //         )
+                    //     ),
+                    //     CarouselCard(
+                    //       svgPath: "assets/images/discharge1.svg", 
+                    //       title: "Discharge",
+                    //       destination: LoggerWidget(
+                    //         heading: "Log Discharge", 
+                    //         items: LogItems.getDischarge(),
+                    //         )
+                    //     ),
+                    //     CarouselCard(
+                    //       svgPath: "assets/images/moods1.svg", 
+                    //       title: "Mood",
+                    //       destination: LoggerWidget(
+                    //         heading: "How are you feeling?", 
+                    //         items: LogItems.getMoods(),
+                    //         ),
+                    //     ),    
+                    //   ],
+                    // ),
                   ],
                 ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Constants.periodPlanner,
+                ),
+              onPressed: () {
+                // To add functionality later       
+                context.goNamed(RouteNames.PERIOD_PLANNER_EDIT_PERIODS);
+              },
+              child: Text(
+                'Edit period dates',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  color: Colors.white,
+                ),
+              ),
               ),
             ),
           ),
