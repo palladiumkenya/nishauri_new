@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,16 +7,29 @@ import 'package:flutter_svg/svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
+import 'package:nishauri/src/features/auth/data/respositories/credential_storage_repository.dart';
+import 'package:nishauri/src/features/auth/data/services/BiometricAuthService.dart';
+import 'package:nishauri/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
+import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
+import 'package:nishauri/src/local_storage/LocalStorage.dart';
 import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/display/label_input_container.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
+import 'package:nishauri/src/shared/interfaces/notification_service.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 import 'package:nishauri/src/utils/routes.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+
+Future<String> version() async {
+  final packageInfo = await PackageInfo.fromPlatform();
+  final version = packageInfo.version;
+  return version;
+}
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -24,13 +39,40 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String _appVersion = "Loading...";
   final _formKey = GlobalKey<FormBuilderState>();
   bool _hidePassword = true;
   bool _loading = false;
+  final BiometricAuthService _biometricAuthService = BiometricAuthService();
+  final CredentialStorageRepository _credentialStorageRepository =
+      CredentialStorageRepository();
 
   void _togglePassword() {
     setState(() {
       _hidePassword = !_hidePassword;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVersion();
+    _initializeBiometricAuthService();
+  }
+
+  Future<void> _loadVersion() async {
+    final appVersion = await version();
+    setState(() {
+      _appVersion = appVersion;
+    });
+  }
+
+  bool canCheckBiometrics = false;
+
+  Future<void> _initializeBiometricAuthService() async {
+    var checkBiometrics = await _biometricAuthService.hasSavedBiometrics();
+    setState(() {
+      canCheckBiometrics = checkBiometrics;
     });
   }
 
@@ -105,6 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         placeholder: "Enter your number",
                       ),
                       keyboardType: TextInputType.phone,
+                      maxLength: 10,
                     ),
                   ),
                   const SizedBox(height: Constants.SPACING),
@@ -146,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         loading: _loading,
                         backgroundColor: theme.colorScheme.primary,
                         textColor: Colors.white,
-                        onPress: () {
+                        onPress: () async {
                           if (_formKey.currentState != null &&
                               _formKey.currentState!.saveAndValidate()) {
                             setState(() {
@@ -154,13 +197,29 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                             final authNotifier =
                                 ref.read(authStateProvider.notifier);
-                            authNotifier
-                                .login(_formKey.currentState!.value)
-                                .then((_) {
+                            final settings =
+                                ref.read(settingsNotifierProvider.notifier);
+                            var version = {"app_version": _appVersion};
+                            // final fcmToken = await AuthController.getFCM();
+                            final fcmToken = await NotificationService
+                                .firebaseMessaging
+                                .getToken();
+                            // debugPrint("Login FCM fcm token: $fcmToken");
+                            debugPrint(
+                                "Firebase messaging fcm token: $fcmToken");
+                            var mergedData = {
+                              "fcm_token": fcmToken,
+                              ..._formKey.currentState!.value,
+                              ...version
+                            };
+                            authNotifier.login(mergedData, null).then((_) {
                               //     Update user state
                               ref.read(userProvider.notifier).getUser();
                             }).then(
                               (_) {
+                                settings.patchSettings(
+                                  firstTimeInstallation: false,
+                                );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Login successful!'),
@@ -188,6 +247,110 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     },
                   ),
+                  const SizedBox(height: Constants.SPACING),
+                  //  Biometric icon button
+                  Consumer(
+                    builder: (context, ref, child) {
+                      return canCheckBiometrics
+                          ? Button(
+                              title: "Login with Biometrics",
+                              backgroundColor: theme.colorScheme.primary,
+                              textColor: Colors.white,
+                              onPress: () async {
+                                final canCheckBiometrics =
+                                    await _biometricAuthService
+                                        .hasSavedBiometrics();
+                                if (canCheckBiometrics) {
+                                  final isAuthenticated =
+                                      await _biometricAuthService
+                                          .authenticateWithBiometrics();
+                                  if (isAuthenticated) {
+                                    try {
+                                      final credentials =
+                                          await _credentialStorageRepository
+                                              .fetchCredentials();
+                                      debugPrint("Credentials: $credentials");
+                                      final authNotifier =
+                                          ref.read(authStateProvider.notifier);
+                                      final settings = ref.read(
+                                          settingsNotifierProvider.notifier);
+                                      final phoneNumber =
+                                          credentials['username'] ?? '';
+                                      final password =
+                                          credentials['password'] ?? '';
+
+                                      var version = {
+                                        "app_version": _appVersion
+                                      };
+                                      // final fcmToken = AuthController.getFCM();
+                                       final fcmToken = await NotificationService
+                                          .firebaseMessaging
+                                          .getToken();
+                                      debugPrint("Login FCM token: $fcmToken");
+                                      var biometricData = {
+                                        "user_name": phoneNumber,
+                                        "password": password,
+                                        "fcm_token": fcmToken,
+                                        ...version,
+                                      };
+
+                                      authNotifier
+                                          .login(biometricData, 'biometric')
+                                          .then((_) {
+                                        //     Update user state
+                                        ref
+                                            .read(userProvider.notifier)
+                                            .getUser();
+                                      }).then(
+                                        (_) {
+                                          settings.patchSettings(
+                                            firstTimeInstallation: false,
+                                            isBiometricEnabled: true,
+                                          );
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              content:
+                                                  Text('Login successful!'),
+                                            ),
+                                          );
+                                        },
+                                      ).whenComplete(
+                                        () async {
+                                          if (mounted) {
+                                            setState(() {
+                                              _loading = false;
+                                            });
+                                          }
+                                        },
+                                      );
+                                    } catch (error) {
+                                      debugPrint(
+                                          "Biometric login failed: $error");
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content:
+                                              Text('Biometric login failed!'),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          "No user registered for Biometric authentication on this device"),
+                                    ),
+                                  );
+                                }
+                              },
+                              surfixIcon: const Icon(Icons.fingerprint),
+                            )
+                          : SizedBox(height: Constants.SPACING);
+                    },
+                  ),
+
                   const SizedBox(
                     height: Constants.SPACING * 2,
                   ),
@@ -196,12 +359,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       LinkedRichText(
                         linked: "Don't have account?  ",
-                        unlinked: 'Register   ',
+                        unlinked: 'Register',
                         onPress: () =>
                             context.goNamed(RouteNames.REGISTER_SCREEN),
                       ),
                     ],
                   ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  Text('App Version: $_appVersion',
+                      style: theme.textTheme.titleSmall!
+                      // .copyWith(color: Constants.labResultsColor),
+                      ),
                 ],
               ),
             ),

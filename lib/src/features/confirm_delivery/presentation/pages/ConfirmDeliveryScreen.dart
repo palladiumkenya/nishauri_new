@@ -8,6 +8,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/confirm_delivery/data/modules/confirm_delivery.dart';
 import 'package:nishauri/src/features/confirm_delivery/data/providers/confirm_delivery_provider.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/DrugOrders.dart';
+import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/display/verify.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
@@ -23,7 +25,6 @@ class ConfirmDeliveryScreen extends HookConsumerWidget {
   final int? orderId;
   const ConfirmDeliveryScreen({super.key, this.confirmDelivery, this.orderId});
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController textarea = TextEditingController();
@@ -35,12 +36,12 @@ class ConfirmDeliveryScreen extends HookConsumerWidget {
         _loading = true;
         ref.read(confirmDeliveryProvider.notifier).confirmDelivery({
           ..._formKey.currentState!.instantValue,
-          "is_received" : 1,
-          "order_id" : orderId,
+          "is_received": 1,
+          "order_id": orderId,
         }).then((value) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text("Drug delivery was a success!")));
-              context.goNamed(RouteNames.PROGRAM_MENU);
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(value)));
+          context.goNamed(RouteNames.DAWA_DROP_MENU);
         }).catchError((e) {
           switch (e) {
             case BadRequestException e:
@@ -55,18 +56,28 @@ class ConfirmDeliveryScreen extends HookConsumerWidget {
         }).whenComplete(() => _loading = false);
       }
     }
+
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: const Icon(Icons.chevron_left),
+        // appBar: AppBar(
+        //   leading: IconButton(
+        //     onPressed: () => context.pop(),
+        //     icon: const Icon(Icons.chevron_left),
+        //   ),
+        //   title: const Text("Confirm drug delivery"),
+        //   backgroundColor: Theme.of(context).primaryColor,
+        // ),
+        body: Column(
+      children: [
+        const CustomAppBar(
+          title: "Confirm drug delivery",
+          icon: Icons.checklist_rtl,
+          subTitle: "Confirm you have received your delivery",
+          color: Constants.dawaDropShortcutBgColor,
         ),
-        title: const Text("Confirm drug delivery"),
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
-      body: ResponsiveWidgetFormLayout(
-        buildPageContent: (BuildContext context, Color? color) => SafeArea(
-            child: FormBuilder(
+        Expanded(
+          child: ResponsiveWidgetFormLayout(
+            buildPageContent: (BuildContext context, Color? color) => SafeArea(
+                child: FormBuilder(
               key: _formKey,
               child: Container(
                 padding: const EdgeInsets.all(Constants.SPACING * 2),
@@ -88,7 +99,8 @@ class ConfirmDeliveryScreen extends HookConsumerWidget {
                       const SizedBox(height: 20),
                       const Text(
                         "Confirm Deliver",
-                        style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 40, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: Constants.SPACING),
                       FormBuilderTextField(
@@ -115,16 +127,17 @@ class ConfirmDeliveryScreen extends HookConsumerWidget {
                         decoration: inputDecoration(
                           prefixIcon: Icons.abc_outlined,
                           label: "Feedback",
-                          placeholder: "Write a feedback/comment on the delivery...",
+                          placeholder:
+                              "Write a feedback/comment on the delivery...",
                         ),
-
                       ),
-
                       const SizedBox(height: Constants.SPACING),
                       Consumer(
                         builder: (context, ref, child) {
-                          return                               Button(
+                          return Button(
                             title: "Confirm Delivery",
+                            backgroundColor: const Color.fromRGBO(64, 87, 162, 1),
+                            textColor: Colors.white,
                             onPress: handleSubmit,
                             loading: _loading,
                           );
@@ -135,7 +148,9 @@ class ConfirmDeliveryScreen extends HookConsumerWidget {
                 ),
               ),
             )),
-      ),
-    );
+          ),
+        )
+      ],
+    ));
   }
 }

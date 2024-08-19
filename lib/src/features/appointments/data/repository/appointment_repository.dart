@@ -17,4 +17,7 @@ class AppointmentRepository {
   Future<String> rescheduleARTAppointment(Map<String, dynamic> data) async {
     return await _artAppointmentRepository.rescheduleAppointment(data);
   }
+  Future<void> saveAppointment() async {
+    await _service.saveAppointment();
+  }
 }

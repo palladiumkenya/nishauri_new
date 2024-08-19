@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/auth/presentation/pages/onboarding_screen.dart';
+import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
-import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends ConsumerWidget {
   const WelcomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final screenSize = MediaQuery.of(context).size;
+    final settings = ref.watch(settingsNotifierProvider);
+
+    if (settings.firstTimeInstallation) {
+      return const OnboardingScreen();
+    }
 
     return Scaffold(
       body: ResponsiveWidgetFormLayout(
@@ -66,29 +72,29 @@ class WelcomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: Constants.SPACING),
               const SizedBox(height: Constants.SPACING),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      height: 2,
-                      color: theme.colorScheme.outline,
-                    ),
-                  ),
-                  const Text(
-                    "Or continue with",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Expanded(
-                    child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 10),
-                        height: 2,
-                        color: theme.colorScheme.outline),
-                  ),
-                ],
-              ),
+              // Row(
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Expanded(
+              //       child: Container(
+              //         margin: const EdgeInsets.symmetric(horizontal: 10),
+              //         height: 2,
+              //         color: theme.colorScheme.outline,
+              //       ),
+              //     ),
+              //     const Text(
+              //       "Or continue with",
+              //       style: TextStyle(fontWeight: FontWeight.bold),
+              //     ),
+              //     Expanded(
+              //       child: Container(
+              //           margin: const EdgeInsets.symmetric(horizontal: 10),
+              //           height: 2,
+              //           color: theme.colorScheme.outline),
+              //     ),
+              //   ],
+              // ),
               const SizedBox(height: Constants.SPACING),
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.center,

@@ -3,7 +3,9 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 import '../../data/providers/announcements_provider.dart';
 import 'AnnouncementCard.dart';
@@ -36,10 +38,13 @@ class Announcements extends HookConsumerWidget {
              return Builder(
                builder: (BuildContext context) {
                  return AnnouncementCard(
-                   image: announcement.image,
-                   source: announcement.source,
+                   height: 200,
+                   width: 336,
+                   svgPath: announcement.image,
                    title: announcement.title,
-                   description: announcement.description,
+                    onTap: (){
+                     context.goNamed(RouteNames.BLOG_POST, extra: announcement);
+                    },
                  );
                },
              );

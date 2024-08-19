@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "921170637462",
+    "project_id": "nishauri-new-2",
+    "storage_bucket": "nishauri-new-2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:921170637462:android:5e50f392a12562c59b48b7",
+        "android_client_info": {
+          "package_name": "com.mhealth.nishauri"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDhK2nErRy_-SajzArNonosAo5nWaF9Us"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:921170637462:android:69b9ba4fc66399099b48b7",
+        "android_client_info": {
+          "package_name": "org.kenyahmis.nishauri.nishauri"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDhK2nErRy_-SajzArNonosAo5nWaF9Us"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

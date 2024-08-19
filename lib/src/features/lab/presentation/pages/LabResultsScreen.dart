@@ -31,7 +31,6 @@ class LabResultsScreen extends HookConsumerWidget {
 
     final screen = [
       ..._getProgramSpecificLabTest(userPrograms.valueOrNull ?? []),
-
       const Center(
         child: BackgroundImageWidget(
             svgImage: 'assets/images/lab-empty-state.svg',
@@ -53,8 +52,8 @@ class LabResultsScreen extends HookConsumerWidget {
         body: Column(
       children: [
         const CustomAppBar(
-          title: "Lab Results",
-          icon: FontAwesomeIcons.vial,
+          title: "Lab Results 🧪",
+          // icon: FontAwesomeIcons.vial,
           subTitle: "Unlock you health insights with lab results",
           color: Constants.labResultsColor,
         ),
@@ -65,14 +64,14 @@ class LabResultsScreen extends HookConsumerWidget {
           activeColor: Constants.labResultsColor,
           activeIndex: currIndex.value,
           items: [
-            ..._getProgramSpecificTestTabBarItem(userPrograms.valueOrNull ?? []),
+            ..._getProgramSpecificTestTabBarItem(
+                userPrograms.valueOrNull ?? []),
             const CustomTabBarItem(title: "Stool Test"),
             const CustomTabBarItem(title: "Blood Test"),
             const CustomTabBarItem(title: "Urine Test"),
           ],
         ),
         Expanded(child: screen[currIndex.value]),
-
       ],
     ));
   }

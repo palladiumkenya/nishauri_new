@@ -12,55 +12,6 @@ import 'package:nishauri/src/utils/helpers.dart';
 
 class UserService extends HTTPService {
   final AuthRepository _repository = AuthRepository(AuthApiService());
-  Future<User> _updateProfile(User user) async {
-    final tokenPair = await getCachedToken();
-    // var headers = {'x-access-token': tokenPair.accessToken};
-    var headers = {'Content-Type': 'application/json'};
-    var request = http.MultipartRequest(
-        'POST', Uri.parse('${Constants.BASE_URL_NEW}/profile'));
-    // Serialize user data to JSON
-    final userData = user.toJson();
-    // Extract image path and remove it from user data
-    final String? image = userData['image'];
-    userData.remove('image');
-    // Add headers to the request
-    request.headers.addAll(headers);
-    // Add form fields to the request
-    userData.forEach((key, value) {
-      if (value != null) {
-        if (value is List) {
-          // Handle lists (e.g., allergies, disabilities, chronics)
-          for (var i = 0; i < value.length; i++) {
-            request.fields['$key[$i]'] = value[i].toString();
-          }
-        } else {
-          request.fields[key] = value.toString();
-        }
-      }
-    });
-
-    // Add the image file to the request
-    if (image != null) {
-      if (isNetworkUri(image)) {
-        final remoteImageData = await _downloadRemoteImage(image);
-        request.files.add(http.MultipartFile.fromBytes('image', remoteImageData,
-            filename: '${userData['firstName']}.jpg'));
-      } else {
-        request.files.add(await http.MultipartFile.fromPath('image', image));
-      }
-    }
-
-    // Send the request and get the response
-    http.StreamedResponse response = await request.send();
-
-    // Check the response status code
-
-    if (response.statusCode == 200) {
-      return user;
-    } else {
-      throw await getException(response);
-    }
-  }
 
   Future<http.StreamedResponse> updateProfile_(
       Map<String, dynamic> user) async {
@@ -119,34 +70,9 @@ class UserService extends HTTPService {
     }
   }
 
-  Future<User> __getUser() async {
-    final tokenPair = await getCachedToken();
-    var headers = {'x-access-token': tokenPair.accessToken};
-    const url = '${Constants.BASE_URL}/auth/profile';
-    final response = await request(url: url, token: tokenPair, method: "GET");
-
-    if (response.statusCode == 200) {
-      // Success: Parse and return the User object
-      final responseString = await response.stream.bytesToString();
-      final userData = json.decode(responseString);
-      final Map<String, dynamic> person = userData["person"][0];
-      person.remove("_id");
-      return User.fromJson({
-        ...userData,
-        ...person,
-        "name": "${person["firstName"]} ${person["lastName"]}",
-        "id": userData["_id"],
-        "image": person["image"] != null
-            ? "${Constants.BASE_URL}/files/${person["image"]}"
-            : null
-      }); // Replace with your User object parsing logic
-    } else {
-      throw await getException(response);
-    }
-  }
-
   Future<User> getUser() async {
     final response = await call(getUser_, null);
+    print(response.statusCode);
     final responseString = await response.stream.bytesToString();
     final userData = json.decode(responseString);
     final Map<String, dynamic> person = userData["data"];
@@ -181,76 +107,69 @@ class UserService extends HTTPService {
 
   Future<http.StreamedResponse> getUser_(dynamic args) async {
     final id = await _repository.getUserId();
+
     final tokenPair = await getCachedToken();
     var headers = {
       'Authorization': "Bearer ${tokenPair.accessToken}",
       'Content-Type': 'application/json'
     };
-    var request = http.Request(
-        'GET', Uri.parse('${Constants.BASE_URL_NEW}/get_profile?user_id=$id'));
-    request.headers.addAll(headers);
-    return await request.send();
+    print('user token : $tokenPair');
+    var url = '${Constants.BASE_URL_NEW}/get_profile?user_id=$id';
+    final response = await request(url: url, token: tokenPair, method: 'GET', requestHeaders: headers, userId: id);
+    // var request = http.Request(
+    //     'GET', Uri.parse('${Constants.BASE_URL_NEW}/get_profile?user_id=$id'));
+    // request.headers.addAll(headers);
+    return response;
   }
 
-  Future<User> _getUser(dynamic args) async {
-    final tokenPair = await getCachedToken();
-    var headers = {'x-access-token': tokenPair.accessToken};
-    var request =
-        http.Request('GET', Uri.parse('${Constants.BASE_URL}/auth/profile'));
-    request.headers.addAll(headers);
-    http.StreamedResponse response = await request.send();
+  Future<http.StreamedResponse> patientData_(dynamic args) async {
+    final id = await _repository.getUserId();
 
-    if (response.statusCode == 200) {
-      // Success: Parse and return the User object
-      final responseString = await response.stream.bytesToString();
-      final userData = json.decode(responseString);
-      final Map<String, dynamic> person = userData["person"][0];
-      person.remove("_id");
-      return User.fromJson({
-        ...userData,
-        ...person,
-        "name": "${person["firstName"]} ${person["lastName"]}",
-        "id": userData["_id"],
-        "image": person["image"] != null
-            ? "${Constants.BASE_URL}/files/${person["image"]}"
-            : null
-      }); // Replace with your User object parsing logic
-    } else {
-      throw await getException(response);
-    }
-  }
-
-  Future<Uint8List> _downloadRemoteImage(String remoteImagePath) async {
-    final response = await http.get(Uri.parse(remoteImagePath));
-    if (response.statusCode == 200) {
-      return response.bodyBytes;
-    } else {
-      throw Exception('Failed to download remote image');
-    }
-  }
-
-  Future<String> _accountVerify(Map<String, dynamic> data) async {
     final tokenPair = await getCachedToken();
     var headers = {
-      'x-access-token': tokenPair.accessToken,
-      'Content-Type': 'application/json',
+      'Authorization': "Bearer ${tokenPair.accessToken}",
+      'Content-Type': 'application/json'
     };
-    var request =
-        http.Request('POST', Uri.parse('${Constants.BASE_URL}/auth/verify'));
-    request.body = jsonEncode(data);
-    request.headers.addAll(headers);
-    http.StreamedResponse response = await request.send();
-    if (response.statusCode == 200) {
-      final responseString = await response.stream.bytesToString();
-      final userData = json.decode(responseString);
-      // print user data to console
-      debugPrint(userData);
-      return userData["detail"];
-    } else {
-      throw await getException(response);
-    }
+    var url = '${Constants.BASE_URL_NEW}/patient_data?user_id=$id';
+    final response = await request(url: url, token: tokenPair, method: 'GET', requestHeaders: headers, userId: id);
+    return response;
   }
 
+  int calculateAge(String dob) {
+    if (dob.isEmpty) return 0;
+    DateTime dateOfBirth = DateTime.parse(dob);
+    DateTime now = DateTime.now();
+
+    int age = now.year - dateOfBirth.year;
+
+    if (now.month < dateOfBirth.month ||
+        (now.month == dateOfBirth.month && now.day < dateOfBirth.day)) {
+      age--;
+    }
+    return age;
+  }
+
+
+  Future<void> saveGenderAge() async {
+    try{
+      final resp = await call(patientData_, null);
+      if (resp.statusCode == 200) {
+        final responseString = await resp.stream.bytesToString();
+        final respData = json.decode(responseString);
+        if (respData["success"] == true) {
+          final gender = respData["data"]["patient_data"]["gender"];
+          final dob = respData["data"]["patient_data"]["dob"];
+          await _repository.saveGender(gender);
+          await _repository.saveAge(calculateAge(dob).toString());
+        }
+        else{
+          throw respData["message"];
+        }
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
   Future<String> accountVerify(Map<String, dynamic> data) async {
     http.StreamedResponse response = await call(accountVerify_, data);
     String message = '';
@@ -283,28 +202,14 @@ class UserService extends HTTPService {
       'Authorization': "Bearer ${tokenPair.accessToken}",
       'Content-Type': 'application/json',
     };
-    var request =
-        http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}verifyotp'));
-    request.body = jsonEncode(mergedData);
-    request.headers.addAll(headers);
-    return await request.send();
-  }
-
-  Future<String> _requestVerificationCode(String? mode) async {
-    final tokenPair = await getCachedToken();
-    var headers = {'x-access-token': tokenPair.accessToken};
-    var request = http.Request(
-        'GET', Uri.parse('${Constants.BASE_URL}/auth/verify?mode=$mode'));
-    request.headers.addAll(headers);
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      final responseString = await response.stream.bytesToString();
-      final userData = json.decode(responseString);
-      return userData["detail"];
-    } else {
-      throw await getException(response);
-    }
+    var url = '${Constants.BASE_URL_NEW}verifyotp';
+    final response = await request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, data: mergedData, userId: id);
+    // var request =
+    //     http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}verifyotp'));
+    // request.body = jsonEncode(mergedData);
+    // request.headers.addAll(headers);
+    // return await request.send();
+    return response;
   }
 
   Future<http.StreamedResponse> requestVerificationCode_(String? mode) async {
@@ -315,11 +220,13 @@ class UserService extends HTTPService {
       'Content-Type': 'application/json',
     };
     var body = {'user_id': id};
-    var request =
-        http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}sendotp'));
-    request.body = jsonEncode(body);
-    request.headers.addAll(headers);
-    http.StreamedResponse response = await request.send();
+    var url = '${Constants.BASE_URL_NEW}sendotp';
+    final response = request(url: url, token: tokenPair, method: 'POST', requestHeaders: headers, userId: id, data: body);
+    // var request =
+    //     http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}sendotp'));
+    // request.body = jsonEncode(body);
+    // request.headers.addAll(headers);
+    // http.StreamedResponse response = await request.send();
     return response;
   }
 
@@ -330,5 +237,30 @@ class UserService extends HTTPService {
     final responseString = await response.stream.bytesToString();
     final userData = json.decode(responseString);
     return userData["msg"];
+  }
+
+  Future<String> revokeToken() async {
+    final id = await _repository.getUserId();
+    final tokenPair = await getCachedToken();
+    var data = {"token": tokenPair.refreshToken, "user_id" : id};
+    var headers = {'Content-Type': 'application/json'};
+    var request =
+    http.Request('POST', Uri.parse('${Constants.BASE_URL_NEW}/revoke_token'));
+    request.body = json.encode(data);
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+
+      final responseString = await response.stream.bytesToString();
+      final respData = jsonDecode(responseString);
+      if(respData["success"] == true){
+        return respData['msg'];
+      }else {
+        throw respData['msg'];
+      }
+    } else {
+      print('-->revokeToken ${await getException(response)}');
+      throw await getException(response);
+    }
   }
 }

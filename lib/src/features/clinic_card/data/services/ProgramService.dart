@@ -9,19 +9,6 @@ import 'package:nishauri/src/utils/helpers.dart';
 
 
 class ProgramService extends HTTPService {
-  // final AuthRepository _repository = AuthRepository(AuthApiService());
-  // Future<List<Program>> getPrograms() async {
-  //   try {
-  //     final data = await loadJsonData('assets/data/clinic_card.json');
-  //     final List<dynamic> jsonList = jsonDecode(data)['programs'];
-  //     final List<Program> programs = jsonList.map((json) => Program.fromJson(json)).toList();
-  //     return programs;
-  //   } catch (e) {
-  //     // Handle errors appropriately
-  //     print('Error fetching programs: $e');
-  //     return []; // Return an empty list or throw an exception as per your requirement
-  //   }
-  // }
   final AuthRepository _repository = AuthRepository(AuthApiService());
   Future<List<Program>> getPrograms() async {
     try{
@@ -41,10 +28,6 @@ class ProgramService extends HTTPService {
     } catch (e) {
       throw e.toString();
     }
-    // final data = await loadJsonData('assets/data/clinic_card.json');
-    // final List<dynamic> jsonList = jsonDecode(data)['programs'];
-    // final programs = jsonList.map((json) => Program.fromJson(json)).toList();
-    // return programs;
   }
 
   Future<http.StreamedResponse> getPrograms_(dynamic args) async {
@@ -52,9 +35,34 @@ class ProgramService extends HTTPService {
     final tokenPair = await getCachedToken();
     var headers = {'Authorization':"Bearer ${tokenPair.accessToken}",
       'Content-Type': 'application/json'};
-    var request =
-    http.Request('GET', Uri.parse('${Constants.BASE_URL_NEW}/patient_clinic_new?user_id=$id'));
-    request.headers.addAll(headers);
-    return await request.send();
+    var url = '${Constants.BASE_URL_NEW}/patient_clinic_new?user_id=$id';
+    final response = request(url: url, token: tokenPair, method: "GET", requestHeaders: headers, userId: id);
+    // var request =
+    // http.Request('GET', Uri.parse('${Constants.BASE_URL_NEW}/patient_clinic_new?user_id=$id'));
+    // request.headers.addAll(headers);
+    // return await request.send();
+    return response;
+  }
+
+  Future<void> saveRegimen() async {
+    try{
+      final resp = await call(getPrograms_, null);
+      if (resp.statusCode == 200) {
+        final responseString = await resp.stream.bytesToString();
+        final respData = json.decode(responseString);
+        var regimen;
+        for (var program in respData['programs']) {
+          for (var observation in program['patient_observations']) {
+            if (observation['label'] == 'Regimen') {
+              regimen = observation['value'];
+              break;
+            }
+          }
+        }
+          await _repository.saveRegimen(regimen);
+      }
+    } catch (e) {
+      throw e;
+    }
   }
 }

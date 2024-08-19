@@ -33,20 +33,20 @@ class _DashboardState extends ConsumerState<Dashboard> {
             bottom: TabBar(
               tabs: [
                 const Tab(text: "General"),
-                ...data
-                    .where(_hasDashboardData)
-                    .map(_getProgramTabBar)
-                    .toList(),
+                // ...data
+                //     .where(_hasDashboardData)
+                //     .map(_getProgramTabBar)
+                //     .toList(),
               ],
             ),
           ),
           body: TabBarView(
             children: [
               const GeneralDashboard(),
-              ...data
-                  .where(_hasDashboardData)
-                  .map(_getProgramDashboard)
-                  .toList(),
+              // ...data
+              //     .where(_hasDashboardData)
+              //     .map(_getProgramDashboard)
+              //     .toList(),
             ],
           ),
         ),

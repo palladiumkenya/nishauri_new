@@ -1,12 +1,16 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nishauri/custom_icons.dart';
 import 'package:nishauri/src/features/chatbot/data/models/message.dart';
 import 'package:nishauri/src/features/chatbot/data/repository/ChatbotRepository.dart';
 import 'package:nishauri/src/features/chatbot/data/services/ChatbotService.dart';
+import 'package:nishauri/src/features/clinic_card/data/providers/programProvider.dart';
+import 'package:nishauri/src/features/consent/data/providers/consent_provider.dart';
+import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
+import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 
@@ -58,7 +62,7 @@ class _TypingAnimationState extends State<TypingAnimation>
   }
 }
 
-class ChatScreen extends StatefulWidget {
+class ChatScreen extends ConsumerStatefulWidget {
   final Function(int chatsCount)? onChatsChange;
   const ChatScreen({Key? key, this.onChatsChange}) : super(key: key);
 
@@ -66,18 +70,51 @@ class ChatScreen extends StatefulWidget {
   _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+enum ConsentType { accept, revoke }
+
+class _ChatScreenState extends ConsumerState<ChatScreen> {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final ChatbotRepository _repository = ChatbotRepository(ChatbotService());
 
-  final List<Message> _messages = [
-    const Message(
-      question: "Welcome to Nuru \nHow can I assist you today?",
-      isSentByUser: false,
-    ),
-  ];
+  var currentUser = "";
   bool _isBotTyping = false;
+  bool _consent = false;
+  List<Message> _messages = [];
+  bool _showConsent = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+    _fetchConsent();
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _checkAndShowConsentDialog());
+    // check whether user is registered on a program using program provider
+    ref.read(programProvider).when(
+      data: (programs) {
+        if (programs.isEmpty) {
+          // _showConsent should be false
+          print("No programs found");
+          setState(() {
+            _showConsent = false;
+          });
+        } else {
+          // _showConsent should be true
+          print("Programs found");
+          setState(() {
+            _showConsent = true;
+          });
+        }
+      },
+      loading: () {
+        debugPrint("Loading programs...");
+      },
+      error: (error, stackTrace) {
+        debugPrint("Error loading programs: $error");
+      },
+    );
+  }
 
   Widget _buildMessage(Message message) {
     IconData userIcon = message.isSentByUser ? Icons.person : CustomIcons.robot;
@@ -156,7 +193,6 @@ class _ChatScreenState extends State<ChatScreen> {
     try {
       final response = await _repository.sendMessage(message);
       if (response != null && response.msg != null) {
-        print(response.msg);
         setState(() {
           _messages.add(Message(question: response.msg, isSentByUser: false));
           _isBotTyping = false; // Bot stops typing after receiving a response
@@ -183,9 +219,175 @@ class _ChatScreenState extends State<ChatScreen> {
             question: 'Failed to send message to Nuru..', isSentByUser: false));
         _isBotTyping = false; // Bot stops typing on failure to send message
       });
+    } finally {
+      widget.onChatsChange != null
+          ? widget.onChatsChange!(_messages.length)
+          : null;
     }
-    finally{
-      widget.onChatsChange!= null ? widget.onChatsChange!(_messages.length):null;
+  }
+
+  // function that Fetch user data
+  void _fetchUserData() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userAsyncValue = ref.read(userProvider);
+      userAsyncValue.when(
+        data: (user) {
+          debugPrint("--_fetchUserData()");
+          setState(() {
+            currentUser = user.firstName as String;
+            _messages = [
+              Message(
+                question:
+                    "Hi $currentUser 👋 \nWelcome to Nuru \nHow can I assist you today?",
+                isSentByUser: false,
+              ),
+            ];
+          });
+        },
+        loading: () {
+          debugPrint("Loading user data...");
+        },
+        error: (error, stackTrace) {
+          debugPrint("Error loading user data: $error");
+        },
+      );
+    });
+  }
+
+  // Shows consent Dialog
+  void _showConsentDialog(
+      BuildContext context, WidgetRef ref, ConsentType? type) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Informed Consent for Nuru Chatbot',
+              style: Theme.of(context).textTheme.titleLarge),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              type == ConsentType.accept
+                  ? SingleChildScrollView(
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(height: 16, width: 20,), // Add some spacing
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: MediaQuery.of(context).size.height * 0.4,
+                          ),
+                          child: Scaffold(
+                            body: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                    child: Markdown(
+                                      data: """
+  Nuru chatbot provides personalized health information and support.\nWe respect your privacy and want to clarify how it works.
+  ## What You Need to Know:
+  1. ### Purpose:
+  - The chatbot offers general health advice and answers common queries.
+  - It does not access or store personal data.
+  2. ### Data Usage:
+  - The chatbot analyzes your clinical information and interactions to tailor responses.
+  - No personal details like name or health identifiers are linked to these interactions.
+  3. ### Benefits:
+  - Quick, relevant answers without sharing sensitive data.
+  - Enhances your app experience.
+  4. ### Voluntary Participation:
+  - Using the chatbot is optional.
+  - You can stop anytime using the unsubscribe/leave option.\n
+  `*By continuing to use the chatbot, you agree to the terms above. Your privacy matters to us!*`
+  """,
+                                      styleSheet: MarkdownStyleSheet(
+                                        code: TextStyle(
+                                            fontSize: 12,
+                                            color: Theme.of(context).primaryColor),
+                                      ),
+                                    )
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ]
+                  )
+              )
+                  : Text('Are you sure you want to revoke your consent for personalized response by Nuru?'),
+            ],
+          ),
+          scrollable: true,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                ref
+                    .read(settingsNotifierProvider.notifier)
+                    .updateSettings(firstNuruAccess: false);
+                setState(() {
+                  _consent = !_consent;
+                });
+                _updateConsent(type == ConsentType.accept ? true : false);
+                Navigator.of(context).pop();
+              },
+              child: const Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('No'),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
+  // Fetch consent from the server using consent service
+  void _fetchConsent() async {
+    try {
+      final repository = await ref.read(consentProvider);
+      final consentData = await repository.getConsent();
+      debugPrint("Fetched consent data: $consentData");
+      // Update UI based on fetched consent data
+      var remoteConsent =
+          consentData.isNotEmpty ? consentData.first.chatbot_consent : null;
+      setState(() {
+        _consent = remoteConsent == "1" ? true : false;
+      });
+    } catch (e) {
+      debugPrint("Error fetching consent: $e");
+      // Handle error, e.g., show an error message
+    }
+  }
+
+  // Update consent to the server
+  void _updateConsent(bool consent) async {
+    try {
+      final repository = await ref.read(consentProvider);
+      String responseMessage;
+      if (consent) {
+        responseMessage = await repository.consent();
+      } else {
+        responseMessage = await repository.revokeConsent();
+      }
+      debugPrint("Consent update response: $responseMessage");
+    } catch (e) {
+      debugPrint("Error updating consent: $e");
+      // Handle error, e.g., show an error message
+    }
+  }
+
+  // Check and show consent dialog for first time use
+  void _checkAndShowConsentDialog() {
+    final settings = ref.read(settingsNotifierProvider);
+    if (settings.firstNuruAccess) {
+      debugPrint("Nuru first time use: ${settings.firstNuruAccess}");
+      _showConsentDialog(context, ref, ConsentType.accept);
+    } else {
+      debugPrint("Nuru first time use: ${settings.firstNuruAccess}");
     }
   }
 
@@ -193,58 +395,86 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     final size = getOrientationAwareScreenSize(context);
     final theme = Theme.of(context);
-    return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Chat with Nuru'),
-      // ),
-      body: Stack(
-        children: [
-          Positioned(
-              top: 0,
-              right: 0,
-              child: SvgPicture.asset(
-                "assets/images/rect-bg.svg",
-                semanticsLabel: "Doctors",
-                fit: BoxFit.contain,
-                height: size.width * 0.55,
-                width: size.width * 0.55,
-              )),
-          SafeArea(
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(Constants.SPACING),
-                  child: Row(
-                    children: [
-                      Text('Chat with Nuru',
-                          style: theme.textTheme.headlineLarge),
-                      const SizedBox(width: Constants.SPACING),
-                      const FaIcon(FontAwesomeIcons.robot),
-                    ],
-                  ),
+    print("Show consent: $_showConsent");
+    return Consumer(
+      builder: (context, ref, child) {
+        return Scaffold(
+          body: Stack(
+            children: [
+              Positioned(
+                  top: 0,
+                  right: 0,
+                  child: SvgPicture.asset(
+                    "assets/images/rect-bg.svg",
+                    semanticsLabel: "Doctors",
+                    fit: BoxFit.contain,
+                    height: size.width * 0.55,
+                    width: size.width * 0.55,
+                  )),
+              SafeArea(
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(Constants.SPACING),
+                      child: Row(
+                        children: [
+                          Text('Chat with Nuru 🤖',
+                              style: theme.textTheme.headlineLarge),
+                          const SizedBox(width: Constants.SPACING),
+                        ],
+                      ),
+                    ),
+                    _showConsent
+                        ? Flex(
+                            direction: Axis.horizontal,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              _consent
+                                  ? TextButton(
+                                      onPressed: () {
+                                        _showConsentDialog(
+                                            context, ref, ConsentType.revoke);
+                                      },
+                                      child: const Text(
+                                        "Revoke consent",
+                                        style: TextStyle(color: Colors.red),
+                                      ))
+                                  : TextButton(
+                                      onPressed: () {
+                                        _showConsentDialog(
+                                            context, ref, ConsentType.accept);
+                                      },
+                                      child: const Text(
+                                        "Give consent",
+                                        style: TextStyle(color: Colors.green),
+                                      ))
+                            ],
+                          )
+                        : const SizedBox(),
+                    const Divider(),
+                    Expanded(
+                      child: ListView.builder(
+                        controller: _scrollController,
+                        itemCount: _messages.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final Message message = _messages[index];
+                          return _buildMessage(message);
+                        },
+                      ),
+                    ),
+                    _isBotTyping
+                        ? Padding(
+                            padding: const EdgeInsets.all(Constants.SPACING),
+                            child: TypingAnimation(), // Bot typing indicator
+                          )
+                        : _buildComposer(),
+                  ],
                 ),
-                const Divider(),
-                Expanded(
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: _messages.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final Message message = _messages[index];
-                      return _buildMessage(message);
-                    },
-                  ),
-                ),
-                _isBotTyping
-                    ? Padding(
-                        padding: const EdgeInsets.all(Constants.SPACING),
-                        child: TypingAnimation(), // Bot typing indicator
-                      )
-                    : _buildComposer(),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -269,11 +499,9 @@ class _ChatScreenState extends State<ChatScreen> {
             suffixIcon: Wrap(
               children: [
                 IconButton(
-                  onPressed: () {},
-                  icon: const FaIcon(FontAwesomeIcons.microphoneLines),
-                ),
-                IconButton(
-                  icon: const FaIcon(FontAwesomeIcons.paperPlane),
+                  icon: SvgPicture.asset(
+                    "assets/images/Send.svg",
+                  ),
                   onPressed: () => _handleSubmit(_textController.text),
                 ),
               ],

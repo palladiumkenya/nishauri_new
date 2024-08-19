@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/dawa_drop/data/models/order_request/drug_order.dart';
 import 'package:nishauri/src/features/dawa_drop/data/providers/drug_order_provider.dart';
-import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/AllOrders.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/FulfilledOrders.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/active_orders.dart';
 import 'package:nishauri/src/shared/display/CustomTabBar.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
@@ -22,76 +21,91 @@ class DrugOrdersScreen extends HookConsumerWidget {
     final currIndex = useState(0);
 
     return orderAsync.when(
-      data: (data) {
-        // Separate orders based on their status
-        List<DrugOrder> allOrders = data;
-        List<DrugOrder> pendingOrders =
-        allOrders.where((order) => order.status != 'Fullfilled').toList();
-        List<DrugOrder> approvedOrders =
-        allOrders.where((order) => order.status == 'Approved').toList();
-        List<DrugOrder> fulfilledOrders =
-        allOrders.where((order) => order.status == 'Fullfilled').toList();
-        final screens = [
-          AllOrders(orders: pendingOrders),
-          // PendingOrders(orders: pendingOrders),
-          // ApprovedOrders(orders: approvedOrders),
-          FulfilledOrders(orders: fulfilledOrders),
-        ];
+      data: (data) => _buildData(context, data, currIndex, ref),
+      error: (error, _) => _buildError(context, error, ref),
+      loading: () => _buildLoading(theme),
+    );
+  }
 
-        return Scaffold(
-            body: Column(
-              children: [
-                CustomAppBar(
-                  title: "Drug Requests",
-                  icon: Icons.shopping_cart_checkout_sharp,
-                  color: Constants.dawaDropColor.withOpacity(0.5),
-                ),
-                CustomTabBar(
-                  activeIndex: currIndex.value,
-                  onTap: (item, index) {
-                    currIndex.value = index;
-                  },
-                  activeColor: Constants.dawaDropColor.withOpacity(0.5),
-                  items: const [
-                    CustomTabBarItem(
-                      title: "Active Request",
-                      icon: Icons.all_inbox,
-                    ),
-                    CustomTabBarItem(
-                      title: "Fulfilled Request",
-                      icon: Icons.done_all,
-                    ),
-                  ],
-                ),
-                Expanded(child: screens[currIndex.value]
-                ),
-              ],
-            )
-        );
-      },
-      error: (error, _) => BackgroundImageWidget(
-        customAppBar: CustomAppBar(
-          title: "Confirm Delivery",
-          icon: Icons.vaccines_sharp,
-          color: Constants.dawaDropColor.withOpacity(0.5),
-        ),
-        svgImage: 'assets/images/background.svg',
-        notFoundText: error.toString(),
+  Widget _buildData(BuildContext context, List<DrugOrder> data, ValueNotifier<int> currIndex, WidgetRef ref) {
+    List<DrugOrder> pendingOrders = data.where((order) => order.status != 'Fullfilled').toList();
+    List<DrugOrder> fulfilledOrders = data.where((order) => order.status == 'Fullfilled').toList();
+
+    final screens = [
+      ActiveOrders(orders: pendingOrders),
+      FulfilledOrders(orders: fulfilledOrders),
+    ];
+
+    return Scaffold(
+      body: Column(
+        children: [
+          CustomAppBar(
+            title: "Drug Requests 🛒",
+            color: Constants.dawaDropColor.withOpacity(0.5),
+          ),
+          CustomTabBar(
+            activeIndex: currIndex.value,
+            onTap: (item, index) {
+              currIndex.value = index;
+            },
+            activeColor: Constants.dawaDropColor.withOpacity(0.5),
+            items: const [
+              CustomTabBarItem(
+                title: "Active Request",
+                icon: Icons.all_inbox,
+              ),
+              CustomTabBarItem(
+                title: "Fulfilled Request",
+                icon: Icons.done_all,
+              ),
+            ],
+          ),
+          Expanded(child: screens[currIndex.value]),
+        ],
       ),
-      // Text(error.toString())),
-      loading: () => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "Loading Drug requests",
-              style: theme.textTheme.headline6,
-            ),
-            const SizedBox(height: Constants.SPACING * 2),
-            const CircularProgressIndicator(),
-          ],
-        ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              ref.refresh(drugOrderProvider);
+            },
+            child: const Icon(Icons.refresh),
+            heroTag: null,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildError(BuildContext context, Object error, WidgetRef ref) {
+    return BackgroundImageWidget(
+      customAppBar: CustomAppBar(
+        title: "Drug Requests 🛒",
+        color: Constants.dawaDropColor.withOpacity(0.5),
+      ),
+      svgImage: 'assets/images/background.svg',
+      notFoundText: error.toString(),
+      floatingButtonIcon1: Icons.refresh,
+      floatingButtonAction1: () {
+        ref.refresh(drugOrderProvider);
+      },
+    );
+  }
+
+  Widget _buildLoading(ThemeData theme) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            "Loading Drug requests",
+            style: theme.textTheme.bodySmall,
+          ),
+          const SizedBox(height: Constants.SPACING * 2),
+          const CircularProgressIndicator(),
+        ],
       ),
     );
   }

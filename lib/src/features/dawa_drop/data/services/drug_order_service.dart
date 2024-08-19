@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
@@ -18,13 +19,22 @@ class DrugOrderService extends HTTPService {
     final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
     var headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
-    var request = Request(
-      'GET',
-      Uri.parse('${Constants.BASE_URL_NEW}drug_delivery_list?user_id=$id'),
-    );
-    request.headers.addAll(headers);
-    return await request.send();
+    var url = '${Constants.BASE_URL_NEW}drug_delivery_list?user_id=$id';
+    final response = request(
+        url: url,
+        token: tokenPair,
+        method: 'GET',
+        requestHeaders: headers,
+        userId: id);
+    // var request = Request(
+    //   'GET',
+    //   Uri.parse('${Constants.BASE_URL_NEW}drug_delivery_list?user_id=$id'),
+    // );
+    // request.headers.addAll(headers);
+    // return await request.send();
+    return response;
   }
+
   Future<List<DrugOrder>> getOrders() async {
     // try{
     //
@@ -81,13 +91,23 @@ class DrugOrderService extends HTTPService {
       'Authorization': 'Bearer ${tokenPair.accessToken}',
       'Content-Type': 'application/json',
     };
-    var request = Request(
-      'POST',
-      Uri.parse('${Constants.BASE_URL_NEW}/create_order'),
-    );
-    request.body = json.encode(mergedData);
-    request.headers.addAll(headers);
-    return await request.send();
+    var url = '${Constants.BASE_URL_NEW}/create_order';
+    debugPrint("Data payload: $mergedData");
+    final response = request(
+        url: url,
+        token: tokenPair,
+        method: 'POST',
+        requestHeaders: headers,
+        data: mergedData,
+        userId: id);
+    return response;
+    // var request = Request(
+    //   'POST',
+    //   Uri.parse('${Constants.BASE_URL_NEW}/create_order'),
+    // );
+    // request.body = json.encode(mergedData);
+    // request.headers.addAll(headers);
+    // return await request.send();
   }
 
   Future<String> createOrder(Map<String, dynamic> data) async {
@@ -96,7 +116,7 @@ class DrugOrderService extends HTTPService {
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final Map<String, dynamic> orderData = json.decode(responseString);
-        if (orderData["success"] == true){
+        if (orderData["success"] == true) {
           return orderData["msg"];
         } else {
           throw orderData["msg"];
@@ -109,3 +129,5 @@ class DrugOrderService extends HTTPService {
     }
   }
 }
+
+

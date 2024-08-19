@@ -1,160 +1,199 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/user_programs/data/providers/program_provider.dart';
-import 'package:nishauri/src/shared/display/Logo.dart';
-import 'package:nishauri/src/shared/styles/input_styles.dart';
+import 'package:nishauri/src/hooks/uset_timer.dart';
+import 'package:nishauri/src/shared/display/LinkedRichText.dart';
+import 'package:nishauri/src/shared/display/scafold_stack_body.dart';
+import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/utils/constants.dart';
-import 'package:nishauri/src/utils/routes.dart';
-import '../../../../shared/input/Button.dart';
-import '../../../../utils/helpers.dart';
-import '../../data/models/program_verification_detail.dart';
+import 'package:nishauri/src/utils/helpers.dart';
+import 'package:pinput/pinput.dart';
+import '../../../../shared/display/Logo.dart';
+import '../../../../utils/routes.dart';
 
 class ProgramVerificationScreen extends HookConsumerWidget {
-  final ProgramVerificationDetail verificationDetail;
+  final Map<String, dynamic> payload;
 
-  const ProgramVerificationScreen(
-      {super.key, required this.verificationDetail});
+  const ProgramVerificationScreen({super.key, required this.payload});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(() => GlobalKey<FormBuilderState>());
-    final theme = Theme.of(context);
-    final loading = useState<bool>(false);
-    final sent = useState<bool>(false);
-    final submittingRequest = useState<bool>(false);
-    final programNotifier = ref.watch(userProgramProvider.notifier);
+    final programResetStateNotifier = ref.read(userProgramProvider.notifier);
+    final authStateNotifier = ref.read(authStateProvider.notifier);
+    final timer = useTime(const Duration(seconds: 60));
+    final loading = useState(false);
+    final otp = useState<String?>(null);
 
-    handleSubmit() {
-      if (formKey.currentState != null &&
-          formKey.currentState!.saveAndValidate()) {
+    void handleSubmit(String? otp) {
+      if (otp != null) {
         loading.value = true;
-        final programNotifier = ref.watch(userProgramProvider.notifier);
-        programNotifier.verifyProgramOTP({
-          ...formKey.currentState!.value,
-          "programCode": verificationDetail.programCode
-        }).then((value) {
+
+        // Form payload
+        final otpCode = {"program_otp": otp};
+        final payLoad = {...payload, ...otpCode};
+
+        programResetStateNotifier.registerProgram(payLoad).then((value) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                  "${ProgramCodeNameIds.getProgramNameByCode(verificationDetail.programCode?? '')} Program Registered successfully"),
-            ),
+            SnackBar(content: Text(value)),
           );
-          context.go("/");
+          context.goNamed(RouteNames.PROGRAM_MENU);
         }).catchError((err) {
-          handleResponseError(context, formKey.currentState!.fields, err, ref.read(authStateProvider.notifier).logout);
-        }).whenComplete(() => loading.value = false);
+          handleResponseError(context, formKey.currentState!.fields, err, authStateNotifier.logout);
+        }).whenComplete(() {
+          loading.value = false;
+        });
       }
     }
 
-    handleRequestOTP() {
-      if (formKey.currentState != null &&
-          formKey.currentState!.fields["mode"]!.validate()) {
-        sent.value = true;
-        submittingRequest.value = true;
-        programNotifier.getVerificationCode(formKey.currentState!.instantValue).then(
-          (message) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(message),
-              ),
-            );
-          },
-        ).catchError((error) {
-          handleResponseError(
-            context,
-            formKey.currentState!.fields,
-            error,
-            ref.watch(authStateProvider.notifier).logout,
-          );
-        }).whenComplete(
-          () {
-            submittingRequest.value = false;
-          },
-        );
-      }
+    var theme = Theme.of(context);
 
-    }
+    final defaultPinTheme = PinTheme(
+      width: 56,
+      height: 56,
+      textStyle: const TextStyle(
+        fontSize: 22,
+        color: Color.fromRGBO(30, 60, 87, 1),
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(19),
+        border: Border.all(color: Constants.programsColor),
+      ),
+    );
 
     return Scaffold(
-      body: FormBuilder(
-        key: formKey,
-        child: Padding(
-          padding: const EdgeInsets.all(Constants.SPACING),
-          child: ListView(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            // crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Icon(Icons.security, size: 80),
-              const SizedBox(height: Constants.SPACING),
-              FractionallySizedBox(
-                widthFactor: 0.8,
-                child: Text(
-                  "Verify program",
-                  style: theme.textTheme.headlineLarge,
-                  textAlign: TextAlign.center,
+      body: ScaffoldStackedBody(
+        body: Column(
+          children: [
+            AppBar(
+              backgroundColor: Colors.transparent,
+              leading: IconButton(
+                onPressed: () => context.pop(),
+                icon: SvgPicture.asset(
+                  "assets/images/reply-dark.svg",
+                  semanticsLabel: "Back",
+                  fit: BoxFit.contain,
+                  width: 40,
+                  height: 40,
                 ),
               ),
-              const SizedBox(height: Constants.SPACING),
-              FormBuilderRadioGroup(
-                enabled: !loading.value,
-                name: "mode",
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  label: Text(
-                    verificationDetail.message?? '',
-                  ),
-                ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(
-                      errorText: "Kindly choose verification method"),
-                ]),
-                options: verificationDetail.contacts
-                    .map(
-                      (e) => FormBuilderFieldOption(
-                        value: e.contact,
-                        child: ListTile(
-                          title: Text(e.type),
-                          subtitle: Text(e.contact),
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ),
-              const SizedBox(height: Constants.SPACING),
-              // if (!loading.value)
-                FormBuilderTextField(
-                  name: "otp",
-                  enabled: !loading.value,
-                  initialValue: "",
-                  decoration: widgetSurfixIconDecoration(
-                    placeholder: "Enter OTP Verification code",
-                    prefixIcon: Icons.lock,
-                    surfixIcon: submittingRequest.value
-                        ? const CircularProgressIndicator()
-                        : Text(
-                            sent.value ? "Resend Code" : "Get code",
+            ),
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: Constants.SMALL_SPACING),
+                        const DecoratedBox(
+                          decoration: BoxDecoration(),
+                          child: Logo(
+                            size: 100,
                           ),
-                    onSurfixIconPressed: handleRequestOTP,
-                    label: "OTP verification code",
+                        ),
+                        const SizedBox(height: Constants.SMALL_SPACING),
+                        const Text(
+                          "Verify Program ✅",
+                          style: TextStyle(fontSize: 40),
+                        ),
+                        const SizedBox(height: Constants.SPACING),
+                        RichText(
+                          text: TextSpan(
+                            text: "Code has been sent to ",
+                            style: TextStyle(color: theme.colorScheme.onSurface),
+                            children: [
+                              TextSpan(
+                                text: payload['phone'],
+                                style: TextStyle(
+                                  color: theme.colorScheme.primary,
+                                ),
+                              ),
+                              const TextSpan(
+                                text: "\n\nEnter the code to verify Program",
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: Constants.SPACING * 3),
+                        Pinput(
+                          length: 5,
+                          defaultPinTheme: defaultPinTheme,
+                          androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
+                          cursor: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(bottom: 9),
+                                width: 22,
+                                height: 1,
+                                color: Constants.programsColor,
+                              )
+                            ],
+                          ),
+                          onChanged: (value) {
+                            otp.value = value;
+                          },
+                          onCompleted: (value) {
+                            otp.value = value;
+                          },
+                          validator: (value) {
+                            if (value == null || value.length != 5) {
+                              return 'Check the code should be 5 digits';
+                            }
+                            return null;
+                          },
+                          pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                        ),
+                        const SizedBox(height: Constants.SPACING * 6),
+                        Button(
+                          title: "Verify Program",
+                          backgroundColor: theme.colorScheme.primary,
+                          textColor: Colors.white,
+                          onPress: () => handleSubmit(otp.value),
+                          loading: loading.value,
+                        ),
+                        const SizedBox(height: Constants.SPACING * 2),
+                        if (timer.remainingTime == 0)
+                          LinkedRichText(
+                            linked: "Don't receive code?",
+                            unlinked: "Resend code",
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            onPress: () {
+                              timer.reset();
+                              loading.value = true;
+                              programResetStateNotifier.resendOTP(payload).then(
+                                    (value) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(value)),
+                                  );
+                                },
+                              ).whenComplete(() {
+                                loading.value = false;
+                              });
+                            },
+                          ),
+                        const SizedBox(height: Constants.SPACING),
+                        LinkedRichText(
+                          linked: "Don't receive code? Resend code in ",
+                          unlinked: "00:${timer.remainingTime}",
+                          mainAxisAlignment: MainAxisAlignment.start,
+                        ),
+                        const SizedBox(height: Constants.SPACING),
+                      ],
+                    ),
                   ),
-                  // readOnly: !(_formKey.currentState!.value["mode"].isNotEmpty == true && _sent),
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                  ]),
                 ),
-              const SizedBox(height: Constants.SPACING),
-              Button(
-                title: "Verify",
-                onPress: handleSubmit,
-                loading: loading.value,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

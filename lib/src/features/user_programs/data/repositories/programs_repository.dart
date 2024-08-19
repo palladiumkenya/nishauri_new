@@ -11,10 +11,9 @@ class ProgramsRepository {
 
   ProgramsRepository(this._service);
 
-  // Future<List<Program>> getPrograms() async {
-  //   return await _service.getPrograms();
-  // }
-
+  Future<List<Program>> getPrograms() async {
+    return await _service.getPrograms();
+  }
   Future<List<UserProgram>> getUserPrograms() async {
     return await _service.getUserPrograms();
   }
@@ -30,7 +29,11 @@ class ProgramsRepository {
     return await _service.verifyProgramOTP(data);
   }
 
-  Future<String> getVerificationCode(Map<String, dynamic> data) async{
-    return await _service.requestVerificationCode(data);
+  Future<Map<String, dynamic>> programVerification(Map<String, dynamic> data) async{
+    return await _service.programVerification(data);
+  }
+
+  Future<String> resendOTP(Map<String, dynamic> data) async{
+    return await _service.resendOTP(data);
   }
 }

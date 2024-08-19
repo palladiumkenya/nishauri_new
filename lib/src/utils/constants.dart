@@ -3,7 +3,16 @@ import 'package:flutter/material.dart';
 class Constants {
   // static const String BASE_URL = "http://192.168.2.166:5000/";
   static const String BASE_URL = "https://ushauriapi.kenyahmis.org/nishauri/";
+
+  //test
   static const String BASE_URL_NEW = "https://ushauriapi.kenyahmis.org/nishauri_new/";
+
+  //live
+  //static const String BASE_URL_NEW = "https://ushauriapi.nascop.org/nishauri_new/";
+
+
+
+  //live    https://ushauriapi.nascop.org/
   // static const String BASE_URL = "http://192.168.2.133:5000";
   // static const String BASE_URL = "http://192.168.1.28:5000"; //HETARK
   // static const String BASE_URL = "http://10.96.100.177:5000";
@@ -24,9 +33,14 @@ class Constants {
   static const labResultsShortcutBgColor = Color.fromARGB(255,195, 214, 255);
   static const dawaDropShortcutBgColor = Color.fromARGB(255,190, 203, 189);
   static const dawaDropColor = Color.fromARGB(255,32, 76, 28);
+  static const programsColor = Color.fromARGB(255,35,102, 42);
   static const activeSelectionColor = Color.fromARGB(255,65, 165, 146);
   static const clinicCardColor = Color.fromARGB(255,13,71,161);
+  static const announcement = Color.fromARGB(255, 64, 87, 162);
+  static const frequentlyAskedQuestions = Color.fromARGB(255, 123, 83, 162);
   static const iconSize = 70.0;
   static const shortcutIconSize = 30.0;
-
+  static const bpShortCutBgColor = Color.fromARGB(255, 255, 205, 210);
+  static const bpBgColor = Color.fromARGB(255, 255, 83, 80);
+  static const bloodSugarColor = Color.fromARGB(255, 180, 216, 20);
 }

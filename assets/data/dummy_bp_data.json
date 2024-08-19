@@ -1,0 +1,29 @@
+{
+  "data": [
+    {
+      "systolic": 120,
+      "diastolic": 80,
+      "pulse_rate": 70,
+      "bpTime": "2024-07-01T10:00:00Z"
+    },
+    {
+      "systolic": 130,
+      "diastolic": 85,
+      "pulse_rate": 72,
+      "notes": "This is something interesting!",
+      "bpTime": "2024-07-02T10:00:00Z"
+    },
+    {
+      "systolic": 110,
+      "diastolic": 75,
+      "pulse_rate": 68,
+      "bpTime": "2024-07-03T10:00:00Z"
+    },
+    {
+      "systolic": 140,
+      "diastolic": 90,
+      "pulse_rate": 75,
+      "bpTime": "2024-07-04T10:00:00Z"
+    }
+  ]
+}

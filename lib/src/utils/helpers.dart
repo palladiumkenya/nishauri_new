@@ -176,3 +176,26 @@ class Debouncer {
     _timer = Timer(Duration(milliseconds: milliseconds), action);
   }
 }
+
+Iterable<int> range(int start, [int? end, int step = 1]) sync* {
+  ///
+  /// Parameters: This function takes three optional parameters:
+  /// start (required): The starting value of the range (inclusive).
+  /// end (optional): The ending value of the range (exclusive). If not provided, it defaults to start and start is set to 0.
+  /// step (optional): The step value between elements. Defaults to 1.
+  if (end == null) {
+    end = start;
+    start = 0;
+  }
+
+  if (step == 0) {
+    throw ArgumentError('Step cannot be zero.');
+  }
+
+  var value = start;
+  while ((step > 0 && value < end) || (step < 0 && value > end)) {
+    yield value;
+    value += step;
+  }
+}
+

@@ -1,20 +1,26 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:nishauri/src/features/common/data/models/announcement.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
+import 'package:nishauri/src/utils/helpers.dart';
 
 class AnnouncementService extends HTTPService {
   final List<Announcement> _announcements = [
     const Announcement(
       id: "1",
-      image: "https://www.emeraldgrouppublishing.com/sites/default/files/image/covid-cells.jpg",
-      source: "https://www.emeraldgrouppublishing.com/sites/default/files/image/covid-cells.jpg",
+      image:
+          "https://www.emeraldgrouppublishing.com/sites/default/files/image/covid-cells.jpg",
+      source:
+          "https://www.emeraldgrouppublishing.com/sites/default/files/image/covid-cells.jpg",
       title: "Covid-19 Variants",
       description:
           "Since the beginning of the COVID-19 pandemic and with the evolution of "
-              "the SARS-CoV-2 virus, multiple COVID-19 Variants of Concern (VOCs) "
-              "and Variants of Interest (VOIs) have been designated by WHO based on "
-              "their assessed potential for expansion and replacement of prior variants, "
-              "for causing new waves with increased circulation, and for the need "
-              "for adjustments to public health actions.",
+          "the SARS-CoV-2 virus, multiple COVID-19 Variants of Concern (VOCs) "
+          "and Variants of Interest (VOIs) have been designated by WHO based on "
+          "their assessed potential for expansion and replacement of prior variants, "
+          "for causing new waves with increased circulation, and for the need "
+          "for adjustments to public health actions.",
     ),
     // const Announcement(
     //   id: "2",
@@ -34,6 +40,12 @@ class AnnouncementService extends HTTPService {
   ];
 
   Future<List<Announcement>> getAnnouncements() async {
-    return _announcements;
+    final data = await loadJsonData("assets/data/announcements.json");
+    final json = jsonDecode(data);
+    final announce = json
+        .map((an) => Announcement.fromJson(Map<String, dynamic>.from(an))).toList();
+
+    log("$announce");
+    return [...announce];
   }
 }

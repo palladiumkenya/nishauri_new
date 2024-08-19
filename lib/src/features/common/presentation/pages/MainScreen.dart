@@ -2,16 +2,19 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/custom_icons.dart';
 import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
+import 'package:nishauri/src/features/common/data/providers/idleTimeoutProvider.dart';
 import 'package:nishauri/src/features/common/presentation/pages/HomeScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/MainMenuScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/chat_feeback_form.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
+import 'package:nishauri/src/features/user_preference/presentation/pages/password_unlock_screen.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -22,10 +25,9 @@ class MainScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<MainScreen>
     with WidgetsBindingObserver {
-  OverlayEntry? _overlayEntry;
   AppLifecycleState state = AppLifecycleState.inactive;
   int _messagesCount = 0;
-  int rebuild = 0;
+  bool _isAuthModalVisible = false;
   var _currIndex = 0;
 
   @override
@@ -60,37 +62,32 @@ class _HomeScreenState extends ConsumerState<MainScreen>
     // I user returns to foreground then show auth screen
     if (state == AppLifecycleState.resumed &&
         settings.isPrivacyEnabled &&
-        !settings.isAuthenticated) showPinAuth(context);
+        !settings.isAuthenticated) showUnlockScreen(context);
   }
 
-  void showPinAuth(BuildContext context) {
-    // context.goNamed(RouteNames.UNLOCK_SCREEN);
-    showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      isDismissible: false,
-      builder: (BuildContext context) => WillPopScope(
-        onWillPop: () async {
-          // Disable the default back button behavior
-          return false;
-        },
-        child: PinAuthScreen(
-          authenticate: (value) {
-            final settings = ref.watch(settingsNotifierProvider);
-            final settingsSetter = ref.read(settingsNotifierProvider.notifier);
-            if (value != null && settings.pin == value) {
-              if (settings.isAuthenticated == false) {
-                context.pop();
-                settingsSetter.patchSettings(isAuthenticated: true);
-              }
-            } else {
-              return "Invalid pin";
-            }
-            return null;
+  void showUnlockScreen(BuildContext context) {
+    if (!_isAuthModalVisible) {
+      setState(() {
+        _isAuthModalVisible = true;
+      });
+      showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        isDismissible: false,
+        enableDrag: false,
+        builder: (BuildContext context) => WillPopScope(
+          onWillPop: () async {
+            // Disable the default back button behavior
+            return false;
           },
+          child: const PasswordUnlockScreen(),
         ),
-      ),
-    );
+      ).whenComplete(() {
+        setState(() {
+          _isAuthModalVisible = false;
+        });
+      });
+    }
   }
 
   @override
@@ -122,32 +119,67 @@ class _HomeScreenState extends ConsumerState<MainScreen>
         elevation: 0,
         selectedItemColor: theme.colorScheme.primary,
         unselectedItemColor: theme.disabledColor,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: FaIcon(Icons.home_filled),
+            icon: SvgPicture.asset(
+              "assets/images/Home.svg",
+            ),
             label: "Home",
+            activeIcon: SvgPicture.asset(
+              "assets/images/Home-Active.svg",
+            ),
           ),
           BottomNavigationBarItem(
-            icon: FaIcon(Icons.apps),
+            icon: SvgPicture.asset(
+              "assets/images/Modules.svg",
+            ),
             label: "Apps",
+            activeIcon: SvgPicture.asset(
+              "assets/images/Modules-active.svg",
+            ),
           ),
           BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.comments),
+            icon: SvgPicture.asset(
+              "assets/images/Chatbot.svg",
+            ),
             label: "Ask Nuru",
+            activeIcon: SvgPicture.asset(
+              "assets/images/Chatbot-Active.svg",
+            ),
           ),
           BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.gear),
+            icon: SvgPicture.asset(
+              "assets/images/Settings.svg",
+            ),
             label: "Settings",
+            activeIcon: SvgPicture.asset(
+              "assets/images/Settings-Active.svg",
+            ),
           ),
         ],
         currentIndex: _currIndex,
         onTap: (index) async {
+          // if (true) {
           if (_currIndex == 2 && index != 2 && _messagesCount > 2) {
             await showDialog(
               context: context,
               barrierDismissible: false,
-              builder: (context) => const AlertDialog(
-                content: ChatFeedbackForm(),
+              builder: (context) => AlertDialog(
+                content: Stack(
+                  children: [
+                    const ChatFeedbackForm(),
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: IconButton(
+                        onPressed: () => context.pop(),
+                        icon: const FaIcon(
+                          FontAwesomeIcons.xmark,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }
@@ -157,7 +189,15 @@ class _HomeScreenState extends ConsumerState<MainScreen>
           });
         },
       ),
-      body: pages.elementAt(_currIndex),
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onPanDown: (_) => ref.read(idleTimeoutProvider.notifier).resetTimer(),
+        onTap: () => ref.read(idleTimeoutProvider.notifier).resetTimer(),
+        child: Center(
+          child: pages.elementAt(_currIndex),
+        ),
+      ),
+      // body: pages.elementAt(_currIndex),
     );
   }
 }

@@ -21,35 +21,35 @@ class AppointmentsScreen extends HookConsumerWidget {
       PreviousAppointments(),
     ];
 
-        return Scaffold(
-          body: Column(
-            children: [
-              const CustomAppBar(
-                title: "Appointments",
-                icon: Icons.calendar_month_outlined,
-                subTitle: "Unlock you health insights with appointments",
-                color: Constants.appointmentsColor,
+    return Scaffold(
+      body: Column(
+        children: [
+          const CustomAppBar(
+            title: "Appointments 📅",
+            // icon: Icons.calendar_month_outlined,
+            subTitle: "Unlock you health insights with appointments",
+            color: Constants.appointmentsColor,
+          ),
+          CustomTabBar(
+            activeIndex: currIndex.value,
+            activeColor: Constants.appointmentsColor,
+            onTap: (item, index) {
+              currIndex.value = index;
+            },
+            items: const [
+              CustomTabBarItem(
+                title: "Upcoming",
+                icon: Icons.calendar_month,
               ),
-              CustomTabBar(
-                activeIndex: currIndex.value,
-                activeColor: Constants.appointmentsColor,
-                onTap: (item, index) {
-                  currIndex.value = index;
-                },
-                items: const [
-                  CustomTabBarItem(
-                    title: "Upcoming",
-                    icon: Icons.calendar_month,
-                  ),
-                  CustomTabBarItem(
-                    title: "Previous",
-                    icon: Icons.calendar_month,
-                  ),
-                ],
+              CustomTabBarItem(
+                title: "Previous",
+                icon: Icons.calendar_month,
               ),
-              Expanded(child: screens[currIndex.value]),
             ],
           ),
-        );
+          Expanded(child: screens[currIndex.value]),
+        ],
+      ),
+    );
   }
 }

@@ -4,7 +4,7 @@ import 'package:nishauri/src/features/user_preference/data/providers/settings_pr
 import 'package:nishauri/src/utils/constants.dart';
 
 final mainTheme = Provider<ThemeData>((ref) => ThemeData(
-      fontFamily: "Play",
+      fontFamily: "Montserrat",
       colorScheme: ColorScheme.fromSeed(
         seedColor: const Color.fromARGB(255, 31, 37, 94),
         brightness: ref.watch(settingsNotifierProvider).theme == "dark"
@@ -34,7 +34,7 @@ final mainTheme = Provider<ThemeData>((ref) => ThemeData(
       useMaterial3: true,
     ));
 final mainTheme1 = ThemeData(
-  fontFamily: "Play",
+  fontFamily: "Montserrat",
   colorScheme: ColorScheme.fromSeed(
     seedColor: const Color(0xff2bb6aa),
     primary: const Color(0xff2bb6aa),

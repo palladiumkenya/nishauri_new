@@ -23,8 +23,8 @@ class BMICalculatorResultsScreen extends HookConsumerWidget {
     return Scaffold(
       body: Column(children: [
         const CustomAppBar(
-            title: "BMI Calculator",
-            icon: Icons.calculate,
+            title: "BMI Calculator ⚖️",
+            // icon: Icons.calculate,
             color: Constants.bmiCalculatorColor),
         Expanded(
           child: SingleChildScrollView(
@@ -52,7 +52,10 @@ class BMICalculatorResultsScreen extends HookConsumerWidget {
                                 Text(
                                   getBMIStatusSimplified(bmi),
                                   style: theme.textTheme.titleMedium?.copyWith(
-                                    color: Constants.activeSelectionColor,
+                                    color:
+                                        getBMIStatusSimplified(bmi) == 'Normal'
+                                            ? Constants.activeSelectionColor
+                                            : Colors.red[600],
                                   ),
                                 ),
                               ]),
@@ -82,7 +85,9 @@ class BMICalculatorResultsScreen extends HookConsumerWidget {
                         Text(
                           getBMIStatusSimplified(bmi),
                           style: theme.textTheme.titleLarge?.copyWith(
-                            color: theme.colorScheme.primary,
+                            color: getBMIStatusSimplified(bmi) == 'Normal'
+                                ? Constants.activeSelectionColor
+                                : Colors.red[600],
                           ),
                         ),
                         const SizedBox(height: Constants.SPACING),
@@ -93,7 +98,8 @@ class BMICalculatorResultsScreen extends HookConsumerWidget {
                           ),
                         ),
                         const SizedBox(height: Constants.SPACING),
-                        Markdown(data:                           data
+                        Markdown(
+                          data: data
                                   .where((element) =>
                                       element.status ==
                                       getBMIStatusSimplified(bmi))
@@ -105,7 +111,6 @@ class BMICalculatorResultsScreen extends HookConsumerWidget {
                           physics: const NeverScrollableScrollPhysics(),
                         ),
                         const SizedBox(height: Constants.SPACING),
-
                         Button(
                           title: "Re-Calculate",
                           surfixIcon: SvgPicture.asset(
@@ -122,8 +127,7 @@ class BMICalculatorResultsScreen extends HookConsumerWidget {
                       ],
                     ),
                     error: (e, stackTrace) => Align(
-                        alignment: Alignment.center,
-                        child: Text(e.toString())),
+                        alignment: Alignment.center, child: Text(e.toString())),
                     loading: () => const Align(
                       alignment: Alignment.center,
                       child: CircularProgressIndicator(),

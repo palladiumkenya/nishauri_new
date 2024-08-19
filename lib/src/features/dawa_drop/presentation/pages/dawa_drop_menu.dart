@@ -9,55 +9,61 @@ import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
 _menuItems(BuildContext context) => [
-  MenuItem(
-    shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,
-    icon: SvgPicture.asset("assets/images/pills.svg",
-    semanticsLabel: "Dawa",
-    fit: BoxFit.contain,
-    width: 80,
-    height: 80,),
-    shortcutIcon: SvgPicture.asset("assets/images/shopping-meds.svg",
-    semanticsLabel: "Dawa",
-    fit: BoxFit.contain,
-    width: Constants.shortcutIconSize,
-    height: Constants.shortcutIconSize),
-    title: "Request Drugs",
-    onPressed: () => context.goNamed(RouteNames.REQUEST_DRUGS),
-    color: Constants.dawaDropColor.withOpacity(0.5),
-  ),
-  MenuItem(
-    shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,
-    icon: SvgPicture.asset("assets/images/shopping.svg",
-      semanticsLabel: "Dawa",
-      fit: BoxFit.contain,
-      width: 80,
-      height: 80,),
-    shortcutIcon: SvgPicture.asset("assets/images/shopping.svg",
-        semanticsLabel: "Dawa",
-        fit: BoxFit.contain,
-        width: Constants.shortcutIconSize,
-        height: Constants.shortcutIconSize),
-    title: "Drug Orders",
-    onPressed: () => context.goNamed(RouteNames.HIV_DRUG_ORDERS),
-    color: Constants.dawaDropColor.withOpacity(0.5),
-  ),
-  MenuItem(
-    shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,
-    icon: SvgPicture.asset("assets/images/review.svg",
-      semanticsLabel: "Dawa",
-      fit: BoxFit.contain,
-      width: 80,
-      height: 80,),
-    shortcutIcon: SvgPicture.asset("assets/images/review.svg",
-        semanticsLabel: "Dawa",
-        fit: BoxFit.contain,
-        width: Constants.shortcutIconSize,
-        height: Constants.shortcutIconSize),
-    title: "Confirm Delivery",
-    onPressed: () => context.goNamed(RouteNames.DISPATCHED_DRUGS),
-    color: Constants.dawaDropColor.withOpacity(0.5),
-  ),
-];
+      MenuItem(
+        shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,
+        icon: SvgPicture.asset(
+          "assets/images/pills.svg",
+          semanticsLabel: "Dawa",
+          fit: BoxFit.contain,
+          width: 80,
+          height: 80,
+        ),
+        shortcutIcon: SvgPicture.asset("assets/images/shopping-meds.svg",
+            semanticsLabel: "Dawa",
+            fit: BoxFit.contain,
+            width: Constants.shortcutIconSize,
+            height: Constants.shortcutIconSize),
+        title: "Request Drugs",
+        onPressed: () => context.goNamed(RouteNames.REQUEST_DRUGS),
+        color: Constants.dawaDropColor.withOpacity(0.5),
+      ),
+      MenuItem(
+        shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,
+        icon: SvgPicture.asset(
+          "assets/images/shopping.svg",
+          semanticsLabel: "Dawa",
+          fit: BoxFit.contain,
+          width: 80,
+          height: 80,
+        ),
+        shortcutIcon: SvgPicture.asset("assets/images/shopping.svg",
+            semanticsLabel: "Dawa",
+            fit: BoxFit.contain,
+            width: Constants.shortcutIconSize,
+            height: Constants.shortcutIconSize),
+        title: "Drug Orders",
+        onPressed: () => context.goNamed(RouteNames.HIV_DRUG_ORDERS),
+        color: Constants.dawaDropColor.withOpacity(0.5),
+      ),
+      MenuItem(
+        shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,
+        icon: SvgPicture.asset(
+          "assets/images/review.svg",
+          semanticsLabel: "Dawa",
+          fit: BoxFit.contain,
+          width: 80,
+          height: 80,
+        ),
+        shortcutIcon: SvgPicture.asset("assets/images/review.svg",
+            semanticsLabel: "Dawa",
+            fit: BoxFit.contain,
+            width: Constants.shortcutIconSize,
+            height: Constants.shortcutIconSize),
+        title: "Confirm Delivery",
+        onPressed: () => context.goNamed(RouteNames.DISPATCHED_DRUGS),
+        color: Constants.dawaDropColor.withOpacity(0.5),
+      ),
+    ];
 
 class DawaDropMenuScreen extends StatelessWidget {
   const DawaDropMenuScreen({super.key});
@@ -67,28 +73,15 @@ class DawaDropMenuScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final _items = _menuItems(context);
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: theme.primaryColor,
-      //   leading: IconButton(
-      //     icon: const Icon(Icons.chevron_left),
-      //     onPressed: () => context.pop(),
-      //   ),
-      //   title: Text("Dawa Drop",
-      //       style: theme.textTheme.titleMedium?.copyWith(
-      //           color: Constants.dawaDropShortcutBgColor,
-      //           fontWeight: FontWeight.normal,
-      //           overflow: TextOverflow.ellipsis
-      //       ),),
-      // ),
-      body:
-      Column(
-        children: [
-          CustomAppBar(
-            title: "Dawa Drop",
-            icon: Icons.vaccines_sharp,
-            color: Constants.dawaDropColor.withOpacity(0.5),
-          ),
-          Expanded(child:       MenuItemsBuilder(
+        body: Column(
+      children: [
+        CustomAppBar(
+          title: "Dawa Drop 💊",
+          // icon: Icons.vaccines_sharp,
+          color: Constants.dawaDropColor.withOpacity(0.5),
+        ),
+        Expanded(
+          child: MenuItemsBuilder(
             crossAxisCount: 2,
             itemBuilder: (item) => Card(
               margin: const EdgeInsets.all(Constants.SPACING),
@@ -97,11 +90,9 @@ class DawaDropMenuScreen extends StatelessWidget {
                 splashColor: Constants.dawaDropShortcutBgColor,
                 onTap: item.onPressed,
                 child: Container(
-                  padding:
-                  const EdgeInsets.all(Constants.SPACING),
+                  padding: const EdgeInsets.all(Constants.SPACING),
                   decoration: BoxDecoration(
-                    color:
-                    item.color ?? theme.colorScheme.primary,
+                    color: item.color ?? theme.colorScheme.primary,
                     // height: 50,
                     // decoration: BoxDecoration(
                     //   gradient: LinearGradient(
@@ -128,7 +119,7 @@ class DawaDropMenuScreen extends StatelessWidget {
                         Text(
                           item.title ?? '',
                           style: theme.textTheme.titleMedium?.copyWith(
-                            color: theme.canvasColor,
+                            color: Colors.white,
                             fontWeight: FontWeight.normal,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -148,9 +139,8 @@ class DawaDropMenuScreen extends StatelessWidget {
             // ),
             items: _items,
           ),
-          )
-        ],
-      )
-    );
+        )
+      ],
+    ));
   }
 }

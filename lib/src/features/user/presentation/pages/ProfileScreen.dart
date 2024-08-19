@@ -43,17 +43,37 @@ class ProfileScreen extends HookWidget {
           return userAsync.when(
             data: (user) => ProfileCard(
               height: MediaQuery.of(context).size.height,
-              header: Text((user.name ?? "").titleCase),
+              header: user.username == 'null null' || user.username == ""
+                  ? GestureDetector(
+                      onTap: () {
+                        context.goNamed(RouteNames.PROFILE_EDIT_FORM);
+                      },
+                      child: const Text(
+                        'Update your profile',
+                        style: TextStyle(
+                          color: Colors.red,
+                          // decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    )
+                  : Text((user.name ?? "").titleCase),
               image: avatar,
               // user.image,
               icon: Icons.person,
               buildItem: (context, item) => item,
               items: [
                 const Divider(),
+                // ListTile(
+                //   leading: const Icon(Icons.perm_identity),
+                //   title: const Text("Username"),
+                //   subtitle: Text(user.username ?? ''),
+                // ),
                 ListTile(
                   leading: const Icon(Icons.perm_identity),
                   title: const Text("Username"),
-                  subtitle: Text(user.username ?? ''),
+                  subtitle: user.username == 'null null' || user.username == ""
+                      ? Text("")
+                      : Text(user.username ?? ''),
                 ),
                 const Divider(),
                 ListTile(

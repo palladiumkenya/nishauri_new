@@ -31,15 +31,18 @@ class FacilityDirectoryService extends HTTPService {
   Future<http.StreamedResponse> getFacilities_(String search) async {
     final id = await _repository.getUserId();
     final tokenPair = await getCachedToken();
+    var url = '${Constants.BASE_URL_NEW}/artdirectory?name=$search&user_id=$id';
     var headers = {
       'Authorization': "Bearer ${tokenPair.accessToken}",
       'Content-Type': 'application/json'
     };
-    var request = http.Request(
-        'GET',
-        Uri.parse(
-            '${Constants.BASE_URL_NEW}/artdirectory?name=$search&user_id=$id'));
-    request.headers.addAll(headers);
-    return await request.send();
+    final response = request(url: url, token: tokenPair, method: 'GET', requestHeaders: headers, userId: id);
+    // var request = http.Request(
+    //     'GET',
+    //     Uri.parse(
+    //         '${Constants.BASE_URL_NEW}/artdirectory?name=$search&user_id=$id'));
+    // request.headers.addAll(headers);
+    // return await request.send();
+    return response;
   }
 }

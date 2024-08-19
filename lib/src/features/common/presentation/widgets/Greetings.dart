@@ -29,25 +29,62 @@ class Greetings extends StatelessWidget {
         children: [
           Text(
             "Hey, 👋",
-            style: theme.textTheme.headlineMedium
-                ?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
+            style: theme.textTheme.headlineMedium?.copyWith(
+                color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
           ),
-          Text(
-            name,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.headlineLarge
-                ?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
-          ),
-          const SizedBox(height: Constants.SPACING * 3),
-          Text(
-            DateFormat("EEEE, MMMM dd").format(
-              DateTime.now(),
-            ),
-            style: theme.textTheme.titleLarge
-                ?.copyWith(color: theme.colorScheme.onSurface.withOpacity(0.3)),
-          ),
+          name == 'Null Null' || name == null
+              ? GestureDetector(
+                  onTap: () {
+                    context.goNamed(RouteNames.PROFILE_EDIT_FORM);
+                  },
+                  child: Text(
+                    'Click here to update your profile',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: Colors.red,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                )
+              : Text(
+                  name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.headlineLarge?.copyWith(
+                    color: theme.colorScheme.primary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
 
+          // Text(
+          //   name == 'null null' || name == null ?
+          //   GestureDetector(
+          //     onTap: () {
+          //       context.goNamed(RouteNames.PROFILE_EDIT_FORM);
+          //     },
+          //     child: const Text(
+          //       'Click here to update your profile',
+          //       style: TextStyle(
+          //         color: Colors.red,
+          //         // decoration: TextDecoration.underline,
+          //       ),
+          //     ),
+          //   )
+          //   : name,
+          //   maxLines: 1,
+          //   overflow: TextOverflow.ellipsis,
+          //   style: theme.textTheme.headlineLarge
+          //       ?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
+          // ),
+          const SizedBox(height: Constants.SPACING),
+          Text(
+              DateFormat("EEEE, MMMM dd").format(
+                DateTime.now(),
+              ),
+              style: theme.textTheme.titleMedium
+              // ?.copyWith(color: theme.colorScheme.onSurface.withOpacity(0.3)),
+              ),
+          const SizedBox(height: Constants.SPACING * 2),
           /* Stack(
             clipBehavior: Clip.none,
             alignment: Alignment.center,

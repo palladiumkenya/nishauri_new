@@ -32,9 +32,33 @@ class ViralLoadService extends HTTPService {
     final tokenPair = await getCachedToken();
     var headers = {'Authorization':"Bearer ${tokenPair.accessToken}",
       'Content-Type': 'application/json'};
-    var request =
-    http.Request('GET', Uri.parse('${Constants.BASE_URL_NEW}/vl_results?user_id=$id'));
-    request.headers.addAll(headers);
-    return await request.send();
+    var url = '${Constants.BASE_URL_NEW}/vl_results?user_id=$id';
+    final response = request(url: url, token: tokenPair, method: 'GET', requestHeaders: headers, userId: id);
+    return response;
+    // var request =
+    // http.Request('GET', Uri.parse('${Constants.BASE_URL_NEW}/vl_results?user_id=$id'));
+    // request.headers.addAll(headers);
+    // return await request.send();
+  }
+
+  Future<void> saveViralLoad() async {
+    try{
+      final resp = await call(getViralLoads_, null);
+      if (resp.statusCode == 200) {
+        final responseString = await resp.stream.bytesToString();
+        final respData = json.decode(responseString);
+        if (respData["success"] == true){
+          var msgList = List.from(respData['msg']);
+          msgList.sort((a, b) => DateTime.parse(b['date']).compareTo(DateTime.parse(a['date'])));
+          var latestResult = msgList.first;
+          var viralLoad = latestResult["result"];
+          var vlDate = latestResult["date"];
+          await _repository.saveVL(viralLoad);
+          await _repository.saveVlDate(vlDate);
+        }
+      }
+    } catch (e) {
+      throw e;
+    }
   }
 }
