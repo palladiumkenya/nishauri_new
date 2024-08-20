@@ -6,16 +6,16 @@ import 'package:nishauri/src/app/app.dart';
 import 'package:nishauri/src/shared/interfaces/notification_service.dart';
 
 Future<void> main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-  // // Initialize firebase messaging
-  // await NotificationService.initializeFirebaseMessaging();
+  // Initialize firebase messaging
+  await NotificationService.initializeFirebaseMessaging();
 
-  // // Initialize local notifications
-  // await NotificationService.initializeLocalNotifications();
+  // Initialize local notifications
+  await NotificationService.initializeLocalNotifications();
 
   runApp(
     const ProviderScope(child: NishauriApp()),
