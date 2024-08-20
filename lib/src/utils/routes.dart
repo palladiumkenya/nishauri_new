@@ -57,8 +57,17 @@ class RouteNames {
   static const DISPATCHED_DRUGS = "dispatched-drugs";
   static const REMOVE_PROGRAM = "remove-program";
   static const BLOG_POST = "blog-post";
+
   static const BLOOD_PRESSURE = "blood-pressure";
   static const SELF_SCREENING = "self-screening";
+
+  static const PERIOD_PLANNER = "Period Planner";
+  static const PERIOD_PLANNER_SCREEN = "Period Planner Screen";
+  static const PERIOD_PLANNER_MENU = "Period Planner Menu";
+  static const PERIOD_PLANNER_CALENDAR = "Period Planner Calendar";
+  static const PERIOD_PLANNER_LOG_PERIODS = "period-planner-log-periods";
+  static const PERIOD_PLANNER_EDIT_PERIODS = "period-planner-edit-periods";
+
 }
 
 class MenuItemNames {
@@ -85,9 +94,13 @@ class MenuItemNames {
   static const REQUEST_DRUGS = "Request Drugs";
   static const DISPATCHED_DRUGS = "Dispatched Drugs";
   static const REMOVE_PROGRAM = "Remove Program";
+
   static const BLOOD_PRESSURE = "Blood Pressure Monitor";
   static const SELF_SCREENING = "Self Screening";
   static const BLOOD_SUGAR = "Blood Sugar";
+
+  static const PERIOD_PLANNER = "Period Planner";
+
 }
 
 class ProgramCodeNameIds {
