@@ -1,18 +1,16 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:nishauri/custom_icons.dart';
-import 'package:nishauri/src/features/auth/presentation/widget/Terms.dart';
 import 'package:nishauri/src/features/chatbot/data/models/message.dart';
 import 'package:nishauri/src/features/chatbot/data/repository/ChatbotRepository.dart';
 import 'package:nishauri/src/features/chatbot/data/services/ChatbotService.dart';
-import 'package:nishauri/src/features/consent/data/models/consent.dart';
+import 'package:nishauri/src/features/clinic_card/data/providers/programProvider.dart';
 import 'package:nishauri/src/features/consent/data/providers/consent_provider.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
-import 'package:nishauri/src/local_storage/LocalStorage.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/helpers.dart';
 
@@ -39,12 +37,12 @@ class _TypingAnimationState extends State<TypingAnimation>
         curve: Curves.easeInOut,
       ),
     )..addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _controller.reverse();
-      } else if (status == AnimationStatus.dismissed) {
-        _controller.forward();
-      }
-    });
+        if (status == AnimationStatus.completed) {
+          _controller.reverse();
+        } else if (status == AnimationStatus.dismissed) {
+          _controller.forward();
+        }
+      });
 
     _controller.forward();
   }
@@ -78,10 +76,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final ChatbotRepository _repository = ChatbotRepository(ChatbotService());
+
   var currentUser = "";
   bool _isBotTyping = false;
   bool _consent = false;
   List<Message> _messages = [];
+  bool _showConsent = false;
 
   @override
   void initState() {
@@ -90,6 +90,30 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     _fetchConsent();
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _checkAndShowConsentDialog());
+    // check whether user is registered on a program using program provider
+    ref.read(programProvider).when(
+      data: (programs) {
+        if (programs.isEmpty) {
+          // _showConsent should be false
+          print("No programs found");
+          setState(() {
+            _showConsent = false;
+          });
+        } else {
+          // _showConsent should be true
+          print("Programs found");
+          setState(() {
+            _showConsent = true;
+          });
+        }
+      },
+      loading: () {
+        debugPrint("Loading programs...");
+      },
+      error: (error, stackTrace) {
+        debugPrint("Error loading programs: $error");
+      },
+    );
   }
 
   Widget _buildMessage(Message message) {
@@ -97,7 +121,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     Color iconColor = message.isSentByUser ? Colors.blue : Colors.grey;
     return Align(
       alignment:
-      message.isSentByUser ? Alignment.centerRight : Alignment.centerLeft,
+          message.isSentByUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Row(
         mainAxisAlignment: message.isSentByUser
             ? MainAxisAlignment.end
@@ -106,13 +130,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           message.isSentByUser
               ? const SizedBox()
               : Padding(
-            padding:
-            const EdgeInsets.symmetric(horizontal: Constants.SPACING),
-            child: Icon(
-              userIcon,
-              color: iconColor,
-            ),
-          ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: Constants.SPACING),
+                  child: Icon(
+                    userIcon,
+                    color: iconColor,
+                  ),
+                ),
           Flexible(
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 4.0),
@@ -143,13 +167,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           ),
           message.isSentByUser
               ? Padding(
-            padding:
-            const EdgeInsets.symmetric(horizontal: Constants.SPACING),
-            child: Icon(
-              userIcon,
-              color: iconColor,
-            ),
-          )
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: Constants.SPACING),
+                  child: Icon(
+                    userIcon,
+                    color: iconColor,
+                  ),
+                )
               : const SizedBox(),
         ],
       ),
@@ -169,7 +193,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     try {
       final response = await _repository.sendMessage(message);
       if (response != null && response.msg != null) {
-        print(response.msg);
         setState(() {
           _messages.add(Message(question: response.msg, isSentByUser: false));
           _isBotTyping = false; // Bot stops typing after receiving a response
@@ -180,7 +203,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               question: 'Failed to receive response from the server',
               isSentByUser: false));
           _isBotTyping =
-          false; // Bot stops typing on failure to receive response
+              false; // Bot stops typing on failure to receive response
         });
       }
       Future.delayed(const Duration(milliseconds: 100), () {
@@ -209,13 +232,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       final userAsyncValue = ref.read(userProvider);
       userAsyncValue.when(
         data: (user) {
-          debugPrint("User data: ${user.firstName}");
+          debugPrint("--_fetchUserData()");
           setState(() {
             currentUser = user.firstName as String;
             _messages = [
               Message(
                 question:
-                "Hi $currentUser 👋 \nWelcome to Nuru \nHow can I assist you today?",
+                    "Hi $currentUser 👋 \nWelcome to Nuru \nHow can I assist you today?",
                 isSentByUser: false,
               ),
             ];
@@ -239,31 +262,63 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         barrierDismissible: false,
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Nuru Consent'),
+          title: Text('Informed Consent for Nuru Chatbot',
+              style: Theme.of(context).textTheme.titleLarge),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(type == ConsentType.accept
-                  ? 'Nuru is a chatbot that can assist you with your health queries.\nNuru is able to personalize your responses.\nDo you consent for Nuru to use your data for personalized responses?'
-                  : 'Are you sure you want to revoke your consent for personalized response by Nuru?'),
               type == ConsentType.accept
-                  ? GestureDetector(
-                onTap: () => showTermsDialog(context),
-                // Show terms dialog on tap
-                child: const Text(
-                  "Terms and Conditions",
-                  style: TextStyle(
-                    color: Colors.blue,
-                    // Change color to indicate it's a link
-                    decoration: TextDecoration
-                        .underline, // Add underline to indicate it's a link
-                  ),
-                ),
+                  ? SingleChildScrollView(
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(height: 16, width: 20,), // Add some spacing
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: MediaQuery.of(context).size.height * 0.4,
+                          ),
+                          child: Scaffold(
+                            body: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                    child: Markdown(
+                                      data: """
+  Nuru chatbot provides personalized health information and support.\nWe respect your privacy and want to clarify how it works.
+  ## What You Need to Know:
+  1. ### Purpose:
+  - The chatbot offers general health advice and answers common queries.
+  - It does not access or store personal data.
+  2. ### Data Usage:
+  - The chatbot analyzes your clinical information and interactions to tailor responses.
+  - No personal details like name or health identifiers are linked to these interactions.
+  3. ### Benefits:
+  - Quick, relevant answers without sharing sensitive data.
+  - Enhances your app experience.
+  4. ### Voluntary Participation:
+  - Using the chatbot is optional.
+  - You can stop anytime using the unsubscribe/leave option.\n
+  `*By continuing to use the chatbot, you agree to the terms above. Your privacy matters to us!*`
+  """,
+                                      styleSheet: MarkdownStyleSheet(
+                                        code: TextStyle(
+                                            fontSize: 12,
+                                            color: Theme.of(context).primaryColor),
+                                      ),
+                                    )
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ]
+                  )
               )
-                  : const SizedBox(),
+                  : Text('Are you sure you want to revoke your consent for personalized response by Nuru?'),
             ],
           ),
+          scrollable: true,
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -280,13 +335,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             ),
             TextButton(
               onPressed: () {
-                // ref
-                //     .read(settingsNotifierProvider.notifier)
-                //     .updateSettings(firstNuruAccess: false);
-                // setState(() {
-                //   type == ConsentType.accept ? _consent = false : _consent;
-                // });
-                // _updateConsent(type == ConsentType.accept ? true : false);
                 Navigator.of(context).pop();
               },
               child: const Text('No'),
@@ -305,7 +353,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       debugPrint("Fetched consent data: $consentData");
       // Update UI based on fetched consent data
       var remoteConsent =
-      consentData.isNotEmpty ? consentData.first.chatbot_consent : null;
+          consentData.isNotEmpty ? consentData.first.chatbot_consent : null;
       setState(() {
         _consent = remoteConsent == "1" ? true : false;
       });
@@ -347,6 +395,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   Widget build(BuildContext context) {
     final size = getOrientationAwareScreenSize(context);
     final theme = Theme.of(context);
+    print("Show consent: $_showConsent");
     return Consumer(
       builder: (context, ref, child) {
         return Scaffold(
@@ -375,25 +424,33 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                         ],
                       ),
                     ),
-                    Flex(
-                      direction: Axis.horizontal,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        _consent
-                            ? TextButton(
-                            onPressed: () {
-                              _showConsentDialog(
-                                  context, ref, ConsentType.revoke);
-                            },
-                            child: const Text("Revoke consent", style: TextStyle(color: Colors.red),))
-                            : TextButton(
-                            onPressed: () {
-                              _showConsentDialog(
-                                  context, ref, ConsentType.accept);
-                            },
-                            child: const Text("Give consent", style: TextStyle(color: Colors.green),))
-                      ],
-                    ),
+                    _showConsent
+                        ? Flex(
+                            direction: Axis.horizontal,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              _consent
+                                  ? TextButton(
+                                      onPressed: () {
+                                        _showConsentDialog(
+                                            context, ref, ConsentType.revoke);
+                                      },
+                                      child: const Text(
+                                        "Revoke consent",
+                                        style: TextStyle(color: Colors.red),
+                                      ))
+                                  : TextButton(
+                                      onPressed: () {
+                                        _showConsentDialog(
+                                            context, ref, ConsentType.accept);
+                                      },
+                                      child: const Text(
+                                        "Give consent",
+                                        style: TextStyle(color: Colors.green),
+                                      ))
+                            ],
+                          )
+                        : const SizedBox(),
                     const Divider(),
                     Expanded(
                       child: ListView.builder(
@@ -407,9 +464,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     ),
                     _isBotTyping
                         ? Padding(
-                      padding: const EdgeInsets.all(Constants.SPACING),
-                      child: TypingAnimation(), // Bot typing indicator
-                    )
+                            padding: const EdgeInsets.all(Constants.SPACING),
+                            child: TypingAnimation(), // Bot typing indicator
+                          )
                         : _buildComposer(),
                   ],
                 ),

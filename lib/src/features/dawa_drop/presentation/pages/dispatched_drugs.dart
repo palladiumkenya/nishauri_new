@@ -40,7 +40,12 @@ class DispatchedDrugs extends ConsumerWidget {
                   color: Constants.dawaDropColor.withOpacity(0.5),
                 ),
                 svgImage: 'assets/images/lab-empty-state.svg',
-                notFoundText: "No Dispatched drug orders"),
+                notFoundText: "No Dispatched drug orders",
+              floatingButtonIcon1: Icons.refresh,
+              floatingButtonAction1: () {
+                ref.refresh(drugOrderProvider);
+              },
+            ),
           );
         } else {
           return Scaffold(
@@ -148,6 +153,18 @@ class DispatchedDrugs extends ConsumerWidget {
                 ),
               ],
             ),
+            floatingActionButton: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                  onPressed: () {
+                    ref.refresh(drugOrderProvider);
+                  },
+                  child: const Icon(Icons.refresh),
+                  heroTag: null,
+                ),
+              ],
+            ),
           );
         }
       },
@@ -160,6 +177,10 @@ class DispatchedDrugs extends ConsumerWidget {
           ),
           svgImage: 'assets/images/lab-empty-state.svg',
           notFoundText: "No Dispatched order",
+          floatingButtonIcon1: Icons.refresh,
+          floatingButtonAction1: () {
+            ref.refresh(drugOrderProvider);
+          },
         ),
       ),
       loading: () => Scaffold(

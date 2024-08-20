@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
+import 'package:nishauri/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/LoginScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/widget/Terms.dart';
 // import 'package:nishauri/src/features/auth/data/services/Terms.dart';
@@ -17,6 +18,7 @@ import 'package:nishauri/src/shared/display/LinkedRichText.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/display/label_input_container.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
+import 'package:nishauri/src/shared/interfaces/notification_service.dart';
 import 'package:nishauri/src/shared/layouts/ResponsiveWidgetFormLayout.dart';
 import 'package:nishauri/src/shared/styles/input_styles.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -355,7 +357,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 title: "Register",
                                 backgroundColor: theme.colorScheme.primary,
                                 textColor: Colors.white,
-                                onPress: () {
+                                onPress: () async {
                                   if (_formKey.currentState != null &&
                                       _formKey.currentState!
                                           .saveAndValidate()) {
@@ -366,26 +368,37 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     });
                                     final authNotifier =
                                         ref.read(authStateProvider.notifier);
-                                    final settings = ref.read(settingsNotifierProvider.notifier);
-                                    var version = {"app_version" : _appVersion};
-                                    var mergedData = {...formState, ...version};
+                                    final settings = ref.read(
+                                        settingsNotifierProvider.notifier);
+                                    var version = {"app_version": _appVersion};
+                                    final fcmToken = await NotificationService
+                                        .firebaseMessaging
+                                        .getToken();
+
+                                    debugPrint(
+                                        "Registration FCM token: $fcmToken");
+                                    var mergedData = {
+                                      "fcm_token": fcmToken,
+                                      ...formState,
+                                      ...version
+                                    };
 
                                     authNotifier
                                         .register(mergedData)
                                         .then((value) {
                                       //     Update user state
                                       ref.read(userProvider.notifier).getUser();
+                                      // ref.read(userProvider.notifier).getOTPCode("sms");
                                     }).then((value) {
-                                      settings.patchSettings(firstTimeInstallation: false);
+                                      settings.patchSettings(
+                                          firstTimeInstallation: false);
 
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
-                                          content:
-                                              Text(value.toString())
-                                        ),
+                                            content: Text(value.toString())),
                                       );
-                                      context.goNamed(RouteNames.VERIFY_ACCOUNT);
+                                      // context.goNamed(RouteNames.VERIFY_ACCOUNT);
                                     }).catchError((error) {
                                       handleResponseError(
                                         context,

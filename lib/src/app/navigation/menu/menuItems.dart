@@ -85,7 +85,7 @@ MenuItem getProgramMenuItemByProgramCode(
       title: MenuItemNames.CANCER_PROGRAM_MENU,
       onPressed: () => "",
     );
-  } else if (programCode == ProgramCodeNameIds.HYPERTENSION ) {
+  } else if (programCode == ProgramCodeNameIds.HYPERTENSION) {
     return MenuItem(
       icon: const Icon(
         Icons.speed,
@@ -216,23 +216,22 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
     // ),
     MenuItem(
         shortcutBackgroundColor: Constants.bmiCalculatorShortcutBgColor,
-
         icon: SvgPicture.asset(
-          "assets/images/calculator.svg",
+          "assets/images/healthcare-medical.svg",
           semanticsLabel: "Doctors",
           fit: BoxFit.contain,
           height: 80,
           width: 80,
         ),
         shortcutIcon: SvgPicture.asset(
-          "assets/images/calculator.svg",
+          "assets/images/healthcare-medical.svg",
           semanticsLabel: "Doctors",
           fit: BoxFit.contain,
           width: Constants.shortcutIconSize,
           height: Constants.shortcutIconSize,
         ),
-        title: MenuItemNames.BMI_CALCULATOR,
-        onPressed: () => context.goNamed(RouteNames.BMI_CALCULATOR),
+        title: MenuItemNames.SELF_SCREENING,
+        onPressed: () => context.goNamed(RouteNames.SELF_SCREENING),
         color: Constants.bmiCalculatorColor),
 
     MenuItem(
@@ -256,6 +255,27 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
       onPressed: () => context.goNamed(RouteNames.DAWA_DROP),
       color: Constants.dawaDropColor.withOpacity(0.5),
     ),
+    // MenuItem(
+    //   // icon: FaIcon(FontAwesomeIcons.capsules, size: Constants.iconSize, color: Colors.teal[200],),
+    //   shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,
+    //   icon: SvgPicture.asset(
+    //     "assets/images/sugar.svg",
+    //     semanticsLabel: "Blood sugar",
+    //     fit: BoxFit.contain,
+    //     width: 80,
+    //     height: 80,
+    //   ),
+    //   shortcutIcon: SvgPicture.asset(
+    //     "assets/images/sugar.svg",
+    //     semanticsLabel: "Blood Sugar",
+    //     fit: BoxFit.contain,
+    //     width: Constants.shortcutIconSize,
+    //     height: Constants.shortcutIconSize,
+    //   ),
+    //   title: MenuItemNames.BLOOD_SUGAR,
+    //   onPressed: () => context.goNamed(MenuItemNames.BLOOD_SUGAR),
+    //   color: Constants.bloodSugarColor.withOpacity(0.5),
+    // ),
     // MenuItem(
     //   icon: Icons.move_down,
     //   title: MenuItemNames.FACILITY_VISITS,

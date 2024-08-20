@@ -1,13 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
 import 'package:nishauri/src/features/bmi/data/model/bmi_log.dart';
-import 'package:http/http.dart' as http;
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
-import 'package:nishauri/src/shared/models/token_pair.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class BMILogService extends HTTPService{
@@ -21,7 +20,6 @@ class BMILogService extends HTTPService{
       if (response.statusCode == 200) {       
         final responseString = await response.stream.bytesToString();
         final responseData = jsonDecode(responseString);
-        print("Sucessfully sent data to end point");
         if(responseData["success"] == true) {
           return responseData["msg"];
         }
@@ -65,6 +63,38 @@ class BMILogService extends HTTPService{
 
 }
 
+  Future<StreamedResponse> fetchBMI_(dynamic args) async {
+    final id = await _repository.getUserId();
+    final tokenPair = await getCachedToken();
+    var headers = {'Authorization': 'Bearer ${tokenPair.accessToken}'};
+    var url = '${Constants.BASE_URL_NEW}get_bmi?user_id=$id';
+    final response = request(
+        url: url,
+        token: tokenPair,
+        method: 'GET',
+        requestHeaders: headers,
+        userId: id);
+    return response;
+  }
 
+  Future<List<BMILog>> fetchBMI() async {
+    List<BMILog> bs = [];
+    final response = await call(fetchBMI_, null);
+    if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+    // final String responseString = await rootBundle.loadString('assets/data/bmi_log.json');
+    final Map<String, dynamic> responseData = json.decode(responseString);
+    if (responseData["success"] == true){
+      final List<dynamic> jsonList = responseData["data"]["bmi_log"];
+      bs.addAll(jsonList.map((json) => BMILog.fromJson(json)));
+      return bs;
+    } else {
+      throw responseData["message"];
+    }
+  }
+else {
+  throw "Failed to fetch data!";
+  }
+}
 }
 

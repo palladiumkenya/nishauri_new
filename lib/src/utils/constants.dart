@@ -42,5 +42,7 @@ class Constants {
   static const periodPlannerShortcutBgColor = Color.fromARGB(255, 255, 182, 193);
   static const iconSize = 70.0;
   static const shortcutIconSize = 30.0;
-
+  static const bpShortCutBgColor = Color.fromARGB(255, 255, 205, 210);
+  static const bpBgColor = Color.fromARGB(255, 255, 83, 80);
+  static const bloodSugarColor = Color.fromARGB(255, 180, 216, 20);
 }

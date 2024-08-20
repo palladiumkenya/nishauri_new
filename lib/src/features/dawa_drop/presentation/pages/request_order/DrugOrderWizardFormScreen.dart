@@ -170,6 +170,7 @@ class DrugOrderWizardFormScreen extends HookConsumerWidget {
         }).then((value) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("Drug delivery request was a success!")));
+          ref.refresh(drugOrderProvider);
           context.goNamed(
             RouteNames.HIV_DRUG_ORDERS,
           );

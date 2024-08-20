@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
 import 'package:nishauri/src/features/dawa_drop/data/models/order_request/drug_order.dart';
+import 'package:nishauri/src/local_storage/LocalStorage.dart';
 
 enum SubscriptionType {
   appointments,
@@ -24,51 +25,64 @@ abstract class NotificationService {
 
   // Request for permissions
   static Future<void> initializeFirebaseMessaging() async {
-    NotificationSettings settings = await firebaseMessaging.requestPermission(
-      alert: true,
-      badge: true,
-      provisional: false,
-      sound: true,
-    );
-    debugPrint('User granted permission: ${settings.authorizationStatus}');
+    try {
+      NotificationSettings settings = await firebaseMessaging.requestPermission(
+        alert: true,
+        badge: true,
+        provisional: false,
+        sound: true,
+      );
+      debugPrint('User granted permission: ${settings.authorizationStatus}');
 
-    // Get device FCM token
-    final token = await firebaseMessaging.getToken();
-    debugPrint('FCM Token: $token');
+      // Get device FCM token
+      final token = await firebaseMessaging.getToken();
+      debugPrint('FCM Token: $token');
 
-    // Set foreground notification presentation options
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+      // Cache FCM token
+      // await LocalStorage.save("FCM_Token", token.toString());
 
-    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+      // Handle token refresh
+      // firebaseMessaging.onTokenRefresh.listen((newToken) async {
+      //   debugPrint('FCM Token refreshed: $newToken');
+      //   await LocalStorage.save("FCM_Token", newToken);
+      // });
 
-    FirebaseMessaging.onMessage.listen((message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
-        NotificationService.flutterLocalNotificationsplugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              NotificationService.channel.id,
-              NotificationService.channel.name,
-              channelDescription: NotificationService.channel.description,
-              importance: Importance.max,
-              priority: Priority.high,
-              showWhen: false,
-              playSound: true,
-              icon: '@mipmap/launcher_icon',
+      // Set foreground notification presentation options
+      await FirebaseMessaging.instance
+          .setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+
+      FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+      FirebaseMessaging.onMessage.listen((message) {
+        RemoteNotification? notification = message.notification;
+        AndroidNotification? android = message.notification?.android;
+        if (notification != null && android != null) {
+          NotificationService.flutterLocalNotificationsplugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                NotificationService.channel.id,
+                NotificationService.channel.name,
+                channelDescription: NotificationService.channel.description,
+                importance: Importance.max,
+                priority: Priority.high,
+                showWhen: false,
+                playSound: true,
+                icon: '@mipmap/launcher_icon',
+              ),
             ),
-          ),
-        );
-      }
-    });
+          );
+        }
+      });
+    } catch (e) {
+      debugPrint('Error initializing Firebase Messaging: $e');
+    }
   }
 
   static void handleOpenNotification(context) {

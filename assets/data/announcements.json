@@ -4,20 +4,34 @@
     "image": "assets/images/Calendar-home.svg",
     "source": "assets/images/appointment-empty-boy.svg",
     "title": "Reschedule\nAppointments\nEasy",
-    "description": "### Latest Updates on COVID-19 Variants \n\nKeep yourself and your loved ones safe with our **COVID-19 Variant Updates** feature. In an ever-evolving pandemic, staying informed about new variants is crucial. Our app provides timely updates and essential information about the latest COVID-19 variants, helping you take necessary precautions. \n\n**Why It’s Important:** \n\n- **Awareness:** Learn about new variants and their characteristics. \n- **Safety Tips:** Get advice on how to protect yourself and others. \n- **Vaccination Updates:** Stay updated on vaccine efficacy and new recommendations. \n\n**How to Access:** \n\n1. Open the app and navigate to the COVID-19 Updates section. \n2. Select the Variants tab to see the latest information. \n3. Read through detailed articles, watch expert videos, and view infographics. \n\nBy staying informed, you can make better decisions for your health and safety during the pandemic. Our goal is to provide you with accurate and reliable information to help you navigate these challenging times."
+    "description": "Need to reschedule? No worries! Life happens, and we're here to make it easy. Just let us know when works best for you, and we'll find a new time that fits perfectly. Your health is our priority!\n\n **Importance:** \n- **Flexibility:** It provides you with the flexibility to adjust your appointments according to your changing schedules, making it easier to manage unexpected events or conflicts.\n- **Adherence:** It ensures you keep your appointments\n\n **How to Access:** \n- Open the application and on the future appointment \n- Click reschedule appointment\n- Select preferred date, time and reason for rescheduling request\n- You will receive notification upon approval of your request. \n\n Need to shift your health check? No worries—reschedule in a snap and keep your wellness on track!"
   },
   {
     "id": "2",
     "image": "assets/images/lab-home.svg",
     "source": "assets/images/lab-home.svg",
     "title": "Instant Lab\nResults",
-    "description": "### Never Miss an Appointment Again! \n\nWith our new **Reschedule Appointment** feature, managing your healthcare schedule has never been easier. Whether something unexpected comes up or you simply need to change your appointment time, you can now effortlessly reschedule your appointments with just a few taps. \n\n**How It Works:** \n\n1. Navigate to your upcoming appointments in the app. \n2. Select the appointment you need to reschedule. \n3. Choose a new date and time that works for you. \n4. Confirm the changes, and you’re all set! \n\nOur system will automatically notify your healthcare provider of the change, ensuring a seamless experience. Stay on top of your health without the stress of rigid schedules."
+    "description": "Get your lab results with ease—your health insights are just a click away!\n\n **Importance:** \n- **Timely Information:** Quick access to lab results enables you to make informed decisions promptly, which is essential for timely treatment and intervention.\n- **Empowerment:** It empowers you by giving them direct access to your health information, fostering a sense of ownership and engagement in your healthcare journey.\n\n **How to Access:** \n- Go to Lab results module under apps \n- View Lab results trends and line list  \n\nAccess to lab results is an essential aspect of modern healthcare, contributing to your empowerment, better care, and improved health outcomes!"
   },
   {
     "id": "3",
     "image": "assets/images/chat-home.svg",
     "source": "assets/images/chat-home.svg",
     "title": "Meet Nuru",
-    "description": "### Hassle-Free Medication Orders \n\nIntroducing our **Drug Order** feature, designed to simplify your medication management. No more waiting in long pharmacy lines or worrying about running out of your prescriptions. With this feature, you can order your medications directly through the app and have them delivered to your doorstep. \n\n**Key Benefits:** \n\n- **Convenience:** Order your medications anytime, anywhere. \n- **Safety:** Securely manage your prescriptions with our encrypted system. \n- **Speed:** Fast processing and delivery options to suit your needs. \n\n**How to Use:** \n\n1. Go to the Drug Order section in the app. \n2. Select the medications you need to reorder from your prescription list. \n3. Choose your preferred delivery method and time. \n4. Confirm your order, and track the delivery status in real-time. \n\nStay healthy and stress-free with our streamlined drug ordering process."
+    "description": "Need help? Chat with us in a click—your Nuru is ready and waiting!\n\n **Importance:**\n- **24/7 Availability:** Nuru provides round-the-clock support, ensuring that you can get assistance insights about your health journey.\n\n**How to Access:**\n- Go to Nuru option at the bottom of the app\n- Type your prompt and wait for the response from Nuru\n\n Your health buddy is just a tap away—chat with Nuru for instant wellness tips and support!"
+  },
+  {
+    "id": "4",
+    "image": "assets/images/Hospital building-bro.svg",
+    "source": "assets/images/Hospital building-bro.svg",
+    "title": "Manage Prescriptions",
+    "description": "Need your meds delivered? Request a drug drop  with just a click and have your prescriptions conveniently brought to your door!\n\n **Importance:** \n- **Convenience:** Save time and effort by bringing medications directly to your door.\n- **Adherence:** By ensuring that you receive medications on time, dawa drop feature help improve adherence to prescribed treatment plans and reduce missed doses.\n- **Accessibility:** We provide access to medications for individuals with mobility issues, those living in remote areas, or those who lack transportation.\n- **Privacy:** Dawa Drop offers a discreet way to receive prescriptions, which can be important for individuals who prefer to keep their health conditions and medications private.\n\n **How to Access:**\n- Go to Dawa Drop module under apps\n- Select Request for Drug Delivery\n- Select Refill appointment drug\n- Fill the drug request form and submit.\n- Your will receive notification on the progress of your request till delivery.\nOverall, drug delivery drops enhance the convenience, safety, and accessibility of medications, improving overall patient care and satisfaction!"
+  },
+  {
+    "id": "5",
+    "image": "assets/images/Medical prescription-bro.svg",
+    "source": "assets/images/Medical prescription-bro.svg",
+    "title": "Find Nearby Facilities",
+    "description": "Need to find a facility? Our directory makes it easy—locate contacts and services at your fingertips!\n\n**Importance:**\n- **Communication:** Facilitates better communication by providing contact information for various facility ensuring that inquiries are directed to the right place.\n- **Emergency:** Having a clear directory helps quickly locate nearby facilities incase of emergencies.\n\n**How to Access:**\n- Go to Facility Directory module under apps\n- View Search facility by name or MFL code and view results\n- Click on the contacts details for call\nDiscover what you need with ease—our facility directory puts every department and service right at your fingertips!"
   }
 ]
