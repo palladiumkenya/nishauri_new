@@ -18,14 +18,16 @@
 
 
 class Cycle{
-   String cycleId;
-   DateTime periodStart;
-   DateTime periodEnd;
-   DateTime fertileStart;
-   DateTime fertileEnd;
-   DateTime ovulation;
-   DateTime predictedPeriodStart;
-   DateTime predictedPeriodEnd;
+  String cycleId;
+  DateTime periodStart;
+  DateTime periodEnd;
+  DateTime fertileStart;
+  DateTime fertileEnd;
+  DateTime ovulation;
+  DateTime predictedPeriodStart;
+  DateTime predictedPeriodEnd;
+  int cycleLength;
+  int periodLength;
 
   Cycle({
     required this.cycleId,
@@ -36,6 +38,8 @@ class Cycle{
     required this.ovulation,
     required this.predictedPeriodStart,
     required this.predictedPeriodEnd,
+    required this.cycleLength,
+    required this.periodLength,
   });
 }
 
