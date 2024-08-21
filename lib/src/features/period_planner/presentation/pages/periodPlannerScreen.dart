@@ -322,16 +322,17 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                                   }
 
                                                   _updateEvents();
+                                                  printCycles(cycles);
 
                                                   // Debug print to check the state update
-                                                  debugPrint("After User has logged end of Period");
-                                                  debugPrint('Period Start after update: $_periodStart');
-                                                  debugPrint('Period End after update: $_periodEnd');
-                                                  debugPrint('Predicted Next Period Date after update: $_nextPeriodStart');
-                                                  debugPrint('Current Date after update: $_currentDate');
-                                                  debugPrint('Is In Period after update: $isInPeriod');
-                                                  debugPrint('Is Close to Ovulation after update: $isCloseToOvulation'); 
-                                                  debugPrint("--------");
+                                                  // debugPrint("After User has logged end of Period");
+                                                  // debugPrint('Period Start after update: $_periodStart');
+                                                  // debugPrint('Period End after update: $_periodEnd');
+                                                  // debugPrint('Predicted Next Period Date after update: $_nextPeriodStart');
+                                                  // debugPrint('Current Date after update: $_currentDate');
+                                                  // debugPrint('Is In Period after update: $isInPeriod');
+                                                  // debugPrint('Is Close to Ovulation after update: $isCloseToOvulation'); 
+                                                  // debugPrint("--------");
                                                 }); 
                                                 //printCycles(cycles);
                                                 Navigator.of(context).pop();           

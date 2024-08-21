@@ -6,13 +6,62 @@ import 'package:nishauri/src/features/period_planner/presentation/widgets/modalC
 import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart';
 
-//Algorithm
-Cycle predictCycle(DateTime periodStart, DateTime periodEnd, {int averageCycleLength = 28, int averagePeriodLength = 6}) {
+//Function to calculate Average Cycle days
+int calculateAverageCycleLength(List<Cycle> cycles) {
+  if (cycles.length < 2) return 28; // Default to 28 if there aren't enough cycles
+
+  int totalLength = 0;
+  for (int i = 1; i < cycles.length; i++) {
+    int cycleLength = cycles[i].periodStart.difference(cycles[i - 1].periodStart).inDays;
+    debugPrint("Cycle Length $i: $cycleLength");
+    totalLength += cycleLength;
+  }
+  int averageCycle = (totalLength / (cycles.length - 1)).round();
+  debugPrint("Total Length: $totalLength");
+  debugPrint("Cycles.Length: ${cycles.length - 1}");
+  debugPrint("Average Cycle Length: $averageCycle");
+  return averageCycle;
+}
+
+//Function for calculating Average Period days
+int calculateAveragePeriodLength(List<Cycle> cycles) {
+  if (cycles.isEmpty) return 5; // Default to 5 days if there are no cycles
+
+  int totalPeriodLength = 0;
+  for (Cycle cycle in cycles) {
+    debugPrint("Period Length : ${cycle.periodLength}");
+    totalPeriodLength += cycle.periodLength;
+  }
+  int averagePeriodLength = (totalPeriodLength / cycles.length).round();
+  debugPrint("Total Period Length: $totalPeriodLength");
+  debugPrint("Number of Cycles: ${cycles.length}");
+  debugPrint("Average Period Length: $averagePeriodLength");
+  return averagePeriodLength;
+}
+
+
+
+
+// DateTime normalizeToMidnight(DateTime dateTime) {
+//   return DateTime(dateTime.year, dateTime.month, dateTime.day);
+// }
+
+
+
+
+//Algorithm for calculating Next Period Days, Ovulation and Fertile Days
+Cycle predictCycle(DateTime periodStart, DateTime periodEnd) {
   var uuid = const Uuid();
   String cycleId = uuid.v4(); //Generating a unique id
 
+  // Calculate average cycle length from previous cycles
+  int averageCycleLength = calculateAverageCycleLength(cycles);
+
+  // Calculate average period length from the period Start to the Period End
+  int averagePeriodLength = calculateAveragePeriodLength(cycles);
+
   DateTime predictedPeriodStart = periodStart.add(Duration(days: averageCycleLength));
-  DateTime predictedPeriodEnd = predictedPeriodStart.add(Duration(days: averagePeriodLength));
+  DateTime predictedPeriodEnd = predictedPeriodStart.add(Duration(days: averagePeriodLength - 1));
 
   //calculating ovulation day (14 days before predicted period start)
   DateTime ovulation = predictedPeriodStart.subtract(const Duration(days: 14));
@@ -20,6 +69,14 @@ Cycle predictCycle(DateTime periodStart, DateTime periodEnd, {int averageCycleLe
   //calculating fertile window (5 days leading up to and including ovulation day)
   DateTime fertileStart = ovulation.subtract(const Duration(days: 5));
   DateTime fertileEnd = ovulation.subtract(const Duration(days: 1));
+
+  //Calculating cycle Length between the previous cycle start and the latest cycle start
+  int cycleLength = (cycles.isNotEmpty)
+      ? periodStart.difference(cycles.last.periodStart).inDays
+      : averageCycleLength; // Calculate cycle length only if there are previous cycles
+
+  //Calculating period Length of each cycle
+  int periodLength = periodEnd.difference(periodStart).inDays + 1;      
 
   return Cycle(
     cycleId: cycleId, 
@@ -30,6 +87,8 @@ Cycle predictCycle(DateTime periodStart, DateTime periodEnd, {int averageCycleLe
     ovulation: ovulation, 
     predictedPeriodStart: predictedPeriodStart, 
     predictedPeriodEnd: predictedPeriodEnd,
+    cycleLength: cycleLength,
+    periodLength: periodLength,
   );
 }
 
@@ -38,7 +97,7 @@ class CustomCalendar extends StatefulWidget {
   final Map<String, Map<DateTime, List<Event>>> events;
   final bool headerButton;
 
-   CustomCalendar({
+   const CustomCalendar({
     Key? key,
     this.initialFormat = CalendarFormat.month, 
     required this.events, 
@@ -77,42 +136,99 @@ class _CustomCalendarState extends State<CustomCalendar>{
   return flattenedEvents;
   }
 
-  Map<DateTime, List<Event>> _filterEventsForLatestCycle() {
-    final Map<DateTime, List<Event>> filteredEvents = {};
+  // Map<DateTime, List<Event>> _filterEventsForLatestCycle() {
+  //   final Map<DateTime, List<Event>> filteredEvents = {};
 
-    //Finding the latest cycleId
-    final latestCycleId = widget.events.keys.last;
+  //   //Finding the latest cycleId
+  //   final latestCycleId = widget.events.keys.last;
 
-    if (widget.events.containsKey(latestCycleId)) {
-      final latestCycleEvents = widget.events[latestCycleId]!;
+  //   if (widget.events.containsKey(latestCycleId)) {
+  //     final latestCycleEvents = widget.events[latestCycleId]!;
 
-      //Add events from the latest cycle
-      latestCycleEvents.forEach((date, events) {
-        if (filteredEvents.containsKey(date)) {
-          filteredEvents[date]!.addAll(events);
-        } else {
-          filteredEvents[date] = List.from(events);
-        }
-       });
+  //     //Add events from the latest cycle
+  //     latestCycleEvents.forEach((date, events) {
+  //       if (filteredEvents.containsKey(date)) {
+  //         filteredEvents[date]!.addAll(events);
+  //       } else {
+  //         filteredEvents[date] = List.from(events);
+  //       }
+  //      });
 
-       //Removing predicted period days from previous cycles
-       widget.events.forEach((cycleId, dateMap) {
-        if (cycleId != latestCycleId) {
-          dateMap.forEach((date, events) {
-            final newEventList = events.where((event) =>  event.title != 'Predicted Period Day').toList();
-            if (newEventList.isNotEmpty) {
-              if (filteredEvents.containsKey(date)) {
-                filteredEvents[date]!.addAll(newEventList);
-              } else {
-                filteredEvents[date] = List.from(newEventList);
-              }
+  //      //Removing predicted period days from previous cycles
+  //      widget.events.forEach((cycleId, dateMap) {
+  //       if (cycleId != latestCycleId) {
+  //         dateMap.forEach((date, events) {
+  //           final newEventList = events.where((event) =>  event.title != 'Predicted Period Day').toList();
+  //           if (newEventList.isNotEmpty) {
+  //             if (filteredEvents.containsKey(date)) {
+  //               filteredEvents[date]!.addAll(newEventList);
+  //             } else {
+  //               filteredEvents[date] = List.from(newEventList);
+  //             }
+  //           }
+  //          });
+  //       }
+  //       });
+  //   }
+  //   return filteredEvents;
+  // }
+
+Map<DateTime, List<Event>> _filterEventsForLatestCycle() {
+  final Map<DateTime, List<Event>> filteredEvents = {};
+
+  // Find the latest cycleId
+  final latestCycleId = widget.events.keys.last;
+
+  if (widget.events.containsKey(latestCycleId)) {
+    // Get events from the latest cycle
+    final latestCycleEvents = widget.events[latestCycleId]!;
+
+    // Add all events from the latest cycle to the filtered events
+    latestCycleEvents.forEach((date, events) {
+      if (filteredEvents.containsKey(date)) {
+        filteredEvents[date]!.addAll(events);
+      } else {
+        filteredEvents[date] = List.from(events);
+      }
+    });
+
+    // Now process previous cycles
+    widget.events.forEach((cycleId, dateMap) {
+      if (cycleId != latestCycleId) {
+        dateMap.forEach((date, events) {
+          // Check if this date is already occupied by a 'Period Day' from the latest cycle
+          final isCollision = filteredEvents.containsKey(date) &&
+              filteredEvents[date]!.any((event) => event.title == 'Period Day');
+
+          // We only add events that are not 'Predicted Period Day' and that do not collide with new period days
+          final filteredEventList = events.where((event) {
+            // Remove all 'Predicted Period Day' events
+            if (event.title == 'Predicted Period Day') {
+              return false;
             }
-           });
-        }
+            // If there's a collision, don't include 'Fertile Day' or 'Ovulation Day'
+            if (isCollision && (event.title == 'Fertile Day' || event.title == 'Ovulation Day')) {
+              return false;
+            }
+            return true; // Keep all other events
+          }).toList();
+
+          // Add these filtered events to the final list if they aren't empty
+          if (filteredEventList.isNotEmpty) {
+            if (filteredEvents.containsKey(date)) {
+              filteredEvents[date]!.addAll(filteredEventList);
+            } else {
+              filteredEvents[date] = List.from(filteredEventList);
+            }
+          }
         });
-    }
-    return filteredEvents;
+      }
+    });
   }
+
+  return filteredEvents;
+}
+
 
   @override
   Widget build(BuildContext context) {
