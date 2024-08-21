@@ -7,7 +7,7 @@ class EventUtils {
   static Map<String, Map<DateTime, List<Event>>> generateEvents(List<Cycle> cycles) {
     Map<String, Map<DateTime, List<Event>>> events= {};
 
-    debugPrint("-----Generating New Events From Event Utils-----");
+    //debugPrint("-----Generating New Events From Event Utils-----");
 
     for (Cycle cycle in cycles) {
       String cycleId = cycle.cycleId; 
@@ -62,15 +62,15 @@ class EventUtils {
     }
     
     events.forEach((id, events) {
-      print("Cycle Id: $id");
-      print("[");
+      //print("Cycle Id: $id");
+      //print("[");
       events.forEach((date, event) { 
-        print("Date: $date, Event: $event\n");
+        //print("Date: $date, Event: $event\n");
       });
-      print("]");
+      //print("]");
     });
     
-    print("--------------");
+    //print("--------------");
     return events;
   }
 }

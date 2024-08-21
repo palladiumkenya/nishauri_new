@@ -22,6 +22,8 @@ void printCycles(List<Cycle> cycles) {
     debugPrint('Ovulation: ${cycle.ovulation}');
     debugPrint('Predicted Period Start: ${cycle.predictedPeriodStart}');
     debugPrint('Predicted Period End: ${cycle.predictedPeriodEnd}');
+    debugPrint('Cycle Length: ${cycle.cycleLength}');
+    debugPrint('Period Length: ${cycle.periodLength}');
     debugPrint('---'); // Separator between cycles for clarity
   }
 }
@@ -50,9 +52,9 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
   final Map<DateTime, List<Event>> flattenedEvents = {};
 
   nestedEvents.forEach((cycleId, dateMap) {
-    print("Processing cycle: $cycleId"); // Debug: Print current cycleId
+    //print("Processing cycle: $cycleId"); // Debug: Print current cycleId
     dateMap.forEach((date, events) {
-      print("Date: $date, Events: $events"); // Debug: Print date and events being processed
+      //print("Date: $date, Events: $events"); // Debug: Print date and events being processed
       if (flattenedEvents.containsKey(date)) {
         flattenedEvents[date]!.addAll(events);
       } else {
@@ -61,7 +63,7 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
     });
   });
 
-  print("Flattened Events: $flattenedEvents"); // Debug: Print final flattened events
+  //print("Flattened Events: $flattenedEvents"); // Debug: Print final flattened events
   return flattenedEvents;
 }
 
