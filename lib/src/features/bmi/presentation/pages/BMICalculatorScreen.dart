@@ -36,9 +36,12 @@ class BMICalculatorScreen extends HookConsumerWidget {
     final heightUnits =
         useState<HeightUnitsPickerOptions>(HeightUnitsPickerOptions.In);
     final weight = useState<int>(65);
-    final age = useState<int>(27);
     final isForSelf = useState(true);
     final userAsync = ref.watch(userProvider);
+    var age = userAsync.whenData((user) {
+      return DateTime.now().year - int.parse(user.dateOfBirth!.split('-')[0]);
+    });
+    var userAge = useState(age);
 
     return Scaffold(
       body: Column(
@@ -92,6 +95,16 @@ class BMICalculatorScreen extends HookConsumerWidget {
                                                 useState<GenderPickerChoices>(
                                                     GenderPickerChoices.female);
                                           }
+                                        }
+                                      });
+                                      userAsync.whenData((user) async {
+                                        if (user.dateOfBirth != null) {
+                                          debugPrint(
+                                              'user dateOfBirth: ${user.dateOfBirth}');
+                                          var age = DateTime.now().year -
+                                              int.parse(user.dateOfBirth!
+                                                  .split('-')[0]);
+                                          userAge.value = AsyncValue.data(age);
                                         }
                                       });
                                     },
@@ -212,15 +225,25 @@ class BMICalculatorScreen extends HookConsumerWidget {
                             units: "Kgs",
                             activeColor: activeColor,
                           ),
-                          Quantizer(
-                            min: 5,
-                            max: 100,
-                            value: age.value,
-                            onValueChange: (value) => age.value = value,
-                            label: "Age",
-                            units: "Years",
-                            activeColor: activeColor,
-                          ),
+                          isForSelf.value == false
+                              ? Quantizer(
+                                  min: 5,
+                                  max: 100,
+                                  value: userAge.value.value!,
+                                  onValueChange: (value) =>
+                                      userAge.value = AsyncValue.data(value),
+                                  label: "Age",
+                                  units: "Years",
+                                  activeColor: activeColor,
+                                )
+                              : // Show similar quantizer but one that values can't be modified
+                              Quantizer(
+                                  value: userAge.value.value!,
+                                  onValueChange: (value) {},
+                                  label: "Age",
+                                  units: "Years",
+                                  activeColor: activeColor,
+                                ),
                         ],
                       ),
                       const SizedBox(height: Constants.SPACING),
