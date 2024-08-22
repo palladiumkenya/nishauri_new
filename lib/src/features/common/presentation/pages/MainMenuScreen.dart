@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/app/navigation/drawer/customeDrawer.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuItemsBuilder.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuOption.dart';
 import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
@@ -23,11 +24,22 @@ class MainMenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = getOrientationAwareScreenSize(context);
+
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+    void toggleDrawer() {
+      if (_scaffoldKey.currentState != null) {
+        if (_scaffoldKey.currentState!.isDrawerOpen) {
+          _scaffoldKey.currentState!.closeDrawer();
+        } else {
+          _scaffoldKey.currentState!.openDrawer();
+        }
+      }
+    }
+
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Center(
-      //       child: Text("App modules", style: theme.textTheme.headlineLarge)),
-      // ),
+      key: _scaffoldKey,
+      drawer: CustomDrawer(),
       body: Stack(
         children: [
           Positioned(
@@ -52,13 +64,26 @@ class MainMenuScreen extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: Constants.SPACING,
                           vertical: Constants.SPACING),
-                      child: Text(
-                        "App Modules📱",
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.primary,
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "App Modules📱",
+                            style: TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                              color: theme.colorScheme.primary,
+                            ),
+                          ),
+                          Wrap(
+                            children: [
+                              IconButton(
+                                onPressed: toggleDrawer,
+                                icon: const Icon(Icons.more_vert_outlined),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
                     ),
                     const SizedBox(height: Constants.SPACING * 2),
@@ -75,32 +100,22 @@ class MainMenuScreen extends StatelessWidget {
                                 onTap: item.onPressed,
                                 child: Container(
                                   padding:
-                                      const EdgeInsets.all(Constants.SPACING),
+                                  const EdgeInsets.all(Constants.SPACING),
                                   decoration: BoxDecoration(
                                     color:
-                                        item.color ?? theme.colorScheme.primary,
-                                    // gradient: LinearGradient(
-                                    //   begin: Alignment.topCenter,
-                                    //   end: Alignment.bottomCenter,
-                                    //   colors: [
-                                    //     theme.colorScheme.onSurface,
-                                    //     item.color ?? theme.colorScheme.primary,
-                                    //   ],
-                                    // ),
+                                    item.color ?? theme.colorScheme.primary,
                                     image: const DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/contours.png"),
-                                        opacity: 0.2,
-                                        fit: BoxFit.cover
-
-                                        // image: AssetImage("assets/images/contours.png"),
-                                        ),
+                                      image: AssetImage(
+                                          "assets/images/contours.png"),
+                                      opacity: 0.2,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                   child: Column(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: <Widget>[
                                       item.icon,
                                       const SizedBox(height: Constants.SPACING),
@@ -112,26 +127,14 @@ class MainMenuScreen extends StatelessWidget {
                                           fontWeight: FontWeight.normal,
                                         ),
                                         overflow: TextOverflow.ellipsis,
-                                        softWrap:
-                                            true, // Add this line to enable text wrapping
+                                        softWrap: true,
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
                             ),
-                            // itemBuilder: (item) => MenuOption(
-                            //   title: item.title ?? "",
-                            //   icon: item.icon,
-                            //   // iconSize: 50,
-                            //   onPress: item.onPressed,
-                            //   // iconColor: theme.colorScheme.primary,
-                            //   bgColor: item.title == "Add Programme"
-                            //       ? theme.colorScheme.secondary
-                            //       : null,
-                            // ),
                             items: [
-                              // get generic menu items
                               ...getGenericMenuItems(context),
                             ],
                           );

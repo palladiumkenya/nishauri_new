@@ -47,7 +47,7 @@ class HeightPicker extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(Constants.SPACING),
             child: Text(
-              convertFromCmTo(heightUnits, height).toStringAsFixed(1),
+              convertToCm(heightUnits, height),
               style: theme.textTheme.displayLarge,
             ),
           ),

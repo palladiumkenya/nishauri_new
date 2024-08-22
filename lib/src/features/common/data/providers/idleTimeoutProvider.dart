@@ -17,12 +17,10 @@ class IdleTimeoutNotifier extends StateNotifier<int> {
 
   void _startTimer() {
     _timer?.cancel();
-    _timer = Timer(const Duration(minutes: 5), _logoutUser);
+    _timer = Timer(const Duration(minutes: 15), _logoutUser);
   }
 
   void _logoutUser() {
-    // Implement your logout logic here
-    // For example, you might navigate to the login screen or clear user data
     ref.read(authStateProvider.notifier).logout();
     print("User logged out due to inactivity");
   }

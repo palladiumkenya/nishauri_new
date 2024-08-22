@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -21,8 +20,12 @@ import 'package:nishauri/src/features/auth/presentation/pages/VerificationScreen
 import 'package:nishauri/src/features/auth/presentation/pages/VerifiedResetPassword.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/VerifyResetPasswordScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart';
+import 'package:nishauri/src/features/blood_sugar/presentation/pages/AddBloodSugarScreen.dart';
+import 'package:nishauri/src/features/blood_sugar/presentation/pages/BloodSugarScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorResultsScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
+import 'package:nishauri/src/features/bmi/presentation/pages/BMIHistoryScreen.dart';
+import 'package:nishauri/src/features/bp/presentation/pages/bpMonitorScreen.dart';
 import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
 import 'package:nishauri/src/features/clinic_card/presentation/pages/ClinicCardScreen.dart';
 import 'package:nishauri/src/features/common/presentation/pages/FaqPage.dart';
@@ -53,7 +56,9 @@ import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/DrugOrders.dart';
 import 'package:nishauri/src/features/lab/presentation/pages/LabResultsScreen.dart';
 import 'package:nishauri/src/features/programs/presentation/pages/programs.dart';
+import 'package:nishauri/src/features/self_screening/presentation/self_screening_menu.dart';
 import 'package:nishauri/src/features/treatment_support/presentation/pages/TreatmentSupport.dart';
+import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileScreen.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileWizardFormScreen.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
@@ -159,29 +164,29 @@ class RouterNotifier extends ChangeNotifier {
         //     return VerificationScreen(username: extras);
         //   },
         // ),
-    GoRoute(
-      name: RouteNames.VERIFY_ACCOUNT,
-      path: '/account-verify',
-      builder: (BuildContext context, GoRouterState state) {
-        return FutureBuilder<String>(
-          future: getPhone(),
-          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (snapshot.hasData) {
-              final extras = snapshot.data!;
-              return VerificationScreen(username: extras);
-            } else {
-              return const Center(child: Text('No data available'));
-            }
+        GoRoute(
+          name: RouteNames.VERIFY_ACCOUNT,
+          path: '/account-verify',
+          builder: (BuildContext context, GoRouterState state) {
+            return FutureBuilder<String>(
+              future: getPhone(),
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (snapshot.hasData) {
+                  final extras = snapshot.data!;
+                  return VerificationScreen(username: extras);
+                } else {
+                  return const Center(child: Text('No data available'));
+                }
+              },
+            );
           },
-        );
-      },
-    ),
+        ),
 
-    GoRoute(
+        GoRoute(
           name: RouteNames.PROFILE_EDIT_FORM,
           path: '/profile-edit',
           builder: (BuildContext context, GoRouterState state) {
@@ -221,21 +226,6 @@ final List<RouteBase> secureRoutes = [
     },
   ),
   GoRoute(
-      name: RouteNames.BMI_CALCULATOR,
-      path: 'bmi-calculator',
-      builder: (BuildContext context, GoRouterState state) {
-        return const BMICalculatorScreen();
-      },
-      routes: [
-        GoRoute(
-            name: RouteNames.BMI_CALCULATOR_RESULTS,
-            path: "bmi-calculator-results",
-            builder: (BuildContext context, GoRouterState state) {
-              double extra = state.extra! as double;
-              return BMICalculatorResultsScreen(bmi: extra);
-            })
-      ]),
-  GoRoute(
     name: RouteNames.PRIVACY_SETTINGS,
     path: 'privacy-settings',
     builder: (BuildContext context, GoRouterState state) {
@@ -250,24 +240,26 @@ final List<RouteBase> secureRoutes = [
     },
   ),
   GoRoute(
-    name: RouteNames.FAQs,
-    path: 'faqs',
-    builder: (BuildContext context, GoRouterState state) {
-      return const FAQPage(); 
-    }
-    ),
+      name: RouteNames.FAQs,
+      path: 'faqs',
+      builder: (BuildContext context, GoRouterState state) {
+        return const FAQPage();
+      }),
   GoRoute(
     name: RouteNames.PROFILE_SETTINGS,
     path: 'profile',
     builder: (BuildContext context, GoRouterState state) {
       return const ProfileScreen();
     },
-  ),GoRoute(
+  ),
+  GoRoute(
     name: RouteNames.BLOG_POST,
     path: 'blog',
     builder: (BuildContext context, GoRouterState state) {
       dynamic ann = state.extra;
-      return BlogPostScreen(announcement: ann,);
+      return BlogPostScreen(
+        announcement: ann,
+      );
     },
   ),
   GoRoute(
@@ -277,6 +269,14 @@ final List<RouteBase> secureRoutes = [
       return const ProgramsMenuScreen();
     },
     routes: programMenu,
+  ),
+  GoRoute(
+    name: RouteNames.SELF_SCREENING,
+    path: 'self-screening',
+    builder: (BuildContext context, GoRouterState state) {
+      return const SelfScreening();
+    },
+    routes: selfScreeningRoutes,
   ),
   GoRoute(
     name: RouteNames.DAWA_DROP_MENU,
@@ -408,6 +408,44 @@ final List<RouteBase> openRoutes = [
     builder: (context, state) {
       final extras = state.extra as String;
       return VerifiedResetPassword(username: extras);
+    },
+  ),
+];
+
+final List<RouteBase> selfScreeningRoutes = [
+  GoRoute(
+      name: RouteNames.BMI_CALCULATOR,
+      path: 'bmi-calculator',
+      builder: (BuildContext context, GoRouterState state) {
+        return const BMICalculatorScreen();
+      },
+      routes: [
+        GoRoute(
+            name: RouteNames.BMI_CALCULATOR_RESULTS,
+            path: "bmi-calculator-results",
+            builder: (BuildContext context, GoRouterState state) {
+              double extra = state.extra! as double;
+              return BMICalculatorResultsScreen(bmi: extra);
+            }),
+        GoRoute(
+            name: RouteNames.BMI_HISTORY,
+            path: "bmi-history",
+            builder: (BuildContext context, GoRouterState state) {
+              return BMIHistoryScreen();
+            }),
+      ]),
+  GoRoute(
+    name: RouteNames.BLOOD_PRESSURE,
+    path: 'blood-pressure',
+    builder: (BuildContext context, GoRouterState state) {
+      return BPMonitorScreen();
+    },
+  ),
+  GoRoute(
+    name: MenuItemNames.BLOOD_SUGAR,
+    path: 'blood-sugar',
+    builder: (BuildContext context, GoRouterState state) {
+      return BloodSugarScreen();
     },
   ),
 ];
