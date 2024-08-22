@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class Search extends StatelessWidget {
-  const Search({super.key});
+  String searchText;
+  Search({required this.searchText, super.key});
 
   @override
   Widget build(BuildContext context) {
     return  TextField(
       decoration: InputDecoration(
-        hintText: "Search ...",
+        hintText: searchText,
         hintStyle: TextStyle(color: Colors.grey.shade600),
         prefixIcon: Icon(Icons.search,color: Colors.grey.shade600, size: 20,),
         filled: true,

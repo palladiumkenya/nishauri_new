@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nishauri/src/features/nishauri_chat/chat/models/chat_message.dart';
+import 'package:nishauri/src/utils/helpers.dart';
 
 class ChatDetailScreen extends StatefulWidget{
   ChatDetailScreen({Key?key}) : super (key: key);
@@ -17,6 +19,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   @override
   Widget build(BuildContext context){
     final theme = Theme.of(context);
+    final size = getOrientationAwareScreenSize(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -43,7 +46,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text("Charles Mabel (Kiseuni Dispensary)", style: theme.textTheme.bodyMedium,),
+                    Text("Charles Mabel (Kiseuni Dispensary)", style: theme.textTheme.titleSmall,),
                     SizedBox(height: 6,),
                     Text("Online", style: TextStyle(color: Colors.green.shade600, fontSize: 13),),
                   ],
@@ -56,6 +59,17 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
       ),
       body: Stack(
         children: <Widget>[
+          Positioned(
+              top: 0,
+              right: 0,
+              child: SvgPicture.asset(
+                "assets/images/rect-bg.svg",
+                semanticsLabel: "Doctors",
+                fit: BoxFit.contain,
+                height: size.width * 0.55,
+                width: size.width * 0.55,
+              )
+          ),
           ListView.builder(
             itemCount: messages.length,
             shrinkWrap: true,

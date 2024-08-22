@@ -57,6 +57,7 @@ import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/DrugOrders.dart';
 import 'package:nishauri/src/features/lab/presentation/pages/LabResultsScreen.dart';
 import 'package:nishauri/src/features/nishauri_chat/chat/presentation/pages/ChatDetailScreen.dart';
+import 'package:nishauri/src/features/nishauri_chat/chat/presentation/pages/ChatUserList.dart';
 import 'package:nishauri/src/features/nishauri_chat/chat/presentation/pages/ConversationList.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/editPeriodsScreen.dart';
@@ -666,6 +667,13 @@ final List<RouteBase> chatRoutes = [
       builder: (BuildContext context, GoRouterState state) {
         return ChatDetailScreen();
       },
+  ),
+  GoRoute(
+    name: RouteNames.CHAT_USER,
+    path: 'chat-user',
+    builder: (BuildContext context, GoRouterState state) {
+      return ChatUserListScreen();
+    },
   ),
 ];
 final List<RouteBase> programMenu = [
