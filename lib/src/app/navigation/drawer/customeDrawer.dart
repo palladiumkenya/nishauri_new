@@ -71,6 +71,15 @@ class _CustomDrawerState extends ConsumerState<CustomDrawer> {
               Navigator.pop(context);
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.chat_outlined),
+            title: const Text("Chat with HCW"),
+            onTap: () {
+              context.goNamed(RouteNames.CHAT_HCW);
+              // Close drawer
+              Navigator.pop(context);
+            },
+          ),
 
           // ListTile(
           //   leading: const Icon(Icons.notifications),

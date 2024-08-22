@@ -56,6 +56,8 @@ import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroups.da
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/DrugOrderWizardFormScreen.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/DrugOrders.dart';
 import 'package:nishauri/src/features/lab/presentation/pages/LabResultsScreen.dart';
+import 'package:nishauri/src/features/nishauri_chat/chat/presentation/pages/ChatDetailScreen.dart';
+import 'package:nishauri/src/features/nishauri_chat/chat/presentation/pages/ConversationList.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/editPeriodsScreen.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/logPeriods.dart';
@@ -302,6 +304,14 @@ final List<RouteBase> secureRoutes = [
     },
   ),
   GoRoute(
+    name: RouteNames.CHAT_HCW,
+    path: 'chat-hcw',
+    builder: (BuildContext context, GoRouterState state) {
+      return const ChatHCWScreen();
+    },
+    routes: chatRoutes,
+  ),
+  GoRoute(
       name: RouteNames.APPOINTMENTS,
       path: 'appointments',
       builder: (BuildContext context, GoRouterState state) {
@@ -352,7 +362,7 @@ final List<RouteBase> secureRoutes = [
     },
   ),
   GoRoute(
-    name: RouteNames.CHAT_HCW,
+    name: RouteNames.CHAT_BOT,
     path: 'chat-bot',
     builder: (BuildContext context, GoRouterState state) {
       return const ChatScreen();
@@ -649,6 +659,15 @@ final List<RouteBase> dawaDropRoutes = [
       ]),
 ];
 
+final List<RouteBase> chatRoutes = [
+  GoRoute(
+      name: RouteNames.CHAT_DETAIL,
+      path: 'chat-detail',
+      builder: (BuildContext context, GoRouterState state) {
+        return ChatDetailScreen();
+      },
+  ),
+];
 final List<RouteBase> programMenu = [
   GoRoute(
     name: RouteNames.PROGRAME_REGISTRATION_SCREEN,
