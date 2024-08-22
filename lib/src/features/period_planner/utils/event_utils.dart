@@ -61,17 +61,19 @@ class EventUtils {
       }
     }
     
-    events.forEach((id, events) {
-      //print("Cycle Id: $id");
-      //print("[");
-      events.forEach((date, event) { 
-        //print("Date: $date, Event: $event\n");
-      });
-      //print("]");
-    });
+    // events.forEach((id, events) {
+    //   print("Cycle Id: $id");
+    //   print("[");
+    //   events.forEach((date, event) { 
+    //     print("Date: $date, Event: $event\n");
+    //   });
+    //   print("]");
+    // });
     
-    //print("--------------");
+    // print("--------------");
     return events;
   }
 }
+
+
 
