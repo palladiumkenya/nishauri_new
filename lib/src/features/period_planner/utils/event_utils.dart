@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/data/models/events.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 
 class EventUtils {
@@ -16,9 +17,10 @@ class EventUtils {
       }
 
       Map<DateTime, List<Event>> updatedEvents = events[cycleId]!;
+      
       // Add period days
       for (DateTime date = cycle.periodStart;
-          date.isBefore(cycle.periodEnd) || date.isAtSameMomentAs(cycle.periodEnd);
+          date.isBefore(cycle.periodEnd) || isSameDay(date, cycle.periodEnd);
           date = date.add(const Duration(days: 1))) {
         updatedEvents.update(
           date,
@@ -30,7 +32,7 @@ class EventUtils {
 
       // Add fertile window days
       for (DateTime date = cycle.fertileStart;
-          date.isBefore(cycle.fertileEnd) || date.isAtSameMomentAs(cycle.fertileEnd);
+          date.isBefore(cycle.fertileEnd) || isSameDay(date, cycle.fertileEnd);
           date = date.add(const Duration(days: 1))) {
         updatedEvents.update(
           date,
@@ -50,7 +52,7 @@ class EventUtils {
 
       // Add predicted period start
       for (DateTime date = cycle.predictedPeriodStart;
-          date.isBefore(cycle.predictedPeriodEnd) || date.isAtSameMomentAs(cycle.predictedPeriodEnd);
+          date.isBefore(cycle.predictedPeriodEnd) || isSameDay(date, cycle.predictedPeriodEnd);
           date = date.add(const Duration(days: 1))) {
         updatedEvents.update(
           date,

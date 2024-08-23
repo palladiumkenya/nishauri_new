@@ -113,12 +113,12 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
       progressValue = 0.2;
       title = 'Period';
       message = 'Day ${DateTime.now().difference(_periodStart).inDays + 1}';
-      buttonText = 'Log End Period';
+      buttonText = 'Period End';
       chances = 'Low Chances of Getting Pregnant';
     } else if (isCloseToOvulation) {
       progressValue = 0.3;
       title = 'Ovulation in';
-      message = '$daysToOvulation days';
+      message = '$daysToOvulation day${daysToOvulation > 1 ? 's': ''}';
       buttonText = '';
       chances = 'High Chances of Getting Pregnant';
     } else if (veryCloseToOvulation) {
@@ -136,26 +136,26 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
     } else if (afterOvulation) {
       progressValue = 0.7;
       title = 'Next Period in'; 
-      message = '$daysToNextPeriod days';
-      buttonText = 'Log Period';
+      message = '$daysToNextPeriod day${daysToNextPeriod > 1 ? 's': ''}';
+      buttonText = 'Period Start';
       chances = 'High Chances of Getting Pregnant';
     } else if (veryCloseToPeriod) {
       progressValue = 0.7; 
       title = 'Next Period is';
       message = 'Tomorrow';
-      buttonText = 'Log Period';
+      buttonText = 'Period Start';
       chances = 'Low Chances of Getting Pregnant';
     } else if (duringPredictedPeriodRange) {
       progressValue = 1.0;
       title = 'Periods May happen';
       message = 'Today';
-      buttonText = 'Log Period';
+      buttonText = 'Period Start';
       chances = 'Low Chances of Getting Pregnant';
     } else if(isDangerZone) {
       progressValue = 1.0;
       title = 'Periods Overdue by';
       message = '$overdueDays Day${overdueDays > 1 ? 's': ''}';
-      buttonText = 'Log Period';
+      buttonText = 'Period Start';
       chances = 'High Chances of Getting Pregnant';
     } 
 
@@ -176,7 +176,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
       body: Column(
         children: [
           const CustomAppBar(
-            title: "Track Periods 🌸",
+            title: "My Flow Tracker 🌺",
             color: Constants.periodPlanner,
           ),
           //const SizedBox(height: Constants.SPACING),
@@ -237,58 +237,8 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                               ElevatedButton(
                                 onPressed: () {
                                   //Logging Start of new period
-                                  if (buttonText == 'Log Period') { 
-                                    showDialog<void>(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Confirm Log Period'),
-                                          content: const Text('Are you sure you want to log your period?'),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              child: const Text('Cancel'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop(); // Close the dialog
-                                              },
-                                            ),
-                                            TextButton(
-                                              child: const Text('Confirm'),
-                                              onPressed: () {
-                                                // setState(() {
-                                                //    // Log the period start here
-                                                  // isInPeriod = true;
-                                                  // isDangerZone = false;
-                                                  // _currentDate = DateTime.now();
-                                                  // int averagePeriods = calculateAveragePeriodLength(cycles);
-                                                  
-                                                  // final Cycle predictedCycle = predictCycle(
-                                                  // _periodStart = DateTime.now(),
-                                                  // _periodEnd = DateTime.now().add(Duration(days: averagePeriods)),
-                                                  // );
-                                                  // cycles.add(predictedCycle);  
-
-                                                  // _ovulationDate = predictedCycle.ovulation;
-                                                  // _nextPeriodStart = predictedCycle.predictedPeriodStart;
-                                                  // _updateEvents();
-
-                                                //   // Debug print to check the state update
-                                                //   debugPrint("After User has logged Period");
-                                                //   debugPrint('Period Start after update: $_periodStart');
-                                                //   debugPrint('Period End after update: $_periodEnd');
-                                                //   debugPrint('Predicted Next Period Date after update: $_nextPeriodStart');
-                                                //   debugPrint('Current Date after update: $_currentDate');
-                                                //   debugPrint('Is In Period after update: $isInPeriod');
-                                                //   debugPrint("--------");
-                                                // }); 
-                                                printCycles(cycles);
-                                                context.goNamed(RouteNames.PERIOD_PLANNER_LOG_PERIODS);           
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                    
+                                  if (buttonText == 'Period Start') { 
+                                    context.goNamed(RouteNames.PERIOD_PLANNER_LOG_PERIODS);                                   
                                   }
                                   //Logging end of new period
                                   else{
@@ -414,27 +364,27 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Constants.periodPlanner,
-                ),
-              onPressed: () {
-                // To add functionality later       
-                context.goNamed(RouteNames.PERIOD_PLANNER_EDIT_PERIODS);
-              },
-              child: Text(
-                'Edit period dates',
-                style: theme.textTheme.titleSmall?.copyWith(
-                  color: Colors.white,
-                ),
-              ),
-              ),
-            ),
-          ),
+          // Align(
+          //   alignment: Alignment.bottomCenter,
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(16.0),
+          //     child: ElevatedButton(
+          //       style: ElevatedButton.styleFrom(
+          //         backgroundColor: Constants.periodPlanner,
+          //       ),
+          //     onPressed: () {
+          //       // To add functionality later       
+          //       context.goNamed(RouteNames.PERIOD_PLANNER_EDIT_PERIODS);
+          //     },
+          //     child: Text(
+          //       'Edit period dates',
+          //       style: theme.textTheme.titleSmall?.copyWith(
+          //         color: Colors.white,
+          //       ),
+          //     ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
