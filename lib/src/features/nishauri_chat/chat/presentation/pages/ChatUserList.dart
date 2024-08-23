@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nishauri/src/features/nishauri_chat/chat/models/chat_hcw.dart';
+import 'package:nishauri/src/features/nishauri_chat/chat/presentation/widget/UserList.dart';
 import 'package:nishauri/src/features/nishauri_chat/chat/presentation/widget/conversationList.dart';
 import 'package:nishauri/src/shared/input/Search.dart';
 import 'package:nishauri/src/utils/helpers.dart';
@@ -53,7 +54,7 @@ class _ChatUserListScreenState extends State<ChatUserListScreen> {
                       IconButton(onPressed: (){
                         Navigator.pop(context);
                       },
-                          icon: Icon(Icons.arrow_back, color: Colors.black,)),
+                          icon: Icon(Icons.arrow_back,)),
                       Text("Select contact", style:theme.textTheme.titleLarge,),
                       // Container(
                       //   padding: EdgeInsets.only(left: 8,right: 8,top: 2,bottom: 2),
@@ -82,12 +83,12 @@ class _ChatUserListScreenState extends State<ChatUserListScreen> {
                     padding: EdgeInsets.only(top: 16),
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index){
-                      return ConversationList(
+                      return UserHCWList(
                         name: chatUsers[index].name,
                         messageText: chatUsers[index].messageText,
                         imageURL: chatUsers[index].imageURL,
                         time: chatUsers[index].time,
-                        isMessageRead: (index == 0 || index == 3) ? true:false,
+                        isActive: (index == 0 || index == 3) ? true:false,
                       );
                     }
                 )
