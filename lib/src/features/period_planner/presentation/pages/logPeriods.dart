@@ -41,6 +41,7 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
   Map<String, Map<DateTime, List<Event>>> events = EventUtils.generateEvents(cycles);
   late Map<DateTime, List<Event>> _flatEvents;
 
+
    @override
   void initState() {
     super.initState();
@@ -65,7 +66,8 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
 
   //print("Flattened Events: $flattenedEvents"); // Debug: Print final flattened events
   return flattenedEvents;
-}
+  }
+
 
     // Method to validate date range
   bool _isDateRangeValid(DateTime start, DateTime end) {
@@ -106,8 +108,9 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
     end ??= start;
 
     final DateTime now = DateTime.now();
+    int averagePeriods = calculateAveragePeriodLength(cycles);
     if (isSameDay(start, now) || isSameDay(end, now)) {
-      end = start.add(const Duration(days: 6));
+      end = start.add( Duration(days: averagePeriods));
     }
 
     for (Cycle cycle in cycles) {
