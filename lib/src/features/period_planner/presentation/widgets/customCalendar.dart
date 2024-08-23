@@ -113,39 +113,7 @@ Cycle predictCycle(DateTime periodStart, DateTime periodEnd) {
     cycleLength: cycleLength,
     periodLength: periodLength,
   );
-}
-
-  //Removing predicted period days from previous cycles
-      //  widget.events.forEach((cycleId, dateMap) {
-      //   if (cycleId != latestCycleId) {
-      //     dateMap.forEach((date, events) {
-      //       final newEventList = events.where((event) =>  event.title != 'Predicted Period Day').toList();
-      //       if (newEventList.isNotEmpty) {
-      //         if (filteredEvents.containsKey(date)) {
-      //           filteredEvents[date]!.addAll(newEventList);
-      //         } else {
-      //           filteredEvents[date] = List.from(newEventList);
-      //         }
-      //       }
-      //      });
-          
-      //     /*
-      //     Checks if the period date from the latest cycle collides with the 
-      //     Ovulation days or Fertile Days of Previous Cycles or if they are before
-      //     */
-      //     dateMap.forEach((date, events) {
-      //       final hasCollision = events.any((event) {
-      //       return (event.title == 'Fertile Day' || event.title == 'Ovulation Day') &&
-      //              latestCycleEvents.keys.any((latestDate) {
-      //                // Check if the latest period days collide with fertile/ovulation days
-      //                return isSameDay(latestDate, (date)) ||
-      //                       latestDate.isAfter(date) && latestDate.isBefore(date.add(const Duration(days: 5)));
-      //              });
-      //       });
-      //       debugPrint("Has Collision: $hasCollision");
-      //     });
-      //   }
-      //   });  
+} 
 class CustomCalendar extends StatefulWidget {
   final CalendarFormat initialFormat;
   final Map<String, Map<DateTime, List<Event>>> events;
@@ -190,6 +158,7 @@ class _CustomCalendarState extends State<CustomCalendar>{
   return flattenedEvents;
   }
 
+//This is for filtering events on the calendar
 Map<DateTime, List<Event>> _filterEventsForLatestCycle() {
   final Map<DateTime, List<Event>> filteredEvents = {};
 
