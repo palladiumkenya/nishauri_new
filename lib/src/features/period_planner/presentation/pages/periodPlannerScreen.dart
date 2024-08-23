@@ -256,20 +256,20 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                               onPressed: () {
                                                 // setState(() {
                                                 //    // Log the period start here
-                                                  isInPeriod = true;
-                                                  isDangerZone = false;
-                                                  _currentDate = DateTime.now();
-                                                  int averagePeriods = calculateAveragePeriodLength(cycles);
+                                                  // isInPeriod = true;
+                                                  // isDangerZone = false;
+                                                  // _currentDate = DateTime.now();
+                                                  // int averagePeriods = calculateAveragePeriodLength(cycles);
                                                   
-                                                  final Cycle predictedCycle = predictCycle(
-                                                  _periodStart = DateTime.now(),
-                                                  _periodEnd = DateTime.now().add(Duration(days: averagePeriods)),
-                                                  );
-                                                  cycles.add(predictedCycle);  
+                                                  // final Cycle predictedCycle = predictCycle(
+                                                  // _periodStart = DateTime.now(),
+                                                  // _periodEnd = DateTime.now().add(Duration(days: averagePeriods)),
+                                                  // );
+                                                  // cycles.add(predictedCycle);  
 
-                                                  _ovulationDate = predictedCycle.ovulation;
-                                                  _nextPeriodStart = predictedCycle.predictedPeriodStart;
-                                                  _updateEvents();
+                                                  // _ovulationDate = predictedCycle.ovulation;
+                                                  // _nextPeriodStart = predictedCycle.predictedPeriodStart;
+                                                  // _updateEvents();
 
                                                 //   // Debug print to check the state update
                                                 //   debugPrint("After User has logged Period");
