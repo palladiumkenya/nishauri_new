@@ -7,6 +7,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
+import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
+import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
 import 'package:nishauri/src/features/bmi/data/model/bmi_log.dart';
 import 'package:nishauri/src/features/bmi/data/providers/bmi_log_provider.dart';
 import 'package:nishauri/src/features/bmi/data/services/bmi_log_service.dart';
@@ -26,6 +29,11 @@ import 'package:nishauri/src/utils/routes.dart';
 class BMICalculatorScreen extends HookConsumerWidget {
   const BMICalculatorScreen({super.key});
 
+  Future<int> _fetchAge() async {
+    final authRepository = AuthRepository(AuthApiService());
+    return await authRepository.getAge() as Future<int>;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
@@ -38,10 +46,20 @@ class BMICalculatorScreen extends HookConsumerWidget {
     final weight = useState<int>(65);
     final isForSelf = useState(true);
     final userAsync = ref.watch(userProvider);
+    // var age = userAsync.whenData((user) {
+    //   return DateTime.now().year - int.parse(user.dateOfBirth!.split('-')[0]);
+    // });
     var age = userAsync.whenData((user) {
       return DateTime.now().year - int.parse(user.dateOfBirth!.split('-')[0]);
     });
     var userAge = useState(age);
+
+    // Implmentation using Fetch age and AuthRepository
+    // var userAge = useState<int>(18);
+    // useEffect(() {
+    //   _fetchAge().then((value) => userAge.value = value);
+    //   return null;
+    // }, []);
 
     return Scaffold(
       body: Column(
@@ -104,9 +122,13 @@ class BMICalculatorScreen extends HookConsumerWidget {
                                           var age = DateTime.now().year -
                                               int.parse(user.dateOfBirth!
                                                   .split('-')[0]);
-                                          userAge.value = AsyncValue.data(age);
+                                          userAge.value =
+                                              age as AsyncValue<int>;
                                         }
                                       });
+                                      // ==== Fetch user not working as expected
+                                      // _fetchAge().then(
+                                      //     (value) => userAge.value = value);
                                     },
                                     selectedColor: Colors
                                         .white, //color for selected button
@@ -231,7 +253,7 @@ class BMICalculatorScreen extends HookConsumerWidget {
                                   max: 100,
                                   value: userAge.value.value!,
                                   onValueChange: (value) =>
-                                      userAge.value = AsyncValue.data(value),
+                                      userAge.value = value as AsyncValue<int>,
                                   label: "Age",
                                   units: "Years",
                                   activeColor: activeColor,
