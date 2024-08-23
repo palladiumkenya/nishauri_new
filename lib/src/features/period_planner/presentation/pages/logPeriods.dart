@@ -40,12 +40,23 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
   DateTime? _endDate;
   Map<String, Map<DateTime, List<Event>>> events = EventUtils.generateEvents(cycles);
   late Map<DateTime, List<Event>> _flatEvents;
+  late Map<DateTime, List<Event>> _filteredEvents;
 
 
    @override
-  void initState() {
+  void initState()  {
     super.initState();
+    // _flatEvents = _flattenEvents(events);
+    // _filteredEvents = _filterEventsForLatestCycle();
+
+    if (events.isNotEmpty) {
     _flatEvents = _flattenEvents(events);
+    _filteredEvents = _filterEventsForLatestCycle();
+  } else {
+    _flatEvents = {}; 
+    _filteredEvents = {};
+  }
+
   }
 
    //To flatten the events so that it can be in the form of DateTime as the key and the events as the values
@@ -67,6 +78,94 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
   //print("Flattened Events: $flattenedEvents"); // Debug: Print final flattened events
   return flattenedEvents;
   }
+
+  Map<DateTime, List<Event>> _filterEventsForLatestCycle()  {
+  final Map<DateTime, List<Event>> filteredEvents = {};
+
+  // Step 1: Identify the latest cycle
+  final latestCycleId = events.keys.last;
+
+  if (events.containsKey(latestCycleId)) {
+    final latestCycleEvents = events[latestCycleId]!;
+    print("Latest Events: $latestCycleEvents");
+
+    // Step 2: Add all events from the latest cycle to filteredEvents
+    latestCycleEvents.forEach((date, events) {
+      if (filteredEvents.containsKey(date)) {
+        filteredEvents[date]!.addAll(events);
+      } else {
+        filteredEvents[date] = List.from(events);
+      }
+    });
+
+    // Step 3: Filter previous cycles
+    events.forEach((cycleId, dateMap) {
+      if (cycleId != latestCycleId) {
+        bool shouldOmitFertileOvulationDays = false;
+
+        // Check if any of the latest period days collide with fertile/ovulation days from previous cycles
+        dateMap.forEach((date, events) {
+          final hasCollision = events.any((event) {
+            return (event.title == 'Fertile Day' || event.title == 'Ovulation Day') && 
+                   latestCycleEvents.keys.any((latestDate) {
+                     // Check if the latest period days collide with fertile/ovulation days
+                     return isSameDay(latestDate, date) ||
+                            latestDate.isAfter(date) && latestDate.isBefore(date.add(const Duration(days: 5)));
+                   });
+          });
+          print("Collided Events: $hasCollision");
+
+          if (hasCollision) {
+            shouldOmitFertileOvulationDays = true;
+          }
+        });
+
+        // Additional step: Check if previous cycles' dates also collide with those of later cycles
+        events.forEach((laterCycleId, laterDateMap) {
+          //condition ensures that we only consider cycles that are neither the current one nor the latest one
+          if (laterCycleId != cycleId && laterCycleId != latestCycleId) {
+            dateMap.forEach((date, events) {
+              final hasCollisionWithlaterCycle = events.any((event) {
+                return (event.title == 'Fertile Day' || event.title == 'Ovulation Day') && 
+                       laterDateMap.keys.any((laterDate) {
+                         return isSameDay(laterDate, date) ||
+                                laterDate.isAfter(date) && laterDate.isBefore(date.add(const Duration(days: 5)));
+                       });
+              });
+
+              if (hasCollisionWithlaterCycle) {
+                shouldOmitFertileOvulationDays = true;
+              }
+            });
+          }
+        });
+
+        // Filter out the events based on collision detection and omit predicted period days regardless
+        dateMap.forEach((date, events) {
+          final newEventList = events.where((event) {
+            // Always omit predicted period days
+            if (event.title == 'Predicted Period Day') {
+              return false;
+            }
+            // Remove fertile and ovulation days if there was a collision
+            return !shouldOmitFertileOvulationDays || (event.title != 'Fertile Day' && event.title != 'Ovulation Day');
+          }).toList();
+
+          if (newEventList.isNotEmpty) {
+            print("new Event List: $newEventList");
+            if (filteredEvents.containsKey(date)) {
+              filteredEvents[date]!.addAll(newEventList);
+            } else {
+              filteredEvents[date] = List.from(newEventList);
+            }
+          }
+        });
+      }
+    });
+  }
+
+  return filteredEvents;
+}
 
 
     // Method to validate date range
@@ -113,9 +212,9 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
       end = start.add( Duration(days: averagePeriods));
     }
 
+    //Handling cases where a user might log an already logged date in their previous cycle, hence warning them using a snackbar
     for (Cycle cycle in cycles) {
       if (_datesOverlap(cycle.periodStart, cycle.periodEnd, start, end)) {
-        // Show an alert or a Snackbar
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('The selected period overlaps with an existing cycle. Please choose different dates.'),
@@ -176,7 +275,7 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
               _focusedDay = focusedDay;
             },
             eventLoader: (day) {
-              return _flatEvents[day] ?? [];
+              return _filteredEvents[day] ?? [];
             },
             calendarBuilders: CalendarBuilders(
               markerBuilder: (context, date, events) {
@@ -221,7 +320,7 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
                   ),
                   onPressed: () {
                     if (_startDate != null) {
-                      final endDate = _endDate ?? _startDate!;
+                      final endDate = _endDate ?? _startDate!; // The else statement handles where a period only happens for a single day hence the end date will be same day as start date 
                       _updateOrAddCycle(_startDate!, endDate);
                       printCycles(cycles);
                       context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);

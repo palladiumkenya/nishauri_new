@@ -109,11 +109,11 @@ class PeriodPlanner extends StatelessWidget {
                           description: 'View and manage your menstrual cycles with a detailed calendar.',
                           icon: Icons.calendar_today,
                         ),
-                        FeatureTile(
-                          title: 'Partner Tracking',
-                          description: 'Allow your partner to keep track of your cycle and stay informed about your health as well.',
-                          icon: Icons.people,
-                        ),
+                        // FeatureTile(
+                        //   title: 'Partner Tracking',
+                        //   description: 'Allow your partner to keep track of your cycle and stay informed about your health as well.',
+                        //   icon: Icons.people,
+                        // ),
                       ],
                     ),
                   ),
