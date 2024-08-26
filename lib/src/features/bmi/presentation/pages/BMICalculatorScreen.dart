@@ -122,8 +122,7 @@ class BMICalculatorScreen extends HookConsumerWidget {
                                           var age = DateTime.now().year -
                                               int.parse(user.dateOfBirth!
                                                   .split('-')[0]);
-                                          userAge.value =
-                                              age as AsyncValue<int>;
+                                          userAge.value = AsyncValue.data(age); 
                                         }
                                       });
                                       // ==== Fetch user not working as expected
@@ -253,7 +252,7 @@ class BMICalculatorScreen extends HookConsumerWidget {
                                   max: 100,
                                   value: userAge.value.value!,
                                   onValueChange: (value) =>
-                                      userAge.value = value as AsyncValue<int>,
+                                      userAge.value = AsyncValue.data(value),
                                   label: "Age",
                                   units: "Years",
                                   activeColor: activeColor,
