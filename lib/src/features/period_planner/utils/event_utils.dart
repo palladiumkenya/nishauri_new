@@ -3,10 +3,18 @@ import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/data/models/events.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+/*
+This class is responsible for generating events based the logged period days 
+and the days the algorithm predicts(Fertile, Ovulation and Predicted Next Period days)
 
+The Events in this case are Period, Fertile, Ovulation and Predicted Period Day of a cycle.
+The Days that are within Period Days are give a title of Period Day and a color of Colors.pink.
+The rest happens for the other days.
+*/
 class EventUtils {
   static Map<String, Map<DateTime, List<Event>>> generateEvents(List<Cycle> cycles) {
     Map<String, Map<DateTime, List<Event>>> events= {};
+    
 
     //debugPrint("-----Generating New Events From Event Utils-----");
 
