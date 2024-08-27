@@ -118,12 +118,14 @@ class CustomCalendar extends StatefulWidget {
   final CalendarFormat initialFormat;
   final Map<String, Map<DateTime, List<Event>>> events;
   final bool headerButton;
+  final bool? inPeriods;
 
    const CustomCalendar({
     Key? key,
     this.initialFormat = CalendarFormat.month, 
     required this.events, 
     this.headerButton = false,
+    this.inPeriods,
     }) : super(key: key);
 
   @override
@@ -131,6 +133,7 @@ class CustomCalendar extends StatefulWidget {
 }
 class _CustomCalendarState extends State<CustomCalendar>{
   late CalendarFormat _calendarFormat;
+  late DateTime _focusedDay;
   late Map<DateTime, List<Event>> _flatEvents;
   late Map<DateTime, List<Event>> _filteredEvents;
 
@@ -140,6 +143,10 @@ class _CustomCalendarState extends State<CustomCalendar>{
     _calendarFormat = widget.initialFormat;
     _flatEvents = _flattenEvents(widget.events);
     _filteredEvents = _filterEventsForLatestCycle();
+    // Determine the focused day based on the calendar format
+    _focusedDay = _calendarFormat == CalendarFormat.week
+        ? _getNextPredictedPeriodDate() ?? DateTime.now()
+        : DateTime.now();
   }
 
   //To flatten the events so that it can be in the form of DateTime as the key and the events as the values
@@ -159,94 +166,42 @@ class _CustomCalendarState extends State<CustomCalendar>{
   }
 
 //This is for filtering events on the calendar
-Map<DateTime, List<Event>> _filterEventsForLatestCycle() {
-  final Map<DateTime, List<Event>> filteredEvents = {};
+  Map<DateTime, List<Event>> _filterEventsForLatestCycle() {
+    final Map<DateTime, List<Event>> filteredEvents = {};
 
-  // Step 1: Identify the latest cycle
-  final latestCycleId = widget.events.keys.last;
+    // Identify the latest cycle
+    final latestCycleId = widget.events.keys.last;
 
-  if (widget.events.containsKey(latestCycleId)) {
-    final latestCycleEvents = widget.events[latestCycleId]!;
-    print("Latest Events: $latestCycleEvents");
+    // If the latest cycle exists, add its events to the filteredEvents map
+    if (widget.events.containsKey(latestCycleId)) {
+      final latestCycleEvents = widget.events[latestCycleId]!;
 
-    // Step 2: Add all events from the latest cycle to filteredEvents
-    latestCycleEvents.forEach((date, events) {
-      if (filteredEvents.containsKey(date)) {
-        filteredEvents[date]!.addAll(events);
-      } else {
+      // Directly add all events from the latest cycle
+      latestCycleEvents.forEach((date, events) {
         filteredEvents[date] = List.from(events);
+      });
+    }
+
+    return filteredEvents;
+    }
+
+
+  DateTime? _getNextPredictedPeriodDate() {
+  for (var entry in _filteredEvents.entries) {
+    if (widget.inPeriods == true) {
+      // Return the first date with a 'Period Day' event
+      if (entry.value.any((event) => event.title == 'Period Day')) {
+        return entry.key;
       }
-    });
-
-    // Step 3: Filter previous cycles
-    widget.events.forEach((cycleId, dateMap) {
-      if (cycleId != latestCycleId) {
-        bool shouldOmitFertileOvulationDays = false;
-
-        // Check if any of the latest period days collide with fertile/ovulation days from previous cycles
-        dateMap.forEach((date, events) {
-          final hasCollision = events.any((event) {
-            return (event.title == 'Fertile Day' || event.title == 'Ovulation Day') && 
-                   latestCycleEvents.keys.any((latestDate) {
-                     // Check if the latest period days collide with fertile/ovulation days
-                     return isSameDay(latestDate, date) ||
-                            latestDate.isAfter(date) && latestDate.isBefore(date.add(const Duration(days: 5)));
-                   });
-          });
-          print("Collided Events: $hasCollision");
-
-          if (hasCollision) {
-            shouldOmitFertileOvulationDays = true;
-          }
-        });
-
-        // Additional step: Check if previous cycles' dates also collide with those of later cycles
-        widget.events.forEach((laterCycleId, laterDateMap) {
-          //condition ensures that we only consider cycles that are neither the current one nor the latest one
-          if (laterCycleId != cycleId && laterCycleId != latestCycleId) {
-            dateMap.forEach((date, events) {
-              final hasCollisionWithlaterCycle = events.any((event) {
-                return (event.title == 'Fertile Day' || event.title == 'Ovulation Day') && 
-                       laterDateMap.keys.any((laterDate) {
-                         return isSameDay(laterDate, date) ||
-                                laterDate.isAfter(date) && laterDate.isBefore(date.add(const Duration(days: 5)));
-                       });
-              });
-
-              if (hasCollisionWithlaterCycle) {
-                shouldOmitFertileOvulationDays = true;
-              }
-            });
-          }
-        });
-
-        // Filter out the events based on collision detection and omit predicted period days regardless
-        dateMap.forEach((date, events) {
-          final newEventList = events.where((event) {
-            // Always omit predicted period days
-            if (event.title == 'Predicted Period Day') {
-              return false;
-            }
-            // Remove fertile and ovulation days if there was a collision
-            return !shouldOmitFertileOvulationDays || (event.title != 'Fertile Day' && event.title != 'Ovulation Day');
-          }).toList();
-
-          if (newEventList.isNotEmpty) {
-            print("new Event List: $newEventList");
-            if (filteredEvents.containsKey(date)) {
-              filteredEvents[date]!.addAll(newEventList);
-            } else {
-              filteredEvents[date] = List.from(newEventList);
-            }
-          }
-        });
+    } else {
+      // Return the first date with a 'Predicted Period Day' event
+      if (entry.value.any((event) => event.title == 'Predicted Period Day')) {
+        return entry.key;
       }
-    });
+    }
   }
-
-  return filteredEvents;
+  return null;
 }
-
 
   @override
   Widget build(BuildContext context) {
@@ -254,7 +209,7 @@ Map<DateTime, List<Event>> _filterEventsForLatestCycle() {
       key: ValueKey(widget.events),
       firstDay: DateTime(2010),
       lastDay: DateTime(2100),
-      focusedDay: DateTime.now(),
+      focusedDay: _focusedDay,
       // onDaySelected: (selectedDay, focusedDay) {
       //   setState(() {
       //     _focusedDay = focusedDay;
