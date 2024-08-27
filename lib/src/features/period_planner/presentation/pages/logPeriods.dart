@@ -24,9 +24,12 @@ void printCycles(List<Cycle> cycles) {
     debugPrint('Predicted Period End: ${cycle.predictedPeriodEnd}');
     debugPrint('Cycle Length: ${cycle.cycleLength}');
     debugPrint('Period Length: ${cycle.periodLength}');
-    debugPrint('---'); // Separator between cycles for clarity
+    debugPrint('---'); 
   }
 }
+
+
+//This is the screen the user interacts when they are logging their Period Days
 
 class LogPeriodScreen extends StatefulWidget {
 
@@ -41,7 +44,6 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
   Map<String, Map<DateTime, List<Event>>> events = EventUtils.generateEvents(cycles);
   late Map<DateTime, List<Event>> _flatEvents;
   late Map<DateTime, List<Event>> _filteredEvents;
-
 
    @override
   void initState()  {
@@ -60,6 +62,7 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
   }
 
    //To flatten the events so that it can be in the form of DateTime as the key and the events as the values
+   //These are events generated from the events utils class
   Map<DateTime, List<Event>> _flattenEvents(Map<String, Map<DateTime, List<Event>>> nestedEvents) {
   final Map<DateTime, List<Event>> flattenedEvents = {};
 
@@ -168,10 +171,11 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
 }
 
 
-    // Method to validate date range
+    // Method to validate date range ensuring selection does not exceed 7 days
   bool _isDateRangeValid(DateTime start, DateTime end) {
     final difference = end.difference(start).inDays + 1; // +1 to include the start day
-    return difference <= 7; // Ensure the range does not exceed 7 days
+    return
+     difference <= 7; // Ensure the range does not exceed 7 days
   }
 
   void _onRangeSelected(DateTime? start, DateTime? end, DateTime? focusedDay) {
@@ -230,6 +234,7 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
     //_updateEventsForCycle(newCycle);
   }
 
+
   // void _updateEventsForCycle(Cycle cycle) {
   //   // Remove old events for this cycle from the events map
   //   events.remove(cycle.cycleId);
@@ -267,10 +272,12 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
             focusedDay: _focusedDay,
             firstDay: DateTime(2020),
             lastDay: DateTime.now(),
-            rangeStartDay: _startDate,
+            rangeStartDay: _startDate ,
             rangeEndDay: _endDate,
             onRangeSelected: _onRangeSelected,
+
             rangeSelectionMode: RangeSelectionMode.toggledOn,
+                
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },

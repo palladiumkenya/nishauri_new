@@ -78,8 +78,6 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //late bool endOfPeriod; // handling when user has logged end of period
-    //handling the days before, after or during the various phases in the Menstrual Cycle
     int daysToOvulation = _ovulationDate.difference(_currentDate).inDays;
     int daysToNextPeriod = _nextPeriodStart.difference(_currentDate).inDays;
     int overdueDays = _currentDate.difference(_nextPeriodEnd).inDays;
@@ -90,17 +88,15 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
     bool isCloseToOvulation = _currentDate.isBefore(_ovulationDate) && !isInPeriod && daysToOvulation>=1 ;
     bool veryCloseToOvulation = _currentDate.isBefore(_ovulationDate) && daysToOvulation == 0;
     bool isOvulation = (isSameDay(_currentDate, _ovulationDate)) || (_currentDate.isAfter(_ovulationDate) && daysToOvulation == 0);
-    //two days after ovulation -- I'm thinking about it though
     bool afterOvulation = _currentDate.isAfter(_ovulationDate) && (_currentDate.isBefore(_nextPeriodStart) && daysToNextPeriod>0);
     bool duringPredictedPeriodRange = _currentDate.isAfter(_nextPeriodStart) &&
                                       _currentDate.isBefore(_nextPeriodEnd) ||
                                       isSameDay(_currentDate, _nextPeriodStart) ||
                                       isSameDay(_currentDate, _nextPeriodEnd);
     bool isDangerZone = _currentDate.isAfter(_nextPeriodEnd);  
-    
 
-
-
+    bool inPeriods = isInPeriod;
+  
     // Determine progress value and messages based on the current date
     double progressValue = 0.0;
     String message = '';
@@ -114,49 +110,49 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
       title = 'Period';
       message = 'Day ${DateTime.now().difference(_periodStart).inDays + 1}';
       buttonText = 'Period End';
-      chances = 'Low Chances of Getting Pregnant';
+      chances = 'Low';
     } else if (isCloseToOvulation) {
       progressValue = 0.3;
       title = 'Ovulation in';
       message = '$daysToOvulation day${daysToOvulation > 1 ? 's': ''}';
-      buttonText = '';
-      chances = 'High Chances of Getting Pregnant';
+      buttonText = 'Period Start';
+      chances = 'High';
     } else if (veryCloseToOvulation) {
       progressValue = 0.4;
       title = 'Ovulation is';
       message = 'Tomorrow';
-      buttonText = '';
-      chances = 'High Chances of Getting Pregnant';
+      buttonText = 'Period Start';
+      chances = 'High';
     } else if (isOvulation) {
       progressValue = 0.5;
       title = 'Ovulation is';
       message = 'Today';
-      buttonText = '';
-      chances = 'High Chances of Getting Pregnant';
+      buttonText = 'Period Start';
+      chances = 'High';
     } else if (afterOvulation) {
       progressValue = 0.7;
       title = 'Next Period in'; 
       message = '$daysToNextPeriod day${daysToNextPeriod > 1 ? 's': ''}';
       buttonText = 'Period Start';
-      chances = 'High Chances of Getting Pregnant';
+      chances = 'Low';
     } else if (veryCloseToPeriod) {
       progressValue = 0.7; 
       title = 'Next Period is';
       message = 'Tomorrow';
       buttonText = 'Period Start';
-      chances = 'Low Chances of Getting Pregnant';
+      chances = 'Low';
     } else if (duringPredictedPeriodRange) {
       progressValue = 1.0;
       title = 'Periods May happen';
       message = 'Today';
       buttonText = 'Period Start';
-      chances = 'Low Chances of Getting Pregnant';
+      chances = 'Low';
     } else if(isDangerZone) {
       progressValue = 1.0;
       title = 'Periods Overdue by';
       message = '$overdueDays Day${overdueDays > 1 ? 's': ''}';
       buttonText = 'Period Start';
-      chances = 'High Chances of Getting Pregnant';
+      chances = 'High';
     } 
 
     final theme = Theme.of(context);
@@ -169,9 +165,6 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
     // debugPrint('-----Widget Rebuild-----');
     // debugPrint('Is In Period: $isInPeriod');
     // debugPrint('Is close to Ovulation: $isCloseToOvulation');
-
-    
-
     return Scaffold(
       body: Column(
         children: [
@@ -187,6 +180,32 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
+                    Card(       
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: [
+                            const Text(
+                              "Your Chances of Getting Pregnant are:",
+                              style: TextStyle(
+                                fontSize: 14, 
+                                fontWeight: FontWeight.bold,
+                              ),
+                              // style: theme.textTheme.titleLarge?.copyWith(color: Colors.black),
+                            ),
+                            Text(
+                              chances,
+                              style: const TextStyle(
+                                fontSize: 34, 
+                                color: Constants.periodPlanner, 
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ),
+                    const SizedBox(height: Constants.SPACING),
                     SizedBox(
                       height: 150,
                       child: CustomCalendar(
@@ -194,15 +213,16 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                         initialFormat: CalendarFormat.week, 
                         events: events,
                         headerButton: true,
+                        inPeriods: inPeriods,
                         ),
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: Constants.SPACING),
                     Stack(
                       alignment: Alignment.center,
                       children: [
                         SizedBox(
-                          width: Constants.SPACING * 30, // Adjust the width as needed
-                          height: Constants.SPACING * 30, // Adjust the height as needed
+                          width: 300, // Adjust the width as needed
+                          height: 300, // Adjust the height as needed
                           child: CircularProgressIndicator(
                             value: progressValue, 
                             strokeWidth: 10,
@@ -210,6 +230,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                             valueColor: AlwaysStoppedAnimation<Color>(
                               isDangerZone ? Colors.red : Constants.periodPlanner,
                             ),
+                            
                           ),
                         ),
                         Column(
@@ -227,12 +248,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                               message,
                               style: TextStyle(fontSize: 38, color: isDangerZone ? Colors.red: Constants.periodPlanner, fontWeight: FontWeight.bold),
                             ),
-                            const SizedBox(height: Constants.SPACING),
-                            Text(
-                              chances,
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                            const SizedBox(height: Constants.SPACING),
+                            const SizedBox(height: Constants.SPACING + 10),
                             if (buttonText.isNotEmpty)
                               ElevatedButton(
                                 onPressed: () {
@@ -314,6 +330,32 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                         ),
                       ],
                     ),
+                    // const SizedBox(height: Constants.SPACING),
+                    // Card(       
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.all(16.0),
+                    //     child: Column(
+                    //       children: [
+                    //         const Text(
+                    //           "Your Chances of Getting Pregnant are:",
+                    //           style: TextStyle(
+                    //             fontSize: 14, 
+                    //             fontWeight: FontWeight.bold,
+                    //           ),
+                    //           // style: theme.textTheme.titleLarge?.copyWith(color: Colors.black),
+                    //         ),
+                    //         Text(
+                    //           chances,
+                    //           style: const TextStyle(
+                    //             fontSize: 34, 
+                    //             color: Constants.periodPlanner, 
+                    //             fontWeight: FontWeight.bold,
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   )
+                    // ),
                     
                     //const SizedBox(height: 20,),
                     // const Text(
@@ -364,27 +406,27 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
               ),
             ),
           ),
-          // Align(
-          //   alignment: Alignment.bottomCenter,
-          //   child: Padding(
-          //     padding: const EdgeInsets.all(16.0),
-          //     child: ElevatedButton(
-          //       style: ElevatedButton.styleFrom(
-          //         backgroundColor: Constants.periodPlanner,
-          //       ),
-          //     onPressed: () {
-          //       // To add functionality later       
-          //       context.goNamed(RouteNames.PERIOD_PLANNER_EDIT_PERIODS);
-          //     },
-          //     child: Text(
-          //       'Edit period dates',
-          //       style: theme.textTheme.titleSmall?.copyWith(
-          //         color: Colors.white,
-          //       ),
-          //     ),
-          //     ),
-          //   ),
-          // ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Constants.periodPlanner,
+                ),
+              onPressed: () {
+                // To add functionality later       
+                // context.goNamed(RouteNames.PERIOD_PLANNER_EDIT_PERIODS);
+              },
+              child: Text(
+                'Periods History',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+              ),
+            ),
+          ),
         ],
       ),
     );

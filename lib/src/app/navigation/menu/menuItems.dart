@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
@@ -303,7 +304,15 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
         height: Constants.shortcutIconSize,
       ),
       title: MenuItemNames.PERIOD_PLANNER,
-      onPressed: () => context.goNamed(RouteNames.PERIOD_PLANNER),
+      onPressed: () {
+        //If the List Cycles is Empty, the user is navigated to the log Periods screen
+        if(cycles.isEmpty) {
+            context.goNamed(RouteNames.PERIOD_PLANNER_LOG_PERIODS);
+          }
+          else {
+            context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
+          }  
+      },
       color: Constants.periodPlanner,
       ),
   ];
