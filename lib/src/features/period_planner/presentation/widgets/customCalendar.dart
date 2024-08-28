@@ -61,17 +61,9 @@ int calculateAveragePeriodLength(List<Cycle> cycles) {
   debugPrint("Average Period Length: $averagePeriodLength");
   return averagePeriodLength;
 }
-
-
-
-
 // DateTime normalizeToMidnight(DateTime dateTime) {
 //   return DateTime(dateTime.year, dateTime.month, dateTime.day);
 // }
-
-
-
-
 //Algorithm for calculating Next Period Days, Ovulation and Fertile Days
 Cycle predictCycle(DateTime periodStart, DateTime periodEnd) {
   var uuid = const Uuid();
@@ -83,7 +75,7 @@ Cycle predictCycle(DateTime periodStart, DateTime periodEnd) {
   // Calculate average period length from the period Start to the Period End
   int averagePeriodLength = calculateAveragePeriodLength(cycles);
 
-  DateTime predictedPeriodStart = periodStart.add(Duration(days: averageCycleLength));
+  DateTime predictedPeriodStart = periodStart.add(Duration(days: averageCycleLength - 1));
   DateTime predictedPeriodEnd = predictedPeriodStart.add(Duration(days: averagePeriodLength - 1));
 
   //calculating ovulation day (14 days before predicted period start)
@@ -134,14 +126,14 @@ class CustomCalendar extends StatefulWidget {
 class _CustomCalendarState extends State<CustomCalendar>{
   late CalendarFormat _calendarFormat;
   late DateTime _focusedDay;
-  late Map<DateTime, List<Event>> _flatEvents;
+  //late Map<DateTime, List<Event>> _flatEvents;
   late Map<DateTime, List<Event>> _filteredEvents;
 
    @override
   void initState() {
     super.initState();
     _calendarFormat = widget.initialFormat;
-    _flatEvents = _flattenEvents(widget.events);
+    //_flatEvents = _flattenEvents(widget.events);
     _filteredEvents = _filterEventsForLatestCycle();
     // Determine the focused day based on the calendar format
     _focusedDay = _calendarFormat == CalendarFormat.week
@@ -150,20 +142,20 @@ class _CustomCalendarState extends State<CustomCalendar>{
   }
 
   //To flatten the events so that it can be in the form of DateTime as the key and the events as the values
-  Map<DateTime, List<Event>> _flattenEvents(Map<String, Map<DateTime, List<Event>>> nestedEvents) {
-  final Map<DateTime, List<Event>> flattenedEvents = {};
+  // Map<DateTime, List<Event>> _flattenEvents(Map<String, Map<DateTime, List<Event>>> nestedEvents) {
+  // final Map<DateTime, List<Event>> flattenedEvents = {};
 
-  nestedEvents.forEach((cycleId, dateMap) {
-    dateMap.forEach((date, events) {
-      if (flattenedEvents.containsKey(date)) {
-        flattenedEvents[date]!.addAll(events);
-      } else {
-        flattenedEvents[date] = List.from(events);
-      }
-    });
-  });
-  return flattenedEvents;
-  }
+  // nestedEvents.forEach((cycleId, dateMap) {
+  //   dateMap.forEach((date, events) {
+  //     if (flattenedEvents.containsKey(date)) {
+  //       flattenedEvents[date]!.addAll(events);
+  //     } else {
+  //       flattenedEvents[date] = List.from(events);
+  //     }
+  //   });
+  // });
+  // return flattenedEvents;
+  // }
 
 //This is for filtering events on the calendar
   Map<DateTime, List<Event>> _filterEventsForLatestCycle() {
