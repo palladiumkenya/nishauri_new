@@ -51,6 +51,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     _loadVersion();
+    ref.refresh(userProvider.notifier);
   }
 
   Future<void> _loadVersion() async {
