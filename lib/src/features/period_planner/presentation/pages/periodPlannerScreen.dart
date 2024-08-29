@@ -195,9 +195,9 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                             ),
                             Text(
                               chances,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 34, 
-                                color: Constants.periodPlanner, 
+                                color: chances == 'High' ? Colors.red : Colors.blue, 
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -414,9 +414,8 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Constants.periodPlanner,
                 ),
-              onPressed: () {
-                // To add functionality later       
-                // context.goNamed(RouteNames.PERIOD_PLANNER_EDIT_PERIODS);
+              onPressed: () {       
+                context.goNamed(RouteNames.PERIOD_PLANNER_PERIOD_HISTORY);
               },
               child: Text(
                 'Periods History',

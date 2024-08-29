@@ -67,11 +67,13 @@ class RouteNames {
   static const PERIOD_PLANNER_CALENDAR = "Period Planner Calendar";
   static const PERIOD_PLANNER_LOG_PERIODS = "period-planner-log-periods";
   static const PERIOD_PLANNER_EDIT_PERIODS = "period-planner-edit-periods";
+  static const PERIOD_PLANNER_PERIOD_HISTORY = "period-planner-period-history";
   static const CHAT_HCW = "chat-hcw";
   static const CHAT_DETAIL = "chat-detail";
   static const CHAT_USER = "chat-user";
   static const INSIGHT = "insight";
   static const BP_INSIGHT = "bp-insight";
+
 
 }
 
