@@ -67,6 +67,7 @@ class RouteNames {
   static const PERIOD_PLANNER_CALENDAR = "Period Planner Calendar";
   static const PERIOD_PLANNER_LOG_PERIODS = "period-planner-log-periods";
   static const PERIOD_PLANNER_EDIT_PERIODS = "period-planner-edit-periods";
+  static const PERIOD_PLANNER_PERIOD_HISTORY = "period-planner-period-history";
 
 }
 
