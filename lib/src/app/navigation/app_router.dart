@@ -66,6 +66,7 @@ import 'package:nishauri/src/features/period_planner/presentation/pages/periodCa
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlannerMenu.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlannerScreen.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlanner.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/periods_history.dart';
 import 'package:nishauri/src/features/programs/presentation/pages/programs.dart';
 import 'package:nishauri/src/features/self_screening/presentation/self_screening_menu.dart';
 import 'package:nishauri/src/features/treatment_support/presentation/pages/TreatmentSupport.dart';
@@ -392,21 +393,31 @@ final List<RouteBase> secureRoutes = [
           },
         )
       ]),
-      //Routes for the Period Planner
-    GoRoute(
-      name: RouteNames.PERIOD_PLANNER_LOG_PERIODS,
-      path: 'period-planner-log-period-calendar',
-      builder: (BuildContext context, GoRouterState state) {  
-        return LogPeriodScreen();
-      },
-    ),  
-    GoRoute(
-        name: RouteNames.PERIOD_PLANNER_SCREEN,
-        path:  'period-planner-screen',
+  //Routes for the Period Planner
+  GoRoute(
+    name: RouteNames.PERIOD_PLANNER_SCREEN,
+    path: 'period-planner-screen',
+    builder: (BuildContext context, GoRouterState state) {
+      return const PeriodPlannerScreen();
+    },
+    routes: [
+      GoRoute(
+        name: RouteNames.PERIOD_PLANNER_PERIOD_HISTORY,
+        path: 'period-planner-period-history',
         builder: (BuildContext context, GoRouterState state) {
-          return  const PeriodPlannerScreen();
+          return PeriodsHistory();
         },
       ),
+    ],
+  ),
+  GoRoute(
+    name: RouteNames.PERIOD_PLANNER_LOG_PERIODS,
+    path: 'period-planner-log-period-calendar',
+    builder: (BuildContext context, GoRouterState state) {
+      return LogPeriodScreen();
+    },
+  ),
+
 ];
 
 final List<RouteBase> openRoutes = [
