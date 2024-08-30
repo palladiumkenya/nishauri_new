@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class PeriodsHistory extends StatefulWidget {
   const PeriodsHistory({super.key});
@@ -170,8 +172,7 @@ class _PeriodsHistoryState extends State<PeriodsHistory> {
                             itemCount: sortedYears.length,
                             itemBuilder: (context, index) {
                               final year = sortedYears[index];
-                              final cyclesInYear = groupedCycles[year]!;
-                              
+                              final cyclesInYear = groupedCycles[year]!;                             
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -204,7 +205,15 @@ class _PeriodsHistoryState extends State<PeriodsHistory> {
                                         ),
                                       ),
                                       trailing: IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          context.goNamed(
+                                            RouteNames.PERIOD_PLANNER_EDIT_PERIODS,
+                                            extra: {
+                                              'startDate': cycle.periodStart,
+                                              'endDate' : cycle.periodEnd,
+                                            }
+                                          );
+                                        },
                                         icon: const Icon(Icons.arrow_forward_ios),
                                       ),
                                     );
