@@ -50,12 +50,14 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
       _periodEnd = latestCycle.periodEnd;
       _ovulationDate = latestCycle.ovulation;
       _nextPeriodStart = latestCycle.predictedPeriodStart;  
-      _nextPeriodEnd = latestCycle.predictedPeriodEnd;    
+      _nextPeriodEnd = latestCycle.predictedPeriodEnd; 
+
+      //_autoAddPeriodDay();   
     }
     events = EventUtils.generateEvents(cycles); 
     //_updateEvents();
   }
-
+  //Method for updating events
   void _updateEvents() {
     setState(() {
       events = EventUtils.generateEvents(cycles);
@@ -71,10 +73,17 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
     });
   }
 
-
-
-  
-
+  //Method for auto adding the latest predicted period day as the period start
+  void _autoAddPeriodDay() {
+    if (isSameDay(_currentDate, _nextPeriodStart) || _currentDate.isBefore(_nextPeriodEnd)) {
+      setState(() {
+        _periodStart = _nextPeriodStart;
+        _periodEnd = _nextPeriodEnd;
+        final Cycle newCycle = predictCycle(_periodStart, _periodEnd);
+        cycles.add(newCycle);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -286,7 +295,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                                                     if (cycle.periodStart == _periodStart) {
                                                       cycle.periodEnd = _periodEnd;
                                                     }
-                                                  }
+                                                  } 
 
                                                   _updateEvents();
                                                   printCycles(cycles);

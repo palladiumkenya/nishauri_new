@@ -407,8 +407,19 @@ final List<RouteBase> secureRoutes = [
         name: RouteNames.PERIOD_PLANNER_PERIOD_HISTORY,
         path: 'period-planner-period-history',
         builder: (BuildContext context, GoRouterState state) {
-          return PeriodsHistory();
+          return const PeriodsHistory();
         },
+        routes: [
+          GoRoute(
+            name: RouteNames.PERIOD_PLANNER_EDIT_PERIODS,
+            path: 'period-planner-edit-periods',
+            builder: (BuildContext context, GoRouterState state) {
+              final startDate = state.extra != null ? (state.extra as Map<String, dynamic>)['startDate'] as DateTime : null;
+              final endDate = state.extra != null ? (state.extra as Map<String, dynamic>)['endDate'] as DateTime : null;
+              return EditPeriods(initialStartDate: startDate, initialEndDate: endDate);
+            },
+          ),
+        ],
       ),
     ],
   ),
