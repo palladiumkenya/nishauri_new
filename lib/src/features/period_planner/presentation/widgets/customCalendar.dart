@@ -10,18 +10,21 @@ import 'package:uuid/uuid.dart';
 // Function to calculate Average Cycle days
 int calculateAverageCycleLength(List<Cycle> cycles) {
   if (cycles.length < 2) {
-    debugPrint("Not enough cycles to calculate an average, defaulting to 28 days.");
+    debugPrint(
+        "Not enough cycles to calculate an average, defaulting to 28 days.");
     return 28; // Default to 28 if there aren't enough cycles
   }
 
   int totalLength = 0;
   for (int i = 1; i < cycles.length; i++) {
-    int cycleLength = cycles[i].periodStart.difference(cycles[i - 1].periodStart).inDays;
+    int cycleLength =
+        cycles[i].periodStart.difference(cycles[i - 1].periodStart).inDays;
     debugPrint("Cycle Length before adjustment for cycle $i: $cycleLength");
 
     // Cap to a minimum cycle length of 21 days
     if (cycleLength < 21) {
-      debugPrint("Cycle Length $cycleLength is less than 21 days, defaulting to 26 days.");
+      debugPrint(
+          "Cycle Length $cycleLength is less than 21 days, defaulting to 26 days.");
       cycleLength = 26;
     }
 
@@ -30,18 +33,18 @@ int calculateAverageCycleLength(List<Cycle> cycles) {
   }
 
   int averageCycle = (totalLength / (cycles.length - 1)).round();
-  debugPrint("Calculated Average Cycle Length before final check: $averageCycle");
+  debugPrint(
+      "Calculated Average Cycle Length before final check: $averageCycle");
 
   if (averageCycle < 21) {
-    debugPrint("Average Cycle Length $averageCycle is less than 21 days, defaulting to 26 days.");
+    debugPrint(
+        "Average Cycle Length $averageCycle is less than 21 days, defaulting to 26 days.");
     return 26;
   }
 
   debugPrint("Final Average Cycle Length: $averageCycle");
   return averageCycle;
 }
-
-
 
 //Function for calculating Average Period days
 int calculateAveragePeriodLength(List<Cycle> cycles) {
@@ -54,13 +57,14 @@ int calculateAveragePeriodLength(List<Cycle> cycles) {
   }
   int averagePeriodLength = (totalPeriodLength / cycles.length).round();
   if (averagePeriodLength < 3) {
-      return 4;
+    return 4;
   }
   debugPrint("Total Period Length: $totalPeriodLength");
   debugPrint("Number of Cycles: ${cycles.length}");
   debugPrint("Average Period Length: $averagePeriodLength");
   return averagePeriodLength;
 }
+
 // DateTime normalizeToMidnight(DateTime dateTime) {
 //   return DateTime(dateTime.year, dateTime.month, dateTime.day);
 // }
@@ -75,8 +79,10 @@ Cycle predictCycle(DateTime periodStart, DateTime periodEnd) {
   // Calculate average period length from the period Start to the Period End
   int averagePeriodLength = calculateAveragePeriodLength(cycles);
 
-  DateTime predictedPeriodStart = periodStart.add(Duration(days: averageCycleLength - 1));
-  DateTime predictedPeriodEnd = predictedPeriodStart.add(Duration(days: averagePeriodLength - 1));
+  DateTime predictedPeriodStart =
+      periodStart.add(Duration(days: averageCycleLength - 1));
+  DateTime predictedPeriodEnd =
+      predictedPeriodStart.add(Duration(days: averagePeriodLength - 1));
 
   //calculating ovulation day (14 days before predicted period start)
   DateTime ovulation = predictedPeriodStart.subtract(const Duration(days: 14));
@@ -91,45 +97,49 @@ Cycle predictCycle(DateTime periodStart, DateTime periodEnd) {
       : averageCycleLength; // Calculate cycle length only if there are previous cycles
 
   //Calculating period Length of each cycle
-  int periodLength = periodEnd.difference(periodStart).inDays + 1;      
+  int periodLength = periodEnd.difference(periodStart).inDays + 1;
 
   return Cycle(
-    cycleId: cycleId, 
-    periodStart: periodStart, 
-    periodEnd: periodEnd, 
-    fertileStart: fertileStart, 
-    fertileEnd: fertileEnd, 
-    ovulation: ovulation, 
-    predictedPeriodStart: predictedPeriodStart, 
+    cycleId: cycleId,
+    periodStart: periodStart,
+    periodEnd: periodEnd,
+    fertileStart: fertileStart,
+    fertileEnd: fertileEnd,
+    ovulation: ovulation,
+    predictedPeriodStart: predictedPeriodStart,
     predictedPeriodEnd: predictedPeriodEnd,
     cycleLength: cycleLength,
     periodLength: periodLength,
   );
-} 
+}
+
 class CustomCalendar extends StatefulWidget {
   final CalendarFormat initialFormat;
   final Map<String, Map<DateTime, List<Event>>> events;
   final bool headerButton;
   final bool? inPeriods;
 
-   const CustomCalendar({
+  const CustomCalendar({
     Key? key,
-    this.initialFormat = CalendarFormat.month, 
-    required this.events, 
+    this.initialFormat = CalendarFormat.month,
+    required this.events,
     this.headerButton = false,
     this.inPeriods,
-    }) : super(key: key);
+  }) : super(key: key);
 
   @override
   _CustomCalendarState createState() => _CustomCalendarState();
 }
-class _CustomCalendarState extends State<CustomCalendar>{
+
+class _CustomCalendarState extends State<CustomCalendar> {
   late CalendarFormat _calendarFormat;
   late DateTime _focusedDay;
+  late DateTime _firstDay;
+  late DateTime _lastDay;
   //late Map<DateTime, List<Event>> _flatEvents;
   late Map<DateTime, List<Event>> _filteredEvents;
 
-   @override
+  @override
   void initState() {
     super.initState();
     _calendarFormat = widget.initialFormat;
@@ -139,6 +149,8 @@ class _CustomCalendarState extends State<CustomCalendar>{
     _focusedDay = _calendarFormat == CalendarFormat.week
         ? _getNextPredictedPeriodDate() ?? DateTime.now()
         : DateTime.now();
+    _firstDay = _getFirstEventDate();
+    _lastDay = _getLastEventDate();
   }
 
   //To flatten the events so that it can be in the form of DateTime as the key and the events as the values
@@ -175,32 +187,65 @@ class _CustomCalendarState extends State<CustomCalendar>{
     }
 
     return filteredEvents;
-    }
-
-
-  DateTime? _getNextPredictedPeriodDate() {
-  for (var entry in _filteredEvents.entries) {
-    if (widget.inPeriods == true) {
-      // Return the first date with a 'Period Day' event
-      if (entry.value.any((event) => event.title == 'Period Day')) {
-        return entry.key;
-      }
-    } else {
-      // Return the first date with a 'Predicted Period Day' event
-      if (entry.value.any((event) => event.title == 'Predicted Period Day')) {
-        return entry.key;
-      }
-    }
   }
-  return null;
-}
+
+  //Function for getting the focused day
+  DateTime? _getNextPredictedPeriodDate() {
+    for (var entry in _filteredEvents.entries) {
+      if (widget.inPeriods == true) {
+        // Return the first date with a 'Period Day' event
+        if (entry.value.any((event) => event.title == 'Period Day')) {
+          return entry.key;
+        }
+      } else {
+        // Return the first date with a 'Predicted Period Day' event
+        if (entry.value.any((event) => event.title == 'Predicted Period Day')) {
+          return entry.key;
+        }
+      }
+    }
+    return null;
+  }
+
+  /*Getting the first date to be displayed on the calendar
+  if the function _getNextPredictedPeriodDate, the start date of the calendar is 2010
+  */
+  DateTime _getFirstEventDate() {
+    DateTime? firstEventDate = _getNextPredictedPeriodDate();
+    return  _calendarFormat == CalendarFormat.week ? firstEventDate  ?? DateTime(2010): DateTime(2010);  // Fallback to DateTime(2010) if null 
+  }
+
+  /*Getting the last date to be displayed on the calendar
+  if the function _getNextPredictedPeriodDate, the last date of the calendar is 2100
+  */
+  DateTime _getLastEventDate() {
+    DateTime? lastEventDate;
+
+    for (var entry in _filteredEvents.entries.toList().reversed) {
+      if (widget.inPeriods == true) {
+        // Return the last date with a 'Period Day' event
+        if (entry.value.any((event) => event.title == 'Period Day')) {
+          lastEventDate = entry.key;
+          break;
+        }
+      } else {
+        // Return the last date with a 'Predicted Period Day' event
+        if (entry.value.any((event) => event.title == 'Predicted Period Day')) {
+          lastEventDate = entry.key;
+          break;
+        }
+      }
+    }
+
+    return _calendarFormat == CalendarFormat.week ? lastEventDate  ?? DateTime(2100): DateTime(2100); // Fallback to DateTime(2100) if null
+  }
 
   @override
   Widget build(BuildContext context) {
     return TableCalendar(
       key: ValueKey(widget.events),
-      firstDay: DateTime(2010),
-      lastDay: DateTime(2100),
+      firstDay: _firstDay,
+      lastDay: _lastDay,
       focusedDay: _focusedDay,
       // onDaySelected: (selectedDay, focusedDay) {
       //   setState(() {
@@ -213,7 +258,7 @@ class _CustomCalendarState extends State<CustomCalendar>{
       },
       headerVisible: true,
       headerStyle: HeaderStyle(
-        formatButtonVisible: widget.headerButton,        
+        formatButtonVisible: widget.headerButton,
       ),
       onFormatChanged: (format) {
         // Show the modal when the format button is pressed
@@ -250,7 +295,7 @@ class _CustomCalendarState extends State<CustomCalendar>{
             return null;
           }
           final eventList = events.cast<Event>();
-          
+
           // debugPrint("-----From CustomCalendar------");
           // debugPrint('Successfully cast events for date: $date, events: $eventList');
 
@@ -260,4 +305,3 @@ class _CustomCalendarState extends State<CustomCalendar>{
     );
   }
 }
-

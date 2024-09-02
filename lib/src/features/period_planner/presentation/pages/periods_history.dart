@@ -149,82 +149,77 @@ class _PeriodsHistoryState extends State<PeriodsHistory> {
                   ),
                   const SizedBox(height: 20),
                   // Card Showing period history
-                  Card(
-                    elevation: 4.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0),
+                  const Text(
+                    "History",
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.pink,
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
-                      child: Column(
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: sortedYears.length,
+                    itemBuilder: (context, index) {
+                      final year = sortedYears[index];
+                      final cyclesInYear = groupedCycles[year]!;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "History",
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.pink,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              "$year",
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: sortedYears.length,
-                            itemBuilder: (context, index) {
-                              final year = sortedYears[index];
-                              final cyclesInYear = groupedCycles[year]!;                             
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: Text(
-                                      "$year",
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
+                          const SizedBox(height: 10),
+                          ...cyclesInYear.reversed.map((cycle) {
+                            final start = formatDate(cycle.periodStart);
+                            final end = formatDate(cycle.periodEnd);
+                            final cycleDays = cycle.cycleLength;
+                            return Card(
+                              elevation: 4.0,
+                              margin: const EdgeInsets.symmetric(vertical: 8.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: ListTile(
+                                title: Text(
+                                  "$start - $end",
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  ...cyclesInYear.reversed.map((cycle) {
-                                    final start = formatDate(cycle.periodStart);
-                                    final end = formatDate(cycle.periodEnd);
-                                    final cycleDays = cycle.cycleLength;
-                                    return ListTile(
-                                      title: Text(
-                                        "$start - $end",
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      subtitle: Text(
-                                        "Length of cycle: $cycleDays days",
-                                        style: const TextStyle(
-                                          fontSize: 16.0,
-                                        ),
-                                      ),
-                                      trailing: IconButton(
-                                        onPressed: () {
-                                          context.goNamed(
-                                            RouteNames.PERIOD_PLANNER_EDIT_PERIODS,
-                                            extra: {
-                                              'startDate': cycle.periodStart,
-                                              'endDate' : cycle.periodEnd,
-                                            }
-                                          );
-                                        },
-                                        icon: const Icon(Icons.arrow_forward_ios),
-                                      ),
+                                ),
+                                subtitle: Text(
+                                  "Length of cycle: $cycleDays days",
+                                  style: const TextStyle(
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                trailing: IconButton(
+                                  onPressed: () {
+                                    context.goNamed(
+                                      RouteNames.PERIOD_PLANNER_EDIT_PERIODS,
+                                      extra: {
+                                        'startDate': cycle.periodStart,
+                                        'endDate': cycle.periodEnd,
+                                      },
                                     );
-                                  }).toList(),
-                                ],
-                              );
-                            },
-                          ),
+                                  },
+                                  icon: const Icon(Icons.arrow_forward_ios),
+                                ),
+                              ),
+                            );
+                          }).toList(),
                         ],
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 ],
               ),
