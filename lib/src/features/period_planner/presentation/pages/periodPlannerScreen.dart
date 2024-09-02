@@ -74,16 +74,16 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
   }
 
   //Method for auto adding the latest predicted period day as the period start
-  void _autoAddPeriodDay() {
-    if (isSameDay(_currentDate, _nextPeriodStart) || _currentDate.isBefore(_nextPeriodEnd)) {
-      setState(() {
-        _periodStart = _nextPeriodStart;
-        _periodEnd = _nextPeriodEnd;
-        final Cycle newCycle = predictCycle(_periodStart, _periodEnd);
-        cycles.add(newCycle);
-      });
-    }
-  }
+  // void _autoAddPeriodDay() {
+  //   if (isSameDay(_currentDate, _nextPeriodStart) || _currentDate.isBefore(_nextPeriodEnd)) {
+  //     setState(() {
+  //       _periodStart = _nextPeriodStart;
+  //       _periodEnd = _nextPeriodEnd;
+  //       final Cycle newCycle = predictCycle(_periodStart, _periodEnd);
+  //       cycles.add(newCycle);
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -223,7 +223,7 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
                         events: events,
                         headerButton: true,
                         inPeriods: inPeriods,
-                        ),
+                      ),
                     ),
                     const SizedBox(height: Constants.SPACING),
                     Stack(
