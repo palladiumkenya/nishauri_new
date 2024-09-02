@@ -43,6 +43,7 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
   DateTime? _endDate;
   Map<String, Map<DateTime, List<Event>>> events = EventUtils.generateEvents(cycles);
   //late Map<DateTime, List<Event>> _filteredEvents;
+  //final latestCycle = cycles.last;
   final bool _isNewUser = cycles.isEmpty;
   int averagePeriods = calculateAveragePeriodLength(cycles);
   
@@ -51,13 +52,9 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
   void initState() {
     super.initState();
     if (!_isNewUser) {
-      //_filteredEvents = _filterEventsForLatestCycle();
       _initializePredictedPeriodRange();
       _setFocusedDayForRegularUser();
     } 
-    // else {
-    //   _filteredEvents = {};
-    // }
   }
 
   //  Map<DateTime, List<Event>> _filterEventsForLatestCycle() {
@@ -100,8 +97,7 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
   // Method to validate date range ensuring selection does not exceed 7 days
   bool _isDateRangeValid(DateTime start, DateTime end) {
     final difference = end.difference(start).inDays + 1; // +1 to include the start day
-    return
-     difference <= 7; // Ensure the range does not exceed 7 days
+    return difference <= 7; // Ensure the range does not exceed 7 days
   }
 
   void _onRangeSelected(DateTime? start, DateTime? end, DateTime? focusedDay) {
@@ -129,8 +125,8 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
       });
     }
   } 
-  //Function to handle adding and updating log entries in list Database
-  void _updateOrAddCycle(DateTime start, [DateTime? end]) {
+  //Function to handle adding log entries in list Database
+  void addCycle(DateTime start, [DateTime? end]) {
     // If end date is not provided, set it to the start date
     end ??= start;
 
@@ -184,23 +180,30 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
     final theme = Theme.of(context);
     return Scaffold(
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomAppBar(
             title: "Enter Periods 📅",
-            subTitle: _isNewUser 
-            ? "Please enter your previous period start and end date."
-            : "Please enter when your Periods have started",
             color: Constants.periodPlanner.withOpacity(1.0),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              _isNewUser 
+              ? "Please enter your previous period start and end date."
+              : "Please enter when your Periods have started",
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
           ),
           TableCalendar(
             focusedDay: _focusedDay,
             firstDay: DateTime(2021),
             lastDay: DateTime(2100),
             rangeStartDay: _startDate,
-            rangeEndDay: _isNewUser ? _endDate : _endDate,
+            rangeEndDay: _endDate,
             onRangeSelected: _isNewUser ? _onRangeSelected : null,
             onDaySelected: _isNewUser ? null : _onDaySelected,
-            rangeSelectionMode: _isNewUser ? RangeSelectionMode.toggledOn : RangeSelectionMode.toggledOn,
+            rangeSelectionMode: RangeSelectionMode.toggledOn,
                 
             // onPageChanged: (focusedDay) {
             //   _focusedDay = focusedDay;
@@ -251,8 +254,8 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
                   ),
                   onPressed: () {
                     if (_startDate != null) {
-                      final endDate = _endDate ?? _startDate!; // The else statement handles where a period only happens for a single day hence the end date will be same day as start date 
-                      _updateOrAddCycle(_startDate!, endDate);
+                      final endDate = _endDate ?? _startDate!.add(const Duration(days: 1)); // The else statement handles where a period only happens for a single day hence the end date will be same day as start date 
+                      addCycle(_startDate!, endDate);
                       printCycles(cycles);
                       context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
                     } else {
