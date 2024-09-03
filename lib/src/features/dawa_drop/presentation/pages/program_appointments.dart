@@ -57,10 +57,17 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                     final bool hasActiveRequest = appointment.id != null &&
                         orderAsync.when(
                           data: (orders) => orders.any((order) =>
-                              order.appointment?.id == appointment.id),
+                              order.appointment?.id == appointment.id && order.status != "Fullfilled"),
                           loading: () => false,
                           error: (_, __) => false,
                         );
+                    // Check if appointment is fulfilled
+                    final bool isFulfilled = orderAsync.when(
+                      data: (orders) => orders.any((order) =>
+                      order.appointment?.id == appointment.id && order.status == "Fullfilled"),
+                      loading: () => false,
+                      error: (_, __) => false,
+                    );
 
                     final bool eligibleAppointment = appointment.id != null &&
                         orderAsync.when(
@@ -143,21 +150,21 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                                             height: Constants.SPACING),
                                         // Display text based on whether there is an active request
                                         Text(
-                                          hasActiveRequest
+                                          isFulfilled
+                                              ? "Appointment order has already been fulfilled"
+                                              : hasActiveRequest
                                               ? "Appointment has an active request"
-                                              : appointment
-                                                          .appointment_status ==
-                                                      1
-                                                  ? "Request Home delivery"
-                                                  : "",
+                                              : appointment.appointment_status == 1
+                                              ? "Request Home delivery"
+                                              : "",
                                           style: TextStyle(
-                                            color: hasActiveRequest
+                                            color: isFulfilled
+                                                ? Colors.grey // Adjust color for fulfilled status
+                                                : hasActiveRequest
                                                 ? Constants.appointmentsColor
-                                                : appointment
-                                                            .appointment_status ==
-                                                        1
-                                                    ? Constants.clinicCardColor
-                                                    : Colors.transparent,
+                                                : appointment.appointment_status == 1
+                                                ? Constants.clinicCardColor
+                                                : Colors.transparent,
                                           ),
                                         ),
                                       ],

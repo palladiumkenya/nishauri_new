@@ -1,18 +1,13 @@
 import 'dart:developer';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
-import 'package:nishauri/src/features/bmi/data/model/bmi_log.dart';
 import 'package:nishauri/src/features/bmi/data/providers/bmi_log_provider.dart';
-import 'package:nishauri/src/features/bmi/data/services/bmi_log_service.dart';
 import 'package:nishauri/src/features/bmi/presentation/widgets/GenderPicker.dart';
 import 'package:nishauri/src/features/bmi/presentation/widgets/HeightPicker.dart';
 import 'package:nishauri/src/features/bmi/presentation/widgets/HeightUnitsPicker.dart';
@@ -29,37 +24,49 @@ import 'package:nishauri/src/utils/routes.dart';
 class BMICalculatorScreen extends HookConsumerWidget {
   const BMICalculatorScreen({super.key});
 
-  Future<int> _fetchAge() async {
-    final authRepository = AuthRepository(AuthApiService());
-    return await authRepository.getAge() as Future<int>;
+  Future<int?> _fetchAge(WidgetRef ref) async {
+    try {
+      final authRepository = AuthRepository(AuthApiService());
+      String ageString = await authRepository.getAge();
+      int age = int.parse(ageString);
+      return age;
+    } catch (e) {
+      print("An error occurred while fetching the age: $e");
+      final userAsync = ref.watch(userProvider);
+      final age = userAsync.when(
+        data: (user) {
+          final birthYear = int.parse(user.dateOfBirth!.split('-')[0]);
+          return DateTime.now().year - birthYear;
+        },
+        loading: () => null,
+        error: (error, stack) {
+          print("Error fetching user data: $error");
+          return null;
+        },
+      );
+      return age;
+    }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     const activeColor = Constants.activeSelectionColor;
-    var gender = useState<GenderPickerChoices>(GenderPickerChoices.male);
+    final gender = useState<GenderPickerChoices>(GenderPickerChoices.male);
     final isPregnant = useState(false);
     final height = useState<double>(180);
-    final heightUnits =
-        useState<HeightUnitsPickerOptions>(HeightUnitsPickerOptions.In);
+    final heightUnits = useState<HeightUnitsPickerOptions>(HeightUnitsPickerOptions.In);
     final weight = useState<int>(65);
     final isForSelf = useState(true);
-    final userAsync = ref.watch(userProvider);
-    // var age = userAsync.whenData((user) {
-    //   return DateTime.now().year - int.parse(user.dateOfBirth!.split('-')[0]);
-    // });
-    var age = userAsync.whenData((user) {
-      return DateTime.now().year - int.parse(user.dateOfBirth!.split('-')[0]);
-    });
-    var userAge = useState(age);
+    final userAge = useState<int>(18);
 
-    // Implmentation using Fetch age and AuthRepository
-    // var userAge = useState<int>(18);
-    // useEffect(() {
-    //   _fetchAge().then((value) => userAge.value = value);
-    //   return null;
-    // }, []);
+    useEffect(() {
+      _fetchAge(ref).then((fetchedAge) {
+        print("Age fetched: $fetchedAge");
+        userAge.value = fetchedAge!;
+      });
+      return null;
+    }, [ref]);
 
     return Scaffold(
       body: Column(
@@ -67,7 +74,6 @@ class BMICalculatorScreen extends HookConsumerWidget {
           const CustomAppBar(
             title: "BMI Calculator ⚖️",
             subTitle: "Empower Your Health Journey \nWith BMI Insights",
-            // icon: Icons.calculate_outlined,
             color: Constants.bmiCalculatorColor,
           ),
           Expanded(
@@ -79,73 +85,40 @@ class BMICalculatorScreen extends HookConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Card(
-                        child: Container(
+                        child: Padding(
                           padding: const EdgeInsets.all(Constants.SPACING),
                           child: Column(
                             children: [
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "BMI for: ",
                                     style: theme.textTheme.titleMedium,
                                   ),
-                                  const SizedBox(height: Constants.SPACING),
                                   ToggleButtons(
-                                    isSelected: [
-                                      isForSelf.value,
-                                      !isForSelf.value
-                                    ],
+                                    isSelected: [isForSelf.value, !isForSelf.value],
                                     onPressed: (index) {
                                       isForSelf.value = index == 0;
-                                      // fetch user gender
-                                      userAsync.whenData((user) async {
-                                        if (user.gender != null) {
-                                          debugPrint(
-                                              'user gender: ${user.gender}');
-                                          if (user.gender == 'Male') {
-                                            gender =
-                                                useState<GenderPickerChoices>(
-                                                    GenderPickerChoices.male);
-                                          } else {
-                                            gender =
-                                                useState<GenderPickerChoices>(
-                                                    GenderPickerChoices.female);
-                                          }
-                                        }
-                                      });
-                                      userAsync.whenData((user) async {
-                                        if (user.dateOfBirth != null) {
-                                          debugPrint(
-                                              'user dateOfBirth: ${user.dateOfBirth}');
-                                          var age = DateTime.now().year -
-                                              int.parse(user.dateOfBirth!
-                                                  .split('-')[0]);
-                                          userAge.value = AsyncValue.data(age); 
-                                        }
-                                      });
-                                      // ==== Fetch user not working as expected
-                                      // _fetchAge().then(
-                                      //     (value) => userAge.value = value);
+                                      if (isForSelf.value) {
+                                        _fetchAge(ref).then((fetchedAge) {
+                                          userAge.value = fetchedAge!;
+                                        });
+                                      }
                                     },
-                                    selectedColor: Colors
-                                        .white, //color for selected button
+                                    selectedColor: Colors.white,
                                     fillColor: activeColor,
                                     children: const [
                                       Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 16.0),
+                                        padding: EdgeInsets.symmetric(horizontal: 16.0),
                                         child: Text("Myself"),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 16.0),
+                                        padding: EdgeInsets.symmetric(horizontal: 16.0),
                                         child: Text("Other"),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: Constants.SPACING),
                                 ],
                               ),
                             ],
@@ -158,69 +131,69 @@ class BMICalculatorScreen extends HookConsumerWidget {
                         style: theme.textTheme.titleMedium,
                       ),
                       const SizedBox(height: Constants.SPACING),
-                      // Check is forself is true
-                      isForSelf.value == false
-                          ? GenderPicker(
-                              gender: gender.value,
-                              onGenderChange: (gender_) {
-                                if (gender_ == GenderPickerChoices.female) {
-                                  showDialog<bool>(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                        title: const Text("Warning!"),
-                                        content: SingleChildScrollView(
-                                          child: Wrap(
-                                            children: [
-                                              const Text(
-                                                "BMI Calculation for pregnant lady is highly discouraged and not supported to avoid drastic decisions.Please confirm your pregnancy status",
-                                              ),
-                                              RadioGroup(
-                                                // value: pregnant.value ? "no":"yes",
-                                                onValueChanged: (val) {
-                                                  context.pop(val == "no");
-                                                },
-                                                items: [
-                                                  RadioGroupItem(
-                                                      value: "yes",
-                                                      title: "Not Pregnant",
-                                                      icon:
-                                                          Icons.woman_rounded),
-                                                  RadioGroupItem(
-                                                      value: "no",
-                                                      title: "Pregnant",
-                                                      icon:
-                                                          Icons.pregnant_woman),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        )),
-                                  ).then((isPregnant_) {
-                                    if (isPregnant_ != null) {
-                                      if (isPregnant_ == false) {
-                                        gender.value = gender_;
-                                        isPregnant.value = false;
-                                      } else {
-                                        gender.value = gender_;
-                                        isPregnant.value = true;
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                                content: Text(
-                                                    "BMI calculation for pregnant lady ain't supported")));
-                                      }
-                                    }
-                                  });
-                                } else {
+                      if (!isForSelf.value)
+                        GenderPicker(
+                          gender: gender.value,
+                          onGenderChange: (gender_) {
+                            if (gender_ == GenderPickerChoices.female) {
+                              showDialog<bool>(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text("Warning!"),
+                                  content: SingleChildScrollView(
+                                    child: Wrap(
+                                      children: [
+                                        const Text(
+                                          "BMI Calculation for pregnant ladies is highly discouraged and not supported to avoid drastic decisions. Please confirm your pregnancy status.",
+                                        ),
+                                        RadioGroup(
+                                          onValueChanged: (val) {
+                                            Navigator.of(context).pop(val == "no");
+                                          },
+                                          items: [
+                                            RadioGroupItem(
+                                              value: "yes",
+                                              title: "Not Pregnant",
+                                              icon: Icons.woman_rounded,
+                                            ),
+                                            RadioGroupItem(
+                                              value: "no",
+                                              title: "Pregnant",
+                                              icon: Icons.pregnant_woman,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ).then((isPregnant_) {
+                                if (isPregnant_ != null) {
+                                  isPregnant.value = !isPregnant_;
                                   gender.value = gender_;
+                                  if (isPregnant_) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "BMI calculation for pregnant ladies isn't supported",
+                                        ),
+                                      ),
+                                    );
+                                  }
                                 }
-                              },
-                              activeColor: activeColor,
-                            )
-                          : GenderPicker(
-                              gender: gender.value,
-                              onGenderChange: (gender) {},
-                              isEnabled: isForSelf.value,
-                            ),
+                              });
+                            } else {
+                              gender.value = gender_;
+                            }
+                          },
+                          activeColor: activeColor,
+                        )
+                      else
+                        GenderPicker(
+                          gender: gender.value,
+                          onGenderChange: (gender) {},
+                          isEnabled: isForSelf.value,
+                        ),
                       const SizedBox(height: Constants.SPACING),
                       HeightPicker(
                         activeColor: activeColor,
@@ -246,64 +219,45 @@ class BMICalculatorScreen extends HookConsumerWidget {
                             units: "Kgs",
                             activeColor: activeColor,
                           ),
-                          isForSelf.value == false
-                              ? Quantizer(
-                                  min: 5,
-                                  max: 100,
-                                  value: userAge.value.value!,
-                                  onValueChange: (value) =>
-                                      userAge.value = AsyncValue.data(value),
-                                  label: "Age",
-                                  units: "Years",
-                                  activeColor: activeColor,
-                                )
-                              : // Show similar quantizer but one that values can't be modified
-                              Quantizer(
-                                  value: userAge.value.value!,
-                                  onValueChange: (value) {},
-                                  label: "Age",
-                                  units: "Years",
-                                  activeColor: activeColor,
-                                ),
+                          Quantizer(
+                            min: 5,
+                            max: 100,
+                            value: userAge.value,
+                            onValueChange: isForSelf.value ? (_) {} : (value) => userAge.value = value,
+                            label: "Age",
+                            units: "Years",
+                            activeColor: activeColor,
+                          ),
                         ],
                       ),
                       const SizedBox(height: Constants.SPACING),
                       Button(
-                          title: "Calculate",
-                          surfixIcon: SvgPicture.asset(
-                            "assets/images/refresh-circle.svg",
-                            semanticsLabel: "Doctors",
-                            fit: BoxFit.contain,
-                          ),
-                          disabled: isPregnant.value,
-                          backgroundColor: activeColor,
-                          textColor: theme.canvasColor,
-                          onPress: () {
-                            final bmi =
-                                calculateBMI(height.value, weight.value);
-                            print('height.value: ${height.value}');
-                            print('bmi: $bmi');
-
-                            if (isForSelf.value) {
-                              ref
-                                  .read(bmiLogProvider.notifier)
-                                  .logBMI(height.value.toString(),
-                                      weight.value.toString(), bmi.toString())
-                                  .then((_) {
-                                context.goNamed(
-                                    RouteNames.BMI_CALCULATOR_RESULTS,
-                                    extra: bmi);
-                              });
-                              ref.refresh(bmiListProvider);
-                            } else {
-                              context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS,
-                                  extra: bmi);
-                            }
-                          }),
+                        title: "Calculate",
+                        surfixIcon: SvgPicture.asset(
+                          "assets/images/refresh-circle.svg",
+                          semanticsLabel: "Doctors",
+                          fit: BoxFit.contain,
+                        ),
+                        disabled: isPregnant.value,
+                        backgroundColor: activeColor,
+                        textColor: theme.canvasColor,
+                        onPress: () {
+                          final bmi = calculateBMI(height.value, weight.value);
+                          if (isForSelf.value) {
+                            ref.read(bmiLogProvider.notifier)
+                                .logBMI(height.value.toString(), weight.value.toString(), bmi.toString())
+                                .then((_) {
+                              context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
+                            });
+                            ref.refresh(bmiListProvider);
+                          } else {
+                            context.goNamed(RouteNames.BMI_CALCULATOR_RESULTS, extra: bmi);
+                          }
+                        },
+                      ),
                       const SizedBox(height: Constants.SPACING),
                       Button(
                         title: "BMI History",
-                        // disabled: isPregnant.value,
                         backgroundColor: activeColor,
                         textColor: theme.canvasColor,
                         onPress: () {
@@ -322,7 +276,3 @@ class BMICalculatorScreen extends HookConsumerWidget {
     );
   }
 }
-
-//Awaiting Endpoints
-
-
