@@ -39,6 +39,7 @@ import 'package:nishauri/src/features/dawa_drop/presentation/pages/dawa_drop_scr
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/dispatched_drugs.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/program_appointments.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_drug.dart';
+import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/forms/GettingStated.dart';
 import 'package:nishauri/src/features/events_calendar/presentation/pages/EventsCalendar.dart';
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
 import 'package:nishauri/src/features/hiv/data/models/group/art_group.dart';
@@ -55,6 +56,13 @@ import 'package:nishauri/src/features/hiv/presentation/pages/groups/ARTGroups.da
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/DrugOrderWizardFormScreen.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/DrugOrders.dart';
 import 'package:nishauri/src/features/lab/presentation/pages/LabResultsScreen.dart';
+import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/editPeriodsScreen.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/logPeriods.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/periodCalendar.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlannerMenu.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlannerScreen.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlanner.dart';
 import 'package:nishauri/src/features/programs/presentation/pages/programs.dart';
 import 'package:nishauri/src/features/self_screening/presentation/self_screening_menu.dart';
 import 'package:nishauri/src/features/treatment_support/presentation/pages/TreatmentSupport.dart';
@@ -373,7 +381,62 @@ final List<RouteBase> secureRoutes = [
           },
         )
       ]),
+      //Routes for the Period Planner
+    GoRoute(
+      name: RouteNames.PERIOD_PLANNER,
+      path: 'period-planner',
+      builder: (BuildContext context, GoRouterState state) {
+        return const PeriodPlanner();  
+      },
+      routes: periodPlannerRoutes,
+
+    ),  
 ];
+
+final List<RouteBase> periodPlannerRoutes = [
+  GoRoute(
+    name: RouteNames.PERIOD_PLANNER_MENU,
+    path: 'period-planner-menu',
+    builder: (BuildContext context, GoRouterState state) {
+      return const PeriodPlannerMenu();
+    },
+    routes: [
+      GoRoute(
+        name: RouteNames.PERIOD_PLANNER_SCREEN,
+        path: 'period-planner-screen',
+        builder: (BuildContext context, GoRouterState state) {
+          return const PeriodPlannerScreen();
+        },
+      ),
+
+      GoRoute(
+        name: RouteNames.PERIOD_PLANNER_CALENDAR,
+        path: 'period-planner-calendar',
+        builder: (BuildContext context, GoRouterState state) {
+          return const PeriodCalendar();
+        },
+        routes: [
+          GoRoute(
+            name: RouteNames.PERIOD_PLANNER_EDIT_PERIODS,
+            path: 'period-planner-edit-period-calendar',
+            builder: (BuildContext context, GoRouterState state) {
+              return  EditPeriodsScreen();
+            },
+          ),
+        ]
+      ),
+      GoRoute(
+        name: RouteNames.PERIOD_PLANNER_LOG_PERIODS,
+        path: 'period-planner-log-period-calendar',
+        builder: (BuildContext context, GoRouterState state) {
+          return LogPeriodScreen();
+        },
+      ),
+    ]),
+  
+
+]; 
+
 final List<RouteBase> openRoutes = [
   GoRoute(
     name: RouteNames.LOGIN_SCREEN,
