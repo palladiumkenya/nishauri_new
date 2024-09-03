@@ -19,7 +19,13 @@ class ARTAppointmentDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final orderAsync = ref.watch(drugOrderProvider);
     final bool hasActiveRequest = artAppointment.id != null && orderAsync.when(
-      data: (orders) => orders.any((order) => order.appointment?.id == artAppointment.id),
+      data: (orders) => orders.any((order) => order.appointment?.id == artAppointment.id && order.status != "Fullfilled"),
+      loading: () => false,
+      error: (_, __) => false,
+    );
+
+    final bool isFulfilled = artAppointment.id != null && orderAsync.when(
+      data: (orders) => orders.any((order) => order.appointment?.id == artAppointment.id && order.status == "Fullfilled"),
       loading: () => false,
       error: (_, __) => false,
     );
@@ -88,13 +94,16 @@ class ARTAppointmentDetailScreen extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.all(Constants.SPACING),
                 child: Button(
-                  onPress: hasActiveRequest
+                  onPress: hasActiveRequest? null : isFulfilled
                       ? null
                       : () {
                     context.goNamed(RouteNames.HIV_ART_DELIVERY_REQUEST_FORM,
                         extra: {"payload": artAppointment, "type": "self"});
                   },
-                  title: hasActiveRequest
+                  title: isFulfilled
+                    ? "Appointment order has already been fulfilled"
+                      :
+                  hasActiveRequest
                       ? "Active request available for the appointment"
                       : "Request Home delivery",
                 ),

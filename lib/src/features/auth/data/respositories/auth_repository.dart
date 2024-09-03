@@ -90,7 +90,12 @@ class AuthRepository {
   }
 
   Future<void> saveAge(String age) async {
+    print("saving age: $age");
     await LocalStorage.save("age", age);
+  }
+
+  Future<void> deleteAge() async {
+    await LocalStorage.delete("age");
   }
 
   Future<String> getAge() async {

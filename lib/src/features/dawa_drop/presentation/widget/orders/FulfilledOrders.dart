@@ -87,7 +87,7 @@ class FulfilledOrders extends StatelessWidget {
                           color: Constants.dawaDropColor.withOpacity(0.5),
                         ),
                         const SizedBox(width: Constants.SPACING),
-                        Text("Deliver Person: ${order.deliveryPerson?.fullName ?? ''}"),
+                        Text("Delivery Person: ${order.deliveryPerson?.fullName ?? ''}"),
                       ],
                     ),
                     if (order.deliveryPerson?.phoneNumber != null && order.deliveryPerson?.phoneNumber != '')
@@ -99,7 +99,7 @@ class FulfilledOrders extends StatelessWidget {
                           color: Constants.dawaDropColor.withOpacity(0.5),
                         ),
                         const SizedBox(width: Constants.SPACING),
-                        Text("Deliver Person Phone: ${order.deliveryPerson?.phoneNumber ?? ''}"),
+                        Text("Delivery Person Phone: ${order.deliveryPerson?.phoneNumber ?? ''}"),
                       ],
                     ),
                     if (order.status != null && order.status != '')
@@ -111,7 +111,7 @@ class FulfilledOrders extends StatelessWidget {
                           color: Constants.dawaDropColor.withOpacity(0.5),
                         ),
                         const SizedBox(width: Constants.SPACING),
-                        Text("Deliver Status: ${order.status ?? ''}"),
+                        Text("Delivery Status: ${order.status ?? ''}"),
                       ],
                     ),
                   ],
