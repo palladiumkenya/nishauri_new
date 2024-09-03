@@ -56,7 +56,7 @@ class Greetings2 extends StatelessWidget {
                   Radius.circular(radius),
                 ),
               ),
-              child: const Center(child: Search()),
+              child: Center(child: Search(searchText: "Search...",)),
             ),
           ),
         ],

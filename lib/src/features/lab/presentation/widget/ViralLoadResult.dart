@@ -23,7 +23,7 @@ class ViralLoadResults extends StatelessWidget {
           child: ListView.builder(
             itemCount: data.length,
             itemBuilder: (BuildContext context, int index) {
-              final color = data[index].status == "Viral unsuppressed"
+              final color = data[index].status == "Virally Unsuppressed"
                   ? Colors.red
                   : Colors.green;
               return Column(
@@ -54,9 +54,9 @@ class ViralLoadResults extends StatelessWidget {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                data[index].status == "Viral unsuppressed"
-                                                    ? 'Viral unsuppressed (${data[index].plot})'
-                                                    : 'Viral Suppressed (${data[index].plot})',
+                                                data[index].status == "Virally Unsuppressed"
+                                                    ? 'Virally Unsuppressed (${data[index].plot})'
+                                                    : 'Virally Suppressed (${data[index].plot})',
                                                 style: theme.textTheme.headline6,
                                               ),
                                               const Divider(),
@@ -64,7 +64,7 @@ class ViralLoadResults extends StatelessWidget {
                                             ],
                                           ),
                                           content: Text(
-                                            data[index].status == "Viral unsuppressed"
+                                            data[index].status == "Virally Unsuppressed"
                                                 ? 'This could mean the beginning of treatment failure. Kindly visit your doctor/healthcare provider as soon as possible!'
                                                 : 'This means you are adhering to your treatment well. Continue taking your medication as advised by your doctor/healthcare provider.',
                                           ),

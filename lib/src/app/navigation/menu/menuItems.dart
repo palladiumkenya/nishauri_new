@@ -209,11 +209,6 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
     //   title: MenuItemNames.TREATMENT_SUPPORT,
     //   onPressed: () => context.goNamed(RouteNames.TREATMENT_SUPPORT),
     // ),
-    // MenuItem(
-    //   icon: Icons.event_note,
-    //   title: MenuItemNames.MENSTRUAL_CIRCLE,
-    //   onPressed: () => "",
-    // ),
     MenuItem(
         shortcutBackgroundColor: Constants.bmiCalculatorShortcutBgColor,
         icon: SvgPicture.asset(
@@ -286,26 +281,26 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
     //   title: MenuItemNames.CHAT_HCW,
     //   onPressed: () => context.goNamed(RouteNames.CHAT_HCW),
     // ),
-    MenuItem(
-      shortcutBackgroundColor: Constants.periodPlannerShortcutBgColor,
-      icon: SvgPicture.asset(
-        "assets/images/period_planner2.svg",
-        semanticsLabel: "Doctors",
-        fit: BoxFit.contain,
-        width: 80,
-        height: 80,
-      ), 
-      shortcutIcon: SvgPicture.asset(
-        "assets/images/period_planner2.svg",
-        semanticsLabel: "Doctors",
-        fit: BoxFit.contain,
-        width: Constants.shortcutIconSize,
-        height: Constants.shortcutIconSize,
-      ),
-      title: MenuItemNames.PERIOD_PLANNER,
-      onPressed: () => context.goNamed(RouteNames.PERIOD_PLANNER),
-      color: Constants.periodPlanner,
-      ),
+    // MenuItem(
+    //   shortcutBackgroundColor: Constants.periodPlannerShortcutBgColor,
+    //   icon: SvgPicture.asset(
+    //     "assets/images/period_planner2.svg",
+    //     semanticsLabel: "Doctors",
+    //     fit: BoxFit.contain,
+    //     width: 80,
+    //     height: 80,
+    //   ),
+    //   shortcutIcon: SvgPicture.asset(
+    //     "assets/images/period_planner2.svg",
+    //     semanticsLabel: "Doctors",
+    //     fit: BoxFit.contain,
+    //     width: Constants.shortcutIconSize,
+    //     height: Constants.shortcutIconSize,
+    //   ),
+    //   title: MenuItemNames.PERIOD_PLANNER,
+    //   onPressed: () => context.goNamed(RouteNames.PERIOD_PLANNER),
+    //   color: Constants.periodPlanner,
+    //   ),
   ];
 }
 

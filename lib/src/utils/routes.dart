@@ -45,7 +45,7 @@ class RouteNames {
 
   static const LAB_RESULTS = "lab-results";
   static const MY_CLINIC_CARD = "clinic-card";
-  static const CHAT_HCW = "chat-bot";
+  static const CHAT_BOT = "chat-bot";
   static const SETTINGS = "settings";
 
   static const Facility_Directory = "facility-directory";
@@ -67,6 +67,9 @@ class RouteNames {
   static const PERIOD_PLANNER_CALENDAR = "Period Planner Calendar";
   static const PERIOD_PLANNER_LOG_PERIODS = "period-planner-log-periods";
   static const PERIOD_PLANNER_EDIT_PERIODS = "period-planner-edit-periods";
+  static const CHAT_HCW = "chat-hcw";
+  static const CHAT_DETAIL = "chat-detail";
+  static const CHAT_USER = "chat-user";
 
 }
 
@@ -86,7 +89,7 @@ class MenuItemNames {
   static const FACILITY_VISITS = "Visits";
   static const LAB_RESULTS = "Lab Results";
   static const MY_CLINIC_CARD = "My Clinic Card";
-  static const CHAT_HCW = "Ask Nuru";
+  static const CHAT_BOT = "Ask Nuru";
   static const FACILITY_DIRECTORY = "Facility Directory";
   static const PROGRAM_MENU = "Program Menu";
   static const DAWA_DROP = "Dawa Drop";
@@ -100,6 +103,8 @@ class MenuItemNames {
   static const BLOOD_SUGAR = "Blood Sugar";
 
   static const PERIOD_PLANNER = "Period Planner";
+  static const CHAT_HCW = "Chat with HCW";
+  static const CHAT_DETAIL = "Chat Detail";
 
 }
 
