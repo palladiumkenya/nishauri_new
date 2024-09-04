@@ -36,116 +36,119 @@ class Greetings extends ConsumerWidget {
     );
 
     return Container(
-      width: double.maxFinite,
+      width: double.infinity, // Use double.infinity instead of double.maxFinite
       padding: const EdgeInsets.all(Constants.SPACING),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Constants.SPACING),
+            padding: const EdgeInsets.symmetric(horizontal: Constants.SMALL_SPACING),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Hey, 👋",
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        color: theme.colorScheme.primary,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    name == 'Null Null' || name == null
-                        ? GestureDetector(
-                      onTap: () {
-                        context.goNamed(RouteNames.PROFILE_EDIT_FORM);
-                      },
-                      child: Text(
-                        'Click here to update your profile',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          color: Colors.red,
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Hey, 👋",
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w600,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    )
-                        : Text(
-                      name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.headlineLarge?.copyWith(
-                        color: theme.colorScheme.primary,
-                        fontWeight: FontWeight.w700,
+                      if (name == 'Null Null' || name == null)
+                        GestureDetector(
+                          onTap: () {
+                            context.goNamed(RouteNames.PROFILE_EDIT_FORM);
+                          },
+                          child: Text(
+                            'Click here to update your profile',
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              color: Colors.red,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      else
+                        Text(
+                          name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            color: theme.colorScheme.primary,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      const SizedBox(height: Constants.SPACING),
+                      Text(
+                        DateFormat("EEEE, MMMM dd").format(DateTime.now()),
+                        style: theme.textTheme.titleMedium,
                       ),
-                    ),
-                    const SizedBox(height: Constants.SPACING),
-                    Text(
-                      DateFormat("EEEE, MMMM dd").format(DateTime.now()),
-                      style: theme.textTheme.titleMedium,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 if (showUpdateProgram)
-                  Column(
+                  Expanded(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            Text(
-                              "Update program",
-                              style: theme.textTheme.headlineMedium?.copyWith(
-                                color: theme.colorScheme.primary,
-                                fontWeight: FontWeight.w500,
+                            Expanded(
+                              child: Text(
+                                "Update program",
+                                style: theme.textTheme.bodyLarge?.copyWith(
+                                  color: theme.colorScheme.primary,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
                             ),
-                            const SizedBox(width: 8.0),
                             IconButton(
                               icon: const Icon(
                                 Icons.info_outline,
-                                size: 40,
+                                size: 20,
                                 color: Constants.bpBgColor,
                               ),
                               onPressed: () {
-                                // // Handle the tap event here
-                                // showDialog(
-                                //   context: context,
-                                //   builder: (BuildContext context) =>
-                                      Dialogs.bottomMaterialDialog(
-                                        msg: 'Tap to Choose and Enrol in a Program',
-                                          context: context,
-                                        color: Constants.dawaDropShortcutBgColor,
-                                        title: 'Take Control of Your Health – Join A Program and Start Your Journey Today!',
-                                        actions: [
-                                          IconsOutlineButton(
-                                            onPressed: () {
-                                              context.goNamed(RouteNames.PROGRAME_REGISTRATION_SCREEN);
-                                              Navigator.of(context).pop();
-                                            },
-                                            text: 'Opt-In',
-                                            iconData: Icons.add,
-                                            textStyle: TextStyle(color: Colors.white),
-                                            color: Constants.programsColor,
-                                            iconColor: Colors.white,
-                                          ),
-                                          IconsButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            text: 'Not now',
-                                            iconData: Icons.cancel_outlined,
-                                            color: Constants.bpShortCutBgColor,
-                                            textStyle: TextStyle(color: Colors.white),
-                                            iconColor: Colors.white,
-                                          ),
-                                        ]
+                                Dialogs.bottomMaterialDialog(
+                                  msg: 'Tap to Choose and Enrol in a Program',
+                                  context: context,
+                                  color: Constants.dawaDropShortcutBgColor,
+                                  title: 'Take Control of Your Health – Join A Program and Start Your Journey Today!',
+                                  actions: [
+                                    IconsOutlineButton(
+                                      onPressed: () {
+                                        context.goNamed(RouteNames.PROGRAME_REGISTRATION_SCREEN);
+                                        Navigator.of(context).pop();
+                                      },
+                                      text: 'Opt-In',
+                                      iconData: Icons.add,
+                                      textStyle: TextStyle(color: Colors.white),
+                                      color: Constants.programsColor,
+                                      iconColor: Colors.white,
+                                    ),
+                                    IconsButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      text: 'Not now',
+                                      iconData: Icons.cancel_outlined,
+                                      color: Constants.bpShortCutBgColor,
+                                      textStyle: TextStyle(color: Colors.white),
+                                      iconColor: Colors.white,
+                                    ),
+                                  ],
                                 );
                               },
                             ),
                           ],
                         ),
-                      ]
-                  )
+                      ],
+                    ),
+                  ),
               ],
             ),
           ),
