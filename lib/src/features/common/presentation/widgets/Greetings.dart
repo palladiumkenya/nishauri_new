@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:material_dialogs/dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
+import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuItemsBuilder.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuOption.dart';
 import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
@@ -21,13 +24,13 @@ class Greetings extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final programState = ref.watch(programProvider);
+    final programState = ref.watch(userProgramProvider);
 
     // Check if the program list is empty or if all programs are inactive
     final showUpdateProgram =
     programState.when(
       data: (programs) => programs.isEmpty ||
-          programs.every((program) => program == 0),
+          programs.every((program) => program.isActive == false),
       error: (error, stack) => false,
       loading: () => false,
     );
@@ -104,33 +107,38 @@ class Greetings extends ConsumerWidget {
                                 color: Constants.bpBgColor,
                               ),
                               onPressed: () {
-                                // Handle the tap event here
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) => AlertDialog(
-                                    title: Text(
-                                      'You are not registered to any program. Kindly register to a program to have your data personalized.',
-                                      style: theme.textTheme.bodyMedium,
-                                    ),
-                                    content: Text(
-                                      'Touch on OK to select and register a program',
-                                      style: theme.textTheme.bodySmall,
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: const Text('OK'),
-                                        onPressed: () {
-                                          context.goNamed(RouteNames.PROGRAME_REGISTRATION_SCREEN);
-                                        },
-                                      ),
-                                      TextButton(
-                                        child: const Text('Cancel'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                // // Handle the tap event here
+                                // showDialog(
+                                //   context: context,
+                                //   builder: (BuildContext context) =>
+                                      Dialogs.bottomMaterialDialog(
+                                        msg: 'Tap to Choose and Enrol in a Program',
+                                          context: context,
+                                        color: Constants.dawaDropShortcutBgColor,
+                                        title: 'Take Control of Your Health – Join A Program and Start Your Journey Today!',
+                                        actions: [
+                                          IconsOutlineButton(
+                                            onPressed: () {
+                                              context.goNamed(RouteNames.PROGRAME_REGISTRATION_SCREEN);
+                                              Navigator.of(context).pop();
+                                            },
+                                            text: 'Opt-In',
+                                            iconData: Icons.add,
+                                            textStyle: TextStyle(color: Colors.white),
+                                            color: Constants.programsColor,
+                                            iconColor: Colors.white,
+                                          ),
+                                          IconsButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            text: 'Not now',
+                                            iconData: Icons.cancel_outlined,
+                                            color: Constants.bpShortCutBgColor,
+                                            textStyle: TextStyle(color: Colors.white),
+                                            iconColor: Colors.white,
+                                          ),
+                                        ]
                                 );
                               },
                             ),
