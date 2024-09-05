@@ -31,6 +31,15 @@ _menuItems(BuildContext context) => [
         onPressed: () => context.goNamed(MenuItemNames.BLOOD_SUGAR),
         color: Constants.bloodSugarColor.withOpacity(0.5),
       ),
+      MenuItem(
+        // icon: FaIcon(FontAwesomeIcons.capsules, size: Constants.iconSize, color: Colors.teal[200],),
+        shortcutBackgroundColor: Constants.periodPlannerShortcutBgColor,
+        icon: const Icon(Icons.calendar_month_outlined),
+        shortcutIcon: Icon(Icons.calendar_month_outlined),
+        title: MenuItemNames.PERIOD_PLANNER,
+        onPressed: () => context.goNamed(MenuItemNames.PERIOD_PLANNER),
+        color: Constants.periodPlannerShortcutBgColor.withOpacity(0.5),
+      ),
     ];
 
 class SelfScreening extends StatelessWidget {

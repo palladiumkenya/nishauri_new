@@ -151,7 +151,6 @@ class UserService extends HTTPService {
 
 
   Future<void> saveGenderAge() async {
-    try{
       final resp = await call(patientData_, null);
       if (resp.statusCode == 200) {
         final responseString = await resp.stream.bytesToString();
@@ -163,12 +162,17 @@ class UserService extends HTTPService {
           await _repository.saveAge(calculateAge(dob).toString());
         }
         else{
-          throw respData["message"];
+          final profileDOB = await call(getUser_,null);
+          final profileString = await profileDOB.stream.bytesToString();
+          final data = json.decode(profileString);
+            final dob = data["profile"]["dob"];
+            final gender = data["profile"]["gender"];
+            await _repository.saveAge(calculateAge(dob).toString());
+            await _repository.saveGender(gender);
         }
+      } else {
+        throw "something is wrong";
       }
-    } catch (e) {
-      throw e;
-    }
   }
   Future<String> accountVerify(Map<String, dynamic> data) async {
     http.StreamedResponse response = await call(accountVerify_, data);

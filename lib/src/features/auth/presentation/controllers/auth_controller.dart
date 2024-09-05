@@ -173,6 +173,7 @@ class AuthController extends StateNotifier<AsyncValue<AuthState>> {
     _repository.deleteToken();
     _repository.deleteUserId();
     _repository.deletePhoneNumber();
+    _repository.deleteAge();
     state.when(
       data: (value) => state = AsyncValue.data(
         value.copyWith(

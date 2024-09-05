@@ -30,6 +30,12 @@ class Appointments extends HookConsumerWidget {
             ?.where((order) => order.status != 'Fullfilled')
             .toList() ??
         [];
+    final fullFilledOrders = ref
+        .watch(drugOrderProvider)
+        .valueOrNull
+        ?.where((order) => order.status == 'Fullfilled')
+        .toList() ??
+        [];
 
     final theme = Theme.of(context);
     return appointmentsAsync.when(
@@ -112,6 +118,7 @@ class Appointments extends HookConsumerWidget {
                                 child: AppointmentCard(
                                   rescheduleButtonText: pendingOrders.isNotEmpty
                                       ? "Has active order"
+                                  :fullFilledOrders.isNotEmpty ? "Appointment order has already been fulfilled"
                                       : (artAppointment.reschedule_status
                                                   .toString() ==
                                               "0"
@@ -134,7 +141,7 @@ class Appointments extends HookConsumerWidget {
                                               null ||
                                           artAppointment.reschedule_status
                                                   .toString() ==
-                                              "2"
+                                              "2" && !fullFilledOrders.isNotEmpty
                                       ? () => context.goNamed(
                                             RouteNames.APPOINTMENTS_RESCHEDULE,
                                             extra:
