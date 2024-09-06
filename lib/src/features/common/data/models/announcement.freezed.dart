@@ -24,6 +24,7 @@ mixin _$Announcement {
   String get image => throw _privateConstructorUsedError;
   String get source => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  String? get header => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -43,6 +44,7 @@ abstract class $AnnouncementCopyWith<$Res> {
       String image,
       String source,
       String title,
+      String? header,
       String? description});
 }
 
@@ -63,6 +65,7 @@ class _$AnnouncementCopyWithImpl<$Res, $Val extends Announcement>
     Object? image = null,
     Object? source = null,
     Object? title = null,
+    Object? header = freezed,
     Object? description = freezed,
   }) {
     return _then(_value.copyWith(
@@ -82,6 +85,10 @@ class _$AnnouncementCopyWithImpl<$Res, $Val extends Announcement>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      header: freezed == header
+          ? _value.header
+          : header // ignore: cast_nullable_to_non_nullable
+              as String?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -103,6 +110,7 @@ abstract class _$$AnnouncementImplCopyWith<$Res>
       String image,
       String source,
       String title,
+      String? header,
       String? description});
 }
 
@@ -121,6 +129,7 @@ class __$$AnnouncementImplCopyWithImpl<$Res>
     Object? image = null,
     Object? source = null,
     Object? title = null,
+    Object? header = freezed,
     Object? description = freezed,
   }) {
     return _then(_$AnnouncementImpl(
@@ -140,6 +149,10 @@ class __$$AnnouncementImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      header: freezed == header
+          ? _value.header
+          : header // ignore: cast_nullable_to_non_nullable
+              as String?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -156,6 +169,7 @@ class _$AnnouncementImpl with DiagnosticableTreeMixin implements _Announcement {
       required this.image,
       required this.source,
       required this.title,
+      this.header,
       this.description});
 
   factory _$AnnouncementImpl.fromJson(Map<String, dynamic> json) =>
@@ -170,11 +184,13 @@ class _$AnnouncementImpl with DiagnosticableTreeMixin implements _Announcement {
   @override
   final String title;
   @override
+  final String? header;
+  @override
   final String? description;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Announcement(id: $id, image: $image, source: $source, title: $title, description: $description)';
+    return 'Announcement(id: $id, image: $image, source: $source, title: $title, header: $header, description: $description)';
   }
 
   @override
@@ -186,6 +202,7 @@ class _$AnnouncementImpl with DiagnosticableTreeMixin implements _Announcement {
       ..add(DiagnosticsProperty('image', image))
       ..add(DiagnosticsProperty('source', source))
       ..add(DiagnosticsProperty('title', title))
+      ..add(DiagnosticsProperty('header', header))
       ..add(DiagnosticsProperty('description', description));
   }
 
@@ -198,6 +215,7 @@ class _$AnnouncementImpl with DiagnosticableTreeMixin implements _Announcement {
             (identical(other.image, image) || other.image == image) &&
             (identical(other.source, source) || other.source == source) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.header, header) || other.header == header) &&
             (identical(other.description, description) ||
                 other.description == description));
   }
@@ -205,7 +223,7 @@ class _$AnnouncementImpl with DiagnosticableTreeMixin implements _Announcement {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, image, source, title, description);
+      Object.hash(runtimeType, id, image, source, title, header, description);
 
   @JsonKey(ignore: true)
   @override
@@ -227,6 +245,7 @@ abstract class _Announcement implements Announcement {
       required final String image,
       required final String source,
       required final String title,
+      final String? header,
       final String? description}) = _$AnnouncementImpl;
 
   factory _Announcement.fromJson(Map<String, dynamic> json) =
@@ -240,6 +259,8 @@ abstract class _Announcement implements Announcement {
   String get source;
   @override
   String get title;
+  @override
+  String? get header;
   @override
   String? get description;
   @override

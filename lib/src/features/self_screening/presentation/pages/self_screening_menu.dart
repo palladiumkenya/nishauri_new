@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuItemsBuilder.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuOption.dart';
 import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
-import 'package:nishauri/src/features/common/presentation/pages/HomeScreen.dart';
-import 'package:nishauri/src/features/common/presentation/pages/SettingsScreen.dart';
+import 'package:nishauri/src/features/self_screening/data/providers/insight_provider.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
@@ -45,19 +45,14 @@ List<MenuItem> _menuItems(BuildContext context) => [
   ),
 ];
 
-class SelfScreening extends StatefulWidget {
+class SelfScreening extends HookConsumerWidget {
   const SelfScreening({super.key});
 
   @override
-  _SelfScreeningState createState() => _SelfScreeningState();
-}
-
-class _SelfScreeningState extends State<SelfScreening> {
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final _items = _menuItems(context);
+    final insightAsync = ref.watch(insightProvider);
 
     return Scaffold(
       body: Column(
@@ -83,23 +78,35 @@ class _SelfScreeningState extends State<SelfScreening> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          // insightAsync.when(
+          //   data: (data){
+          //     final insight = data.map((e) => e).where((element) => element.id=="3").single;
+          //     return FloatingActionButton(
+          //     tooltip: "Insight",
+          //     hoverColor: Constants.bmiCalculatorShortcutBgColor,
+          //     onPressed: () {
+          //       context.goNamed(RouteNames.BLOG_POST, extra: insight);
+          //
+          //     },
+          //     backgroundColor: Constants.bmiCalculatorShortcutBgColor,
+          //     child: const Icon(Icons.insights),
+          //   );
+          //   },
+          //   error: (error, _) => Container(),
+          //   loading: () => Container(),
+          // ),
+          SizedBox(height: 10),
           FloatingActionButton(
-            tooltip: "Insight",
+            tooltip: "Module insight",
             hoverColor: Constants.bmiCalculatorShortcutBgColor,
-            onPressed: () {  },
-            backgroundColor: Constants.bmiCalculatorShortcutBgColor,
-            child: const Icon(Icons.insights),
-          ),
-          SizedBox(height: 10,),
-          FloatingActionButton(
-            tooltip: "Settings",
-            hoverColor: Constants.bmiCalculatorShortcutBgColor,
-            onPressed: () {  },
+            onPressed: () {
+              context.goNamed(RouteNames.INSIGHT);
+            },
             backgroundColor: Constants.bmiCalculatorShortcutBgColor,
             child: const Icon(Icons.settings_applications_sharp),
           ),
         ],
-      )
+      ),
     );
   }
 }

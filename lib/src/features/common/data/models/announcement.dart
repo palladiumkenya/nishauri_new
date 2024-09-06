@@ -10,6 +10,7 @@ class Announcement with _$Announcement {
     required String image,
     required String source,
     required String title,
+    String? header,
     String? description,
   }) = _Announcement;
 

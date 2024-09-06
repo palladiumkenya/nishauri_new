@@ -1,0 +1,59 @@
+[
+  {
+    "id": "1",
+    "image": "assets/images/Calendar-home.svg",
+    "source": "assets/images/appointment-empty-boy.svg",
+    "header": "Insight",
+    "title": "What is blood pressure",
+    "description": "Need to reschedule? No worries! Life happens, and we're here to make it easy. Just let us know when works best for you, and we'll find a new time that fits perfectly. Your health is our priority!\n\n **Importance:** \n- **Flexibility:** It provides you with the flexibility to adjust your appointments according to your changing schedules, making it easier to manage unexpected events or conflicts.\n- **Adherence:** It ensures you keep your appointments\n\n **How to Access:** \n- Open the application and on the future appointment \n- Click reschedule appointment\n- Select preferred date, time and reason for rescheduling request\n- You will receive notification upon approval of your request. \n\n Need to shift your health check? No worries—reschedule in a snap and keep your wellness on track!"
+  },
+  {
+    "id": "2",
+    "image": "assets/images/lab-home.svg",
+    "source": "assets/images/lab-home.svg",
+    "header": "Insight",
+    "title": "Details of blood pressure level",
+    "description": "Get your lab results with ease—your health insights are just a click away!\n\n **Importance:** \n- **Timely Information:** Quick access to lab results enables you to make informed decisions promptly, which is essential for timely treatment and intervention.\n- **Empowerment:** It empowers you by giving them direct access to your health information, fostering a sense of ownership and engagement in your healthcare journey.\n\n **How to Access:** \n- Go to Lab results module under apps \n- View Lab results trends and line list  \n\nAccess to lab results is an essential aspect of modern healthcare, contributing to your empowerment, better care, and improved health outcomes!"
+  },
+  {
+    "id": "3",
+    "image": "assets/images/insight_board.svg",
+    "source": "assets/images/insight_board.svg",
+    "header": "Insight",
+    "title": "Disclaimer",
+    "description": "Self-screening is intended for monitoring and tracking your health, not for diagnosing medical conditions.\n\n\nUsers can input their daily measurement readings into the app, which then generates charts and graphs to help monitor their health based on the data provided. Please note that the app does not measure the readings itself but only records and tracks the user-entered data.\n\nThe app currently draws information from reputable sources such as the CDC and WHO. However, please be aware that the data provided may not always reflect real-life situations accurately.\n\nThe app is intended for informational purposes only and is not a medical device. Users experiencing health issues should consult with doctors or healthcare professionals for appropriate advice and treatment."
+  },
+  {
+    "id": "4",
+    "image": "assets/images/Hospital building-bro.svg",
+    "source": "assets/images/Hospital building-bro.svg",
+    "header": "Insight",
+    "title": "Some other facts of blood pressure",
+    "description": "Need your meds delivered? Request a drug drop  with just a click and have your prescriptions conveniently brought to your door!\n\n **Importance:** \n- **Convenience:** Save time and effort by bringing medications directly to your door.\n- **Adherence:** By ensuring that you receive medications on time, dawa drop feature help improve adherence to prescribed treatment plans and reduce missed doses.\n- **Accessibility:** We provide access to medications for individuals with mobility issues, those living in remote areas, or those who lack transportation.\n- **Privacy:** Dawa Drop offers a discreet way to receive prescriptions, which can be important for individuals who prefer to keep their health conditions and medications private.\n\n **How to Access:**\n- Go to Dawa Drop module under apps\n- Select Request for Drug Delivery\n- Select Refill appointment drug\n- Fill the drug request form and submit.\n- Your will receive notification on the progress of your request till delivery.\nOverall, drug delivery drops enhance the convenience, safety, and accessibility of medications, improving overall patient care and satisfaction!"
+  },
+  {
+    "id": "5",
+    "image": "assets/images/Medical prescription-bro.svg",
+    "source": "assets/images/Medical prescription-bro.svg",
+    "header": "Insight",
+    "title": "How to prevent and manage low blood pressure",
+    "description": "Need to find a facility? Our directory makes it easy—locate contacts and services at your fingertips!\n\n**Importance:**\n- **Communication:** Facilitates better communication by providing contact information for various facility ensuring that inquiries are directed to the right place.\n- **Emergency:** Having a clear directory helps quickly locate nearby facilities incase of emergencies.\n\n**How to Access:**\n- Go to Facility Directory module under apps\n- View Search facility by name or MFL code and view results\n- Click on the contacts details for call\nDiscover what you need with ease—our facility directory puts every department and service right at your fingertips!"
+  },
+  {
+    "id": "6",
+    "image": "assets/images/Medical prescription-bro.svg",
+    "source": "assets/images/Medical prescription-bro.svg",
+    "header": "Insight",
+    "title": "Knowledge of blood pressure drugs",
+    "description": "Need to find a facility? Our directory makes it easy—locate contacts and services at your fingertips!\n\n**Importance:**\n- **Communication:** Facilitates better communication by providing contact information for various facility ensuring that inquiries are directed to the right place.\n- **Emergency:** Having a clear directory helps quickly locate nearby facilities incase of emergencies.\n\n**How to Access:**\n- Go to Facility Directory module under apps\n- View Search facility by name or MFL code and view results\n- Click on the contacts details for call\nDiscover what you need with ease—our facility directory puts every department and service right at your fingertips!"
+  }
+,
+  {
+    "id": "7",
+    "image": "assets/images/Medical prescription-bro.svg",
+    "source": "assets/images/Medical prescription-bro.svg",
+    "header": "Insight",
+    "title": "Foods to help manage high and low blood pressure",
+    "description": "Need to find a facility? Our directory makes it easy—locate contacts and services at your fingertips!\n\n**Importance:**\n- **Communication:** Facilitates better communication by providing contact information for various facility ensuring that inquiries are directed to the right place.\n- **Emergency:** Having a clear directory helps quickly locate nearby facilities incase of emergencies.\n\n**How to Access:**\n- Go to Facility Directory module under apps\n- View Search facility by name or MFL code and view results\n- Click on the contacts details for call\nDiscover what you need with ease—our facility directory puts every department and service right at your fingertips!"
+  }
+]
