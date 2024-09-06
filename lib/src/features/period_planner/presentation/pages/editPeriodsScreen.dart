@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
+import 'package:nishauri/src/features/period_planner/data/providers/cycles_provider.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/logPeriods.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class EditPeriods extends StatefulWidget {
+class EditPeriods extends ConsumerStatefulWidget {
   final DateTime? initialStartDate;
   final DateTime? initialEndDate;
+  final String? cycleId;
   const EditPeriods(
-      {super.key, this.initialStartDate, this.initialEndDate});
+      {super.key, this.initialStartDate, this.initialEndDate, this.cycleId});
 
   @override
-  State<EditPeriods> createState() => _EditPeriodsState();
+  ConsumerState<EditPeriods> createState() => _EditPeriodsState();
 }
 
-class _EditPeriodsState extends State<EditPeriods> {
+class _EditPeriodsState extends ConsumerState<EditPeriods> {
   late DateTime _focusedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
@@ -42,24 +46,28 @@ class _EditPeriodsState extends State<EditPeriods> {
   //Function for updating the entries in the list database
   void _updateCycle() {
     if (_rangeStart != null && _rangeEnd != null) {
-      //Finding the current cycle to update
+      // Finding the current cycle using cycleId instead of periodStart and periodEnd
       Cycle currentCycle = cycles.firstWhere(
         (cycle) =>
-            cycle.periodStart == widget.initialStartDate &&
-            cycle.periodEnd == widget.initialEndDate,
+            cycle.cycleId == widget.cycleId, // Use cycleId for identification
       );
 
       // Predict the new cycle based on the updated period start and end dates
-      Cycle updatedCycle = predictCycle(_rangeStart!, _rangeEnd!);
+      Cycle updatedCycle = predictCycle(_rangeStart!, _rangeEnd!, cycleId: currentCycle.cycleId);
 
-      //Replace the old cycle with the updated one
+      ref.read(cyclesProvider.notifier).updatedCycle(currentCycle.cycleId, updatedCycle);
+
+      // Replace the old cycle with the updated one using index
       int index = cycles.indexOf(currentCycle);
       cycles[index] = updatedCycle;
+
+      debugPrint("Updated Cycle Length: ${updatedCycle.cycleLength}");
+      printCycles(cycles);
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Periods updated successfully!')),
       );
-      Navigator.pop(context);
+      Navigator.pop(context, true);
     }
   }
 
@@ -129,7 +137,8 @@ class _EditPeriodsState extends State<EditPeriods> {
                         context: context,
                         builder: (context) => AlertDialog(
                           title: const Text('Invalid Selection'),
-                          content: const Text('Please select both start and end of your periods!!'),
+                          content: const Text(
+                              'Please select both start and end of your periods!!'),
                           actions: [
                             TextButton(
                               onPressed: () {

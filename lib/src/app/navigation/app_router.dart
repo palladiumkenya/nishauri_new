@@ -393,42 +393,6 @@ final List<RouteBase> secureRoutes = [
           },
         )
       ]),
-  //Routes for the Period Planner
-  GoRoute(
-    name: RouteNames.PERIOD_PLANNER_SCREEN,
-    path: 'period-planner-screen',
-    builder: (BuildContext context, GoRouterState state) {
-      return const PeriodPlannerScreen();
-    },
-    routes: [
-      GoRoute(
-        name: RouteNames.PERIOD_PLANNER_PERIOD_HISTORY,
-        path: 'period-planner-period-history',
-        builder: (BuildContext context, GoRouterState state) {
-          return const PeriodsHistory();
-        },
-        routes: [
-          GoRoute(
-            name: RouteNames.PERIOD_PLANNER_EDIT_PERIODS,
-            path: 'period-planner-edit-periods',
-            builder: (BuildContext context, GoRouterState state) {
-              final startDate = state.extra != null ? (state.extra as Map<String, dynamic>)['startDate'] as DateTime : null;
-              final endDate = state.extra != null ? (state.extra as Map<String, dynamic>)['endDate'] as DateTime : null;
-              return EditPeriods(initialStartDate: startDate, initialEndDate: endDate);
-            },
-          ),
-        ],
-      ),
-    ],
-  ),
-  GoRoute(
-    name: RouteNames.PERIOD_PLANNER_LOG_PERIODS,
-    path: 'period-planner-log-period-calendar',
-    builder: (BuildContext context, GoRouterState state) {
-      return LogPeriodScreen();
-    },
-  ),
-
 ];
 
 final List<RouteBase> openRoutes = [
@@ -503,6 +467,42 @@ final List<RouteBase> selfScreeningRoutes = [
     path: 'blood-sugar',
     builder: (BuildContext context, GoRouterState state) {
       return BloodSugarScreen();
+    },
+  ),
+  //Routes for the Period Planner
+  GoRoute(
+    name: RouteNames.PERIOD_PLANNER_SCREEN,
+    path: 'period-planner-screen',
+    builder: (BuildContext context, GoRouterState state) {
+      return const PeriodPlannerScreen();
+    },
+    routes: [
+      GoRoute(
+        name: RouteNames.PERIOD_PLANNER_PERIOD_HISTORY,
+        path: 'period-planner-period-history',
+        builder: (BuildContext context, GoRouterState state) {
+          return const PeriodsHistory();
+        },
+        routes: [
+          GoRoute(
+            name: RouteNames.PERIOD_PLANNER_EDIT_PERIODS,
+            path: 'period-planner-edit-periods',
+            builder: (BuildContext context, GoRouterState state) {
+              final startDate = state.extra != null ? (state.extra as Map<String, dynamic>)['startDate'] as DateTime : null;
+              final endDate = state.extra != null ? (state.extra as Map<String, dynamic>)['endDate'] as DateTime : null;
+              final id = (state.extra! as Map<String, dynamic>)['id'] as String;
+              return EditPeriods(initialStartDate: startDate, initialEndDate: endDate, cycleId: id,);
+            },
+          ),
+        ],
+      ),
+    ],
+  ),
+  GoRoute(
+    name: RouteNames.PERIOD_PLANNER_LOG_PERIODS,
+    path: 'period-planner-log-period-calendar',
+    builder: (BuildContext context, GoRouterState state) {
+      return LogPeriodScreen();
     },
   ),
 ];

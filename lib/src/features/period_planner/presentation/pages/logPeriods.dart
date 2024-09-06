@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/data/models/events.dart';
+import 'package:nishauri/src/features/period_planner/data/providers/cycles_provider.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/eventsMaker.dart';
 import 'package:nishauri/src/features/period_planner/utils/event_utils.dart';
@@ -31,26 +33,28 @@ void printCycles(List<Cycle> cycles) {
 
 //This is the screen the user interacts when they are logging their Period Days
 
-class LogPeriodScreen extends StatefulWidget {
+class LogPeriodScreen extends ConsumerStatefulWidget {
 
   @override
-  State<LogPeriodScreen> createState() => _LogPeriodScreenState();
+  ConsumerState<LogPeriodScreen> createState() => _LogPeriodScreenState();
 }
 
-class _LogPeriodScreenState extends State<LogPeriodScreen> {
+class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _startDate;
   DateTime? _endDate;
   Map<String, Map<DateTime, List<Event>>> events = EventUtils.generateEvents(cycles);
   //late Map<DateTime, List<Event>> _filteredEvents;
   //final latestCycle = cycles.last;
-  final bool _isNewUser = cycles.isEmpty;
+  bool _isNewUser = cycles.isEmpty;
   int averagePeriods = calculateAveragePeriodLength(cycles);
   
  
   @override
   void initState() {
     super.initState();
+    final cycles = ref.read(cyclesProvider);
+    _isNewUser = cycles.isEmpty;
     if (!_isNewUser) {
       _initializePredictedPeriodRange();
       _setFocusedDayForRegularUser();
@@ -76,12 +80,14 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
   // }
 
   void _initializePredictedPeriodRange() {
+    final cycles = ref.read(cyclesProvider);
     final latestCycle = cycles.last;
     _startDate = latestCycle.predictedPeriodStart;
     _endDate = latestCycle.predictedPeriodEnd;
   }
 
   void _setFocusedDayForRegularUser() {
+    final cycles = ref.read(cyclesProvider);
     final latestCycle = cycles.last;
     _focusedDay = latestCycle.predictedPeriodStart;
   }
@@ -149,6 +155,10 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
 
     // If no overlap, add a new cycle
     final Cycle newCycle = predictCycle(start, end);
+
+    //using riverpod to add the cycle to the state
+    ref.read(cyclesProvider.notifier).addCycle(newCycle);
+
     cycles.add(newCycle);
     //_updateEventsForCycle(newCycle);
   }
@@ -204,22 +214,6 @@ class _LogPeriodScreenState extends State<LogPeriodScreen> {
             onRangeSelected: _isNewUser ? _onRangeSelected : null,
             onDaySelected: _isNewUser ? null : _onDaySelected,
             rangeSelectionMode: RangeSelectionMode.toggledOn,
-                
-            // onPageChanged: (focusedDay) {
-            //   _focusedDay = focusedDay;
-            // },
-            // eventLoader: (day) {
-            //   return _filteredEvents[day] ?? [];
-            // },
-            // calendarBuilders: CalendarBuilders(
-            //   markerBuilder: (context, date, events) {
-            //     if (events.isEmpty) {
-            //       return null;
-            //     }
-            //     final eventList = events.cast<Event>();
-            //     return EventsMaker(date: date, events: eventList);
-            //   },
-            // ),
             calendarStyle: const CalendarStyle(
               todayDecoration: BoxDecoration(
                 color: Colors.blue,

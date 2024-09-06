@@ -7,6 +7,8 @@ import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
+import '../../period_planner/data/models/cycle.dart';
+
 _menuItems(BuildContext context) => [
       MenuItem(
           icon: const Icon(Icons.calculate),
@@ -37,7 +39,14 @@ _menuItems(BuildContext context) => [
         icon: const Icon(Icons.calendar_month_outlined),
         shortcutIcon: Icon(Icons.calendar_month_outlined),
         title: MenuItemNames.PERIOD_PLANNER,
-        onPressed: () => context.goNamed(MenuItemNames.PERIOD_PLANNER),
+        onPressed: () {
+          if(cycles.isEmpty) {
+            context.goNamed(RouteNames.PERIOD_PLANNER_LOG_PERIODS);
+          }
+          else {
+            context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
+          }
+        },
         color: Constants.periodPlannerShortcutBgColor.withOpacity(0.5),
       ),
     ];

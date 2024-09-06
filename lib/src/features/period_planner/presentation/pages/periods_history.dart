@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
+import 'package:nishauri/src/features/period_planner/data/providers/cycles_provider.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
-class PeriodsHistory extends StatefulWidget {
+class PeriodsHistory extends ConsumerStatefulWidget {
   const PeriodsHistory({super.key});
 
   @override
-  State<PeriodsHistory> createState() => _PeriodsHistoryState();
+  ConsumerState<PeriodsHistory> createState() => _PeriodsHistoryState();
 }
 
-class _PeriodsHistoryState extends State<PeriodsHistory> {
+class _PeriodsHistoryState extends ConsumerState<PeriodsHistory> {
   final averagePeriod = calculateAveragePeriodLength(cycles);
   final averageCycles = calculateAverageCycleLength(cycles);
 
@@ -38,6 +40,7 @@ class _PeriodsHistoryState extends State<PeriodsHistory> {
 
   @override
   Widget build(BuildContext context) {
+    final cycles = ref.watch(cyclesProvider);
     // Group cycles by year and reverse the list to show the latest first
     final groupedCycles = groupCyclesByYear(cycles);
     final sortedYears = groupedCycles.keys.toList()..sort((a, b) => b.compareTo(a));
@@ -209,6 +212,7 @@ class _PeriodsHistoryState extends State<PeriodsHistory> {
                                       extra: {
                                         'startDate': cycle.periodStart,
                                         'endDate': cycle.periodEnd,
+                                        'id': cycle.cycleId,
                                       },
                                     );
                                   },

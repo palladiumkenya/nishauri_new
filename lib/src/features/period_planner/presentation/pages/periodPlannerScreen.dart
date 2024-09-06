@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/data/models/events.dart';
+import 'package:nishauri/src/features/period_planner/data/providers/cycles_provider.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/logPeriods.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/carouselCard.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
@@ -21,14 +23,14 @@ import 'package:table_calendar/table_calendar.dart';
         date1.month == date2.month &&
         date1.day == date2.day;
   }
-class PeriodPlannerScreen extends StatefulWidget {
+class PeriodPlannerScreen extends ConsumerStatefulWidget {
   const PeriodPlannerScreen({super.key});
 
   @override
-  State<PeriodPlannerScreen> createState() => _PeriodPlannerScreenState();
+  ConsumerState<PeriodPlannerScreen> createState() => _PeriodPlannerScreenState();
 }
 
-class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
+class _PeriodPlannerScreenState extends ConsumerState<PeriodPlannerScreen> {
   DateTime _currentDate = DateTime.now();
   late DateTime _periodStart;
   late DateTime _periodEnd; 
@@ -40,22 +42,27 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
   
  
   @override
-  void initState() {
+   void initState() {
     super.initState();
+    // Initialize the state with data from the cycles provider
+    _updateFromCycles();
+  }
 
-    //events = _generateEvents(cycles);
+   // Listen for state changes from cyclesProvider
+  void _updateFromCycles() {
+    final cycles = ref.read(cyclesProvider);
+
     if (cycles.isNotEmpty) {
       Cycle latestCycle = cycles.last;
-      _periodStart = latestCycle.periodStart;
-      _periodEnd = latestCycle.periodEnd;
-      _ovulationDate = latestCycle.ovulation;
-      _nextPeriodStart = latestCycle.predictedPeriodStart;  
-      _nextPeriodEnd = latestCycle.predictedPeriodEnd; 
-
-      //_autoAddPeriodDay();   
+      setState(() {
+        _periodStart = latestCycle.periodStart;
+        _periodEnd = latestCycle.periodEnd;
+        _ovulationDate = latestCycle.ovulation;
+        _nextPeriodStart = latestCycle.predictedPeriodStart;
+        _nextPeriodEnd = latestCycle.predictedPeriodEnd;
+        events = EventUtils.generateEvents(cycles);
+      });
     }
-    events = EventUtils.generateEvents(cycles); 
-    //_updateEvents();
   }
   //Method for updating events
   void _updateEvents() {
@@ -87,6 +94,12 @@ class _PeriodPlannerScreenState extends State<PeriodPlannerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final cycles = ref.watch(cyclesProvider);
+
+    // If cycles are updated, recalculate the events and UI elements
+    if(cycles.isNotEmpty) {
+      _updateFromCycles();
+    }
     int daysToOvulation = _ovulationDate.difference(_currentDate).inDays;
     int daysToNextPeriod = _nextPeriodStart.difference(_currentDate).inDays;
     int overdueDays = _currentDate.difference(_nextPeriodEnd).inDays;
