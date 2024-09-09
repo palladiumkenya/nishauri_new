@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -27,8 +29,7 @@ class Greetings extends ConsumerWidget {
     final programState = ref.watch(userProgramProvider);
 
     // Check if the program list is empty or if all programs are inactive
-    final showUpdateProgram =
-    programState.when(
+    final showUpdateProgram = programState.when(
       data: (programs) => programs.isEmpty ||
           programs.every((program) => program.isActive == false),
       error: (error, stack) => false,
@@ -36,7 +37,7 @@ class Greetings extends ConsumerWidget {
     );
 
     return Container(
-      width: double.infinity, // Use double.infinity instead of double.maxFinite
+      width: double.infinity,
       padding: const EdgeInsets.all(Constants.SPACING),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +45,7 @@ class Greetings extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: Constants.SMALL_SPACING),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
                   flex: 2,
@@ -92,67 +93,93 @@ class Greetings extends ConsumerWidget {
                 ),
                 if (showUpdateProgram)
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                "Update program",
-                                style: theme.textTheme.bodyLarge?.copyWith(
-                                  color: theme.colorScheme.primary,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.info_outline,
-                                size: 20,
-                                color: Constants.bpBgColor,
-                              ),
-                              onPressed: () {
-                                Dialogs.bottomMaterialDialog(
-                                  msg: 'Tap to Choose and Enrol in a Program',
-                                  context: context,
-                                  color: Constants.dawaDropShortcutBgColor,
-                                  title: 'Take Control of Your Health – Join A Program and Start Your Journey Today!',
-                                  actions: [
-                                    IconsOutlineButton(
-                                      onPressed: () {
-                                        context.goNamed(RouteNames.PROGRAME_REGISTRATION_SCREEN);
-                                        Navigator.of(context).pop();
-                                      },
-                                      text: 'Opt-In',
-                                      iconData: Icons.add,
-                                      textStyle: TextStyle(color: Colors.white),
-                                      color: Constants.programsColor,
-                                      iconColor: Colors.white,
-                                    ),
-                                    IconsButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      text: 'Not now',
-                                      iconData: Icons.cancel_outlined,
-                                      color: Constants.bpShortCutBgColor,
-                                      textStyle: TextStyle(color: Colors.white),
-                                      iconColor: Colors.white,
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                    child: BlinkingText(),
                   ),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class BlinkingText extends StatefulWidget {
+  @override
+  _BlinkingTextState createState() => _BlinkingTextState();
+}
+
+class _BlinkingTextState extends State<BlinkingText> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _onTap() {
+    Dialogs.bottomMaterialDialog(
+      msg: 'Tap to Choose and Enrol in a Program',
+      msgStyle: const TextStyle(color: Constants.labResultsColor),
+      context: context,
+      color: Constants.labResultsShortcutBgColor,
+      title: 'Take Control of Your Health – Join A Program and Start Your Journey Today!',
+      titleStyle: const TextStyle(color: Constants.labResultsColor, fontWeight: FontWeight.w600),
+      actions: [
+        IconsOutlineButton(
+          onPressed: () {
+            context.goNamed(RouteNames.PROGRAME_REGISTRATION_SCREEN);
+            Navigator.of(context).pop();
+          },
+          text: 'Opt-In',
+          iconData: Icons.add,
+          textStyle: const TextStyle(color: Colors.white),
+          color: Constants.labResultsColor,
+          iconColor: Colors.white,
+        ),
+        IconsButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          text: 'Not now',
+          iconData: Icons.cancel_outlined,
+          color: Constants.labResultsShortcutBgColor,
+          textStyle: TextStyle(color: Colors.white),
+          iconColor: Colors.white,
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return GestureDetector(
+      onTap: _onTap,
+      child: AnimatedBuilder(
+        animation: _animationController,
+        builder: (context, child) {
+          return Opacity(
+            opacity: _animationController.value,
+            child: Text(
+              "Tap to update program",
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
