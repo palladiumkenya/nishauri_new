@@ -14,8 +14,7 @@ class EditPeriods extends ConsumerStatefulWidget {
   final DateTime? initialStartDate;
   final DateTime? initialEndDate;
   final String? cycleId;
-  const EditPeriods(
-      {super.key, this.initialStartDate, this.initialEndDate, this.cycleId});
+  const EditPeriods({super.key, this.initialStartDate, this.initialEndDate, this.cycleId});
 
   @override
   ConsumerState<EditPeriods> createState() => _EditPeriodsState();
@@ -25,6 +24,7 @@ class _EditPeriodsState extends ConsumerState<EditPeriods> {
   late DateTime _focusedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
+  final today = DateTime.now();
 
   @override
   void initState() {
@@ -59,7 +59,9 @@ class _EditPeriodsState extends ConsumerState<EditPeriods> {
 
       // Replace the old cycle with the updated one using index
       int index = cycles.indexOf(currentCycle);
-      cycles[index] = updatedCycle;
+      setState(() {
+        cycles[index] = updatedCycle;
+      });
 
       debugPrint("Updated Cycle Length: ${updatedCycle.cycleLength}");
       printCycles(cycles);
@@ -122,34 +124,17 @@ class _EditPeriodsState extends ConsumerState<EditPeriods> {
                     backgroundColor: Constants.periodPlanner,
                   ),
                   onPressed: () {
-                    // if (_startDate != null) {
-                    //   final endDate = _endDate ?? _startDate!; // The else statement handles where a period only happens for a single day hence the end date will be same day as start date
-                    //   _updateOrAddCycle(_startDate!, endDate);
-                    //   printCycles(cycles);
-                    //   context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
-                    // } else {
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //   const SnackBar(content: Text('Please select your Period start and end dates.')),
-                    //   );
-                    // }
                     if (_rangeStart == null || _rangeEnd == null) {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Invalid Selection'),
-                          content: const Text(
-                              'Please select both start and end of your periods!!'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        ),
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Please select your Period start and end dates.')),
                       );
-                    } else {
+                    } 
+                    else if(_rangeStart!.isAfter(today) || _rangeEnd!.isAfter(today)) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('You cannot select dates in the future. Please select valid dates.')),
+                      );
+                    }
+                    else {
                       _updateCycle();
                       context.goNamed(RouteNames.PERIOD_PLANNER_PERIOD_HISTORY);
                     }

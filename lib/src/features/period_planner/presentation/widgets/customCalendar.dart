@@ -19,16 +19,14 @@ int calculateAverageCycleLength(List<Cycle> cycles) {
   for (int i = 1; i < cycles.length; i++) {
     int cycleLength =
         cycles[i].periodStart.difference(cycles[i - 1].periodStart).inDays;
-    debugPrint("Cycle Length before adjustment for cycle $i: $cycleLength");
+    debugPrint("Cycle Length for cycle $i: $cycleLength");
 
     // Cap to a minimum cycle length of 21 days
-    if (cycleLength < 21) {
-      debugPrint(
-          "Cycle Length $cycleLength is less than 21 days, defaulting to 26 days.");
-      cycleLength = 26;
-    }
-
-    debugPrint("Cycle Length after check for cycle $i: $cycleLength");
+    // if (cycleLength < 21) {
+    //   debugPrint(
+    //       "Cycle Length $cycleLength is less than 21 days, defaulting to 26 days.");
+    //   cycleLength = 26;
+    // }
     totalLength += cycleLength;
   }
 
@@ -69,9 +67,11 @@ int calculateAveragePeriodLength(List<Cycle> cycles) {
 //   return DateTime(dateTime.year, dateTime.month, dateTime.day);
 // }
 //Algorithm for calculating Next Period Days, Ovulation and Fertile Days
-Cycle predictCycle(DateTime periodStart, DateTime periodEnd) {
+Cycle predictCycle(DateTime periodStart, DateTime periodEnd, {String? cycleId}) {
   var uuid = const Uuid();
-  String cycleId = uuid.v4(); //Generating a unique id
+  // String cycleId = uuid.v4(); //Generating a unique id
+
+  int index = cycles.indexWhere((cycle) => cycle.periodStart == periodStart);
 
   // Calculate average cycle length from previous cycles
   int averageCycleLength = calculateAverageCycleLength(cycles);
@@ -92,15 +92,15 @@ Cycle predictCycle(DateTime periodStart, DateTime periodEnd) {
   DateTime fertileEnd = ovulation.subtract(const Duration(days: 1));
 
   //Calculating cycle Length between the previous cycle start and the latest cycle start
-  int cycleLength = (cycles.isNotEmpty)
-      ? periodStart.difference(cycles.last.periodStart).inDays
-      : averageCycleLength; // Calculate cycle length only if there are previous cycles
-
+  int cycleLength = (index > 0)
+      ? periodStart.difference(cycles[index - 1].periodStart).inDays
+      : averageCycleLength;  // If it's the first entry, use the average
+      
   //Calculating period Length of each cycle
   int periodLength = periodEnd.difference(periodStart).inDays + 1;
 
   return Cycle(
-    cycleId: cycleId,
+    cycleId: cycleId ?? uuid.v4(),
     periodStart: periodStart,
     periodEnd: periodEnd,
     fertileStart: fertileStart,
@@ -259,6 +259,10 @@ class _CustomCalendarState extends State<CustomCalendar> {
       headerVisible: true,
       headerStyle: HeaderStyle(
         formatButtonVisible: widget.headerButton,
+        //Conditionally hide chevrons if the calendar is in a weekly format
+        leftChevronVisible: _calendarFormat != CalendarFormat.week,
+        rightChevronVisible: _calendarFormat != CalendarFormat.week,
+        headerPadding: const EdgeInsets.all(8.0),
       ),
       onFormatChanged: (format) {
         // Show the modal when the format button is pressed

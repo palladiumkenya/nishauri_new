@@ -26,15 +26,13 @@ void printCycles(List<Cycle> cycles) {
     debugPrint('Predicted Period End: ${cycle.predictedPeriodEnd}');
     debugPrint('Cycle Length: ${cycle.cycleLength}');
     debugPrint('Period Length: ${cycle.periodLength}');
-    debugPrint('---'); 
+    debugPrint('---');
   }
 }
-
 
 //This is the screen the user interacts when they are logging their Period Days
 
 class LogPeriodScreen extends ConsumerStatefulWidget {
-
   @override
   ConsumerState<LogPeriodScreen> createState() => _LogPeriodScreenState();
 }
@@ -48,8 +46,8 @@ class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
   //final latestCycle = cycles.last;
   bool _isNewUser = cycles.isEmpty;
   int averagePeriods = calculateAveragePeriodLength(cycles);
-  
- 
+  final today = DateTime.now();
+
   @override
   void initState() {
     super.initState();
@@ -58,7 +56,7 @@ class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
     if (!_isNewUser) {
       _initializePredictedPeriodRange();
       _setFocusedDayForRegularUser();
-    } 
+    }
   }
 
   //  Map<DateTime, List<Event>> _filterEventsForLatestCycle() {
@@ -92,7 +90,20 @@ class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
     _focusedDay = latestCycle.predictedPeriodStart;
   }
 
+  //Function handling selection of period days for a regular user
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    // final today = DateTime.now();
+    
+    // // Check if the selected day is in the future
+    // if (selectedDay.isAfter(today)) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(
+    //       content: Text('You cannot select a date in the future. Please select a valid date.'),
+    //     ),
+    //   );
+    //   return;
+    // }
+
     setState(() {
       _startDate = selectedDay;
       _endDate = _startDate?.add(Duration(days: averagePeriods - 1)); // Only start date is used for regular users
@@ -100,14 +111,37 @@ class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
       debugPrint("Average Period Length from Log Periods is $averagePeriods");
     });
   }
+
+
   // Method to validate date range ensuring selection does not exceed 7 days
   bool _isDateRangeValid(DateTime start, DateTime end) {
-    final difference = end.difference(start).inDays + 1; // +1 to include the start day
+    final difference =
+        end.difference(start).inDays + 1; // +1 to include the start day
     return difference <= 7; // Ensure the range does not exceed 7 days
   }
 
+  //Function handling selection of period days for a new user
   void _onRangeSelected(DateTime? start, DateTime? end, DateTime? focusedDay) {
-    if (start != null && end != null && !_isDateRangeValid(start, end)) {
+    // If either start or end date is after today, show an error
+    if (start != null && end != null && (start.isAfter(today) || end.isAfter(today))) {
+      showDialog(
+        context: context, 
+        builder: (context) => AlertDialog(
+          title: const Text('Invalid Selection'),
+          content: const Text('You cannot select dates in the future. Please select valid dates.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              }, 
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } 
+    // Also check if date range is valid (max 7 days)
+    else if (start != null && end != null && !_isDateRangeValid(start, end)) {
       showDialog(
         context: context, 
         builder: (context) => AlertDialog(
@@ -123,30 +157,33 @@ class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
           ],
         ),
       );
-    } else {
+    } 
+    else {
       setState(() {
         _startDate = start;
         _endDate = end;
         _focusedDay = focusedDay ?? _focusedDay;
       });
     }
-  } 
+  }
+
   //Function to handle adding log entries in list Database
   void addCycle(DateTime start, [DateTime? end]) {
     // If end date is not provided, set it to the start date
     end ??= start;
 
-    final DateTime now = DateTime.now();
-    if (isSameDay(start, now) || isSameDay(end, now)) {
-      end = start.add( Duration(days: averagePeriods - 1));
-    }
+    // final DateTime now = DateTime.now();
+    // if (isSameDay(start, now) || isSameDay(end, now)) {
+    //   end = start.add( Duration(days: averagePeriods - 1));
+    // }
 
     //Handling cases where a user might log an already logged date in their previous cycle, hence warning them using a snackbar
     for (Cycle cycle in cycles) {
       if (_datesOverlap(cycle.periodStart, cycle.periodEnd, start, end)) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('The selected period overlaps with an existing cycle. Please choose different dates.'),
+            content: Text(
+                'The selected period overlaps with an existing cycle. Please choose different dates.'),
           ),
         );
         return; // Exit the function without adding the cycle
@@ -163,7 +200,6 @@ class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
     //_updateEventsForCycle(newCycle);
   }
 
-
   // void _updateEventsForCycle(Cycle cycle) {
   //   // Remove old events for this cycle from the events map
   //   events.remove(cycle.cycleId);
@@ -179,9 +215,10 @@ class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
   // }
 
   // Function to check if two date ranges overlap
-  bool _datesOverlap(DateTime start1, DateTime end1, DateTime start2, DateTime end2) {
-    return (start1.isBefore(end2) || isSameDay(start1, end2)) && 
-    (start2.isBefore(end1) || isSameDay(start2, end1));
+  bool _datesOverlap(
+      DateTime start1, DateTime end1, DateTime start2, DateTime end2) {
+    return (start1.isBefore(end2) || isSameDay(start1, end2)) &&
+        (start2.isBefore(end1) || isSameDay(start2, end1));
   }
 
   @override
@@ -199,9 +236,9 @@ class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              _isNewUser 
-              ? "Please enter your previous period start and end date."
-              : "Please enter when your Periods have started",
+              _isNewUser
+                  ? "Please enter your previous period start and end date."
+                  : "Please enter when your Periods have started",
               style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
           ),
@@ -247,17 +284,23 @@ class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
                     backgroundColor: Constants.periodPlanner,
                   ),
                   onPressed: () {
-                    if (_startDate != null) {
+                    if (_startDate != null && !_startDate!.isAfter(today)) {
                       final endDate = _endDate ?? _startDate!.add(const Duration(days: 1)); // The else statement handles where a period only happens for a single day hence the end date will be same day as start date 
                       addCycle(_startDate!, endDate);
                       printCycles(cycles);
                       context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
-                    } else {
+                    } 
+                    else if (_startDate!.isAfter(today)) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('You cannot select dates in the future. Please select valid dates.')),
+                      );
+                    }
+                    else {
                       ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Please select your Period start and end dates.')),
                       );
                     }
-                    }, 
+                  },
                   child: Text(
                     'Apply',
                     style: theme.textTheme.titleSmall?.copyWith(
@@ -273,8 +316,3 @@ class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
     );
   }
 }
-
-
-
-
-
