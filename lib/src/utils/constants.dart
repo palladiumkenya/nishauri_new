@@ -26,6 +26,7 @@ class Constants {
   static const SIDE_SPACE = 0.0;
   static const TIME_OUT = 300;
   static const facilityDirectoryColor = Color.fromARGB(255, 106, 121, 141);
+  static const pSurveyColor = Color.fromARGB(255, 75, 127, 117);
   static const labResultsColor = Color.fromARGB(255, 31, 37, 94);
   static const appointmentsColor = Color.fromARGB(255, 75, 127, 117);
   static const bmiCalculatorColor = Color.fromARGB(255,0, 122, 141);

@@ -72,6 +72,7 @@ import 'package:nishauri/src/features/visits/presentations/pages/FacilityVisitsS
 import 'package:nishauri/src/utils/routes.dart';
 
 import '../../features/lab/presentation/pages/LabResults.dart';
+import '../../features/pSurvey/PSurveyHome.dart';
 
 final routesProvider = Provider<GoRouter>((ref) {
   final router = RouterNotifier(ref);
@@ -211,6 +212,22 @@ final List<RouteBase> secureRoutes = [
       return const FacilityDirectoryScreen();
     },
   ),
+  //
+
+  GoRoute(
+    name: RouteNames.pSurvey_Route,
+    path: 'pSurvey',
+    builder: (BuildContext context, GoRouterState state) {
+      // return pSurveyScreen();
+      return PsurveyHomeScreen();
+    },
+  ),
+
+
+
+
+
+
   GoRoute(
     name: RouteNames.UNLOCK_SCREEN,
     path: 'unlock',
