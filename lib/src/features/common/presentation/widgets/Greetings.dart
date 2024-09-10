@@ -7,13 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
-import 'package:nishauri/src/app/navigation/menu/MenuItemsBuilder.dart';
-import 'package:nishauri/src/app/navigation/menu/MenuOption.dart';
-import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
-import 'package:nishauri/src/features/clinic_card/data/providers/programProvider.dart';
-import 'package:nishauri/src/features/common/data/providers/shortcut_provider.dart';
 import 'package:nishauri/src/features/user_programs/data/providers/program_provider.dart';
-import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
