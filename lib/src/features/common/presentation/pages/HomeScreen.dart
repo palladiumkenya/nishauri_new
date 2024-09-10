@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:material_dialogs/dialogs.dart';
 import 'package:nishauri/src/app/navigation/drawer/UserDrawerHeader.dart';
 import 'package:nishauri/src/app/navigation/drawer/customeDrawer.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
@@ -17,8 +18,11 @@ import 'package:nishauri/src/features/common/presentation/widgets/Greetings.dart
 import 'package:nishauri/src/features/common/presentation/widgets/ShortcutsUi.dart';
 import 'package:nishauri/src/features/hiv/data/providers/art_appointmen_provider.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
+import 'package:nishauri/src/features/user_preference/data/providers/settings_provider.dart';
+import 'package:nishauri/src/features/user_programs/data/providers/program_provider.dart';
 import 'package:nishauri/src/hooks/use_local_avatar.dart';
 import 'package:nishauri/src/local_storage/LocalStorage.dart';
+import 'package:nishauri/src/shared/dialog/dialog.dart';
 import 'package:nishauri/src/shared/display/AppAvatar.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -67,6 +71,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final theme = Theme.of(context);
     final asyncUser = ref.watch(userProvider);
     final size = getOrientationAwareScreenSize(context);
+    final programState = ref.watch(userProgramProvider);
+    final settings = ref.watch(settingsNotifierProvider);
+
+    // Handle dialog display
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Check if the program list is empty or if all programs are inactive
+      final showUpdateProgram = programState.when(
+        data: (programs) => programs.isEmpty || programs.every((program) => program.isActive == false),
+        error: (error, stack) => false,
+        loading: () => false,
+      );
+
+      if (showUpdateProgram && settings.firstNuruAccess) {
+        HealthProgramDialog(context).show();
+      }
+    });
+
     return Scaffold(
       key: _scaffoldKey,
       drawer: CustomDrawer(),
