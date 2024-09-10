@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuItemsBuilder.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuOption.dart';
 import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
+import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/self_screening/data/providers/insight_provider.dart';
 import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
@@ -40,7 +41,14 @@ List<MenuItem> _menuItems(BuildContext context) => [
     icon: const Icon(Icons.calendar_month_outlined),
     shortcutIcon: const Icon(Icons.calendar_month_outlined),
     title: MenuItemNames.PERIOD_PLANNER,
-    onPressed: () => context.goNamed(MenuItemNames.PERIOD_PLANNER),
+    onPressed: () {
+      if(cycles.isEmpty) {
+        context.goNamed(RouteNames.PERIOD_PLANNER_LOG_PERIODS);
+      }
+      else {
+        context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
+      }
+    },
     color: Constants.periodPlannerShortcutBgColor.withOpacity(0.5),
   ),
 ];
