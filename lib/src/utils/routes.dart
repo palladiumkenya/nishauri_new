@@ -71,6 +71,9 @@ class RouteNames {
   static const CHAT_HCW = "chat-hcw";
   static const CHAT_DETAIL = "chat-detail";
   static const CHAT_USER = "chat-user";
+  static const INSIGHT = "insight";
+  static const BP_INSIGHT = "bp-insight";
+
 
 
 }
@@ -107,6 +110,7 @@ class MenuItemNames {
   static const PERIOD_PLANNER = "Period Planner";
   static const CHAT_HCW = "Chat with HCW";
   static const CHAT_DETAIL = "Chat Detail";
+  static const INSIGHT = "Insight";
 
 }
 

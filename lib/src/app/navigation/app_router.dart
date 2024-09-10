@@ -68,7 +68,9 @@ import 'package:nishauri/src/features/period_planner/presentation/pages/periodPl
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlanner.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periods_history.dart';
 import 'package:nishauri/src/features/programs/presentation/pages/programs.dart';
-import 'package:nishauri/src/features/self_screening/presentation/self_screening_menu.dart';
+import 'package:nishauri/src/features/self_screening/presentation/pages/bpInsightScreen.dart';
+import 'package:nishauri/src/features/self_screening/presentation/pages/insight_screen.dart';
+import 'package:nishauri/src/features/self_screening/presentation/pages/self_screening_menu.dart';
 import 'package:nishauri/src/features/treatment_support/presentation/pages/TreatmentSupport.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileScreen.dart';
@@ -505,6 +507,24 @@ final List<RouteBase> selfScreeningRoutes = [
       return LogPeriodScreen();
     },
   ),
+  GoRoute(
+    name: RouteNames.INSIGHT,
+    path: 'insight',
+    builder: (BuildContext context, GoRouterState state) {
+      return const InsightScreen();
+    },
+    routes:   [
+      GoRoute(
+      name: RouteNames.BP_INSIGHT,
+      path: 'bp-insight',
+      builder: (BuildContext context, GoRouterState state) {
+        return const BpInsightScreen();
+      },
+    ),
+    ]
+  ),  
+
+  
 ];
 
 final List<RouteBase> hivProgramRoutes = [

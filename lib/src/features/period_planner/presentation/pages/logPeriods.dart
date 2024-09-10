@@ -200,6 +200,7 @@ class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
     //_updateEventsForCycle(newCycle);
   }
 
+
   // void _updateEventsForCycle(Cycle cycle) {
   //   // Remove old events for this cycle from the events map
   //   events.remove(cycle.cycleId);

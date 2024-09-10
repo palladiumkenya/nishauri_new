@@ -12,6 +12,7 @@ _$AnnouncementImpl _$$AnnouncementImplFromJson(Map<String, dynamic> json) =>
       image: json['image'] as String,
       source: json['source'] as String,
       title: json['title'] as String,
+      header: json['header'] as String?,
       description: json['description'] as String?,
     );
 
@@ -21,5 +22,6 @@ Map<String, dynamic> _$$AnnouncementImplToJson(_$AnnouncementImpl instance) =>
       'image': instance.image,
       'source': instance.source,
       'title': instance.title,
+      'header': instance.header,
       'description': instance.description,
     };

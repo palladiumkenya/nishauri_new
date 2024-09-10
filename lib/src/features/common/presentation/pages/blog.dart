@@ -19,7 +19,7 @@ class BlogPostScreen extends StatelessWidget {
       body: Column(
         children: [
           CustomAppBar(
-            title: "Did you know 💡",
+            title: announcement.header?? "Did you know 💡",
             color: Constants.labResultsColor.withOpacity(0.5),),
 
           Expanded(
