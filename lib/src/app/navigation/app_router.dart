@@ -490,9 +490,10 @@ final List<RouteBase> selfScreeningRoutes = [
             name: RouteNames.PERIOD_PLANNER_EDIT_PERIODS,
             path: 'period-planner-edit-periods',
             builder: (BuildContext context, GoRouterState state) {
-              final startDate = state.extra != null ? (state.extra as Map<String, dynamic>)['startDate'] as DateTime : null;
-              final endDate = state.extra != null ? (state.extra as Map<String, dynamic>)['endDate'] as DateTime : null;
-              final id = (state.extra! as Map<String, dynamic>)['id'] as String;
+              final extra = state.extra as Map<String, dynamic>;
+              final startDate = extra['startDate'] as DateTime;
+              final endDate = extra['endDate'] as DateTime;
+              final id = extra['id'] as String;
               return EditPeriods(initialStartDate: startDate, initialEndDate: endDate, cycleId: id,);
             },
           ),

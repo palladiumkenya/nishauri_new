@@ -1,21 +1,26 @@
 // import 'package:freezed_annotation/freezed_annotation.dart';
 
+// part 'cycle.freezed.dart';
+// part 'cycle.g.dart';
+
 // @Freezed()
 // class Cycle with _$Cycle {
 //   const factory Cycle({
-//       String cycleId, 
-//       DateTime periodStart,
-//       DateTime periodEnd,
-//       DateTime fertileStart,
-//       DateTime fertileEnd,
-//       DateTime ovulation,
-//       DateTime predictedPeriodStart,
-//       DateTime predictedPeriodEnd,
+//     required String cycleId, 
+//     required DateTime periodStart,
+//     required DateTime periodEnd,
+//     required DateTime fertileStart,
+//     required DateTime fertileEnd,
+//     required DateTime ovulation,
+//     required DateTime predictedPeriodStart,
+//     required DateTime predictedPeriodEnd,
+//     required int cycleLength,
+//     required int periodLength,
 //   }) = _Cycle;
 
-//   factory Cycle.fromJson(Map<String, dynamic> json)=> _$CycleFromJson(json);
+//   factory Cycle.fromJson(Map<String, dynamic> json)
+//     => _$CycleFromJson(json);
 // }
-
 
 class Cycle{
   String cycleId;

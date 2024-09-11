@@ -17,9 +17,6 @@ class PeriodsHistory extends ConsumerStatefulWidget {
 }
 
 class _PeriodsHistoryState extends ConsumerState<PeriodsHistory> {
-  final averagePeriod = calculateAveragePeriodLength(cycles);
-  final averageCycles = calculateAverageCycleLength(cycles);
-
   // Function to format the date as "MMM d"
   String formatDate(DateTime date) {
     return DateFormat('MMM d').format(date);
@@ -41,6 +38,9 @@ class _PeriodsHistoryState extends ConsumerState<PeriodsHistory> {
   @override
   Widget build(BuildContext context) {
     final cycles = ref.watch(cyclesProvider);
+
+    final averagePeriod = calculateAveragePeriodLength(cycles);
+    final averageCycles = calculateAverageCycleLength(cycles);
     // Group cycles by year and reverse the list to show the latest first
     final groupedCycles = groupCyclesByYear(cycles);
     final sortedYears = groupedCycles.keys.toList()..sort((a, b) => b.compareTo(a));
@@ -185,6 +185,10 @@ class _PeriodsHistoryState extends ConsumerState<PeriodsHistory> {
                             final start = formatDate(cycle.periodStart);
                             final end = formatDate(cycle.periodEnd);
                             final cycleDays = cycle.cycleLength;
+
+                            // Check if the current cycle is the last entry
+                            bool isLastCycle = cycle == cyclesInYear.last;
+
                             return Card(
                               elevation: 4.0,
                               margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -200,7 +204,9 @@ class _PeriodsHistoryState extends ConsumerState<PeriodsHistory> {
                                   ),
                                 ),
                                 subtitle: Text(
-                                  "Length of cycle: $cycleDays days",
+                                  isLastCycle 
+                                    ? "Estimated Cycle Length: $cycleDays days"
+                                    : "Length of cycle: $cycleDays days",
                                   style: const TextStyle(
                                     fontSize: 16.0,
                                   ),

@@ -307,7 +307,12 @@ class _PeriodPlannerScreenState extends ConsumerState<PeriodPlannerScreen> {
                                                   for (var cycle in cycles) {
                                                     if (cycle.periodStart == _periodStart) {
                                                       cycle.periodEnd = _periodEnd;
+
+                                                      //Recalculating period length
+                                                      cycle.periodLength = _periodEnd.difference(_periodStart).inDays + 1;
                                                     }
+
+                                                    
                                                   } 
 
                                                   _updateEvents();

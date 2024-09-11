@@ -197,6 +197,9 @@ class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
     ref.read(cyclesProvider.notifier).addCycle(newCycle);
 
     cycles.add(newCycle);
+
+    //update cycle lengths after adding the new cycle
+    updateCycleLengths(cycles);
     //_updateEventsForCycle(newCycle);
   }
 

@@ -63,6 +63,8 @@ class _EditPeriodsState extends ConsumerState<EditPeriods> {
         cycles[index] = updatedCycle;
       });
 
+      updateCycleLengths(cycles);
+
       debugPrint("Updated Cycle Length: ${updatedCycle.cycleLength}");
       printCycles(cycles);
 

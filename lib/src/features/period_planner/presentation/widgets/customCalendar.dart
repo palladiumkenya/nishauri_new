@@ -6,7 +6,21 @@ import 'package:nishauri/src/features/period_planner/presentation/widgets/modalC
 import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart';
 
-//Function to calculate Average Cycle days
+//Function to update Cycle days
+void updateCycleLengths(List<Cycle> cycles) {
+  // Start from the second last cycle because the last one does not have a successor yet
+  for (int i = 0; i < cycles.length - 1; i++) {
+    int cycleLength = cycles[i + 1].periodStart.difference(cycles[i].periodStart).inDays;
+    cycles[i].cycleLength = cycleLength;
+  }
+
+  // The last cycle in the list should still use the average cycle length
+  if (cycles.isNotEmpty) {
+    cycles.last.cycleLength = calculateAverageCycleLength(cycles);
+  }
+}
+
+
 // Function to calculate Average Cycle days
 int calculateAverageCycleLength(List<Cycle> cycles) {
   if (cycles.length < 2) {
@@ -91,10 +105,21 @@ Cycle predictCycle(DateTime periodStart, DateTime periodEnd, {String? cycleId}) 
   DateTime fertileStart = ovulation.subtract(const Duration(days: 5));
   DateTime fertileEnd = ovulation.subtract(const Duration(days: 1));
 
-  //Calculating cycle Length between the previous cycle start and the latest cycle start
-  int cycleLength = (index > 0)
-      ? periodStart.difference(cycles[index - 1].periodStart).inDays
-      : averageCycleLength;  // If it's the first entry, use the average
+  //Calculating cycle Length 
+  // int cycleLength = (index > 0)
+  //     ? periodStart.difference(cycles[index - 1].periodStart).inDays
+  //     : averageCycleLength;
+  int cycleLength;
+  if (index > 0 && index < cycles.length - 1) {
+    // If the current cycle has a succeeding cycle, calculate based on difference between two cycles
+    cycleLength = periodStart.difference(cycles[index - 1].periodStart).inDays;
+  } else if (index == cycles.length - 1) {
+    // If it's the last cycle (no succeeding cycle), use the average cycle length as a placeholder
+    cycleLength = averageCycleLength;
+  } else {
+    // For the very first cycle or other fallback cases, use average cycle length
+    cycleLength = averageCycleLength;
+  }
       
   //Calculating period Length of each cycle
   int periodLength = periodEnd.difference(periodStart).inDays + 1;
