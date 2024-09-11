@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 
 class BackgroundImageWidget extends StatelessWidget {
   final String svgImage;

@@ -13,7 +13,7 @@ import 'package:nishauri/src/features/lab/presentation/widget/ViralLoadResult.da
 import 'package:nishauri/src/features/lab/presentation/widget/ViralLoadTrend.dart';
 import 'package:nishauri/src/features/user_programs/data/providers/program_provider.dart';
 import 'package:nishauri/src/shared/display/CustomTabBar.dart';
-import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/utils/routes.dart';

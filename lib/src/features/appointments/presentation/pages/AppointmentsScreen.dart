@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/appointments/presentation/widgets/CurrentAppoints.dart';
 import 'package:nishauri/src/features/appointments/presentation/widgets/PreviousAppointments.dart';
 import 'package:nishauri/src/shared/display/CustomTabBar.dart';
-import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class AppointmentsScreen extends HookConsumerWidget {

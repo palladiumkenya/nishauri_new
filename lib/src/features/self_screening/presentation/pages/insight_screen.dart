@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:nishauri/src/features/common/presentation/pages/HomeScreen.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/program_appointments.dart';
 import 'package:nishauri/src/features/self_screening/presentation/pages/bpInsightScreen.dart';
-import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/features/self_screening/presentation/pages/bsInsightScreen.dart';
+import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class InsightScreen extends StatelessWidget {
@@ -11,10 +12,10 @@ class InsightScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pages = [
+      // const BpInsightScreen(),
       const BpInsightScreen(),
-      const ProgramAppointmentsScreen(),
-      const ProgramAppointmentsScreen(),
-      const ProgramAppointmentsScreen(),
+      const BsInsightScreen(),
+      // const BpInsightScreen(),
     ];
 
     final theme = Theme.of(context);
@@ -51,16 +52,16 @@ class InsightScreen extends StatelessWidget {
                                 children: [
                                   Icon(
                                     index == 0
-                                        ? Icons.calculate_outlined
-                                        : index == 1
                                         ? Icons.trending_up
+                                        : index == 1
+                                        ? Icons.bloodtype_outlined
                                         : index == 2
                                         ? Icons.bloodtype_outlined
                                         : Icons.calendar_month_sharp,
                                     color: index == 0
-                                        ? Constants.bmiCalculatorColor
-                                        : index == 1
                                         ? Constants.bpShortCutBgColor
+                                        : index == 1
+                                        ? Constants.bloodSugarColor
                                         : index == 2
                                         ? Constants.bloodSugarColor
                                         : Constants.periodPlannerShortcutBgColor,
@@ -68,9 +69,9 @@ class InsightScreen extends StatelessWidget {
                                   const SizedBox(width: Constants.SPACING),
                                   Text(
                                     index == 0
-                                        ? 'BMI Calculator'
+                                        ? 'Blood Pressure Awareness'
                                         : index == 1
-                                        ? 'Blood Pressure Monitor'
+                                        ? 'Blood Sugar Awareness'
                                         : index == 2
                                         ? 'Blood Sugar Monitor'
                                         : 'Period Planner',

@@ -7,7 +7,7 @@ import 'package:nishauri/src/features/blood_sugar/data/providers/blood_sugar_pro
 import 'package:nishauri/src/features/blood_sugar/presentation/pages/AddBloodSugarScreen.dart';
 import 'package:nishauri/src/features/blood_sugar/presentation/widgets/blood_sugar_entry_card.dart';
 import 'package:nishauri/src/shared/charts/CustomLineChart.dart';
-import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/utils/constants.dart';
 

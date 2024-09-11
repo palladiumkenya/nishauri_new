@@ -5,7 +5,7 @@ import 'package:nishauri/src/features/bp/data/models/blood_pressure.dart';
 import 'package:nishauri/src/features/bp/data/providers/blood_pressure_provider.dart';
 import 'package:nishauri/src/features/bp/presentation/pages/BPLinelistScreen.dart';
 import 'package:nishauri/src/features/bp/presentation/pages/trend_chart_screen.dart';
-import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/utils/constants.dart';
 

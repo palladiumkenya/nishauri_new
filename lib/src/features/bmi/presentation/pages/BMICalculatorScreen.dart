@@ -13,7 +13,7 @@ import 'package:nishauri/src/features/bmi/presentation/widgets/HeightPicker.dart
 import 'package:nishauri/src/features/bmi/presentation/widgets/HeightUnitsPicker.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
-import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/shared/display/RadioGroup.dart';
 import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/shared/input/QuanterSizer.dart';

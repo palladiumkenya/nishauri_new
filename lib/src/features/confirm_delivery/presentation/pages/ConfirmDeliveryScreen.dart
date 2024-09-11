@@ -9,7 +9,7 @@ import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
 import 'package:nishauri/src/features/confirm_delivery/data/modules/confirm_delivery.dart';
 import 'package:nishauri/src/features/confirm_delivery/data/providers/confirm_delivery_provider.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/DrugOrders.dart';
-import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/shared/display/Logo.dart';
 import 'package:nishauri/src/shared/display/verify.dart';
 import 'package:nishauri/src/shared/exeptions/http_exceptions.dart';
