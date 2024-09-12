@@ -6,6 +6,7 @@ import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/data/models/events.dart';
 import 'package:nishauri/src/features/period_planner/data/providers/cycles_provider.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/logPeriods.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/periods_history.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/carouselCard.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/logItems.dart';
@@ -118,7 +119,7 @@ class _PeriodPlannerScreenState extends ConsumerState<PeriodPlannerScreen> {
     bool isDangerZone = _currentDate.isAfter(_nextPeriodEnd);  
 
     bool inPeriods = isInPeriod;
-  
+
     // Determine progress value and messages based on the current date
     double progressValue = 0.0;
     String message = '';
@@ -308,11 +309,12 @@ class _PeriodPlannerScreenState extends ConsumerState<PeriodPlannerScreen> {
                                                     if (cycle.periodStart == _periodStart) {
                                                       cycle.periodEnd = _periodEnd;
 
+                                                      // Setting the external period confirmation status to true
+                                                      periodConfirmedMap[cycle.cycleId] = true;
+
                                                       //Recalculating period length
                                                       cycle.periodLength = _periodEnd.difference(_periodStart).inDays + 1;
-                                                    }
-
-                                                    
+                                                    }                                                  
                                                   } 
 
                                                   _updateEvents();
@@ -327,7 +329,7 @@ class _PeriodPlannerScreenState extends ConsumerState<PeriodPlannerScreen> {
                                                   // debugPrint('Is In Period after update: $isInPeriod');
                                                   // debugPrint('Is Close to Ovulation after update: $isCloseToOvulation'); 
                                                   // debugPrint("--------");
-                                                }); 
+                                                });
                                                 //printCycles(cycles);
                                                 Navigator.of(context).pop();           
                                               },

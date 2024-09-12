@@ -9,6 +9,9 @@ import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
+//Map containing period cycles in which the user has confirmed period end date
+Map<String, bool> periodConfirmedMap = {};
+
 class PeriodsHistory extends ConsumerStatefulWidget {
   const PeriodsHistory({super.key});
 
@@ -43,7 +46,8 @@ class _PeriodsHistoryState extends ConsumerState<PeriodsHistory> {
     final averageCycles = calculateAverageCycleLength(cycles);
     // Group cycles by year and reverse the list to show the latest first
     final groupedCycles = groupCyclesByYear(cycles);
-    final sortedYears = groupedCycles.keys.toList()..sort((a, b) => b.compareTo(a));
+    final sortedYears = groupedCycles.keys.toList()
+      ..sort((a, b) => b.compareTo(a));
 
     return Scaffold(
       body: ListView(
@@ -171,7 +175,8 @@ class _PeriodsHistoryState extends ConsumerState<PeriodsHistory> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Text(
                               "$year",
                               style: const TextStyle(
@@ -182,50 +187,62 @@ class _PeriodsHistoryState extends ConsumerState<PeriodsHistory> {
                           ),
                           const SizedBox(height: 10),
                           ...cyclesInYear.reversed.map((cycle) {
-                            final start = formatDate(cycle.periodStart);
-                            final end = formatDate(cycle.periodEnd);
-                            final cycleDays = cycle.cycleLength;
+                            // Only display cycles that are either confirmed or whose end date has passed
+                            final bool isPeriodConfirmed =
+                                periodConfirmedMap[cycle.cycleId] ?? false;
+                            final bool hasPeriodEnded =
+                                DateTime.now().isAfter(cycle.periodEnd);
 
-                            // Check if the current cycle is the last entry
-                            bool isLastCycle = cycle == cyclesInYear.last;
+                            if (isPeriodConfirmed || hasPeriodEnded) {
+                              final start = formatDate(cycle.periodStart);
+                              final end = formatDate(cycle.periodEnd);
+                              final cycleDays = cycle.cycleLength;
 
-                            return Card(
-                              elevation: 4.0,
-                              margin: const EdgeInsets.symmetric(vertical: 8.0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              child: ListTile(
-                                title: Text(
-                                  "$start - $end",
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                              // Check if the current cycle is the last entry
+                              bool isLastCycle = cycle == cyclesInYear.last;
+
+                              return Card(
+                                elevation: 4.0,
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                child: ListTile(
+                                  title: Text(
+                                    "$start - $end",
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    isLastCycle
+                                        ? "Estimated Cycle Length: $cycleDays days"
+                                        : "Length of cycle: $cycleDays days",
+                                    style: const TextStyle(
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                  trailing: IconButton(
+                                    onPressed: () {
+                                      context.goNamed(
+                                        RouteNames.PERIOD_PLANNER_EDIT_PERIODS,
+                                        extra: {
+                                          'startDate': cycle.periodStart,
+                                          'endDate': cycle.periodEnd,
+                                          'id': cycle.cycleId,
+                                        },
+                                      );
+                                    },
+                                    icon: const Icon(Icons.arrow_forward_ios),
                                   ),
                                 ),
-                                subtitle: Text(
-                                  isLastCycle 
-                                    ? "Estimated Cycle Length: $cycleDays days"
-                                    : "Length of cycle: $cycleDays days",
-                                  style: const TextStyle(
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                                trailing: IconButton(
-                                  onPressed: () {
-                                    context.goNamed(
-                                      RouteNames.PERIOD_PLANNER_EDIT_PERIODS,
-                                      extra: {
-                                        'startDate': cycle.periodStart,
-                                        'endDate': cycle.periodEnd,
-                                        'id': cycle.cycleId,
-                                      },
-                                    );
-                                  },
-                                  icon: const Icon(Icons.arrow_forward_ios),
-                                ),
-                              ),
-                            );
+                              );
+                            } else {
+                              // Skip displaying cycles that haven't been confirmed or whose end date hasn't passed
+                              return const SizedBox.shrink();
+                            }
                           }).toList(),
                         ],
                       );
