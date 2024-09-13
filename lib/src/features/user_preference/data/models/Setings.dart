@@ -7,6 +7,7 @@ class Settings {
   final bool isBiometricEnabled;
   final bool firstTimeInstallation;
   final bool firstNuruAccess;
+  final bool firstTimeNoProgram;
 
   Settings(
       {required this.userToken,
@@ -16,6 +17,7 @@ class Settings {
       required this.isBiometricEnabled,
       required this.isAuthenticated,
       required this.firstTimeInstallation,
+      required  this.firstTimeNoProgram,
       this.firstNuruAccess = false});
 
   // Create a default instance with initial values
@@ -34,7 +36,8 @@ class Settings {
         // Provide the initial biometric setting
         firstTimeInstallation: false,
         // Provide the initial Nuru access setting
-        firstNuruAccess: false);
+        firstNuruAccess: false,
+    firstTimeNoProgram: false);
   }
 
   // Create an instance with values copied from another Settings instance
@@ -47,6 +50,7 @@ class Settings {
     bool? isAuthenticated,
     bool? firstTimeInstallation,
     bool? firstNuruAccess,
+    bool? firstTimeNoProgram,
   }) {
     return Settings(
       userToken: userToken ?? this.userToken,
@@ -58,6 +62,7 @@ class Settings {
       firstTimeInstallation:
           firstTimeInstallation ?? this.firstTimeInstallation,
       firstNuruAccess: firstNuruAccess ?? this.firstNuruAccess,
+      firstTimeNoProgram: firstTimeNoProgram ?? this.firstTimeNoProgram,
     );
   }
 

@@ -86,24 +86,17 @@ class SelfScreening extends HookConsumerWidget {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          // insightAsync.when(
-          //   data: (data){
-          //     final insight = data.map((e) => e).where((element) => element.id=="3").single;
-          //     return FloatingActionButton(
+          // FloatingActionButton(
           //     tooltip: "Insight",
           //     hoverColor: Constants.bmiCalculatorShortcutBgColor,
           //     onPressed: () {
-          //       context.goNamed(RouteNames.BLOG_POST, extra: insight);
+          //       context.goNamed(RouteNames.SETTINGS);
           //
           //     },
           //     backgroundColor: Constants.bmiCalculatorShortcutBgColor,
-          //     child: const Icon(Icons.insights),
-          //   );
-          //   },
-          //   error: (error, _) => Container(),
-          //   loading: () => Container(),
-          // ),
-          SizedBox(height: 10),
+          //     child: const Icon(Icons.settings),
+          //   ),
+          // SizedBox(height: 10),
           FloatingActionButton(
             tooltip: "Module insight",
             hoverColor: Constants.bmiCalculatorShortcutBgColor,
@@ -111,7 +104,7 @@ class SelfScreening extends HookConsumerWidget {
               context.goNamed(RouteNames.INSIGHT);
             },
             backgroundColor: Constants.bmiCalculatorShortcutBgColor,
-            child: const Icon(Icons.settings_applications_sharp),
+            child: const Icon(Icons.insights),
           ),
         ],
       ),
