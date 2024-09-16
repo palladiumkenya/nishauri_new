@@ -14,6 +14,7 @@ class SettingsController extends StateNotifier<Settings> {
     final isPrivacyEnabled = await LocalStorage.get("isPrivacyEnabled");
     final firstTimeInstallation = await LocalStorage.get("initial");
     final firstTimeNoProgram = await LocalStorage.get("program_update");
+    final firstNuruAccess = await LocalStorage.get("firstNuruAccess");
     state = state.copyWith(
         theme: theme.isNotEmpty ? theme : "light",
         isPrivacyEnabled:
@@ -23,7 +24,10 @@ class SettingsController extends StateNotifier<Settings> {
             : firstTimeInstallation == "1",
         firstTimeNoProgram: firstTimeNoProgram.isEmpty
             ? true
-            : firstTimeNoProgram == "1");
+            : firstTimeNoProgram == "1",
+        firstNuruAccess: firstNuruAccess.isEmpty
+            ? true
+            : firstNuruAccess == "1");
   }
 
   Future<void> saveSettingConfig(Settings settings) async {
@@ -41,6 +45,8 @@ class SettingsController extends StateNotifier<Settings> {
     await LocalStorage.delete("theme");
     await LocalStorage.delete("isPrivacyEnabled");
     await LocalStorage.delete("initial");
+    await LocalStorage.delete("program_update");
+    await LocalStorage.delete("firstNuruAccess");
   }
 
   void updateSettings({

@@ -328,7 +328,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 setState(() {
                   _consent = !_consent;
                 });
-                _updateConsent(type == ConsentType.accept ? true : false);
+                _updateConsent(_consent);
                 Navigator.of(context).pop();
               },
               child: const Text('Yes'),
@@ -356,6 +356,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           consentData.isNotEmpty ? consentData.first.chatbot_consent : null;
       setState(() {
         _consent = remoteConsent == "1" ? true : false;
+        print("The consent name ${_consent}");
       });
     } catch (e) {
       debugPrint("Error fetching consent: $e");
@@ -383,9 +384,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   // Check and show consent dialog for first time use
   void _checkAndShowConsentDialog() {
     final settings = ref.read(settingsNotifierProvider);
+    final settingUpdate =  ref.read(settingsNotifierProvider.notifier);
     if (settings.firstNuruAccess) {
       debugPrint("Nuru first time use: ${settings.firstNuruAccess}");
       _showConsentDialog(context, ref, ConsentType.accept);
+      settingUpdate.updateSettings(firstNuruAccess: false);
     } else {
       debugPrint("Nuru first time use: ${settings.firstNuruAccess}");
     }
@@ -424,8 +427,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                         ],
                       ),
                     ),
-                    _showConsent
-                        ? Flex(
+                    // _showConsent
+                    //     ?
+                    Flex(
                             direction: Axis.horizontal,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -449,8 +453,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                         style: TextStyle(color: Colors.green),
                                       ))
                             ],
-                          )
-                        : const SizedBox(),
+                          ),
+                        // : const SizedBox(),
                     const Divider(),
                     Expanded(
                       child: ListView.builder(

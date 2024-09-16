@@ -18,7 +18,7 @@ class Settings {
       required this.isAuthenticated,
       required this.firstTimeInstallation,
       required  this.firstTimeNoProgram,
-      this.firstNuruAccess = false});
+      required this.firstNuruAccess});
 
   // Create a default instance with initial values
   factory Settings.defaultSettings() {
