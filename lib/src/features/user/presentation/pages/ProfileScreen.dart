@@ -77,6 +77,14 @@ class ProfileScreen extends HookWidget {
                 ),
                 const Divider(),
                 ListTile(
+                  leading: const Icon(Icons.perm_identity),
+                  title: const Text("Roles"),
+                  subtitle: user.roles.isEmpty
+                      ? Text("")
+                      : Text("${user.roles[0] ?? ''}, ${user.roles[1] ?? ''}"),
+                ),
+                const Divider(),
+                ListTile(
                   leading: const Icon(Icons.email),
                   title: const Text("Email"),
                   subtitle: Text(user.email ?? ''),

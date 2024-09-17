@@ -26,6 +26,7 @@ class MenuItem {
 
 MenuItem getProgramMenuItemByProgramCode(
     BuildContext context, String programCode) {
+  final theme = Theme.of(context);
   if (programCode == ProgramCodeNameIds.HIV) {
     return MenuItem(
         icon: const Icon(
@@ -110,7 +111,7 @@ MenuItem getProgramMenuItemByProgramCode(
   );
 }
 
-List<MenuItem> getGenericMenuItems(BuildContext context) {
+List<MenuItem> getGenericMenuItems(BuildContext context, bool admin) {
   return [
     // MenuItem(
     //   icon: Icons.calendar_month_rounded,
@@ -122,7 +123,6 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
     //   title: MenuItemNames.DASHBOARD,
     //   onPressed: () => context.goNamed(RouteNames.DASHBOARD),
     // ),
-
     MenuItem(
       color: Constants.programsColor,
       icon: FaIcon(
@@ -251,65 +251,35 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
       onPressed: () => context.goNamed(RouteNames.DAWA_DROP),
       color: Constants.dawaDropColor.withOpacity(0.5),
     ),
-    // MenuItem(
-    //   // icon: FaIcon(FontAwesomeIcons.capsules, size: Constants.iconSize, color: Colors.teal[200],),
-    //   shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,
-    //   icon: SvgPicture.asset(
-    //     "assets/images/sugar.svg",
-    //     semanticsLabel: "Blood sugar",
-    //     fit: BoxFit.contain,
-    //     width: 80,
-    //     height: 80,
-    //   ),
-    //   shortcutIcon: SvgPicture.asset(
-    //     "assets/images/sugar.svg",
-    //     semanticsLabel: "Blood Sugar",
-    //     fit: BoxFit.contain,
-    //     width: Constants.shortcutIconSize,
-    //     height: Constants.shortcutIconSize,
-    //   ),
-    //   title: MenuItemNames.BLOOD_SUGAR,
-    //   onPressed: () => context.goNamed(MenuItemNames.BLOOD_SUGAR),
-    //   color: Constants.bloodSugarColor.withOpacity(0.5),
-    // ),
-    // MenuItem(
-    //   icon: Icons.move_down,
-    //   title: MenuItemNames.FACILITY_VISITS,
-    //   onPressed: () => context.goNamed(RouteNames.FACILITY_VISITS),
-    // ),
-    // MenuItem(
-    //   icon: Icons.send,
-    //   title: MenuItemNames.CHAT_HCW,
-    //   onPressed: () => context.goNamed(RouteNames.CHAT_HCW),
-    // ),
-   
-    // MenuItem(
-    //   shortcutBackgroundColor: Constants.periodPlannerShortcutBgColor,
-    //   icon: SvgPicture.asset(
-    //     "assets/images/period_planner2.svg",
-    //     semanticsLabel: "Doctors",
-    //     fit: BoxFit.contain,
-    //     width: 80,
-    //     height: 80,
-    //   ),
-    //   shortcutIcon: SvgPicture.asset(
-    //     "assets/images/period_planner2.svg",
-    //     semanticsLabel: "Doctors",
-    //     fit: BoxFit.contain,
-    //     width: Constants.shortcutIconSize,
-    //     height: Constants.shortcutIconSize,
-    //   ),
-    //   title: MenuItemNames.PERIOD_PLANNER,
-    //   onPressed: () => context.goNamed(RouteNames.PERIOD_PLANNER),
-    //   color: Constants.periodPlanner,
-    //   ),
+    if (admin)
+    MenuItem(
+      // icon: FaIcon(FontAwesomeIcons.capsules, size: Constants.iconSize, color: Colors.teal[200],),
+      shortcutBackgroundColor: Constants.providerBgColor.withOpacity(0.5),
+      icon: SvgPicture.asset(
+        "assets/images/patient.svg",
+        semanticsLabel: "Doctors",
+        fit: BoxFit.contain,
+        width: 80,
+        height: 80,
+      ),
+      shortcutIcon: SvgPicture.asset(
+        "assets/images/patient.svg",
+        semanticsLabel: "Doctors",
+        fit: BoxFit.contain,
+        width: Constants.shortcutIconSize,
+        height: Constants.shortcutIconSize,
+      ),
+      title: MenuItemNames.PROVIDER_MAIN_SCREEN,
+      onPressed: () => context.goNamed(RouteNames.PROVIDER_MAIN_SCREEN),
+      color: Constants.providerBgColor,
+    ),
   ];
 }
 
 List<MenuItem> getMenuItemByNames(BuildContext context, List<String> names) {
   const programNames = ProgramCodeNameIds.SUPPOTED_PROGRAM_CODES;
   return [
-    ...getGenericMenuItems(context),
+    ...getGenericMenuItems(context, true),
     ...programNames.map((e) => getProgramMenuItemByProgramCode(context, e)),
   ]
       .where(
