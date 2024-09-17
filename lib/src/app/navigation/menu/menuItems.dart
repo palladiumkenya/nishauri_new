@@ -251,6 +251,25 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
       onPressed: () => context.goNamed(RouteNames.DAWA_DROP),
       color: Constants.dawaDropColor.withOpacity(0.5),
     ),
+
+    MenuItem(
+        icon: SvgPicture.asset(
+          "assets/images/psurvey-logo.svg",
+          semanticsLabel: "Doctors",
+          fit: BoxFit.contain,
+          height: 80,
+          width: 80,
+        ),
+        shortcutIcon: SvgPicture.asset(
+          "assets/images/psurvey-logo.svg",
+          semanticsLabel: "Doctors",
+          fit: BoxFit.contain,
+          width: Constants.shortcutIconSize,
+          height: Constants.shortcutIconSize,
+        ),
+        title: MenuItemNames.pSURVEY_MENU,
+        onPressed: () => context.goNamed(RouteNames.pSurvey_Route),
+        color: Constants.pSurveyColor),
     // MenuItem(
     //   // icon: FaIcon(FontAwesomeIcons.capsules, size: Constants.iconSize, color: Colors.teal[200],),
     //   shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,

@@ -59,6 +59,7 @@ import 'package:nishauri/src/features/lab/presentation/pages/LabResultsScreen.da
 import 'package:nishauri/src/features/nishauri_chat/chat/presentation/pages/ChatDetailScreen.dart';
 import 'package:nishauri/src/features/nishauri_chat/chat/presentation/pages/ChatUserList.dart';
 import 'package:nishauri/src/features/nishauri_chat/chat/presentation/pages/ConversationList.dart';
+import 'package:nishauri/src/features/pSurvey/PsurveyHome.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/editPeriodsScreen.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/logPeriods.dart';
@@ -86,6 +87,7 @@ import 'package:nishauri/src/features/visits/presentations/pages/FacilityVisitsS
 import 'package:nishauri/src/utils/routes.dart';
 
 import '../../features/lab/presentation/pages/LabResults.dart';
+import '../../features/pSurvey/loginProvider.dart';
 
 final routesProvider = Provider<GoRouter>((ref) {
   final router = RouterNotifier(ref);
@@ -239,6 +241,17 @@ final List<RouteBase> secureRoutes = [
       return const UpdatePassword();
     },
   ),
+
+  GoRoute(
+    name: RouteNames.pSurvey_Route,
+    path: 'pSurvey',
+    builder: (BuildContext context, GoRouterState state) {
+      // return pSurveyScreen();
+     // return PsurveyHomeScreen();
+      return PsurveyRouteHandler();
+    },
+  ),
+
   GoRoute(
     name: RouteNames.PRIVACY_SETTINGS,
     path: 'privacy-settings',
@@ -713,3 +726,51 @@ final List<RouteBase> programMenu = [
     routes: hivProgramRoutes,
   ),
 ];
+
+
+class PsurveyRouteHandler extends ConsumerWidget {
+  const PsurveyRouteHandler({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final loginState = ref.watch(loginProvider);
+
+    // Check login state
+    return loginState.when(
+      data: (_) {
+        // If login is successful, return the home screen
+        print('successful login');
+        return PsurveyHomeScreen();
+
+      },
+      loading: () {
+        // Show a loading indicator while the login is in progress
+        return const Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
+      error: (error, _) {
+        // If there's an error, show an error message and allow retry
+        return Scaffold(
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Error: $error'),
+                ElevatedButton(
+                  onPressed: () {
+                    // Retry login when the button is pressed
+                    ref.read(loginProvider.notifier).login();
+                  },
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}

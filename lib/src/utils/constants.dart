@@ -33,6 +33,7 @@ class Constants {
   static const labResultsShortcutBgColor = Color.fromARGB(255,195, 214, 255);
   static const dawaDropShortcutBgColor = Color.fromARGB(255,190, 203, 189);
   static const dawaDropColor = Color.fromARGB(255,32, 76, 28);
+  static const pSurveyColor = Color.fromARGB(255, 75, 127, 117);
   static const programsColor = Color.fromARGB(255,35,102, 42);
   static const activeSelectionColor = Color.fromARGB(255,65, 165, 146);
   static const clinicCardColor = Color.fromARGB(255,13,71,161);
