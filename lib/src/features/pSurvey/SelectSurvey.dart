@@ -4,17 +4,36 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'ActiveSurveyProvider.dart';
 import 'Survey.dart';
 //import 'active_survey_provider.dart'; // Import the provider
-import 'ActiveSurveys.dart';
+import 'ActiveSurveysModel.dart';
 
 class SelectSurveyScreen extends HookConsumerWidget {
   const SelectSurveyScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch the activeSurveyProvider to get the data
-    final activeSurveys = ref.watch(activeSurveyProvider);
+
+
+
+    // Get the ActiveSurveysNotifier
+    final surveysNotifier = ref.read(activeSurveysProvider.notifier);
+
+    // Call loadActiveSurveys when the widget is first built
+    useEffect(() {
+      // You can pass any required parameters like token and base URL here
+      surveysNotifier.loadActiveSurveys('Token 02ea508dd226142ffee71eb61ca80efa5436cf7a', 'https://psurveyapitest.kenyahmis.org/api/questionnaire/active');
+      return null;
+    }, []);
+
+    // Watch the activeSurveysProvider to get the data
+    final activeSurveys = ref.watch(activeSurveysProvider);
+
+
+
+
+
 
     return Scaffold(
       body: Column(
@@ -45,18 +64,18 @@ class SelectSurveyScreen extends HookConsumerWidget {
                       ),
                       elevation: 3,
                       child: ListTile(
-                        title: Text(survey.title),  // Display survey title
-                        subtitle: Text(survey.description),  // Display survey description
+                        title: Text(survey.surveyTitle),  // Display survey title
+                        subtitle: Text(survey.surveyDescription),  // Display survey description
                         trailing: const Icon(Icons.navigate_next),
                         onTap: () {
                           // Define the action when a survey is selected
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => SurveyScreen()),
+                            MaterialPageRoute(builder: (context) => SurveyScreen()), // Pass relevant data if necessary
                           );
 
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('${survey.title} selected')),
+                            SnackBar(content: Text('${survey.surveyTitle} selected')),
                           );
                         },
                       ),
