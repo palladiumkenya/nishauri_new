@@ -47,6 +47,8 @@ mixin _$User {
   String? get occupation => throw _privateConstructorUsedError;
   bool get profileUpdated => throw _privateConstructorUsedError;
   bool get accountVerified => throw _privateConstructorUsedError;
+  List<String> get roles => throw _privateConstructorUsedError;
+  String? get facility => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -82,7 +84,9 @@ abstract class $UserCopyWith<$Res> {
       String? primaryLanguage,
       String? occupation,
       bool profileUpdated,
-      bool accountVerified});
+      bool accountVerified,
+      List<String> roles,
+      String? facility});
 }
 
 /// @nodoc
@@ -122,6 +126,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? occupation = freezed,
     Object? profileUpdated = null,
     Object? accountVerified = null,
+    Object? roles = null,
+    Object? facility = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -220,6 +226,14 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.accountVerified
           : accountVerified // ignore: cast_nullable_to_non_nullable
               as bool,
+      roles: null == roles
+          ? _value.roles
+          : roles // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      facility: freezed == facility
+          ? _value.facility
+          : facility // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -255,7 +269,9 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String? primaryLanguage,
       String? occupation,
       bool profileUpdated,
-      bool accountVerified});
+      bool accountVerified,
+      List<String> roles,
+      String? facility});
 }
 
 /// @nodoc
@@ -292,6 +308,8 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? occupation = freezed,
     Object? profileUpdated = null,
     Object? accountVerified = null,
+    Object? roles = null,
+    Object? facility = freezed,
   }) {
     return _then(_$UserImpl(
       id: freezed == id
@@ -390,6 +408,14 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.accountVerified
           : accountVerified // ignore: cast_nullable_to_non_nullable
               as bool,
+      roles: null == roles
+          ? _value._roles
+          : roles // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      facility: freezed == facility
+          ? _value.facility
+          : facility // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -421,7 +447,10 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       this.primaryLanguage,
       this.occupation,
       this.profileUpdated = false,
-      this.accountVerified = false});
+      this.accountVerified = false,
+      final List<String> roles = const [],
+      this.facility})
+      : _roles = roles;
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -479,10 +508,21 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   @override
   @JsonKey()
   final bool accountVerified;
+  final List<String> _roles;
+  @override
+  @JsonKey()
+  List<String> get roles {
+    if (_roles is EqualUnmodifiableListView) return _roles;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_roles);
+  }
+
+  @override
+  final String? facility;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'User(id: $id, image: $image, username: $username, firstName: $firstName, lastName: $lastName, name: $name, dateOfBirth: $dateOfBirth, gender: $gender, email: $email, phoneNumber: $phoneNumber, county: $county, constituency: $constituency, bloodGroup: $bloodGroup, allergies: $allergies, disabilities: $disabilities, chronics: $chronics, weight: $weight, height: $height, maritalStatus: $maritalStatus, educationLevel: $educationLevel, primaryLanguage: $primaryLanguage, occupation: $occupation, profileUpdated: $profileUpdated, accountVerified: $accountVerified)';
+    return 'User(id: $id, image: $image, username: $username, firstName: $firstName, lastName: $lastName, name: $name, dateOfBirth: $dateOfBirth, gender: $gender, email: $email, phoneNumber: $phoneNumber, county: $county, constituency: $constituency, bloodGroup: $bloodGroup, allergies: $allergies, disabilities: $disabilities, chronics: $chronics, weight: $weight, height: $height, maritalStatus: $maritalStatus, educationLevel: $educationLevel, primaryLanguage: $primaryLanguage, occupation: $occupation, profileUpdated: $profileUpdated, accountVerified: $accountVerified, roles: $roles, facility: $facility)';
   }
 
   @override
@@ -513,7 +553,9 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       ..add(DiagnosticsProperty('primaryLanguage', primaryLanguage))
       ..add(DiagnosticsProperty('occupation', occupation))
       ..add(DiagnosticsProperty('profileUpdated', profileUpdated))
-      ..add(DiagnosticsProperty('accountVerified', accountVerified));
+      ..add(DiagnosticsProperty('accountVerified', accountVerified))
+      ..add(DiagnosticsProperty('roles', roles))
+      ..add(DiagnosticsProperty('facility', facility));
   }
 
   @override
@@ -560,7 +602,10 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
             (identical(other.profileUpdated, profileUpdated) ||
                 other.profileUpdated == profileUpdated) &&
             (identical(other.accountVerified, accountVerified) ||
-                other.accountVerified == accountVerified));
+                other.accountVerified == accountVerified) &&
+            const DeepCollectionEquality().equals(other._roles, _roles) &&
+            (identical(other.facility, facility) ||
+                other.facility == facility));
   }
 
   @JsonKey(ignore: true)
@@ -590,7 +635,9 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
         primaryLanguage,
         occupation,
         profileUpdated,
-        accountVerified
+        accountVerified,
+        const DeepCollectionEquality().hash(_roles),
+        facility
       ]);
 
   @JsonKey(ignore: true)
@@ -632,7 +679,9 @@ abstract class _User implements User {
       final String? primaryLanguage,
       final String? occupation,
       final bool profileUpdated,
-      final bool accountVerified}) = _$UserImpl;
+      final bool accountVerified,
+      final List<String> roles,
+      final String? facility}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -686,6 +735,10 @@ abstract class _User implements User {
   bool get profileUpdated;
   @override
   bool get accountVerified;
+  @override
+  List<String> get roles;
+  @override
+  String? get facility;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

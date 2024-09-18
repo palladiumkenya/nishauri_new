@@ -33,6 +33,8 @@ class User with _$User {
     String? occupation,
     @Default(false) bool profileUpdated,
     @Default(false) bool accountVerified,
+    @Default([]) List<String> roles,
+    String? facility,
 
   }) = _User;
 

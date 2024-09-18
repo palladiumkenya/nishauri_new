@@ -117,6 +117,21 @@ List<_SettingsItem> _settingsItem(BuildContext context) => <_SettingsItem>[
         },
       ),
   ),
+  _SettingsItem(
+    title: "Enable self screening reminder",
+    subTitle: "Enable daily log reminders for self-screening",
+    leadingIcon: Icons.display_settings,
+    trailingIcon: Consumer(
+      builder: (context, ref, child) {
+        final settings = ref.read(settingsNotifierProvider.notifier);
+
+        return Switch(
+          value: true,
+          onChanged: (value) => false,
+        );
+      },
+    ),
+  ),
     ];
 
 Future<void> _enableBiometricSupport(BuildContext context, WidgetRef ref) async {

@@ -73,6 +73,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final size = getOrientationAwareScreenSize(context);
     final programState = ref.watch(userProgramProvider);
     final settings = ref.watch(settingsNotifierProvider);
+    final updateSettings = ref.read(settingsNotifierProvider.notifier);
 
     // Handle dialog display
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -83,8 +84,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         loading: () => false,
       );
 
-      if (showUpdateProgram && settings.firstNuruAccess) {
+      if (showUpdateProgram && settings.firstTimeNoProgram) {
         HealthProgramDialog(context).show();
+        updateSettings.updateSettings(firstTimeNoProgram: false);
       }
     });
 

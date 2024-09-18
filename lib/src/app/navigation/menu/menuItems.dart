@@ -110,7 +110,7 @@ MenuItem getProgramMenuItemByProgramCode(
   );
 }
 
-List<MenuItem> getGenericMenuItems(BuildContext context) {
+List<MenuItem> getGenericMenuItems(BuildContext context, bool admin) {
   return [
     // MenuItem(
     //   icon: Icons.calendar_month_rounded,
@@ -270,6 +270,35 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
         title: MenuItemNames.pSURVEY_MENU,
         onPressed: () => context.goNamed(RouteNames.pSurvey_Route),
         color: Constants.pSurveyColor),
+
+
+
+    if (admin)
+      MenuItem(
+        // icon: FaIcon(FontAwesomeIcons.capsules, size: Constants.iconSize, color: Colors.teal[200],),
+        shortcutBackgroundColor: Constants.providerBgColor.withOpacity(0.5),
+        icon: SvgPicture.asset(
+          "assets/images/patient.svg",
+          semanticsLabel: "Doctors",
+          fit: BoxFit.contain,
+          width: 80,
+          height: 80,
+        ),
+        shortcutIcon: SvgPicture.asset(
+          "assets/images/patient.svg",
+          semanticsLabel: "Doctors",
+          fit: BoxFit.contain,
+          width: Constants.shortcutIconSize,
+          height: Constants.shortcutIconSize,
+        ),
+        title: MenuItemNames.PROVIDER_MAIN_SCREEN,
+        onPressed: () => context.goNamed(RouteNames.PROVIDER_MAIN_SCREEN),
+        color: Constants.providerBgColor,
+      ),
+
+
+
+
     // MenuItem(
     //   // icon: FaIcon(FontAwesomeIcons.capsules, size: Constants.iconSize, color: Colors.teal[200],),
     //   shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,
@@ -328,7 +357,7 @@ List<MenuItem> getGenericMenuItems(BuildContext context) {
 List<MenuItem> getMenuItemByNames(BuildContext context, List<String> names) {
   const programNames = ProgramCodeNameIds.SUPPOTED_PROGRAM_CODES;
   return [
-    ...getGenericMenuItems(context),
+    ...getGenericMenuItems(context, true),
     ...programNames.map((e) => getProgramMenuItemByProgramCode(context, e)),
   ]
       .where(

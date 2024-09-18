@@ -13,13 +13,21 @@ class SettingsController extends StateNotifier<Settings> {
     final theme = await LocalStorage.get("theme");
     final isPrivacyEnabled = await LocalStorage.get("isPrivacyEnabled");
     final firstTimeInstallation = await LocalStorage.get("initial");
+    final firstTimeNoProgram = await LocalStorage.get("program_update");
+    final firstNuruAccess = await LocalStorage.get("firstNuruAccess");
     state = state.copyWith(
         theme: theme.isNotEmpty ? theme : "light",
         isPrivacyEnabled:
             isPrivacyEnabled.isEmpty ? true : isPrivacyEnabled == "1",
         firstTimeInstallation: firstTimeInstallation.isEmpty
             ? true
-            : firstTimeInstallation == "1");
+            : firstTimeInstallation == "1",
+        firstTimeNoProgram: firstTimeNoProgram.isEmpty
+            ? true
+            : firstTimeNoProgram == "1",
+        firstNuruAccess: firstNuruAccess.isEmpty
+            ? true
+            : firstNuruAccess == "1");
   }
 
   Future<void> saveSettingConfig(Settings settings) async {
@@ -30,12 +38,15 @@ class SettingsController extends StateNotifier<Settings> {
         "initial", settings.firstTimeInstallation ? "1" : "0");
     await LocalStorage.save(
         "firstNuruAccess", settings.firstNuruAccess ? "1" : "0");
+    await LocalStorage.save("program_update", settings.firstTimeNoProgram ? "1" : "0");
   }
 
   Future<void> clearSettingConfig() async {
     await LocalStorage.delete("theme");
     await LocalStorage.delete("isPrivacyEnabled");
     await LocalStorage.delete("initial");
+    await LocalStorage.delete("program_update");
+    await LocalStorage.delete("firstNuruAccess");
   }
 
   void updateSettings({
@@ -47,6 +58,7 @@ class SettingsController extends StateNotifier<Settings> {
     bool? isAuthenticated,
     bool? firstTimeInstallation,
     bool? firstNuruAccess,
+    bool? firstTimeNoProgram,
   }) {
     state = state.copyWith(
         userToken: userToken,
@@ -56,7 +68,8 @@ class SettingsController extends StateNotifier<Settings> {
         isBiometricEnabled: isBiometricEnabled,
         isAuthenticated: isAuthenticated,
         firstTimeInstallation: firstTimeInstallation,
-        firstNuruAccess: firstNuruAccess);
+        firstNuruAccess: firstNuruAccess,
+        firstTimeNoProgram: firstTimeNoProgram);
     saveSettingConfig(state);
   }
 
@@ -73,6 +86,7 @@ class SettingsController extends StateNotifier<Settings> {
     bool? isAuthenticated,
     bool? firstTimeInstallation,
     bool? firstNuruAccess,
+    bool? firstTimeNoProgram,
   }) {
     state = state.copyWith(
         userToken: userToken ?? state.userToken,
@@ -83,7 +97,8 @@ class SettingsController extends StateNotifier<Settings> {
         isAuthenticated: isAuthenticated ?? state.isAuthenticated,
         firstTimeInstallation:
             firstTimeInstallation ?? state.firstTimeInstallation,
-        firstNuruAccess: firstNuruAccess ?? state.firstNuruAccess);
+        firstNuruAccess: firstNuruAccess ?? state.firstNuruAccess,
+        firstTimeNoProgram:firstTimeNoProgram ?? state.firstTimeNoProgram);
     saveSettingConfig(state);
   }
 
