@@ -9,11 +9,9 @@ import 'package:intl/intl.dart'; // For formatting the date
 
 import 'SelectSurvey.dart';
 
-
-
-
 class SurveyScreen extends HookConsumerWidget {
-  const SurveyScreen({Key? key}) : super(key: key);
+  
+  const SurveyScreen({Key? key, required int questionnaireId, required link, required sessionId}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -122,10 +120,6 @@ class SurveyScreen extends HookConsumerWidget {
               ),
             ),
           )
-
-
-
-
 
         ],
       ),

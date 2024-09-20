@@ -6,7 +6,7 @@ import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'ActiveSurveyProvider.dart';
 import 'Survey.dart';
-//import 'active_survey_provider.dart'; // Import the provider
+import 'ConsentSurveyProvider.dart'; // Import the provider
 import 'ActiveSurveysModel.dart';
 
 class SelectSurveyScreen extends HookConsumerWidget {
@@ -14,26 +14,21 @@ class SelectSurveyScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-
-
     // Get the ActiveSurveysNotifier
     final surveysNotifier = ref.read(activeSurveysProvider.notifier);
 
     // Call loadActiveSurveys when the widget is first built
     useEffect(() {
-      // You can pass any required parameters like token and base URL here
-      surveysNotifier.loadActiveSurveys('Token 02ea508dd226142ffee71eb61ca80efa5436cf7a', 'https://psurveyapitest.kenyahmis.org/api/questionnaire/active');
+      surveysNotifier.loadActiveSurveys(
+        'Token 02ea508dd226142ffee71eb61ca80efa5436cf7a',
+        'https://psurveyapitest.kenyahmis.org/api/questionnaire/active',
+      );
       return null;
     }, []);
 
     // Watch the activeSurveysProvider to get the data
     final activeSurveys = ref.watch(activeSurveysProvider);
-
-
-
-
-
+    final consentNotifier = ref.read(consentProvider.notifier);
 
     return Scaffold(
       body: Column(
@@ -67,16 +62,47 @@ class SelectSurveyScreen extends HookConsumerWidget {
                         title: Text(survey.surveyTitle),  // Display survey title
                         subtitle: Text(survey.surveyDescription),  // Display survey description
                         trailing: const Icon(Icons.navigate_next),
-                        onTap: () {
-                          // Define the action when a survey is selected
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => SurveyScreen()), // Pass relevant data if necessary
-                          );
+                        onTap: () async {
+                          final baseUrl = 'https://psurveyapitest.kenyahmis.org/api/questionnaire/start/';
+                          final authToken = 'Token 02ea508dd226142ffee71eb61ca80efa5436cf7a';
+                          final questionnaireId = survey.id;  // Use survey's ID
+                          final cccNumber = '1234500001';  // Example CCC number
+                          final firstName = 'sample_first_name';  // Example first name
+                          final dataId = 1;  // Example data ID
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('${survey.surveyTitle} selected')),
-                          );
+                          try {
+                            // Call the confirmConsent method and handle the response
+                            final data = await consentNotifier.confirmConsent(
+                              baseUrl: baseUrl,
+                              authToken: authToken,
+                              questionnaireId: questionnaireId,
+                              cccNumber: cccNumber,
+                              firstName: firstName,
+                              dataId: dataId,
+                            );
+
+                            // Navigate to SurveyScreen and pass the link and sessionId
+                            if (data.containsKey('link') && data.containsKey('session')) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SurveyScreen(
+                                    questionnaireId: questionnaireId,
+                                    link: data['link'],
+                                    sessionId: data['session'],
+                                  ),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Consent confirmation failed or missing data.')),
+                              );
+                            }
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Error: $e')),
+                            );
+                          }
                         },
                       ),
                     );
