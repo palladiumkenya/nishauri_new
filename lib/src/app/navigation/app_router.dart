@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -493,7 +494,7 @@ final List<RouteBase> selfScreeningRoutes = [
               final extra = state.extra as Map<String, dynamic>;
               final startDate = extra['startDate'] as DateTime;
               final endDate = extra['endDate'] as DateTime;
-              final id = extra['id'] as String;
+              final id = extra['id'] as int;
               return EditPeriods(initialStartDate: startDate, initialEndDate: endDate, cycleId: id,);
             },
           ),

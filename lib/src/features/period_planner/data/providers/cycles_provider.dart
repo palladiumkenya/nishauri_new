@@ -1,25 +1,43 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nishauri/src/features/period_planner/data/repository/cycles_repository.dart';
+import 'package:nishauri/src/features/period_planner/data/services/cycles_service.dart';
+import 'package:nishauri/src/features/period_planner/presentation/controllers/cycles_controller.dart';
 import '../models/cycle.dart';
 
-final cyclesProvider = StateNotifierProvider<CyclesNotifier, List<Cycle>>((ref) {
-  return CyclesNotifier();
+final cyclesProvider = StateNotifierProvider<CyclesController, AsyncValue<Map<int, Cycle>>> ((ref) {
+  final service = CyclesService();
+  final repository = CyclesRepository(service);
+  return CyclesController(repository);
 });
 
-class CyclesNotifier extends StateNotifier<List<Cycle>> {
-  CyclesNotifier():super(cycles);
+// final cyclesRepositoryProvider = Provider<CyclesRepository>((ref) {
+//   return CyclesRepository(CyclesService());
+// });
 
-  void addCycle(Cycle newCycle) {
-    state = [...state, newCycle];
-  }
+// final cyclesListProvider = FutureProvider<List<Cycle>>((ref) async {
+//   final repository = ref.watch(cyclesRepositoryProvider);
+//   return await repository.fetchCycles();
+// });
 
-  void updatedCycle(String cycleId, Cycle updatedCycle) {
-    state = [
-      for (final cycle in state)
-        if (cycle.cycleId == cycleId) updatedCycle else cycle
-    ];
-  }
+// final cyclesProvider = StateNotifierProvider<CyclesNotifier, List<Cycle>>((ref) {
+//   return CyclesNotifier();
+// });
 
-  // void removeCycle(String cycleId) {
-  //   state = state.where((cycle) => cycle.cycleId != cycleId).toList();
-  // }
-}
+// class CyclesNotifier extends StateNotifier<List<Cycle>> {
+//   CyclesNotifier():super(cycles);
+
+//   void addCycle(Cycle newCycle) {
+//     state = [...state, newCycle];
+//   }
+
+//   void updatedCycle(String cycleId, Cycle updatedCycle) {
+//     state = [
+//       for (final cycle in state)
+//         if (cycle.cycleId == cycleId) updatedCycle else cycle
+//     ];
+//   }
+
+//   // void removeCycle(String cycleId) {
+//   //   state = state.where((cycle) => cycle.cycleId != cycleId).toList();
+//   // }
+// }

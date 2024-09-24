@@ -13,22 +13,22 @@ import 'package:nishauri/src/utils/routes.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 //printing List which is acting as a Database
-void printCycles(List<Cycle> cycles) {
-  debugPrint('----Cycle Printed----');
-  for (var cycle in cycles) {
-    debugPrint('Cycle ID: ${cycle.cycleId}');
-    debugPrint('Period Start: ${cycle.periodStart}');
-    debugPrint('Period End: ${cycle.periodEnd}');
-    debugPrint('Fertile Start: ${cycle.fertileStart}');
-    debugPrint('Fertile End: ${cycle.fertileEnd}');
-    debugPrint('Ovulation: ${cycle.ovulation}');
-    debugPrint('Predicted Period Start: ${cycle.predictedPeriodStart}');
-    debugPrint('Predicted Period End: ${cycle.predictedPeriodEnd}');
-    debugPrint('Cycle Length: ${cycle.cycleLength}');
-    debugPrint('Period Length: ${cycle.periodLength}');
-    debugPrint('---');
-  }
-}
+// void printCycles(Cycle cycles) {
+//   debugPrint('----Cycle Printed----');
+//   for (var cycle in cycles) {
+//     // debugPrint('Cycle ID: ${cycle.cycleId}');
+//     debugPrint('Period Start: ${cycle.period_start}');
+//     debugPrint('Period End: ${cycle.periodEnd}');
+//     debugPrint('Fertile Start: ${cycle.fertileStart}');
+//     debugPrint('Fertile End: ${cycle.fertileEnd}');
+//     debugPrint('Ovulation: ${cycle.ovulation}');
+//     debugPrint('Predicted Period Start: ${cycle.predictedPeriodStart}');
+//     debugPrint('Predicted Period End: ${cycle.predictedPeriodEnd}');
+//     debugPrint('Cycle Length: ${cycle.cycleLength}');
+//     debugPrint('Period Length: ${cycle.periodLength}');
+//     debugPrint('---');
+//   }
+// }
 
 //This is the screen the user interacts when they are logging their Period Days
 
@@ -41,21 +41,21 @@ class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _startDate;
   DateTime? _endDate;
-  Map<String, Map<DateTime, List<Event>>> events = EventUtils.generateEvents(cycles);
+
   //late Map<DateTime, List<Event>> _filteredEvents;
   //final latestCycle = cycles.last;
-  bool _isNewUser = cycles.isEmpty;
-  int averagePeriods = calculateAveragePeriodLength(cycles);
+  // bool _isNewUser = cycles.isEmpty;
+  // int averagePeriods = calculateAveragePeriodLength(cycles);
   final today = DateTime.now();
 
   @override
   void initState() {
     super.initState();
-    final cycles = ref.read(cyclesProvider);
-    _isNewUser = cycles.isEmpty;
+    final cycles = ref.read(cyclesProvider).asData?.value ?? {};
+    bool _isNewUser = cycles.isEmpty;
     if (!_isNewUser) {
-      _initializePredictedPeriodRange();
-      _setFocusedDayForRegularUser();
+      _initializePredictedPeriodRange(cycles);
+      _setFocusedDayForRegularUser(cycles);
     }
   }
 
@@ -77,41 +77,41 @@ class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
   //   return filteredEvents;
   // }
 
-  void _initializePredictedPeriodRange() {
-    final cycles = ref.read(cyclesProvider);
-    final latestCycle = cycles.last;
-    _startDate = latestCycle.predictedPeriodStart;
-    _endDate = latestCycle.predictedPeriodEnd;
+  void _initializePredictedPeriodRange(Map<int, Cycle> cycles) {
+    if (cycles.isNotEmpty) {
+      final latestCycle = cycles.values.last;
+      setState(() {
+        _startDate = latestCycle.predicted_period_start;
+        _endDate = latestCycle.predicted_period_end;
+      });
+    }
+    // final latestCycle = cycles.last;
+    // _startDate = latestCycle.predicted_period_start;
+    // _endDate = latestCycle.predicted_period_end;
   }
 
-  void _setFocusedDayForRegularUser() {
-    final cycles = ref.read(cyclesProvider);
-    final latestCycle = cycles.last;
-    _focusedDay = latestCycle.predictedPeriodStart;
+  void _setFocusedDayForRegularUser(Map<int, Cycle> cycles) {
+    if (cycles.isNotEmpty) {
+      final latestCycle = cycles.values.last;
+      setState(() {
+        _focusedDay = latestCycle.predicted_period_start;
+      });
+    }
+    // final cycles = ref.read(cyclesProvider) as List<Cycle>;
+    // final latestCycle = cycles.last;
+    // _focusedDay = latestCycle.predicted_period_start;
   }
 
   //Function handling selection of period days for a regular user
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    // final today = DateTime.now();
-    
-    // // Check if the selected day is in the future
-    // if (selectedDay.isAfter(today)) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(
-    //       content: Text('You cannot select a date in the future. Please select a valid date.'),
-    //     ),
-    //   );
-    //   return;
-    // }
-
     setState(() {
       _startDate = selectedDay;
-      _endDate = _startDate?.add(Duration(days: averagePeriods - 1)); // Only start date is used for regular users
+      // _endDate = _startDate?.add(Duration(days: averagePeriods - 1)); // Only start date is used for regular users
+      _endDate = _startDate?.add(const Duration(days: 4));
       _focusedDay = focusedDay;
-      debugPrint("Average Period Length from Log Periods is $averagePeriods");
+      // debugPrint("Average Period Length from Log Periods is $averagePeriods");
     });
   }
-
 
   // Method to validate date range ensuring selection does not exceed 7 days
   bool _isDateRangeValid(DateTime start, DateTime end) {
@@ -123,42 +123,45 @@ class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
   //Function handling selection of period days for a new user
   void _onRangeSelected(DateTime? start, DateTime? end, DateTime? focusedDay) {
     // If either start or end date is after today, show an error
-    if (start != null && end != null && (start.isAfter(today) || end.isAfter(today))) {
+    if (start != null &&
+        end != null &&
+        (start.isAfter(today) || end.isAfter(today))) {
       showDialog(
-        context: context, 
+        context: context,
         builder: (context) => AlertDialog(
           title: const Text('Invalid Selection'),
-          content: const Text('You cannot select dates in the future. Please select valid dates.'),
+          content: const Text(
+              'You cannot select dates in the future. Please select valid dates.'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-              }, 
+              },
               child: const Text('OK'),
             ),
           ],
         ),
       );
-    } 
+    }
     // Also check if date range is valid (max 7 days)
     else if (start != null && end != null && !_isDateRangeValid(start, end)) {
       showDialog(
-        context: context, 
+        context: context,
         builder: (context) => AlertDialog(
           title: const Text('Invalid Selection'),
-          content: const Text('Please select a date range of 7 days or less. The average period typically lasts between 3 to 7 days.'),
+          content: const Text(
+              'Please select a date range of 7 days or less. The average period typically lasts between 3 to 7 days.'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-              }, 
+              },
               child: const Text('OK'),
             ),
           ],
         ),
       );
-    } 
-    else {
+    } else {
       setState(() {
         _startDate = start;
         _endDate = end;
@@ -166,57 +169,6 @@ class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
       });
     }
   }
-
-  //Function to handle adding log entries in list Database
-  void addCycle(DateTime start, [DateTime? end]) {
-    // If end date is not provided, set it to the start date
-    end ??= start;
-
-    // final DateTime now = DateTime.now();
-    // if (isSameDay(start, now) || isSameDay(end, now)) {
-    //   end = start.add( Duration(days: averagePeriods - 1));
-    // }
-
-    //Handling cases where a user might log an already logged date in their previous cycle, hence warning them using a snackbar
-    for (Cycle cycle in cycles) {
-      if (_datesOverlap(cycle.periodStart, cycle.periodEnd, start, end)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-                'The selected period overlaps with an existing cycle. Please choose different dates.'),
-          ),
-        );
-        return; // Exit the function without adding the cycle
-      }
-    }
-
-    // If no overlap, add a new cycle
-    final Cycle newCycle = predictCycle(start, end);
-
-    //using riverpod to add the cycle to the state
-    ref.read(cyclesProvider.notifier).addCycle(newCycle);
-
-    cycles.add(newCycle);
-
-    //update cycle lengths after adding the new cycle
-    updateCycleLengths(cycles);
-    //_updateEventsForCycle(newCycle);
-  }
-
-
-  // void _updateEventsForCycle(Cycle cycle) {
-  //   // Remove old events for this cycle from the events map
-  //   events.remove(cycle.cycleId);
-
-  //   // Generate and add new events for the updated cycle
-  //   final newEvents = EventUtils.generateEvents([cycle]);
-  //   events[cycle.cycleId] = newEvents[cycle.cycleId]!;
-
-  //   // Update the flattened events map for display
-  //   setState(() {
-  //     _flatEvents = _flattenEvents(events);
-  //   });
-  // }
 
   // Function to check if two date ranges overlap
   bool _datesOverlap(
@@ -227,95 +179,138 @@ class _LogPeriodScreenState extends ConsumerState<LogPeriodScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //events = EventUtils.generateEvents(cycles);
+    final cycleAsyncValue = ref.watch(cyclesProvider);
     final theme = Theme.of(context);
+
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CustomAppBar(
-            title: "Enter Periods 📅",
-            color: Constants.periodPlanner.withOpacity(1.0),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              _isNewUser
-                  ? "Please enter your previous period start and end date."
-                  : "Please enter when your Periods have started",
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-            ),
-          ),
-          TableCalendar(
-            focusedDay: _focusedDay,
-            firstDay: DateTime(2021),
-            lastDay: DateTime(2100),
-            rangeStartDay: _startDate,
-            rangeEndDay: _endDate,
-            onRangeSelected: _isNewUser ? _onRangeSelected : null,
-            onDaySelected: _isNewUser ? null : _onDaySelected,
-            rangeSelectionMode: RangeSelectionMode.toggledOn,
-            calendarStyle: const CalendarStyle(
-              todayDecoration: BoxDecoration(
-                color: Colors.blue,
-                shape: BoxShape.circle,
+      body: cycleAsyncValue.when(
+        data: (cycles) {
+          bool _isNewUser = cycles.isEmpty;
+          final cyclesId = cycles.keys.lastOrNull;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomAppBar(
+                title: "Enter Periods 📅",
+                color: Constants.periodPlanner.withOpacity(1.0),
               ),
-              rangeStartDecoration: BoxDecoration(
-                color: Colors.pink,
-                shape: BoxShape.circle,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  _isNewUser
+                      ? "Please enter your previous period start and end date."
+                      : "Please enter when your Periods have started",
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.bold),
+                ),
               ),
-              rangeEndDecoration: BoxDecoration(
-                color: Colors.pink,
-                shape: BoxShape.circle,
-              ),
-              rangeHighlightColor: Constants.periodPlanner,
-              selectedDecoration: BoxDecoration(
-                color: Constants.periodPlanner,
-                shape: BoxShape.circle,
-              ),
-            ),
-            headerStyle: const HeaderStyle(
-              formatButtonVisible: false,
-            ),
-          ),
-          Expanded(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Constants.periodPlanner,
+              TableCalendar(
+                focusedDay: _focusedDay,
+                firstDay: DateTime(2021),
+                lastDay: DateTime(2100),
+                rangeStartDay: _startDate,
+                rangeEndDay: _endDate,
+                onRangeSelected: _isNewUser ? _onRangeSelected : null,
+                onDaySelected: _isNewUser ? null : _onDaySelected,
+                rangeSelectionMode: RangeSelectionMode.toggledOn,
+                calendarStyle: const CalendarStyle(
+                  todayDecoration: BoxDecoration(
+                    color: Colors.blue,
+                    shape: BoxShape.circle,
                   ),
-                  onPressed: () {
-                    if (_startDate != null && !_startDate!.isAfter(today)) {
-                      final endDate = _endDate ?? _startDate!.add(const Duration(days: 1)); // The else statement handles where a period only happens for a single day hence the end date will be same day as start date 
-                      addCycle(_startDate!, endDate);
-                      printCycles(cycles);
-                      context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
-                    } 
-                    else if (_startDate!.isAfter(today)) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('You cannot select dates in the future. Please select valid dates.')),
-                      );
-                    }
-                    else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Please select your Period start and end dates.')),
-                      );
-                    }
-                  },
-                  child: Text(
-                    'Apply',
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      color: Colors.white,
+                  rangeStartDecoration: BoxDecoration(
+                    color: Colors.pink,
+                    shape: BoxShape.circle,
+                  ),
+                  rangeEndDecoration: BoxDecoration(
+                    color: Colors.pink,
+                    shape: BoxShape.circle,
+                  ),
+                  rangeHighlightColor: Constants.periodPlanner,
+                  selectedDecoration: BoxDecoration(
+                    color: Constants.periodPlanner,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                headerStyle: const HeaderStyle(
+                  formatButtonVisible: false,
+                ),
+              ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Constants.periodPlanner,
+                      ),
+                      onPressed: () {
+                        if (_startDate != null && !_startDate!.isAfter(today)) {
+                          final endDate = _endDate ??
+                              _startDate!.add(const Duration(
+                                  days:
+                                      1)); // The else statement handles where a period only happens for a single day hence the end date will be same day as start date
+                          for (Cycle cycle in cycles.values) {
+                            if (_datesOverlap(cycle.period_start,
+                                cycle.period_end, _startDate!, endDate)) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'The selected period overlaps with an existing cycle. Please choose different dates.'),
+                                ),
+                              );
+                              return; // Exit the function without adding the cycle
+                            }
+                          }
+
+                          final newCycle =
+                              predictCycle(_startDate!, endDate, cycle: cycles);
+
+                          //using riverpod to add the cycle to the server
+                          ref
+                              .read(cyclesProvider.notifier)
+                              .postCycles(newCycle)
+                              .then((_) {
+                            context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
+                          });
+                          // printCycles(cycles);
+                        } else if (_startDate!.isAfter(today)) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    'You cannot select dates in the future. Please select valid dates.')),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    'Please select your Period start and end dates.')),
+                          );
+                        }
+                      },
+                      child: Text(
+                        'Apply',
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
+            ],
+          );
+        },
+        error: (error, stackTrace) => Center(
+          child: Text(
+            'Failed to load cycles: $error',
+            style: const TextStyle(color: Colors.red),
           ),
-        ],
+        ),
+        loading: () => const Center(
+          child: CircularProgressIndicator(),
+        ),
       ),
     );
   }
