@@ -68,6 +68,7 @@ import 'package:nishauri/src/features/period_planner/presentation/pages/periodPl
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlanner.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periods_history.dart';
 import 'package:nishauri/src/features/programs/presentation/pages/programs.dart';
+import 'package:nishauri/src/features/provider/appointment_management/presentation/pages/reschedule_request_list.dart';
 import 'package:nishauri/src/features/provider/presentation/pages/provider_main_Screen.dart';
 import 'package:nishauri/src/features/self_screening/presentation/pages/bpInsightScreen.dart';
 import 'package:nishauri/src/features/self_screening/presentation/pages/insight_screen.dart';
@@ -403,6 +404,7 @@ final List<RouteBase> secureRoutes = [
     builder: (BuildContext context, GoRouterState state) {
       return const ProviderMainScreen();
     },
+    routes: providerRoutes,
   ),
 ];
 
@@ -536,6 +538,15 @@ final List<RouteBase> selfScreeningRoutes = [
   
 ];
 
+final List<RouteBase> providerRoutes = [
+  GoRoute(
+    name: RouteNames.REQUEST_APP_RESCHEDULE,
+    path: 'request-app-reschedule',
+    builder: (BuildContext context, GoRouterState state) {
+      return const RescheduleRequestListScreen();
+    },
+  ),
+];
 final List<RouteBase> hivProgramRoutes = [
   GoRoute(
     name: RouteNames.HIV_ART_SITES,

@@ -95,7 +95,7 @@ class ProgramAppointmentsScreen extends ConsumerWidget {
                                           filteredAppointments[index]
                                                   .program_name ??
                                               '',
-                                          style: theme.textTheme.headline6,
+                                          style: theme.textTheme.titleSmall,
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                         ),

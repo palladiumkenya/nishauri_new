@@ -40,8 +40,8 @@ class MainMenuScreen extends ConsumerWidget {
 
     final userAdminAsync = ref.watch(userProvider);
     return userAdminAsync.when(
-        data: (admin){
-          final isAdmin = admin.roles.contains("provider");
+        data: (userRoles){
+          List<String> roles = List.from(userRoles.roles);
           return Scaffold(
             key: _scaffoldKey,
             drawer: CustomDrawer(),
@@ -140,7 +140,7 @@ class MainMenuScreen extends ConsumerWidget {
                                     ),
                                   ),
                                   items: [
-                                    ...getGenericMenuItems(context, isAdmin),
+                                    ...getGenericMenuItems(context, roles),
                                   ],
                                 );
                               },

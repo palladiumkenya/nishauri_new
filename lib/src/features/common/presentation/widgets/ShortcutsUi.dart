@@ -18,10 +18,10 @@ class ShortcutsWidget extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final shortcuts = ref.watch(shortcutProvider);
     final adminAsync = ref.watch(userProvider);
-    final isAdmin = adminAsync.when(
-      data: (data) => data.roles.contains("provider"),
-      error: (_, __) => false, // Handle error by assuming non-admin
-      loading: () => false,
+    final List<String> roles = adminAsync.when(
+      data: (data) => data.roles,
+      error: (_, __) => [],
+      loading: () => [],
     );
 
     final theme = Theme.of(context);
@@ -45,7 +45,7 @@ class ShortcutsWidget extends HookConsumerWidget {
                   ),
                 ),
                 onTap: () {
-                  _showDialog(context, isAdmin);
+                  _showDialog(context, roles);
                 },
               ),
             ],
@@ -57,11 +57,11 @@ class ShortcutsWidget extends HookConsumerWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ...getMenuItemByNames(context, shortcuts).map((item) {
+              ...getMenuItemByNames(context, shortcuts, roles).map((item) {
                 return GestureDetector(
                   onTap: item.onPressed,
                   onLongPress: () {
-                    _showDialog(context, isAdmin);
+                    _showDialog(context, roles);
                   },
                   child: MenuOption(
                     title: item.title ?? "",
@@ -72,13 +72,13 @@ class ShortcutsWidget extends HookConsumerWidget {
                   ),
                 );
               }).toList(),
-              if (getMenuItemByNames(context, shortcuts).length < 3)
+              if (getMenuItemByNames(context, shortcuts, roles).length < 3)
                 MenuOption(
                   title: "",
                   icon: const Icon(Icons.add),
                   bgColor: theme.colorScheme.secondary,
                   onPress: () {
-                    _showDialog(context, isAdmin);
+                    _showDialog(context, roles);
                   },
                 ),
             ],
@@ -88,7 +88,7 @@ class ShortcutsWidget extends HookConsumerWidget {
     );
   }
 
-  void _showDialog(BuildContext context, bool isAdmin) {
+  void _showDialog(BuildContext context, List<String> roles) {
     final theme = Theme.of(context);
     showDialog(
       context: context,
@@ -135,7 +135,7 @@ class ShortcutsWidget extends HookConsumerWidget {
                   ),
                   items: [
                     // get generic menu items
-                    ...getGenericMenuItems(context, isAdmin),
+                    ...getGenericMenuItems(context, roles),
                     // get program menu items
                     ...data.where((element) => element.isActive).map((e) {
                       final programCode = e.id;

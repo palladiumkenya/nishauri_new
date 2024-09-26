@@ -85,7 +85,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       );
 
       if (showUpdateProgram && settings.firstTimeNoProgram) {
-        HealthProgramDialog(context).show();
+        HealthProgramDialog(
+            context,
+          "Tap to Choose and Enrol in a Program",
+          "Take Control of Your Health – Join A Program and Start Your Journey Today!",
+            Constants.labResultsShortcutBgColor,
+            "Opt-In",
+            Constants.labResultsColor,
+            "Not now",
+          Constants.labResultsShortcutBgColor,
+              (){
+            context.goNamed(RouteNames.PROGRAME_REGISTRATION_SCREEN);
+          },
+              (){
+            Navigator.of(context).pop();
+          },
+        ).show();
         updateSettings.updateSettings(firstTimeNoProgram: false);
       }
     });
