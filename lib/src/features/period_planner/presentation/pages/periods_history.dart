@@ -220,6 +220,49 @@ class _PeriodsHistoryState extends ConsumerState<PeriodsHistory> {
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
                                     child: ListTile(
+                                      leading: IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Text(
+                                                    "Confirm Delete"),
+                                                content: const Text(
+                                                    "Are you sure you want to delete the current Cycle?"),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      try {
+                                                        ref
+                                                            .read(cyclesProvider
+                                                                .notifier)
+                                                            .deleteCycle(
+                                                                cycleId)
+                                                            .then((_) {
+                                                          Navigator.pop(
+                                                              context);
+                                                        });
+                                                      } catch (e) {
+                                                        debugPrint(
+                                                            'Error deleting cycle: $e');
+                                                      }
+                                                    },
+                                                    child: const Text("Yes"),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Text("No"),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        icon: const Icon(Icons.delete_outline),
+                                      ),
                                       title: Text(
                                         "$start - $end",
                                         style: const TextStyle(

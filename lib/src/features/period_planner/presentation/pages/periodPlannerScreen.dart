@@ -35,53 +35,18 @@ class PeriodPlannerScreen extends ConsumerStatefulWidget {
 
 class _PeriodPlannerScreenState extends ConsumerState<PeriodPlannerScreen> {
   DateTime _currentDate = DateTime.now();
-  late DateTime _periodStart;
-  late DateTime _periodEnd;
-  late DateTime _ovulationDate;
-  late DateTime _nextPeriodStart;
-  late DateTime _nextPeriodEnd;
+  DateTime? _periodStart;
+  DateTime? _periodEnd;
+  DateTime? _ovulationDate;
+  DateTime? _nextPeriodStart;
+  DateTime? _nextPeriodEnd;
   Map<int, Map<DateTime, List<Event>>> events = {};
 
   @override
   void initState() {
     super.initState();
-    // ref.read(cyclesProvider.notifier).fetchCycles();
     _checkOverdueDialog();
   }
-
-  // Listen for state changes from cyclesProvider
-  // void _updateFromCycles() {
-  //   final cycles = ref.read(cyclesProvider) as Map<int, Cycle>;
-
-  //   if (cycles.isNotEmpty) {
-  //     Cycle latestCycle = cycles.values.last;
-  //     setState(() {
-  //       _periodStart = latestCycle.period_start;
-  //       _periodEnd = latestCycle.period_end;
-  //       _ovulationDate = latestCycle.ovulation;
-  //       _nextPeriodStart = latestCycle.predicted_period_start;
-  //       _nextPeriodEnd = latestCycle.predicted_period_end;
-  //       events = EventUtils.generateEvents(cycles);
-  //     });
-  //   }
-  // }
-
-  //Method for updating events
-  // void _updateEvents() {
-  //   final cycles = ref.read(cyclesProvider) as Map<int, Cycle>;
-  //   setState(() {
-  //     events = EventUtils.generateEvents(cycles);
-  //     // print("Updated Events: $events");
-  //     // print("Updated Events");
-  //     // events.forEach((cycleId, dateMap) {
-  //     //   dateMap.forEach((date, events) {
-  //     //     print("Cycle ID $cycleId ,Date: $date, Events: $events");
-  //     //   });
-  //     // });
-  //     //print("Updated Events: $events");
-  //     //print("-------------");
-  //   });
-  // }
 
   Future<void> _checkOverdueDialog() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -91,8 +56,7 @@ class _PeriodPlannerScreenState extends ConsumerState<PeriodPlannerScreen> {
 
     if (lastDialogDate == null || !isSameDay(_currentDate, lastDialogDate)) {
       //If the dialog hasn't been shown today and the user's periods are overdue
-      bool isDangerZone = _currentDate.isAfter(_nextPeriodEnd);
-      if (isDangerZone) {
+      if (_nextPeriodEnd != null && _currentDate.isAfter(_nextPeriodEnd!)) {
         _overdueDialog();
         //storing the current date as the last dialog shown date
         prefs.setString('lastDialogDate', _currentDate.toIso8601String());
@@ -249,8 +213,8 @@ class _PeriodPlannerScreenState extends ConsumerState<PeriodPlannerScreen> {
     return Scaffold(
       body: cycleState.when(
         data: (cycles) {
-          // If cycles are updated, recalculate the events and UI elements
-          if (cycles.isNotEmpty) {
+          bool isNewUser = cycles.isEmpty;
+          if (!isNewUser) {
             Cycle latestCycle = cycles.values.last;
             _periodStart = latestCycle.period_start;
             _periodEnd = latestCycle.period_end;
@@ -259,32 +223,48 @@ class _PeriodPlannerScreenState extends ConsumerState<PeriodPlannerScreen> {
             _nextPeriodEnd = latestCycle.predicted_period_end;
             events = EventUtils.generateEvents(cycles);
           }
-          int daysToOvulation = _ovulationDate.difference(_currentDate).inDays;
-          int daysToNextPeriod =
-              _nextPeriodStart.difference(_currentDate).inDays;
-          int overdueDays = _currentDate.difference(_nextPeriodEnd).inDays;
+          // If cycles are updated, recalculate the events and UI elements
+          int daysToOvulation = _ovulationDate != null
+              ? _ovulationDate!.difference(_currentDate).inDays
+              : 0;
+          int daysToNextPeriod = _nextPeriodStart != null
+              ? _nextPeriodStart!.difference(_currentDate).inDays
+              : 0;
+          int overdueDays = _nextPeriodEnd != null
+              ? _currentDate.difference(_nextPeriodEnd!).inDays
+              : 0;
           //int predictedDays = _nextPeriodEnd.difference(_nextPeriodStart).inDays;
 
-          bool isInPeriod = (isSameDay(_currentDate, _periodStart) ||
-                  _currentDate.isAfter(_periodStart)) &&
-              _currentDate.isBefore(_periodEnd);
-          bool veryCloseToPeriod =
-              _currentDate.isBefore(_nextPeriodStart) && daysToNextPeriod == 0;
-          bool isCloseToOvulation = _currentDate.isBefore(_ovulationDate) &&
+          bool isInPeriod = (_periodStart != null &&
+                  (_currentDate.isAfter(_periodStart!) ||
+                      isSameDay(_currentDate, _periodStart!))) &&
+              (_periodEnd != null && _currentDate.isBefore(_periodEnd!));
+
+          bool veryCloseToPeriod = _nextPeriodStart != null &&
+              _currentDate.isBefore(_nextPeriodStart!) &&
+              daysToNextPeriod == 0;
+          bool isCloseToOvulation = _ovulationDate != null &&
+              _currentDate.isBefore(_ovulationDate!) &&
               !isInPeriod &&
               daysToOvulation >= 1;
-          bool veryCloseToOvulation =
-              _currentDate.isBefore(_ovulationDate) && daysToOvulation == 0;
-          bool isOvulation = (isSameDay(_currentDate, _ovulationDate)) ||
-              (_currentDate.isAfter(_ovulationDate) && daysToOvulation == 0);
-          bool afterOvulation = _currentDate.isAfter(_ovulationDate) &&
-              (_currentDate.isBefore(_nextPeriodStart) && daysToNextPeriod > 0);
+          bool veryCloseToOvulation = _ovulationDate != null &&
+              _currentDate.isBefore(_ovulationDate!) &&
+              daysToOvulation == 0;
+          bool isOvulation = _ovulationDate != null &&
+                  (isSameDay(_currentDate, _ovulationDate!)) ||
+              (_currentDate.isAfter(_ovulationDate!) && daysToOvulation == 0);
+          bool afterOvulation =
+              (_ovulationDate != null && _nextPeriodStart != null) &&
+                  _currentDate.isAfter(_ovulationDate!) &&
+                  (_currentDate.isBefore(_nextPeriodStart!) &&
+                      daysToNextPeriod > 0);
           bool duringPredictedPeriodRange =
-              _currentDate.isAfter(_nextPeriodStart) &&
-                      _currentDate.isBefore(_nextPeriodEnd) ||
-                  isSameDay(_currentDate, _nextPeriodStart) ||
-                  isSameDay(_currentDate, _nextPeriodEnd);
-          bool isDangerZone = _currentDate.isAfter(_nextPeriodEnd);
+              (_nextPeriodStart != null && _nextPeriodEnd != null) &&
+                      (_currentDate.isAfter(_nextPeriodStart!) &&
+                          _currentDate.isBefore(_nextPeriodEnd!)) ||
+                  (isSameDay(_currentDate, _nextPeriodStart!) ||
+                      isSameDay(_currentDate, _nextPeriodEnd!));
+          bool isDangerZone = _currentDate.isAfter(_nextPeriodEnd!);
 
           bool inPeriods = isInPeriod;
 
@@ -299,7 +279,7 @@ class _PeriodPlannerScreenState extends ConsumerState<PeriodPlannerScreen> {
             progressValue = 0.2;
             title = 'Period';
             message =
-                'Day ${DateTime.now().difference(_periodStart).inDays + 1}';
+                'Day ${DateTime.now().difference(_periodStart!).inDays + 1}';
             buttonText = 'Period End';
             chances = 'Low';
           } else if (isCloseToOvulation) {
@@ -344,6 +324,12 @@ class _PeriodPlannerScreenState extends ConsumerState<PeriodPlannerScreen> {
             message = '$overdueDays Day${overdueDays > 1 ? 's' : ''}';
             buttonText = 'Period Start';
             chances = 'High';
+          } else if (isNewUser) {
+            progressValue = 1.0;
+            title = "Welcome";
+            message = "Let's kickstart your predictions.";
+            buttonText = 'Get Started';
+            chances = "";
           }
           return Column(
             children: [
@@ -364,14 +350,15 @@ class _PeriodPlannerScreenState extends ConsumerState<PeriodPlannerScreen> {
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
                             children: [
-                              const Text(
-                                "Your Chances of Getting Pregnant are:",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
+                              if (!isNewUser)
+                                const Text(
+                                  "Your Chances of Getting Pregnant are:",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  // style: theme.textTheme.titleLarge?.copyWith(color: Colors.black),
                                 ),
-                                // style: theme.textTheme.titleLarge?.copyWith(color: Colors.black),
-                              ),
                               Text(
                                 chances,
                                 style: TextStyle(
@@ -442,7 +429,8 @@ class _PeriodPlannerScreenState extends ConsumerState<PeriodPlannerScreen> {
                                   ElevatedButton(
                                     onPressed: () {
                                       //Logging Start of new period
-                                      if (buttonText == 'Period Start') {
+                                      if (buttonText == 'Period Start' ||
+                                          buttonText == 'Get Started') {
                                         ref
                                             .read(cyclesProvider.notifier)
                                             .fetchCycles()
@@ -495,8 +483,8 @@ class _PeriodPlannerScreenState extends ConsumerState<PeriodPlannerScreen> {
 
                                                     final updatedCycle =
                                                         predictCycle(
-                                                      _periodStart,
-                                                      _periodEnd,
+                                                      _periodStart!,
+                                                      _periodEnd!,
                                                       cycleId: cycleId,
                                                       cycle: cycles,
                                                     );
@@ -531,10 +519,12 @@ class _PeriodPlannerScreenState extends ConsumerState<PeriodPlannerScreen> {
                                                         cycles[secondLastCycleId]!
                                                             .period_end;
 
-                                                    final updateSecondLastCycle = predictCycle(
-                                                      secondLastPeriodStart, 
-                                                      secondLastPeriodEnd, 
-                                                      cycleId: secondLastCycleId,
+                                                    final updateSecondLastCycle =
+                                                        predictCycle(
+                                                      secondLastPeriodStart,
+                                                      secondLastPeriodEnd,
+                                                      cycleId:
+                                                          secondLastCycleId,
                                                       cycle: cycles,
                                                     );
 

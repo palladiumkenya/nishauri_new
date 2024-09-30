@@ -63,6 +63,7 @@ import 'package:nishauri/src/features/nishauri_chat/chat/presentation/pages/Conv
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/editPeriodsScreen.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/logPeriods.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/new_user_screen.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlannerMenu.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlannerScreen.dart';
@@ -481,6 +482,13 @@ final List<RouteBase> selfScreeningRoutes = [
     },
     routes: [
       GoRoute(
+        name: RouteNames.PERIOD_PLANNER_LOG_PERIODS,
+        path: 'period-planner-log-period-calendar',
+        builder: (BuildContext context, GoRouterState state) {
+          return LogPeriodScreen();
+        },
+      ),
+      GoRoute(
         name: RouteNames.PERIOD_PLANNER_PERIOD_HISTORY,
         path: 'period-planner-period-history',
         builder: (BuildContext context, GoRouterState state) {
@@ -495,7 +503,11 @@ final List<RouteBase> selfScreeningRoutes = [
               final startDate = extra['startDate'] as DateTime;
               final endDate = extra['endDate'] as DateTime;
               final id = extra['id'] as int;
-              return EditPeriods(initialStartDate: startDate, initialEndDate: endDate, cycleId: id,);
+              return EditPeriods(
+                initialStartDate: startDate,
+                initialEndDate: endDate,
+                cycleId: id,
+              );
             },
           ),
         ],
@@ -503,30 +515,27 @@ final List<RouteBase> selfScreeningRoutes = [
     ],
   ),
   GoRoute(
-    name: RouteNames.PERIOD_PLANNER_LOG_PERIODS,
-    path: 'period-planner-log-period-calendar',
+    name: RouteNames.NEW_USER_SCREEN,
+    path: 'new-user-screen',
     builder: (BuildContext context, GoRouterState state) {
-      return LogPeriodScreen();
+      return const NewUserScreen();
     },
   ),
   GoRoute(
-    name: RouteNames.INSIGHT,
-    path: 'insight',
-    builder: (BuildContext context, GoRouterState state) {
-      return const InsightScreen();
-    },
-    routes:   [
-      GoRoute(
-      name: RouteNames.BP_INSIGHT,
-      path: 'bp-insight',
+      name: RouteNames.INSIGHT,
+      path: 'insight',
       builder: (BuildContext context, GoRouterState state) {
-        return const BpInsightScreen();
+        return const InsightScreen();
       },
-    ),
-    ]
-  ),  
-
-  
+      routes: [
+        GoRoute(
+          name: RouteNames.BP_INSIGHT,
+          path: 'bp-insight',
+          builder: (BuildContext context, GoRouterState state) {
+            return const BpInsightScreen();
+          },
+        ),
+      ]),
 ];
 
 final List<RouteBase> hivProgramRoutes = [
@@ -667,11 +676,11 @@ final List<RouteBase> dawaDropRoutes = [
 
 final List<RouteBase> chatRoutes = [
   GoRoute(
-      name: RouteNames.CHAT_DETAIL,
-      path: 'chat-detail',
-      builder: (BuildContext context, GoRouterState state) {
-        return ChatDetailScreen();
-      },
+    name: RouteNames.CHAT_DETAIL,
+    path: 'chat-detail',
+    builder: (BuildContext context, GoRouterState state) {
+      return ChatDetailScreen();
+    },
   ),
   GoRoute(
     name: RouteNames.CHAT_USER,
