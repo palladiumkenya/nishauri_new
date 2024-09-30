@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/clinic_card/data/providers/programProvider.dart';
 import 'package:nishauri/src/features/clinic_card/presentation/widgets/clinicalDetails.dart';
 import 'package:nishauri/src/shared/display/CustomTabBar.dart';
-import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/utils/constants.dart';
 

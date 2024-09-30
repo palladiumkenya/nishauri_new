@@ -34,6 +34,8 @@ mixin _$Appointment {
   String? get appt_status => throw _privateConstructorUsedError;
   int? get appointment_status => throw _privateConstructorUsedError;
   String? get date_attended => throw _privateConstructorUsedError;
+  String? get reschedule_date => throw _privateConstructorUsedError;
+  String? get reschedule_reason => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -61,7 +63,9 @@ abstract class $AppointmentCopyWith<$Res> {
       String? nextAppointmentDate,
       String? appt_status,
       int? appointment_status,
-      String? date_attended});
+      String? date_attended,
+      String? reschedule_date,
+      String? reschedule_reason});
 }
 
 /// @nodoc
@@ -91,6 +95,8 @@ class _$AppointmentCopyWithImpl<$Res, $Val extends Appointment>
     Object? appt_status = freezed,
     Object? appointment_status = freezed,
     Object? date_attended = freezed,
+    Object? reschedule_date = freezed,
+    Object? reschedule_reason = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -149,6 +155,14 @@ class _$AppointmentCopyWithImpl<$Res, $Val extends Appointment>
           ? _value.date_attended
           : date_attended // ignore: cast_nullable_to_non_nullable
               as String?,
+      reschedule_date: freezed == reschedule_date
+          ? _value.reschedule_date
+          : reschedule_date // ignore: cast_nullable_to_non_nullable
+              as String?,
+      reschedule_reason: freezed == reschedule_reason
+          ? _value.reschedule_reason
+          : reschedule_reason // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -175,7 +189,9 @@ abstract class _$$AppointmentImplCopyWith<$Res>
       String? nextAppointmentDate,
       String? appt_status,
       int? appointment_status,
-      String? date_attended});
+      String? date_attended,
+      String? reschedule_date,
+      String? reschedule_reason});
 }
 
 /// @nodoc
@@ -203,6 +219,8 @@ class __$$AppointmentImplCopyWithImpl<$Res>
     Object? appt_status = freezed,
     Object? appointment_status = freezed,
     Object? date_attended = freezed,
+    Object? reschedule_date = freezed,
+    Object? reschedule_reason = freezed,
   }) {
     return _then(_$AppointmentImpl(
       id: freezed == id
@@ -261,6 +279,14 @@ class __$$AppointmentImplCopyWithImpl<$Res>
           ? _value.date_attended
           : date_attended // ignore: cast_nullable_to_non_nullable
               as String?,
+      reschedule_date: freezed == reschedule_date
+          ? _value.reschedule_date
+          : reschedule_date // ignore: cast_nullable_to_non_nullable
+              as String?,
+      reschedule_reason: freezed == reschedule_reason
+          ? _value.reschedule_reason
+          : reschedule_reason // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -282,7 +308,9 @@ class _$AppointmentImpl implements _Appointment {
       this.nextAppointmentDate,
       this.appt_status,
       this.appointment_status,
-      this.date_attended});
+      this.date_attended,
+      this.reschedule_date,
+      this.reschedule_reason});
 
   factory _$AppointmentImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppointmentImplFromJson(json);
@@ -315,10 +343,14 @@ class _$AppointmentImpl implements _Appointment {
   final int? appointment_status;
   @override
   final String? date_attended;
+  @override
+  final String? reschedule_date;
+  @override
+  final String? reschedule_reason;
 
   @override
   String toString() {
-    return 'Appointment(id: $id, ccc_no: $ccc_no, facility_name: $facility_name, program_name: $program_name, program_code: $program_code, program_status: $program_status, reschedule_status: $reschedule_status, appointment_type: $appointment_type, appointment_date: $appointment_date, appointment: $appointment, nextAppointmentDate: $nextAppointmentDate, appt_status: $appt_status, appointment_status: $appointment_status, date_attended: $date_attended)';
+    return 'Appointment(id: $id, ccc_no: $ccc_no, facility_name: $facility_name, program_name: $program_name, program_code: $program_code, program_status: $program_status, reschedule_status: $reschedule_status, appointment_type: $appointment_type, appointment_date: $appointment_date, appointment: $appointment, nextAppointmentDate: $nextAppointmentDate, appt_status: $appt_status, appointment_status: $appointment_status, date_attended: $date_attended, reschedule_date: $reschedule_date, reschedule_reason: $reschedule_reason)';
   }
 
   @override
@@ -351,7 +383,11 @@ class _$AppointmentImpl implements _Appointment {
             (identical(other.appointment_status, appointment_status) ||
                 other.appointment_status == appointment_status) &&
             (identical(other.date_attended, date_attended) ||
-                other.date_attended == date_attended));
+                other.date_attended == date_attended) &&
+            (identical(other.reschedule_date, reschedule_date) ||
+                other.reschedule_date == reschedule_date) &&
+            (identical(other.reschedule_reason, reschedule_reason) ||
+                other.reschedule_reason == reschedule_reason));
   }
 
   @JsonKey(ignore: true)
@@ -371,7 +407,9 @@ class _$AppointmentImpl implements _Appointment {
       nextAppointmentDate,
       appt_status,
       appointment_status,
-      date_attended);
+      date_attended,
+      reschedule_date,
+      reschedule_reason);
 
   @JsonKey(ignore: true)
   @override
@@ -402,7 +440,9 @@ abstract class _Appointment implements Appointment {
       final String? nextAppointmentDate,
       final String? appt_status,
       final int? appointment_status,
-      final String? date_attended}) = _$AppointmentImpl;
+      final String? date_attended,
+      final String? reschedule_date,
+      final String? reschedule_reason}) = _$AppointmentImpl;
 
   factory _Appointment.fromJson(Map<String, dynamic> json) =
       _$AppointmentImpl.fromJson;
@@ -435,6 +475,10 @@ abstract class _Appointment implements Appointment {
   int? get appointment_status;
   @override
   String? get date_attended;
+  @override
+  String? get reschedule_date;
+  @override
+  String? get reschedule_reason;
   @override
   @JsonKey(ignore: true)
   _$$AppointmentImplCopyWith<_$AppointmentImpl> get copyWith =>

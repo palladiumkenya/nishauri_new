@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/features/bmi/data/providers/bmi_log_provider.dart';
 import 'package:nishauri/src/features/bmi/presentation/widgets/BMILineGraph.dart';
 import 'package:nishauri/src/features/bmi/presentation/widgets/BMILineList.dart';
-import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/utils/constants.dart';
 

@@ -7,7 +7,7 @@ import 'package:nishauri/src/features/dawa_drop/data/providers/drug_order_provid
 import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/FulfilledOrders.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/widget/orders/active_orders.dart';
 import 'package:nishauri/src/shared/display/CustomTabBar.dart';
-import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/utils/constants.dart';
 

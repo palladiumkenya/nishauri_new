@@ -20,6 +20,8 @@ class Appointment with _$Appointment {
     String? appt_status,
     int? appointment_status,
     String? date_attended,
+    String? reschedule_date,
+    String? reschedule_reason,
   }) = _Appointment;
 
   factory Appointment.fromJson(Map<String, dynamic> json)=> _$AppointmentFromJson(json);

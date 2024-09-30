@@ -45,4 +45,5 @@ class Constants {
   static const bpShortCutBgColor = Color.fromARGB(255, 255, 205, 210);
   static const bpBgColor = Color.fromARGB(255, 255, 83, 80);
   static const bloodSugarColor = Color.fromARGB(255, 180, 216, 20);
+  static const providerBgColor = Color.fromARGB(255, 37, 102, 92);
 }

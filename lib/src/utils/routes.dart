@@ -73,9 +73,8 @@ class RouteNames {
   static const CHAT_USER = "chat-user";
   static const INSIGHT = "insight";
   static const BP_INSIGHT = "bp-insight";
-
-
-
+  static const PROVIDER_MAIN_SCREEN = "provider-main-screen";
+  static const REQUEST_APP_RESCHEDULE = "request-app-reschedule";
 }
 
 class MenuItemNames {
@@ -111,6 +110,8 @@ class MenuItemNames {
   static const CHAT_HCW = "Chat with HCW";
   static const CHAT_DETAIL = "Chat Detail";
   static const INSIGHT = "Insight";
+  static const PROVIDER_MAIN_SCREEN = "Provider Modules";
+  static const REQUEST_APP_RESCHEDULE = "Request Appointment Reschedule";
 
 }
 

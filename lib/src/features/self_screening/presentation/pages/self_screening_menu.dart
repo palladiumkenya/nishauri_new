@@ -8,7 +8,7 @@ import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/data/providers/cycles_provider.dart';
 import 'package:nishauri/src/features/self_screening/data/providers/insight_provider.dart';
-import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
@@ -91,24 +91,17 @@ class SelfScreening extends HookConsumerWidget {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          // insightAsync.when(
-          //   data: (data){
-          //     final insight = data.map((e) => e).where((element) => element.id=="3").single;
-          //     return FloatingActionButton(
+          // FloatingActionButton(
           //     tooltip: "Insight",
           //     hoverColor: Constants.bmiCalculatorShortcutBgColor,
           //     onPressed: () {
-          //       context.goNamed(RouteNames.BLOG_POST, extra: insight);
+          //       context.goNamed(RouteNames.SETTINGS);
           //
           //     },
           //     backgroundColor: Constants.bmiCalculatorShortcutBgColor,
-          //     child: const Icon(Icons.insights),
-          //   );
-          //   },
-          //   error: (error, _) => Container(),
-          //   loading: () => Container(),
-          // ),
-          SizedBox(height: 10),
+          //     child: const Icon(Icons.settings),
+          //   ),
+          // SizedBox(height: 10),
           FloatingActionButton(
             tooltip: "Module insight",
             hoverColor: Constants.bmiCalculatorShortcutBgColor,
@@ -116,7 +109,7 @@ class SelfScreening extends HookConsumerWidget {
               context.goNamed(RouteNames.INSIGHT);
             },
             backgroundColor: Constants.bmiCalculatorShortcutBgColor,
-            child: const Icon(Icons.settings_applications_sharp),
+            child: const Icon(Icons.insights),
           ),
         ],
       ),

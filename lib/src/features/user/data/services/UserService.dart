@@ -102,6 +102,8 @@ class UserService extends HTTPService {
       "disabilities": person["profile"]["disabilities"],
       "chronics": person["profile"]["chronics"],
       "gender": person["profile"]["gender"],
+      "roles": ["Patient", "Provider", "admin", "Facility Admin", "Partner"],
+      "facility": person["profile"]["facility"],
     });
   }
 

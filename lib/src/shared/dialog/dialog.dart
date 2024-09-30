@@ -8,36 +8,46 @@ import 'package:nishauri/src/utils/routes.dart';
 
 class HealthProgramDialog {
   final BuildContext context;
+  final msg;
+  final tittle;
+  final color;
+  final okBtnTxt;
+  final okBtnColor;
+  final xBtnTxt;
+  final xBtnColor;
+  final Function()? okOnTap;
+  final Function()? xOnTap;
 
-  HealthProgramDialog(this.context);
+  HealthProgramDialog(this.context, this.msg, this.tittle, this.color, this.okBtnTxt,this.okBtnColor, this.xBtnTxt, this.xBtnColor, this.okOnTap, this.xOnTap);
 
   void show() {
     Dialogs.bottomMaterialDialog(
-      msg: 'Tap to Choose and Enrol in a Program',
+      msg: msg,
       msgStyle: const TextStyle(color: Constants.labResultsColor),
       context: context,
-      color: Constants.labResultsShortcutBgColor,
-      title: 'Take Control of Your Health – Join A Program and Start Your Journey Today!',
+      color: color,
+      title: tittle,
       titleStyle: const TextStyle(color: Constants.labResultsColor, fontWeight: FontWeight.w600),
       actions: [
         IconsOutlineButton(
           onPressed: () {
+            if (okOnTap != null) okOnTap!();
             Navigator.of(context).pop();
-            context.goNamed(RouteNames.PROGRAME_REGISTRATION_SCREEN);
           },
-          text: 'Opt-In',
+          text: okBtnTxt,
           iconData: Icons.add,
           textStyle: const TextStyle(color: Colors.white),
-          color: Constants.labResultsColor,
+          color: xBtnColor,
           iconColor: Colors.white,
         ),
         IconsButton(
           onPressed: () {
+            if (xOnTap != null) xOnTap!();
             Navigator.of(context).pop();
           },
-          text: 'Not now',
+          text: xBtnTxt,
           iconData: Icons.cancel_outlined,
-          color: Constants.labResultsShortcutBgColor,
+          color: xBtnColor,
           textStyle: const TextStyle(color: Colors.white),
           iconColor: Colors.white,
         ),

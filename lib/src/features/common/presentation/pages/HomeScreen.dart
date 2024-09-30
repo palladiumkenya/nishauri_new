@@ -73,6 +73,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final size = getOrientationAwareScreenSize(context);
     final programState = ref.watch(userProgramProvider);
     final settings = ref.watch(settingsNotifierProvider);
+    final updateSettings = ref.read(settingsNotifierProvider.notifier);
 
     // Handle dialog display
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -83,8 +84,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         loading: () => false,
       );
 
-      if (showUpdateProgram && settings.firstNuruAccess) {
-        HealthProgramDialog(context).show();
+      if (showUpdateProgram && settings.firstTimeNoProgram) {
+        HealthProgramDialog(
+            context,
+          "Tap to Choose and Enrol in a Program",
+          "Take Control of Your Health – Join A Program and Start Your Journey Today!",
+            Constants.labResultsShortcutBgColor,
+            "Opt-In",
+            Constants.labResultsColor,
+            "Not now",
+          Constants.labResultsShortcutBgColor,
+              (){
+            context.goNamed(RouteNames.PROGRAME_REGISTRATION_SCREEN);
+          },
+              (){
+            Navigator.of(context).pop();
+          },
+        ).show();
+        updateSettings.updateSettings(firstTimeNoProgram: false);
       }
     });
 

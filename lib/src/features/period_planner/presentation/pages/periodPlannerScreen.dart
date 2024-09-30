@@ -13,7 +13,7 @@ import 'package:nishauri/src/features/period_planner/presentation/widgets/featur
 import 'package:nishauri/src/features/period_planner/presentation/widgets/logItems.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/loggerWidget.dart';
 import 'package:nishauri/src/features/period_planner/utils/event_utils.dart';
-import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';

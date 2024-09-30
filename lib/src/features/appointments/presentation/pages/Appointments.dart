@@ -24,7 +24,7 @@ class _AppointmentsState extends State<Appointments> {
   void initState() {
     super.initState();
     _upcomingAppointmentsFuture = _loadAppointments('assets/data/appointments.json');
-    _previousAppointmentsFuture = _loadAppointments('assets/data/previous.json');
+    _previousAppointmentsFuture = _loadAppointments('assets/data/reschedule.json');
   }
 
   Future<List<dynamic>> _loadAppointments(String jsonPath) async {

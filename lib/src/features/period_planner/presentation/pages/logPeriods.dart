@@ -7,7 +7,7 @@ import 'package:nishauri/src/features/period_planner/data/providers/cycles_provi
 import 'package:nishauri/src/features/period_planner/presentation/widgets/customCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/eventsMaker.dart';
 import 'package:nishauri/src/features/period_planner/utils/event_utils.dart';
-import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
+import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 import 'package:table_calendar/table_calendar.dart';

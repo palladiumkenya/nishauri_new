@@ -22,6 +22,8 @@ _$AppointmentImpl _$$AppointmentImplFromJson(Map<String, dynamic> json) =>
       appt_status: json['appt_status'] as String?,
       appointment_status: (json['appointment_status'] as num?)?.toInt(),
       date_attended: json['date_attended'] as String?,
+      reschedule_date: json['reschedule_date'] as String?,
+      reschedule_reason: json['reschedule_reason'] as String?,
     );
 
 Map<String, dynamic> _$$AppointmentImplToJson(_$AppointmentImpl instance) =>
@@ -40,4 +42,6 @@ Map<String, dynamic> _$$AppointmentImplToJson(_$AppointmentImpl instance) =>
       'appt_status': instance.appt_status,
       'appointment_status': instance.appointment_status,
       'date_attended': instance.date_attended,
+      'reschedule_date': instance.reschedule_date,
+      'reschedule_reason': instance.reschedule_reason,
     };
