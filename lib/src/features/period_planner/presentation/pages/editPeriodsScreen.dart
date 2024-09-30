@@ -53,9 +53,6 @@ class _EditPeriodsState extends ConsumerState<EditPeriods> {
 
     return cycleAsyncValue.when(
       data: (cycles) {
-        final cycleId = cycles.keys;
-        final cycleList = cycles.values;
-
         return Scaffold(
           body: Column(
             children: [

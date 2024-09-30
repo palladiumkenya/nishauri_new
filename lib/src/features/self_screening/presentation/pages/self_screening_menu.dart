@@ -45,13 +45,13 @@ List<MenuItem> _menuItems(BuildContext context, WidgetRef ref) => [
     onPressed: () {
       ref.read(cyclesProvider.notifier).fetchCycles()
       .then((cycles) {
-        if (cycles.isEmpty) {
-          context.goNamed(RouteNames.NEW_USER_SCREEN);
-        }
-        else {
-          context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
-        }
-        // context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
+        // if (cycles.isEmpty) {
+        //   context.goNamed(RouteNames.NEW_USER_SCREEN);
+        // }
+        // else {
+        //   context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
+        // }
+        context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
       });
     },
     color: Constants.periodPlannerShortcutBgColor.withOpacity(0.5),

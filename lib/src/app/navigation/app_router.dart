@@ -515,13 +515,6 @@ final List<RouteBase> selfScreeningRoutes = [
     ],
   ),
   GoRoute(
-    name: RouteNames.NEW_USER_SCREEN,
-    path: 'new-user-screen',
-    builder: (BuildContext context, GoRouterState state) {
-      return const NewUserScreen();
-    },
-  ),
-  GoRoute(
       name: RouteNames.INSIGHT,
       path: 'insight',
       builder: (BuildContext context, GoRouterState state) {
