@@ -71,6 +71,7 @@ import 'package:nishauri/src/features/period_planner/presentation/pages/periodPl
 import 'package:nishauri/src/features/period_planner/presentation/pages/periods_history.dart';
 import 'package:nishauri/src/features/programs/presentation/pages/programs.dart';
 import 'package:nishauri/src/features/provider/appointment_management/presentation/pages/reschedule_request_list.dart';
+import 'package:nishauri/src/features/provider/dawa_drop_management/presentation/pages/dawa_drop_manager_screen.dart';
 import 'package:nishauri/src/features/provider/presentation/pages/provider_main_Screen.dart';
 import 'package:nishauri/src/features/self_screening/presentation/pages/bpInsightScreen.dart';
 import 'package:nishauri/src/features/self_screening/presentation/pages/insight_screen.dart';
@@ -548,6 +549,13 @@ final List<RouteBase> providerRoutes = [
     path: 'request-app-reschedule',
     builder: (BuildContext context, GoRouterState state) {
       return const RescheduleRequestListScreen();
+    },
+  ),
+  GoRoute(
+    name: RouteNames.DAWA_DROP_MANAGER,
+    path: 'dawa-drop-manager',
+    builder: (BuildContext context, GoRouterState state) {
+      return const DawaDropManagemerScreen();
     },
   ),
 ];
