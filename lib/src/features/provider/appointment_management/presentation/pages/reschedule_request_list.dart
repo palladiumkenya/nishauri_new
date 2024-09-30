@@ -7,9 +7,10 @@ import 'package:nishauri/src/features/provider/appointment_management/presentati
 import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/shared/display/CustomTabBar.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
+import 'package:nishauri/src/shared/notifications/count_budge.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
-class RescheduleRequestListScreen extends HookConsumerWidget{
+class RescheduleRequestListScreen extends HookConsumerWidget {
   const RescheduleRequestListScreen({Key? key}) : super(key: key);
 
   @override
@@ -34,8 +35,9 @@ class RescheduleRequestListScreen extends HookConsumerWidget{
         RescheduleRequestList(appointments: data),
         const Center(
           child: BackgroundImageWidget(
-              svgImage: 'assets/images/lab-empty-state.svg',
-              notFoundText: "No Past reschedule request"),
+            svgImage: 'assets/images/lab-empty-state.svg',
+            notFoundText: "No Past reschedule request",
+          ),
         ),
       ];
 
@@ -54,19 +56,21 @@ class RescheduleRequestListScreen extends HookConsumerWidget{
               activeColor: Constants.providerBgColor.withOpacity(0.5),
               activeIndex: currIndex.value,
               items: [
-                const CustomTabBarItem(title: "Appointment Reschedule Request"),
+                CustomTabBarItem(
+                  title: "Appointments Reschedule Request",
+                  trailing: CountBadge(count: data.length),
+                ),
                 const CustomTabBarItem(title: "History"),
               ],
             ),
             Expanded(
-                child: screen[currIndex.value]
+              child: screen[currIndex.value],
             ),
           ],
         ),
       );
     },
-        error: (error,_) => Center(child: Text(error.toString()),),
-        loading: ()=>CircularProgressIndicator());
-
+        error: (error, _) => Center(child: Text(error.toString())),
+        loading: () => const CircularProgressIndicator());
   }
 }
