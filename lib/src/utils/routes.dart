@@ -75,6 +75,7 @@ class RouteNames {
   static const BP_INSIGHT = "bp-insight";
   static const PROVIDER_MAIN_SCREEN = "provider-main-screen";
   static const REQUEST_APP_RESCHEDULE = "request-app-reschedule";
+  static const DAWA_DROP_MANAGER = "dawa-drop-manager";
 }
 
 class MenuItemNames {

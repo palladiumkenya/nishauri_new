@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
 import 'package:nishauri/src/features/provider/appointment_management/data/providers/appointment_management_provider.dart';
 import 'package:nishauri/src/shared/dialog/dialog.dart';
 import 'package:nishauri/src/shared/list_view_builder/list_view_builder.dart';
 import 'package:nishauri/src/utils/constants.dart';
-import 'package:nishauri/src/utils/routes.dart';
 
 class RescheduleRequestList extends HookConsumerWidget {
   final List<Appointment> appointments;
@@ -44,11 +42,9 @@ class RescheduleRequestList extends HookConsumerWidget {
                       "Reject",
                       Constants.providerBgColor,
                           (){
-                        print("Approving appointment reschedule");
                         ref.refresh(appointmentRescheduleProvider);
                       },
                         (){
-                          print("Rejecting appointment reschedule");
                           ref.refresh(appointmentRescheduleProvider);
                         },
                     ).show();
