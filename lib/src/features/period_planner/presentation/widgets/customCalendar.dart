@@ -1,14 +1,40 @@
+import 'dart:ffi';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/data/models/events.dart';
+import 'package:nishauri/src/features/period_planner/data/providers/cycles_provider.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/eventsMaker.dart';
 import 'package:nishauri/src/features/period_planner/presentation/widgets/modalContent.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:uuid/uuid.dart';
 
-//Function to calculate Average Cycle days
-// Function to calculate Average Cycle days
-int calculateAverageCycleLength(List<Cycle> cycles) {
+//Function to update Cycle days
+void updateCycleLengths(Map<int, Cycle> cycleMap) {
+  final cycles = cycleMap.values.toList();
+
+  final updatedCycleMap = {};
+
+  // Start from the second last cycle because the last one does not have a successor yet
+  for (int i = 0; i < cycles.length - 1; i++) {
+    int cycleLength =
+        cycles[i + 1].period_start.difference(cycles[i].period_start).inDays;
+    // cycles[i].cycle_length = cycleLength;
+    final updatedCycle = cycles[i].copyWith(cycle_length: cycleLength);
+    updatedCycleMap[i] = updatedCycle;
+  }
+
+  // The last cycle in the list should still use the average cycle length
+  if (cycles.isNotEmpty) {
+    // cycles.last.cycle_length = calculateAverageCycleLength(cycleMap);
+    final lastCycle = cycles.last
+        .copyWith(cycle_length: calculateAverageCycleLength(cycleMap));
+    updatedCycleMap[cycles.length - 1] = lastCycle;
+  }
+}
+
+// // Function to calculate Average Cycle days
+int calculateAverageCycleLength(Map<int, Cycle> cyclesMap) {
+  final cycles = cyclesMap.values.toList();
   if (cycles.length < 2) {
     debugPrint(
         "Not enough cycles to calculate an average, defaulting to 28 days.");
@@ -18,7 +44,7 @@ int calculateAverageCycleLength(List<Cycle> cycles) {
   int totalLength = 0;
   for (int i = 1; i < cycles.length; i++) {
     int cycleLength =
-        cycles[i].periodStart.difference(cycles[i - 1].periodStart).inDays;
+        cycles[i].period_start.difference(cycles[i - 1].period_start).inDays;
     debugPrint("Cycle Length for cycle $i: $cycleLength");
 
     // Cap to a minimum cycle length of 21 days
@@ -44,21 +70,22 @@ int calculateAverageCycleLength(List<Cycle> cycles) {
   return averageCycle;
 }
 
-//Function for calculating Average Period days
-int calculateAveragePeriodLength(List<Cycle> cycles) {
-  if (cycles.isEmpty) return 5; // Default to 5 days if there are no cycles
+// //Function for calculating Average Period days
+int calculateAveragePeriodLength(Map<int, Cycle> cycleMap) {
+  final cycleList = cycleMap.values.toList();
+  if (cycleList.isEmpty) return 5; // Default to 5 days if there are no cycles
 
   int totalPeriodLength = 0;
-  for (Cycle cycle in cycles) {
-    debugPrint("Period Length : ${cycle.periodLength}");
-    totalPeriodLength += cycle.periodLength;
+  for (Cycle cycle in cycleList) {
+    debugPrint("Period Length : ${cycle.period_length}");
+    totalPeriodLength += cycle.period_length;
   }
-  int averagePeriodLength = (totalPeriodLength / cycles.length).round();
+  int averagePeriodLength = (totalPeriodLength / cycleList.length).round();
   if (averagePeriodLength < 3) {
     return 4;
   }
   debugPrint("Total Period Length: $totalPeriodLength");
-  debugPrint("Number of Cycles: ${cycles.length}");
+  debugPrint("Number of Cycles: ${cycleList.length}");
   debugPrint("Average Period Length: $averagePeriodLength");
   return averagePeriodLength;
 }
@@ -66,18 +93,19 @@ int calculateAveragePeriodLength(List<Cycle> cycles) {
 // DateTime normalizeToMidnight(DateTime dateTime) {
 //   return DateTime(dateTime.year, dateTime.month, dateTime.day);
 // }
-//Algorithm for calculating Next Period Days, Ovulation and Fertile Days
-Cycle predictCycle(DateTime periodStart, DateTime periodEnd, {String? cycleId}) {
-  var uuid = const Uuid();
-  // String cycleId = uuid.v4(); //Generating a unique id
 
-  int index = cycles.indexWhere((cycle) => cycle.periodStart == periodStart);
+//Algorithm for calculating Next Period Days, Ovulation and Fertile Days
+Cycle predictCycle(DateTime periodStart, DateTime periodEnd,
+    {int? cycleId, required Map<int, Cycle> cycle}) {
+  final cycleList = cycle.values.toList();
+
+  int index = cycleId ?? cycleList.length;
 
   // Calculate average cycle length from previous cycles
-  int averageCycleLength = calculateAverageCycleLength(cycles);
+  int averageCycleLength = calculateAverageCycleLength(cycle);
 
   // Calculate average period length from the period Start to the Period End
-  int averagePeriodLength = calculateAveragePeriodLength(cycles);
+  int averagePeriodLength = calculateAveragePeriodLength(cycle);
 
   DateTime predictedPeriodStart =
       periodStart.add(Duration(days: averageCycleLength - 1));
@@ -91,31 +119,48 @@ Cycle predictCycle(DateTime periodStart, DateTime periodEnd, {String? cycleId}) 
   DateTime fertileStart = ovulation.subtract(const Duration(days: 5));
   DateTime fertileEnd = ovulation.subtract(const Duration(days: 1));
 
-  //Calculating cycle Length between the previous cycle start and the latest cycle start
-  int cycleLength = (index > 0)
-      ? periodStart.difference(cycles[index - 1].periodStart).inDays
-      : averageCycleLength;  // If it's the first entry, use the average
-      
+  //Calculating cycle Length
+  // int cycleLength = (index > 0)
+  //     ? periodStart.difference(cycles[index - 1].periodStart).inDays
+  //     : averageCycleLength;
+
+  int cycleLength;
+  if (cycleList.isEmpty) {
+    cycleLength = averageCycleLength;
+  } else {
+    if (index > 0 && index < cycleList.length - 1) {
+      // If the current cycle has a succeeding cycle, calculate based on difference between two cycles
+      cycleLength =
+          periodStart.difference(cycleList[index - 1].period_start).inDays;
+    } else if (index == cycleList.length - 1) {
+      // If it's the last cyclStringe (no succeeding cycle), use the average cycle length as a placeholder
+      cycleLength = averageCycleLength;
+    } else {
+      // For the very first cycle or other fallback cases, use average cycle length
+      cycleLength = averageCycleLength;
+    }
+  }
+
   //Calculating period Length of each cycle
   int periodLength = periodEnd.difference(periodStart).inDays + 1;
 
   return Cycle(
-    cycleId: cycleId ?? uuid.v4(),
-    periodStart: periodStart,
-    periodEnd: periodEnd,
-    fertileStart: fertileStart,
-    fertileEnd: fertileEnd,
+    // cycleId: cycleId ?? uuid.v4(),
+    period_start: periodStart,
+    period_end: periodEnd,
+    fertile_start: fertileStart,
+    fertile_end: fertileEnd,
     ovulation: ovulation,
-    predictedPeriodStart: predictedPeriodStart,
-    predictedPeriodEnd: predictedPeriodEnd,
-    cycleLength: cycleLength,
-    periodLength: periodLength,
+    predicted_period_start: predictedPeriodStart,
+    predicted_period_end: predictedPeriodEnd,
+    cycle_length: cycleLength,
+    period_length: periodLength,
   );
 }
 
-class CustomCalendar extends StatefulWidget {
+class CustomCalendar extends ConsumerStatefulWidget {
   final CalendarFormat initialFormat;
-  final Map<String, Map<DateTime, List<Event>>> events;
+  final Map<int, Map<DateTime, List<Event>>> events;
   final bool headerButton;
   final bool? inPeriods;
 
@@ -131,7 +176,7 @@ class CustomCalendar extends StatefulWidget {
   _CustomCalendarState createState() => _CustomCalendarState();
 }
 
-class _CustomCalendarState extends State<CustomCalendar> {
+class _CustomCalendarState extends ConsumerState<CustomCalendar> {
   late CalendarFormat _calendarFormat;
   late DateTime _focusedDay;
   late DateTime _firstDay;
@@ -186,6 +231,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
       });
     }
 
+    // debugPrint("Filtered Events: $filteredEvents");
     return filteredEvents;
   }
 
@@ -204,6 +250,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
         }
       }
     }
+    debugPrint("No matching events found.");
     return null;
   }
 
@@ -212,7 +259,9 @@ class _CustomCalendarState extends State<CustomCalendar> {
   */
   DateTime _getFirstEventDate() {
     DateTime? firstEventDate = _getNextPredictedPeriodDate();
-    return  _calendarFormat == CalendarFormat.week ? firstEventDate  ?? DateTime(2010): DateTime(2010);  // Fallback to DateTime(2010) if null 
+    return _calendarFormat == CalendarFormat.week
+        ? firstEventDate ?? DateTime(2010)
+        : DateTime(2010); // Fallback to DateTime(2010) if null
   }
 
   /*Getting the last date to be displayed on the calendar
@@ -237,7 +286,9 @@ class _CustomCalendarState extends State<CustomCalendar> {
       }
     }
 
-    return _calendarFormat == CalendarFormat.week ? lastEventDate  ?? DateTime(2100): DateTime(2100); // Fallback to DateTime(2100) if null
+    return _calendarFormat == CalendarFormat.week
+        ? lastEventDate ?? DateTime(2100)
+        : DateTime(2100); // Fallback to DateTime(2100) if null
   }
 
   @override
@@ -253,9 +304,14 @@ class _CustomCalendarState extends State<CustomCalendar> {
       //   });
       // },
       calendarFormat: _calendarFormat,
+      // eventLoader: (day) {
+      //   return _filteredEvents[day] ?? [];
+      // },
       eventLoader: (day) {
-        return _filteredEvents[day] ?? [];
+        DateTime normalizedDay = DateTime(day.year, day.month, day.day);
+        return _filteredEvents[normalizedDay] ?? [];
       },
+
       headerVisible: true,
       headerStyle: HeaderStyle(
         formatButtonVisible: widget.headerButton,
@@ -265,7 +321,6 @@ class _CustomCalendarState extends State<CustomCalendar> {
         headerPadding: const EdgeInsets.all(8.0),
       ),
       onFormatChanged: (format) {
-        // Show the modal when the format button is pressed
         showModalBottomSheet(
           context: context,
           builder: (context) => const ModalContent(),
@@ -292,16 +347,17 @@ class _CustomCalendarState extends State<CustomCalendar> {
       ),
       calendarBuilders: CalendarBuilders(
         markerBuilder: (context, date, events) {
-          //debugPrint("----From CustomCalendar-----");
-          //print(events);
+          // debugPrint("----From CustomCalendar-----");
+          print(events);
           if (events.isEmpty) {
-            //debugPrint('Error getting Events!! - List is empty for date: $date');
+            // debugPrint('Error getting Events!! - List is empty for date: $date');
             return null;
           }
           final eventList = events.cast<Event>();
 
           // debugPrint("-----From CustomCalendar------");
-          // debugPrint('Successfully cast events for date: $date, events: $eventList');
+          // debugPrint(
+          //     'Successfully cast events for date: $date, events: $eventList');
 
           return EventsMaker(date: date, events: eventList);
         },

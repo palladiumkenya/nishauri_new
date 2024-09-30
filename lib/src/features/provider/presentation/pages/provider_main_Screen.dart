@@ -29,13 +29,13 @@ _menuItems(BuildContext context) => [
   MenuItem(
     shortcutBackgroundColor: Constants.providerBgColor,
     icon: SvgPicture.asset(
-      "assets/images/shopping.svg",
+      "assets/images/shopping-cart-dawa.svg",
       semanticsLabel: "Dawa Drop Manager",
       fit: BoxFit.contain,
       width: 80,
       height: 80,
     ),
-    shortcutIcon: SvgPicture.asset("assets/images/shopping.svg",
+    shortcutIcon: SvgPicture.asset("assets/images/shopping-cart-dawa.svg",
         semanticsLabel: "Dawa Drop Manager",
         fit: BoxFit.contain,
         width: Constants.shortcutIconSize,

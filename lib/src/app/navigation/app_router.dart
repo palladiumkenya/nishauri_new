@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -62,6 +63,7 @@ import 'package:nishauri/src/features/nishauri_chat/chat/presentation/pages/Conv
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/editPeriodsScreen.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/logPeriods.dart';
+import 'package:nishauri/src/features/period_planner/presentation/pages/new_user_screen.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodCalendar.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlannerMenu.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlannerScreen.dart';
@@ -492,6 +494,13 @@ final List<RouteBase> selfScreeningRoutes = [
     },
     routes: [
       GoRoute(
+        name: RouteNames.PERIOD_PLANNER_LOG_PERIODS,
+        path: 'period-planner-log-period-calendar',
+        builder: (BuildContext context, GoRouterState state) {
+          return LogPeriodScreen();
+        },
+      ),
+      GoRoute(
         name: RouteNames.PERIOD_PLANNER_PERIOD_HISTORY,
         path: 'period-planner-period-history',
         builder: (BuildContext context, GoRouterState state) {
@@ -502,10 +511,15 @@ final List<RouteBase> selfScreeningRoutes = [
             name: RouteNames.PERIOD_PLANNER_EDIT_PERIODS,
             path: 'period-planner-edit-periods',
             builder: (BuildContext context, GoRouterState state) {
-              final startDate = state.extra != null ? (state.extra as Map<String, dynamic>)['startDate'] as DateTime : null;
-              final endDate = state.extra != null ? (state.extra as Map<String, dynamic>)['endDate'] as DateTime : null;
-              final id = (state.extra! as Map<String, dynamic>)['id'] as String;
-              return EditPeriods(initialStartDate: startDate, initialEndDate: endDate, cycleId: id,);
+              final extra = state.extra as Map<String, dynamic>;
+              final startDate = extra['startDate'] as DateTime;
+              final endDate = extra['endDate'] as DateTime;
+              final id = extra['id'] as int;
+              return EditPeriods(
+                initialStartDate: startDate,
+                initialEndDate: endDate,
+                cycleId: id,
+              );
             },
           ),
         ],
@@ -513,30 +527,20 @@ final List<RouteBase> selfScreeningRoutes = [
     ],
   ),
   GoRoute(
-    name: RouteNames.PERIOD_PLANNER_LOG_PERIODS,
-    path: 'period-planner-log-period-calendar',
-    builder: (BuildContext context, GoRouterState state) {
-      return LogPeriodScreen();
-    },
-  ),
-  GoRoute(
-    name: RouteNames.INSIGHT,
-    path: 'insight',
-    builder: (BuildContext context, GoRouterState state) {
-      return const InsightScreen();
-    },
-    routes:   [
-      GoRoute(
-      name: RouteNames.BP_INSIGHT,
-      path: 'bp-insight',
+      name: RouteNames.INSIGHT,
+      path: 'insight',
       builder: (BuildContext context, GoRouterState state) {
-        return const BpInsightScreen();
+        return const InsightScreen();
       },
-    ),
-    ]
-  ),  
-
-  
+      routes: [
+        GoRoute(
+          name: RouteNames.BP_INSIGHT,
+          path: 'bp-insight',
+          builder: (BuildContext context, GoRouterState state) {
+            return const BpInsightScreen();
+          },
+        ),
+      ]),
 ];
 
 final List<RouteBase> providerRoutes = [
@@ -693,11 +697,11 @@ final List<RouteBase> dawaDropRoutes = [
 
 final List<RouteBase> chatRoutes = [
   GoRoute(
-      name: RouteNames.CHAT_DETAIL,
-      path: 'chat-detail',
-      builder: (BuildContext context, GoRouterState state) {
-        return ChatDetailScreen();
-      },
+    name: RouteNames.CHAT_DETAIL,
+    path: 'chat-detail',
+    builder: (BuildContext context, GoRouterState state) {
+      return ChatDetailScreen();
+    },
   ),
   GoRoute(
     name: RouteNames.CHAT_USER,

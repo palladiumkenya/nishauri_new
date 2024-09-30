@@ -10,6 +10,7 @@ import 'package:nishauri/src/features/provider/dawa_drop_management/presentation
 import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/shared/display/CustomTabBar.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
+import 'package:nishauri/src/shared/notifications/count_budge.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class DawaDropManagemerScreen extends HookConsumerWidget {
@@ -81,11 +82,11 @@ class DawaDropManagemerScreen extends HookConsumerWidget {
               },
               activeColor: Constants.providerBgColor.withOpacity(0.5),
               activeIndex: currentIndex.value,
-              items: const [
-                CustomTabBarItem(title: "Drug Requests"),
-                CustomTabBarItem(title: "Approved Requests"),
-                CustomTabBarItem(title: "Dispatched Requests"),
-                CustomTabBarItem(title: "Fulfilled Requests"),
+              items: [
+                CustomTabBarItem(title: "Drug Requests", trailing: CountBadge(count: pending.length,)),
+                CustomTabBarItem(title: "Approved Requests", trailing: CountBadge(count: approved.length,)),
+                const CustomTabBarItem(title: "Dispatched Requests"),
+                const CustomTabBarItem(title: "Fulfilled Requests"),
               ],
             ),
             Expanded(child: screen[currentIndex.value]),

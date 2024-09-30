@@ -6,12 +6,13 @@ import 'package:nishauri/src/app/navigation/menu/MenuItemsBuilder.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuOption.dart';
 import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
 import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
+import 'package:nishauri/src/features/period_planner/data/providers/cycles_provider.dart';
 import 'package:nishauri/src/features/self_screening/data/providers/insight_provider.dart';
 import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
-List<MenuItem> _menuItems(BuildContext context) => [
+List<MenuItem> _menuItems(BuildContext context, WidgetRef ref) => [
   MenuItem(
     icon: const Icon(Icons.calculate),
     shortcutIcon: const Icon(Icons.calculate),
@@ -42,12 +43,16 @@ List<MenuItem> _menuItems(BuildContext context) => [
     shortcutIcon: const Icon(Icons.calendar_month_outlined),
     title: MenuItemNames.PERIOD_PLANNER,
     onPressed: () {
-      if(cycles.isEmpty) {
-        context.goNamed(RouteNames.PERIOD_PLANNER_LOG_PERIODS);
-      }
-      else {
+      ref.read(cyclesProvider.notifier).fetchCycles()
+      .then((cycles) {
+        // if (cycles.isEmpty) {
+        //   context.goNamed(RouteNames.NEW_USER_SCREEN);
+        // }
+        // else {
+        //   context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
+        // }
         context.goNamed(RouteNames.PERIOD_PLANNER_SCREEN);
-      }
+      });
     },
     color: Constants.periodPlannerShortcutBgColor.withOpacity(0.5),
   ),
@@ -59,7 +64,7 @@ class SelfScreening extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final _items = _menuItems(context);
+    final _items = _menuItems(context, ref);
     final insightAsync = ref.watch(insightProvider);
 
     return Scaffold(
