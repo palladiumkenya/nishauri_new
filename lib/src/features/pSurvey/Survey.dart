@@ -172,34 +172,43 @@ class SurveyScreen extends HookConsumerWidget {
                     else if (surveyState.questionType == 5)
                         Column(
                           children: [
-                            ElevatedButton(
-                              onPressed: () async {
-                                // Show the date picker
-                                DateTime? pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime(2101),
-                                );
+                            // TextField to show the selected date or allow manual input
+                            TextField(
+                              controller: openTextController,
+                              readOnly: true, // Make it read-only to prevent manual editing
+                              decoration: InputDecoration(
+                                labelText: "Selected Date",
+                                hintText: "Tap to select a date",
+                                suffixIcon: IconButton(
+                                  icon: const Icon(Icons.calendar_today),
+                                  onPressed: () async {
+                                    // Show the date picker
+                                    DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(2000),
+                                      lastDate: DateTime(2101),
+                                    );
 
-                                if (pickedDate != null) {
-                                  selectedDate.value = pickedDate;
+                                    if (pickedDate != null) {
+                                      selectedDate.value = pickedDate;
 
-                                  // Format and set the selected date into openTextController
-                                  openTextController.text =
-                                  "${pickedDate.toLocal()}".split(' ')[0];
-                                }
-                              },
-                              child: const Text("Select Date"),
+                                      // Format and set the selected date into openTextController
+                                      openTextController.text =
+                                      "${pickedDate.toLocal()}".split(' ')[0];
+                                    }
+                                  },
+                                ),
+                              ),
                             ),
                             if (selectedDate.value != null)
                               Text(
-                                "Selected Date: ${selectedDate.value!.toLocal()}"
-                                    .split(' ')[0],
+                                "Selected Date: ${selectedDate.value!.toLocal()}".split(' ')[0],
                                 style: const TextStyle(fontSize: 16),
                               ),
                           ],
                         ),
+
                 const SizedBox(height: 24),
                 SizedBox(
                   width: double.infinity,  // Full width of the screen
