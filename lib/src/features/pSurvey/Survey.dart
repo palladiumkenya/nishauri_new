@@ -1,127 +1,116 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-//import 'package:nishauri/src/shared/display/CustomeAppBar.dart';
-import 'package:nishauri/src/shared/display/CustomAppBar.dart';
-import 'package:nishauri/src/utils/constants.dart';
-import 'package:intl/intl.dart'; // For formatting the date
-
-import 'SelectSurvey.dart';
+import 'SurveyNotifier.dart';
+import 'SurveyProvider.dart'; // Import your SurveyNotifier and SurveyState
 
 class SurveyScreen extends HookConsumerWidget {
-  
-  const SurveyScreen({Key? key, required int questionnaireId, required link, required sessionId}) : super(key: key);
+
+
+  final String link;
+  final int sessionId;
+ // final String token;
+  //final int questionnaireId;
+
+  const SurveyScreen({
+    Key? key,
+    required this.link,
+    required this.sessionId,
+    //required this.token,
+   // required this.questionnaireId,
+   // required this.token,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final currIndex = useState(0);
+    // Access SurveyNotifier
+    final surveyNotifier = ref.read(surveyProvider.notifier);
 
+    // Delay the execution until after the widget build is complete
+    useEffect(() {
+      Future(() {
+        surveyNotifier.loadQuestion(link, sessionId);
+      });
+      return null;  // Cleanup if necessary
+    }, []);
 
-    // Hook to store the selected date
-    final selectedDate = useState<DateTime?>(null);
-    final TextEditingController dateController = useTextEditingController();
+    // Watch the SurveyProvider state
+    final surveyState = ref.watch(surveyProvider);
 
-    // Function to show the date picker
-    Future<void> _selectDate(BuildContext context) async {
-      final DateTime? pickedDate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2100),
-      );
-      if (pickedDate != null && pickedDate != selectedDate.value) {
-        selectedDate.value = pickedDate;
-        dateController.text =
-            DateFormat('yyyy-MM-dd').format(pickedDate); // Formatting date
-      }
-    }
-
-
-
-    return  Scaffold(
-      body: Column(
-        children: [
-          CustomAppBar(
-            title: "Survey",
-            // icon: Icons.calendar_month_outlined,
-            subTitle: "Please ensure you complete the survey to the end",
-            color: Constants.pSurveyColor,
-          ),
-
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              elevation: 3,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0), // Add padding inside the card
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 20),
-
-                    // Text asking for date input
-                    const Text(
-                      'Date of interview*:',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-
-                    // TextField for the date picker
-                    TextField(
-                      controller: dateController,
-                      decoration: const InputDecoration(
-                        hintText: 'Select date',
-                        suffixIcon: Icon(Icons.calendar_today),
-                      ),
-                      readOnly: true, // Prevent manual input
-                      onTap: () => _selectDate(context), // Show date picker on tap
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Button to submit the date
-                    SizedBox(
-                      width: double.infinity, // Makes the button as wide as the parent container
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (selectedDate.value != null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Date submitted: ${DateFormat('yyyy-MM-dd').format(selectedDate.value!)}'),
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Please select a date before submitting'),
-                              ),
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Constants.pSurveyColor, // Button color
-                          padding: const EdgeInsets.symmetric(vertical: 16.0), // Adjusts button height to match TextField
-                        ),
-                        child: const Text(
-                          'Next',
-                          style: TextStyle(color: Colors.white), // Set button text color to white
-                        ),
-                      ),
-                    ),
-                  ],
+    return Scaffold(
+      appBar: AppBar(title: const Text("Survey")),
+      body: surveyState.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : surveyState.errorMessage.isNotEmpty
+          ? Center(child: Text(surveyState.errorMessage))
+          : SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (surveyState.isQuestionRequired)
+                Text(
+                  "${surveyState.questionText} *",
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                )
+              else
+                Text(
+                  surveyState.questionText,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
+              const SizedBox(height: 16),
+              if (surveyState.questionType == 1)
+                TextFormField(
+                  decoration: const InputDecoration(labelText: "Enter your answer"),
+                )
+              else if (surveyState.questionType == 2)
+                Column(
+                  children: surveyState.answerOptions.map((option) {
+                    return RadioListTile<String>(
+                      title: Text(option),
+                      value: option,
+                      groupValue: null, // Replace with the selected value in state
+                      onChanged: (value) {
+                        // Handle single-choice selection
+                      },
+                    );
+                  }).toList(),
+                )
+              else if (surveyState.questionType == 3)
+                  Column(
+                    children: surveyState.answerOptions.map((option) {
+                      return CheckboxListTile(
+                        title: Text(option),
+                        value: false, // Replace with the selected state in state
+                        onChanged: (bool? value) {
+                          // Handle multiple-choice selection
+                        },
+                      );
+                    }).toList(),
+                  )
+                else if (surveyState.questionType == 4)
+                    TextFormField(
+                      decoration: const InputDecoration(labelText: "Enter a number"),
+                      keyboardType: TextInputType.number,
+                    )
+                  else if (surveyState.questionType == 5)
+                      ElevatedButton(
+                        onPressed: () {
+                          // Show date picker here
+                        },
+                        child: const Text("Select Date"),
+                      ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () {
+                  // Handle submission
+                },
+                child: const Text("Submit"),
               ),
-            ),
-          )
-
-        ],
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -87,7 +87,7 @@ class SelectSurveyScreen extends HookConsumerWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => SurveyScreen(
-                                    questionnaireId: questionnaireId,
+                                    //questionnaireId: questionnaireId,
                                     link: data['link'],
                                     sessionId: data['session'],
                                   ),
