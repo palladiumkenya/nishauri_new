@@ -22,7 +22,7 @@ class ConsentNotifier extends StateNotifier<AsyncValue<void>> {
     try {
       final url = Uri.parse('https://psurveyapitest.kenyahmis.org/api/questionnaire/start/');
       final headers = {
-        'Authorization': 'Token 02ea508dd226142ffee71eb61ca80efa5436cf7a',
+        'Authorization': 'Token c52fa63240b115f45b7ae1eda04fc63d95dfd4ca',
         'Accept': '*/*',
         'Content-Type': 'application/json',
       };

@@ -14,7 +14,7 @@ class ActiveSurveysNotifier extends StateNotifier<AsyncValue<List<ActiveSurvey>>
   Future<void> loadActiveSurveys(String authToken, String baseUrl) async {
     final String url = 'https://psurveyapitest.kenyahmis.org/api/questionnaire/active';
     final headers = {
-      'Authorization': 'Token 02ea508dd226142ffee71eb61ca80efa5436cf7a',
+      'Authorization': 'Token c52fa63240b115f45b7ae1eda04fc63d95dfd4ca',
       'Content-Type': 'application/json',
       'Accept': '*/*',
       'Connection': 'keep-alive',

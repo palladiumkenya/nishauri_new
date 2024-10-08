@@ -64,7 +64,7 @@ class SelectSurveyScreen extends HookConsumerWidget {
                         trailing: const Icon(Icons.navigate_next),
                         onTap: () async {
                           final baseUrl = 'https://psurveyapitest.kenyahmis.org/api/questionnaire/start/';
-                          final authToken = 'Token 02ea508dd226142ffee71eb61ca80efa5436cf7a';
+                          final authToken = 'Token 7862b064e4b0395fb8d3d420065350a3150549a2';
                           final questionnaireId = survey.id;  // Use survey's ID
                           final cccNumber = '1234500001';  // Example CCC number
                           final firstName = 'sample_first_name';  // Example first name

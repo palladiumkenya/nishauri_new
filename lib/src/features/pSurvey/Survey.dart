@@ -49,7 +49,6 @@ class SurveyScreen extends HookConsumerWidget {
       String? openText,
     }) async {
       final url = "https://psurveyapitest.kenyahmis.org/api/questions/answer/";
-
       // Prepare the request body
       final body = jsonEncode({
         "session": sessionID,
@@ -59,11 +58,13 @@ class SurveyScreen extends HookConsumerWidget {
       });
 
       try {
+        // Log the body for debugging
+        print("Submitting Answer: $body");
         // Send the POST request
         final response = await http.post(
           Uri.parse(url),
           headers: {
-            'Authorization': 'Token 02ea508dd226142ffee71eb61ca80efa5436cf7a',
+            'Authorization': 'Token c52fa63240b115f45b7ae1eda04fc63d95dfd4ca',
             'Content-Type': 'application/json',
           },
           body: body,
@@ -74,6 +75,7 @@ class SurveyScreen extends HookConsumerWidget {
           final responseData = jsonDecode(response.body);
 
           if (responseData.containsKey("link")) {
+            print("Has a link");
             // Navigate to the next question if there's a "link"
             final nextLink = responseData["link"];
             final nextSessionId = responseData["session_id"];
@@ -85,11 +87,14 @@ class SurveyScreen extends HookConsumerWidget {
             Navigator.pushNamed(context, '/complete_survey');
           }
         } else {
+          print("Failed to submit answer: ${response.body}");
           throw Exception("Failed to submit answer");
         }
       } catch (error) {
+        print("Catch Errorr: $error");
         // Handle error
         ScaffoldMessenger.of(context).showSnackBar(
+
           SnackBar(content: Text("Error: $error")),
         );
       }
