@@ -76,6 +76,7 @@ class RouteNames {
   static const PROVIDER_MAIN_SCREEN = "provider-main-screen";
   static const REQUEST_APP_RESCHEDULE = "request-app-reschedule";
   static const DAWA_DROP_MANAGER = "dawa-drop-manager";
+  static const LOCATION_SELECTION = "location-selection";
 }
 
 class MenuItemNames {

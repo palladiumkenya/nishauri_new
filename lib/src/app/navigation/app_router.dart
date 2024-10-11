@@ -73,6 +73,7 @@ import 'package:nishauri/src/features/programs/presentation/pages/programs.dart'
 import 'package:nishauri/src/features/provider/appointment_management/presentation/pages/reschedule_request_list.dart';
 import 'package:nishauri/src/features/provider/dawa_drop_management/presentation/pages/dawa_drop_manager_screen.dart';
 import 'package:nishauri/src/features/provider/presentation/pages/provider_main_Screen.dart';
+import 'package:nishauri/src/features/provider/provider_admin/presentation/pages/admin_location_selection_screen.dart';
 import 'package:nishauri/src/features/self_screening/presentation/pages/bpInsightScreen.dart';
 import 'package:nishauri/src/features/self_screening/presentation/pages/insight_screen.dart';
 import 'package:nishauri/src/features/self_screening/presentation/pages/self_screening_menu.dart';
@@ -390,17 +391,16 @@ final List<RouteBase> secureRoutes = [
       builder: (BuildContext context, GoRouterState state) {
         return const FacilityVisitsScreen();
       },
-      routes: [
-        GoRoute(
-          name: RouteNames.FACILITY_VISIT_DETAIL,
-          path: ':visitId',
-          builder: (BuildContext context, GoRouterState state) {
-            return FacilityVisitDetailScreen(
-                visitId: state.pathParameters["visitId"]!);
-          },
-        )
-      ]),
+  ),
 
+  GoRoute(
+    name: RouteNames.FACILITY_VISIT_DETAIL,
+    path: ':visitId',
+    builder: (BuildContext context, GoRouterState state) {
+      return FacilityVisitDetailScreen(
+          visitId: state.pathParameters["visitId"]!);
+    },
+  ),
   GoRoute(
     name: RouteNames.PROVIDER_MAIN_SCREEN,
     path: 'provider-main-screen',
@@ -408,6 +408,13 @@ final List<RouteBase> secureRoutes = [
       return const ProviderMainScreen();
     },
     routes: providerRoutes,
+  ),
+  GoRoute(
+    name: RouteNames.LOCATION_SELECTION,
+    path: 'location-selection',
+    builder: (BuildContext context, GoRouterState state) {
+      return LocationSelectionScreen();
+    },
   ),
 ];
 

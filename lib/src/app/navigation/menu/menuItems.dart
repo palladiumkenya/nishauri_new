@@ -217,6 +217,27 @@ List<MenuItem> getPatientModules(BuildContext context) {
       onPressed: () => context.goNamed(RouteNames.MY_CLINIC_CARD),
       color: Colors.blue[900],
     ),
+
+    MenuItem(
+      icon: SvgPicture.asset(
+        "assets/images/Hospital building-bro.svg",
+        semanticsLabel: "Doctors",
+        fit: BoxFit.contain,
+        height: 80,
+        width: 80,
+      ),
+      shortcutIcon: SvgPicture.asset(
+        "assets/images/Hospital building-bro.svg",
+        semanticsLabel: "Doctors",
+        fit: BoxFit.contain,
+        width: Constants.shortcutIconSize,
+        height: Constants.shortcutIconSize,
+      ),
+      title: "FACILITY VISITS",
+      onPressed: () => context.goNamed(RouteNames.FACILITY_VISITS),
+      color: Colors.blueGrey,
+    ),
+
     MenuItem(
       icon: SvgPicture.asset(
         "assets/images/house.svg",
@@ -275,6 +296,26 @@ List<MenuItem> getPatientModules(BuildContext context) {
       title: MenuItemNames.DAWA_DROP,
       onPressed: () => context.goNamed(RouteNames.DAWA_DROP),
       color: Constants.dawaDropColor.withOpacity(0.5),
+    ),
+
+    MenuItem(
+      icon: SvgPicture.asset(
+        "assets/images/calendar.svg",
+        semanticsLabel: "Doctors",
+        fit: BoxFit.contain,
+        height: 80,
+        width: 80,
+      ),
+      shortcutIcon: SvgPicture.asset(
+        "assets/images/calendar.svg",
+        semanticsLabel: "Doctors",
+        fit: BoxFit.contain,
+        width: Constants.shortcutIconSize,
+        height: Constants.shortcutIconSize,
+      ),
+      title: "Location selection",
+      onPressed: () => context.goNamed(RouteNames.LOCATION_SELECTION),
+      color: Constants.appointmentsColor,
     ),
   ];
 }
