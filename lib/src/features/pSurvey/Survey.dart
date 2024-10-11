@@ -7,6 +7,7 @@ import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'Answer.dart';
 
 class SurveyScreen extends HookConsumerWidget {
   final String link;
@@ -44,15 +45,25 @@ class SurveyScreen extends HookConsumerWidget {
     // Function to submit the answer
     Future<void> submitAnswer({
       required int sessionID,
-      required int questionNumber,
+      required int id,
       String? answer,
       String? openText,
     }) async {
+
+
+      // Create an Answer model instance for submission
+      // final answerModel = Answer(
+      //   id: selectedAnswer.value,  // Replace with the selected answer ID if available
+      //   option: selectedAnswer.value ?? '',
+      //   createdAt: DateTime.now().toString(), // Assume current time for createdAt
+      //   question: surveyState.questionNumber, // Use question number from state
+      //   createdBy: sessionId, // Assuming sessionId represents the created_by field
+      // );
       final url = "https://psurveyapitest.kenyahmis.org/api/questions/answer/";
       // Prepare the request body
       final body = jsonEncode({
         "session": sessionID,
-        "question": questionNumber,
+        "question": id,
         "answer": answer ?? "",
         "open_text": openText ?? "",
       });
@@ -226,9 +237,9 @@ class SurveyScreen extends HookConsumerWidget {
                       // Submit the answer when "Next" is pressed
                       submitAnswer(
                         sessionID: sessionId,
-                        questionNumber: surveyState.questionNumber,
+                        id: surveyState.id,
                         answer: selectedAnswer.value,
-                        openText: openTextController.text,
+                        openText: selectedAnswer.value,
                       );
                     },
                     child: const Text("Next", textAlign: TextAlign.center),

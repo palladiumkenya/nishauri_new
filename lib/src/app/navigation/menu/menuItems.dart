@@ -272,6 +272,28 @@ List<MenuItem> getGenericMenuItems(BuildContext context, bool admin) {
         color: Constants.pSurveyColor),
 
 
+    //resources
+
+    MenuItem(
+        icon: SvgPicture.asset(
+          "assets/images/ic_resources.svg",
+          semanticsLabel: "Doctors",
+          fit: BoxFit.contain,
+          height: 80,
+          width: 80,
+        ),
+        shortcutIcon: SvgPicture.asset(
+          "assets/images/ic_resources.svg",
+          semanticsLabel: "Doctors",
+          fit: BoxFit.contain,
+          width: Constants.shortcutIconSize,
+          height: Constants.shortcutIconSize,
+        ),
+        title: MenuItemNames.RESOURCE_MENU,
+        onPressed: () => context.goNamed(RouteNames.Resource_Route),
+        color: Constants.resourceColor),
+
+
 
     if (admin)
       MenuItem(

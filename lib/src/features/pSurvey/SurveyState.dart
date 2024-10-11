@@ -5,7 +5,7 @@ class SurveyState {
   final int questionType;
   final bool isLoading;
   final String errorMessage;
-  final int questionNumber; // Add questionNumber
+  final int id; // Add questionNumber
 
   SurveyState({
     required this.questionText,
@@ -14,7 +14,7 @@ class SurveyState {
     required this.questionType,
     required this.isLoading,
     required this.errorMessage,
-    required this.questionNumber, // Include questionNumber in the constructor
+    required this.id, // Include questionNumber in the constructor
   });
 
   // Initial state when starting the survey
@@ -26,7 +26,7 @@ class SurveyState {
       questionType: 0,
       isLoading: false,
       errorMessage: '',
-      questionNumber: 0, // Initialize questionNumber to 0 or any default value
+      id: 0, // Initialize questionNumber to 0 or any default value
     );
   }
 
@@ -38,7 +38,7 @@ class SurveyState {
     int? questionType,
     bool? isLoading,
     String? errorMessage,
-    int? questionNumber, // Add questionNumber to copyWith method
+    int? id, // Add questionNumber to copyWith method
   }) {
     return SurveyState(
       questionText: questionText ?? this.questionText,
@@ -47,7 +47,7 @@ class SurveyState {
       questionType: questionType ?? this.questionType,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
-      questionNumber: questionNumber ?? this.questionNumber, // Copy questionNumber
+      id: id ?? this.id, // Copy questionNumber
     );
   }
 }

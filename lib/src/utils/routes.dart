@@ -51,6 +51,7 @@ class RouteNames {
   static const Facility_Directory = "facility-directory";
   static const PROGRAM_MENU = "program-menu";
   static const pSurvey_Route= "pSurvey-menu";
+  static const Resource_Route= "Resource-menu";
   static const DAWA_DROP = "dawa-drop";
   static const PROGRAM_APPOINTMENT = "program-appointment";
   static const DAWA_DROP_MENU = "dawa-drop-menu";
@@ -97,6 +98,7 @@ class MenuItemNames {
   static const FACILITY_DIRECTORY = "Facility Directory";
   static const PROGRAM_MENU = "Program Menu";
   static const pSURVEY_MENU= "pSurvey";
+  static const RESOURCE_MENU= "Resource";
   static const DAWA_DROP = "Dawa Drop";
   static const DAWA_DROP_MENU = "Dawa Drop Menu";
   static const REQUEST_DRUGS = "Request Drugs";

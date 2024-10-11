@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nishauri/src/features/C4C/ResourceScreen.dart';
 import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
 import 'package:nishauri/src/features/appointments/presentation/pages/AppointmentRescheduleScreen.dart';
 import 'package:nishauri/src/features/appointments/presentation/pages/Appointments.dart';
@@ -244,11 +245,22 @@ final List<RouteBase> secureRoutes = [
   ),
 
   GoRoute(
-    name: RouteNames.pSurvey_Route,
-    path: 'pSurvey',
+    name: RouteNames.Resource_Route,
+    path: 'Resource',
     builder: (BuildContext context, GoRouterState state) {
       // return pSurveyScreen();
      // return PsurveyHomeScreen();
+      return ResourceScreen();
+    },
+  ),
+
+
+  GoRoute(
+    name: RouteNames.pSurvey_Route,
+    path: 'Resource',
+    builder: (BuildContext context, GoRouterState state) {
+      // return pSurveyScreen();
+      // return PsurveyHomeScreen();
       return PsurveyRouteHandler();
     },
   ),
