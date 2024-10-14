@@ -49,6 +49,9 @@ mixin _$User {
   bool get accountVerified => throw _privateConstructorUsedError;
   List<String> get roles => throw _privateConstructorUsedError;
   String? get facility => throw _privateConstructorUsedError;
+  String? get national_id => throw _privateConstructorUsedError;
+  String? get sha_id => throw _privateConstructorUsedError;
+  String? get provider_id => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -86,7 +89,10 @@ abstract class $UserCopyWith<$Res> {
       bool profileUpdated,
       bool accountVerified,
       List<String> roles,
-      String? facility});
+      String? facility,
+      String? national_id,
+      String? sha_id,
+      String? provider_id});
 }
 
 /// @nodoc
@@ -128,6 +134,9 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? accountVerified = null,
     Object? roles = null,
     Object? facility = freezed,
+    Object? national_id = freezed,
+    Object? sha_id = freezed,
+    Object? provider_id = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -234,6 +243,18 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.facility
           : facility // ignore: cast_nullable_to_non_nullable
               as String?,
+      national_id: freezed == national_id
+          ? _value.national_id
+          : national_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      sha_id: freezed == sha_id
+          ? _value.sha_id
+          : sha_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      provider_id: freezed == provider_id
+          ? _value.provider_id
+          : provider_id // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -271,7 +292,10 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       bool profileUpdated,
       bool accountVerified,
       List<String> roles,
-      String? facility});
+      String? facility,
+      String? national_id,
+      String? sha_id,
+      String? provider_id});
 }
 
 /// @nodoc
@@ -310,6 +334,9 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? accountVerified = null,
     Object? roles = null,
     Object? facility = freezed,
+    Object? national_id = freezed,
+    Object? sha_id = freezed,
+    Object? provider_id = freezed,
   }) {
     return _then(_$UserImpl(
       id: freezed == id
@@ -416,6 +443,18 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.facility
           : facility // ignore: cast_nullable_to_non_nullable
               as String?,
+      national_id: freezed == national_id
+          ? _value.national_id
+          : national_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      sha_id: freezed == sha_id
+          ? _value.sha_id
+          : sha_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      provider_id: freezed == provider_id
+          ? _value.provider_id
+          : provider_id // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -449,7 +488,10 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       this.profileUpdated = false,
       this.accountVerified = false,
       final List<String> roles = const [],
-      this.facility})
+      this.facility,
+      this.national_id,
+      this.sha_id,
+      this.provider_id})
       : _roles = roles;
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
@@ -519,10 +561,16 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
 
   @override
   final String? facility;
+  @override
+  final String? national_id;
+  @override
+  final String? sha_id;
+  @override
+  final String? provider_id;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'User(id: $id, image: $image, username: $username, firstName: $firstName, lastName: $lastName, name: $name, dateOfBirth: $dateOfBirth, gender: $gender, email: $email, phoneNumber: $phoneNumber, county: $county, constituency: $constituency, bloodGroup: $bloodGroup, allergies: $allergies, disabilities: $disabilities, chronics: $chronics, weight: $weight, height: $height, maritalStatus: $maritalStatus, educationLevel: $educationLevel, primaryLanguage: $primaryLanguage, occupation: $occupation, profileUpdated: $profileUpdated, accountVerified: $accountVerified, roles: $roles, facility: $facility)';
+    return 'User(id: $id, image: $image, username: $username, firstName: $firstName, lastName: $lastName, name: $name, dateOfBirth: $dateOfBirth, gender: $gender, email: $email, phoneNumber: $phoneNumber, county: $county, constituency: $constituency, bloodGroup: $bloodGroup, allergies: $allergies, disabilities: $disabilities, chronics: $chronics, weight: $weight, height: $height, maritalStatus: $maritalStatus, educationLevel: $educationLevel, primaryLanguage: $primaryLanguage, occupation: $occupation, profileUpdated: $profileUpdated, accountVerified: $accountVerified, roles: $roles, facility: $facility, national_id: $national_id, sha_id: $sha_id, provider_id: $provider_id)';
   }
 
   @override
@@ -555,7 +603,10 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       ..add(DiagnosticsProperty('profileUpdated', profileUpdated))
       ..add(DiagnosticsProperty('accountVerified', accountVerified))
       ..add(DiagnosticsProperty('roles', roles))
-      ..add(DiagnosticsProperty('facility', facility));
+      ..add(DiagnosticsProperty('facility', facility))
+      ..add(DiagnosticsProperty('national_id', national_id))
+      ..add(DiagnosticsProperty('sha_id', sha_id))
+      ..add(DiagnosticsProperty('provider_id', provider_id));
   }
 
   @override
@@ -605,7 +656,12 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
                 other.accountVerified == accountVerified) &&
             const DeepCollectionEquality().equals(other._roles, _roles) &&
             (identical(other.facility, facility) ||
-                other.facility == facility));
+                other.facility == facility) &&
+            (identical(other.national_id, national_id) ||
+                other.national_id == national_id) &&
+            (identical(other.sha_id, sha_id) || other.sha_id == sha_id) &&
+            (identical(other.provider_id, provider_id) ||
+                other.provider_id == provider_id));
   }
 
   @JsonKey(ignore: true)
@@ -637,7 +693,10 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
         profileUpdated,
         accountVerified,
         const DeepCollectionEquality().hash(_roles),
-        facility
+        facility,
+        national_id,
+        sha_id,
+        provider_id
       ]);
 
   @JsonKey(ignore: true)
@@ -681,7 +740,10 @@ abstract class _User implements User {
       final bool profileUpdated,
       final bool accountVerified,
       final List<String> roles,
-      final String? facility}) = _$UserImpl;
+      final String? facility,
+      final String? national_id,
+      final String? sha_id,
+      final String? provider_id}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -739,6 +801,12 @@ abstract class _User implements User {
   List<String> get roles;
   @override
   String? get facility;
+  @override
+  String? get national_id;
+  @override
+  String? get sha_id;
+  @override
+  String? get provider_id;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

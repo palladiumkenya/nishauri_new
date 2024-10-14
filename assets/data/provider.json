@@ -1,0 +1,20 @@
+{
+  "success": false,
+  "message": "Provider already exist locally",
+  "provider": {
+    "id": 1,
+    "family_name": "MAKORI",
+    "given_name": "DENNIS ONDENYO",
+    "salutation": "Dr.",
+    "national_id": 32923183,
+    "license_number": "K-ANN-2024-002180",
+    "board_number": "PUID-002179",
+    "cadre": "Optometrist",
+    "gender": "UNSPECIFIED",
+    "facility_code": null,
+    "user_id": 53,
+    "createdAt": "2024-10-09T07:10:06.000Z",
+    "updatedAt": "2024-10-09T07:10:06.000Z",
+    "deletedAt": null
+  }
+}

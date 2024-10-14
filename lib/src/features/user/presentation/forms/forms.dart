@@ -5,3 +5,4 @@ export 'LifeStyleInformation.dart';
 export 'PersonalInformation.dart';
 export 'PhysicalCharacteristicInformation.dart';
 export 'ReviewAndSubmit.dart';
+export 'Identifications.dart';

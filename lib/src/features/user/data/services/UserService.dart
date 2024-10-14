@@ -104,6 +104,9 @@ class UserService extends HTTPService {
       "gender": person["profile"]["gender"],
       "roles": ["Patient", "Provider", "admin", "Facility Admin", "Partner"],
       "facility": person["profile"]["facility"],
+      "sha_id": "26263348-001-P-4",
+      "national_id": person["profile"]["national_id"],
+      "provider_id": "no",
     });
   }
 

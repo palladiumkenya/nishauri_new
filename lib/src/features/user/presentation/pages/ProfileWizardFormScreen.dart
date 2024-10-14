@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/auth/data/providers/auth_provider.dart';
-import 'package:nishauri/src/features/user/data/models/user.dart';
+import 'package:nishauri/src/features/provider/provider_registry/data/providers/provider_registry_provider.dart';
 import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user/presentation/forms/forms.dart';
 import 'package:nishauri/src/shared/display/AppCard.dart';
@@ -36,6 +36,7 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
         // "county",
         "landmark"
       ],
+      ["national_id", "sha_id"],
       ["blood_group", "allergies", "disabilities", "chronics"],
       ["weight", "height"],
       ["maritalStatus", "educationLevel", "primaryLanguage", "occupation"],
@@ -66,25 +67,33 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
         isActive: currentStep.value == 2,
       ),
       Step(
+        title: const Text("Personal Identification Information"),
+        subtitle: const Text(
+          "Provide your identifications for comprehensive medical information",
+        ),
+        content: const Identifications(),
+        isActive: currentStep.value == 3,
+      ),
+      Step(
         title: const Text("Health Information"),
         subtitle: const Text(
             " Share important health details for better healthcare assistance."),
         content: const HealthInformation(),
-        isActive: currentStep.value == 3,
+        isActive: currentStep.value == 4,
       ),
       Step(
         title: const Text("Physical Characteristics"),
         subtitle: const Text(
             "Provide information about your physical attributes for a more comprehensive"),
         content: const PhysicalCharacteristicInformation(),
-        isActive: currentStep.value == 4,
+        isActive: currentStep.value == 5,
       ),
       Step(
         title: const Text("Social Information"),
         subtitle: const Text(
             "Share aspects of your lifestyle that may influence your health."),
         content: const LifeStyleInformation(),
-        isActive: currentStep.value == 5,
+        isActive: currentStep.value == 6,
       ),
       Step(
         title: const Text("Review and Submit"),
@@ -110,7 +119,7 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
             ),
           ),
         ),
-        isActive: currentStep.value == 6,
+        isActive: currentStep.value == 7,
       ),
     ];
 
@@ -127,6 +136,11 @@ class ProfileWizardFormScreen extends HookConsumerWidget {
           //     Update auth state and redirect to home
           return ref.read(authStateProvider.notifier).markProfileAsUpdated();
         }).then((value) {
+          final idNumber = formKey.currentState!.instantValue["national_id"];
+          if (idNumber != null) {
+            final data = {"national_id" : idNumber};
+            ref.watch(providerRegistryRepositoryProvider).searchProviderRegistry(data);
+          };
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Profile updated successfully!")));
         }).catchError((e) {

@@ -1,14 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/app/navigation/menu/MenuItemsBuilder.dart';
 import 'package:nishauri/src/app/navigation/menu/menuItems.dart';
+import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/utils/routes.dart';
 
-_menuItems(BuildContext context) => [
-  MenuItem(
+_menuItems(BuildContext context, bool isProvider) => [
+  if (!isProvider) ...[
+    MenuItem(
+      shortcutBackgroundColor: Constants.providerBgColor,
+      icon: SvgPicture.asset(
+        "assets/images/review.svg",
+        semanticsLabel: "Provider",
+        fit: BoxFit.contain,
+        width: 80,
+        height: 80,
+      ),
+      shortcutIcon: SvgPicture.asset("assets/images/review.svg",
+          semanticsLabel: "provider",
+          fit: BoxFit.contain,
+          width: Constants.shortcutIconSize,
+          height: Constants.shortcutIconSize),
+      title: "Update Provider Registration",
+      onPressed: () => context.goNamed(RouteNames.LOCATION_SELECTION),
+      color: Constants.providerBgColor.withOpacity(0.5),
+    ),
+  ],
+  if (isProvider) ...[MenuItem(
     shortcutBackgroundColor: Constants.providerBgColor,
     icon: SvgPicture.asset(
       "assets/images/Calendar-Splash.svg",
@@ -44,33 +66,24 @@ _menuItems(BuildContext context) => [
     onPressed: () => context.goNamed(RouteNames.DAWA_DROP_MANAGER),
     color: Constants.providerBgColor.withOpacity(0.5),
   ),
-  // MenuItem(
-  //   shortcutBackgroundColor: Constants.dawaDropShortcutBgColor,
-  //   icon: SvgPicture.asset(
-  //     "assets/images/review.svg",
-  //     semanticsLabel: "Dawa",
-  //     fit: BoxFit.contain,
-  //     width: 80,
-  //     height: 80,
-  //   ),
-  //   shortcutIcon: SvgPicture.asset("assets/images/review.svg",
-  //       semanticsLabel: "Dawa",
-  //       fit: BoxFit.contain,
-  //       width: Constants.shortcutIconSize,
-  //       height: Constants.shortcutIconSize),
-  //   title: "Confirm Delivery",
-  //   onPressed: () => context.goNamed(RouteNames.DISPATCHED_DRUGS),
-  //   color: theme.primaryColorDark.withOpacity(0.5),
-  // ),
+]
 ];
 
-class ProviderMainScreen extends StatelessWidget {
+
+class ProviderMainScreen extends HookConsumerWidget {
   const ProviderMainScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final _items = _menuItems(context);
+    final user = ref.watch(userProvider);
+
+    final isProvider = user.when(
+      data: (provider) => provider.provider_id == "yes",
+      error: (error, stack) => false,
+      loading: () => false,
+    );
+    final _items = _menuItems(context, isProvider);
     return Scaffold(
         body: Column(
           children: [

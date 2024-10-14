@@ -35,6 +35,9 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
           (json['roles'] as List<dynamic>?)?.map((e) => e as String).toList() ??
               const [],
       facility: json['facility'] as String?,
+      national_id: json['national_id'] as String?,
+      sha_id: json['sha_id'] as String?,
+      provider_id: json['provider_id'] as String?,
     );
 
 Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
@@ -65,4 +68,7 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'accountVerified': instance.accountVerified,
       'roles': instance.roles,
       'facility': instance.facility,
+      'national_id': instance.national_id,
+      'sha_id': instance.sha_id,
+      'provider_id': instance.provider_id,
     };

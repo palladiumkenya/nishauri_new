@@ -113,17 +113,12 @@ class ProfileScreen extends HookWidget {
                         : "None",
                   ),
                 ),
-                // const Divider(),
-                // ListTile(
-                //   leading: const Icon(Icons.calendar_month),
-                //   title: const Text("Date of birth"),
-                //   subtitle: Text(
-                //     DateTime.tryParse(user.dateOfBirth ?? "") != null
-                //         ? DateFormat("dd MM yyyy")
-                //             .format(DateTime.parse(user.dateOfBirth!))
-                //         : "None",
-                //   ),
-                // ),
+                const Divider(),
+                ListTile(
+                  leading: const Icon(Icons.person_pin_outlined),
+                  title: const Text("Social Health Authority Id Number"),
+                  subtitle: Text(user.sha_id??''),
+                ),
                 const Divider(),
               ],
             ),

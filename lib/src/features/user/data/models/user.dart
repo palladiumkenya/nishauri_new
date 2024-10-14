@@ -35,6 +35,9 @@ class User with _$User {
     @Default(false) bool accountVerified,
     @Default([]) List<String> roles,
     String? facility,
+    String? national_id,
+    String? sha_id,
+    String? provider_id
 
   }) = _User;
 
