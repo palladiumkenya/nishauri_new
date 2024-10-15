@@ -13,6 +13,7 @@ class ProfileCard extends StatelessWidget {
   final double headerFactor;
   final String? image;
   final IconData icon;
+  final Color color;
 
   const ProfileCard({super.key,
     this.height = 600,
@@ -26,6 +27,7 @@ class ProfileCard extends StatelessWidget {
     this.headerFactor = 0.2,
     this.image,
     this.icon=Icons.person,
+    required this.color,
   });
 
   @override
@@ -46,7 +48,7 @@ class ProfileCard extends StatelessWidget {
                     flex: 3,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.black54,
+                        color: color,
                         backgroundBlendMode: BlendMode.darken,
                         image: coverPhoto != null ? DecorationImage(
                           fit: BoxFit.cover,

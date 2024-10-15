@@ -94,6 +94,7 @@ class ARTEventDetailScreen extends HookConsumerWidget {
           final artEvent =
               artEvents.where((element) => element.id == eventId).first;
           return ProfileCard(
+            color: Colors.black54,
             icon: Icons.event,
             coverPhoto: "https://picsum.photos/seed/picsum/757/300",
             buildItem: (context, item) => item,

@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/appointments/data/models/appointment.dart';
 import 'package:nishauri/src/features/appointments/presentation/pages/AppointmentRescheduleScreen.dart';
-import 'package:nishauri/src/features/appointments/presentation/pages/Appointments.dart';
 import 'package:nishauri/src/features/appointments/presentation/pages/AppointmentsScreen.dart';
 import 'package:nishauri/src/features/art/presentation/FacilityDirectory.dart';
 import 'package:nishauri/src/features/auth/data/models/auth_state.dart';
@@ -21,7 +19,6 @@ import 'package:nishauri/src/features/auth/presentation/pages/VerificationScreen
 import 'package:nishauri/src/features/auth/presentation/pages/VerifiedResetPassword.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/VerifyResetPasswordScreen.dart';
 import 'package:nishauri/src/features/auth/presentation/pages/WelcomeScreen.dart';
-import 'package:nishauri/src/features/blood_sugar/presentation/pages/AddBloodSugarScreen.dart';
 import 'package:nishauri/src/features/blood_sugar/presentation/pages/BloodSugarScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorResultsScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
@@ -40,7 +37,6 @@ import 'package:nishauri/src/features/dawa_drop/presentation/pages/dawa_drop_scr
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/dispatched_drugs.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/program_appointments.dart';
 import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_drug.dart';
-import 'package:nishauri/src/features/dawa_drop/presentation/pages/request_order/forms/GettingStated.dart';
 import 'package:nishauri/src/features/events_calendar/presentation/pages/EventsCalendar.dart';
 import 'package:nishauri/src/features/hiv/data/models/event/art_event.dart';
 import 'package:nishauri/src/features/hiv/data/models/group/art_group.dart';
@@ -60,38 +56,30 @@ import 'package:nishauri/src/features/lab/presentation/pages/LabResultsScreen.da
 import 'package:nishauri/src/features/nishauri_chat/chat/presentation/pages/ChatDetailScreen.dart';
 import 'package:nishauri/src/features/nishauri_chat/chat/presentation/pages/ChatUserList.dart';
 import 'package:nishauri/src/features/nishauri_chat/chat/presentation/pages/ConversationList.dart';
-import 'package:nishauri/src/features/period_planner/data/models/cycle.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/editPeriodsScreen.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/logPeriods.dart';
-import 'package:nishauri/src/features/period_planner/presentation/pages/new_user_screen.dart';
-import 'package:nishauri/src/features/period_planner/presentation/pages/periodCalendar.dart';
-import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlannerMenu.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlannerScreen.dart';
-import 'package:nishauri/src/features/period_planner/presentation/pages/periodPlanner.dart';
 import 'package:nishauri/src/features/period_planner/presentation/pages/periods_history.dart';
 import 'package:nishauri/src/features/programs/presentation/pages/programs.dart';
 import 'package:nishauri/src/features/provider/appointment_management/presentation/pages/reschedule_request_list.dart';
 import 'package:nishauri/src/features/provider/dawa_drop_management/presentation/pages/dawa_drop_manager_screen.dart';
 import 'package:nishauri/src/features/provider/presentation/pages/provider_main_Screen.dart';
 import 'package:nishauri/src/features/provider/provider_registry/presentaion/pages/location_selection_screen.dart';
+import 'package:nishauri/src/features/provider/provider_registry/presentaion/pages/provider_details.dart';
 import 'package:nishauri/src/features/self_screening/presentation/pages/bpInsightScreen.dart';
 import 'package:nishauri/src/features/self_screening/presentation/pages/insight_screen.dart';
 import 'package:nishauri/src/features/self_screening/presentation/pages/self_screening_menu.dart';
 import 'package:nishauri/src/features/treatment_support/presentation/pages/TreatmentSupport.dart';
-import 'package:nishauri/src/features/user/data/providers/user_provider.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileScreen.dart';
 import 'package:nishauri/src/features/user/presentation/pages/ProfileWizardFormScreen.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PinAuthScreen.dart';
 import 'package:nishauri/src/features/user_preference/presentation/pages/PrivacySettingsScreen.dart';
-import 'package:nishauri/src/features/user_programs/data/models/program_verification_detail.dart';
 import 'package:nishauri/src/features/user_programs/presentation/pages/ProgramRegistrationScreen.dart';
 import 'package:nishauri/src/features/user_programs/presentation/pages/ProgramUpdateScreen.dart';
 import 'package:nishauri/src/features/user_programs/presentation/pages/ProgramVerificationScreen.dart';
 import 'package:nishauri/src/features/visits/presentations/pages/FacilityVisitDetailScreen.dart';
 import 'package:nishauri/src/features/visits/presentations/pages/FacilityVisitsScreen.dart';
 import 'package:nishauri/src/utils/routes.dart';
-
-import '../../features/lab/presentation/pages/LabResults.dart';
 
 final routesProvider = Provider<GoRouter>((ref) {
   final router = RouterNotifier(ref);
@@ -563,6 +551,13 @@ final List<RouteBase> providerRoutes = [
     path: 'dawa-drop-manager',
     builder: (BuildContext context, GoRouterState state) {
       return const DawaDropManagemerScreen();
+    },
+  ),
+  GoRoute(
+    name: RouteNames.PROVIDER_DETAILS,
+    path: 'provider-details',
+    builder: (BuildContext context, GoRouterState state) {
+      return const ProviderDetails();
     },
   ),
 ];

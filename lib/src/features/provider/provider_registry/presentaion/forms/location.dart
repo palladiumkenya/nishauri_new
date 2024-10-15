@@ -46,7 +46,7 @@ class _LocationInformationState extends State<LocationInformation> {
         return asyncUser.when(
           data: (user) => Column(
             children: [
-              const SizedBox(height: Constants.SPACING),
+              const SizedBox(height: Constants.BUTTON_FONT_SIZE),
               FormBuilderDropdown(
                 initialValue: selectedCounty,
                 name: "county",
@@ -63,7 +63,7 @@ class _LocationInformationState extends State<LocationInformation> {
                   label: "County",
                 ),
               ),
-              const SizedBox(height: Constants.SPACING),
+              const SizedBox(height: Constants.BUTTON_FONT_SIZE),
               if (selectedCounty != null) ...[
                 FormBuilderDropdown(
                   initialValue: selectedSubCounty,
@@ -81,6 +81,7 @@ class _LocationInformationState extends State<LocationInformation> {
                   ),
                 ),
               ],
+              const SizedBox(height: Constants.BUTTON_FONT_SIZE),
               if (selectedSubCounty != null) ...[
                 FormBuilderDropdown(
                   initialValue: facility,

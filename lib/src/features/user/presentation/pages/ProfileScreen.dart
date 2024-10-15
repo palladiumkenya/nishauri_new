@@ -43,6 +43,7 @@ class ProfileScreen extends HookWidget {
           return userAsync.when(
             data: (user) => ProfileCard(
               height: MediaQuery.of(context).size.height,
+              color: Colors.black54,
               header: user.username == 'null null' || user.username == ""
                   ? GestureDetector(
                       onTap: () {

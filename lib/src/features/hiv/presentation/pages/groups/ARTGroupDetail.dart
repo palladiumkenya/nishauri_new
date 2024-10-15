@@ -30,6 +30,7 @@ class ARTGroupDetailScreen extends StatelessWidget {
               final artGroup =
                   artGroups.where((element) => element.id == groupId).first;
               return ProfileCard(
+                color: Colors.black54,
                 icon: Icons.group,
                 coverPhoto: "https://picsum.photos/seed/picsum/200/300",
                 buildItem: (context, item) => item,

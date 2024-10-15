@@ -77,6 +77,7 @@ class RouteNames {
   static const REQUEST_APP_RESCHEDULE = "request-app-reschedule";
   static const DAWA_DROP_MANAGER = "dawa-drop-manager";
   static const LOCATION_SELECTION = "location-selection";
+  static const PROVIDER_DETAILS = "provider-details";
 }
 
 class MenuItemNames {
@@ -114,6 +115,7 @@ class MenuItemNames {
   static const INSIGHT = "Insight";
   static const PROVIDER_MAIN_SCREEN = "Provider Modules";
   static const REQUEST_APP_RESCHEDULE = "Request Appointment Reschedule";
+  static const PROVIDER_DETAILS = "Provider Details";
 
 }
 

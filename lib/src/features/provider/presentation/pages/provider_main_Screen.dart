@@ -30,7 +30,26 @@ _menuItems(BuildContext context, bool isProvider) => [
       color: Constants.providerBgColor.withOpacity(0.5),
     ),
   ],
-  if (isProvider) ...[MenuItem(
+  if (isProvider) ...[
+    MenuItem(
+      shortcutBackgroundColor: Constants.providerBgColor,
+      icon: SvgPicture.asset(
+        "assets/images/doctor-coat.svg",
+        semanticsLabel: "Provider Details",
+        fit: BoxFit.contain,
+        width: 80,
+        height: 80,
+      ),
+      shortcutIcon: SvgPicture.asset("assets/images/doctor-coat.svg",
+          semanticsLabel: "Provider Details",
+          fit: BoxFit.contain,
+          width: Constants.shortcutIconSize,
+          height: Constants.shortcutIconSize),
+      title: "Provider Details",
+      onPressed: () => context.goNamed(RouteNames.PROVIDER_DETAILS),
+      color: Constants.providerBgColor.withOpacity(0.5),
+    ),
+    MenuItem(
     shortcutBackgroundColor: Constants.providerBgColor,
     icon: SvgPicture.asset(
       "assets/images/Calendar-Splash.svg",
@@ -79,7 +98,7 @@ class ProviderMainScreen extends HookConsumerWidget {
     final user = ref.watch(userProvider);
 
     final isProvider = user.when(
-      data: (provider) => provider.provider_id == "yes",
+      data: (provider) => provider.provider_id == "no",
       error: (error, stack) => false,
       loading: () => false,
     );
