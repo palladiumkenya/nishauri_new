@@ -44,7 +44,7 @@ class LabResultsScreen extends HookConsumerWidget {
         body: Column(
       children: [
         const CustomAppBar(
-          title: "Lab Results 🧪",
+          title: "Lab Results 🌡️",
           // icon: FontAwesomeIcons.vial,
           subTitle: "Unlock you health insights with lab results",
           color: Constants.labResultsColor,
