@@ -1,5 +1,5 @@
-import 'package:nishauri/src/features/blood_sugar/data/models/blood_sugar.dart';
-import 'package:nishauri/src/features/blood_sugar/data/services/blood_sugar_service.dart';
+import 'package:nishauri/src/features/self_screening/blood_sugar/data/models/blood_sugar.dart';
+import 'package:nishauri/src/features/self_screening/blood_sugar/data/services/blood_sugar_service.dart';
 
 class BloodSugarRepository {
   final BloodSugarService _service;

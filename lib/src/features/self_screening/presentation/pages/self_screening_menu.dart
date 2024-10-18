@@ -10,6 +10,7 @@ import 'package:nishauri/src/features/self_screening/presentation/widgets/health
 import 'package:nishauri/src/features/self_screening/presentation/widgets/image_card.dart';
 import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class SelfScreening extends HookConsumerWidget {
   const SelfScreening({super.key});
@@ -17,8 +18,8 @@ class SelfScreening extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    int _currIndex = 0; // Define your current index
-    int _messagesCount = 0; // Define your messages count
+    int _currIndex = 0;
+    int _messagesCount = 0;
 
     return Scaffold(
       body: Column(
@@ -55,6 +56,9 @@ class SelfScreening extends HookConsumerWidget {
                                   value3: "73",
                                   text3: "Pulse/Min",
                                   vName3: "Pulse Rate",
+                                  onPressed: (){
+                                    context.goNamed(RouteNames.BLOOD_PRESSURE);
+                                  },
                                 ),
                                 HealthCard(
                                   svgAsset: "assets/images/boldDuotoneMedicinePulse.svg",

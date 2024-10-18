@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nishauri/src/features/blood_sugar/data/models/blood_sugar.dart';
-import 'package:nishauri/src/features/blood_sugar/data/providers/blood_sugar_provider.dart';
-import 'package:nishauri/src/features/blood_sugar/presentation/widgets/blood_level_picker.dart';
-import 'package:nishauri/src/features/blood_sugar/presentation/widgets/blood_level_units_picker.dart';
+import 'package:nishauri/src/features/self_screening/blood_sugar/data/models/blood_sugar.dart';
+import 'package:nishauri/src/features/self_screening/blood_sugar/data/providers/blood_sugar_provider.dart';
+import 'package:nishauri/src/features/self_screening/blood_sugar/presentation/widgets/blood_level_picker.dart';
+import 'package:nishauri/src/features/self_screening/blood_sugar/presentation/widgets/blood_level_units_picker.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class AddBloodSugarScreen extends HookConsumerWidget {

@@ -14,7 +14,7 @@ class HealthCard extends StatelessWidget {
   final String? vName1;
   final String? vName2;
   final String? vName3;
-  final VoidCallback? onPressed; // Callback for button action
+  final VoidCallback? onPressed;
 
   const HealthCard({
     this.svgAsset,
@@ -93,9 +93,9 @@ class HealthCard extends StatelessWidget {
       return const SizedBox.shrink();
     }
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0), // Adjust padding as needed
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start, // Align items to the start
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(name ?? '', style: theme.textTheme.bodyMedium),
           Row(

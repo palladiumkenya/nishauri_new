@@ -1,6 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:nishauri/src/features/blood_sugar/data/models/blood_sugar.dart';
+import 'package:nishauri/src/features/self_screening/blood_sugar/data/models/blood_sugar.dart';
 import 'package:nishauri/src/shared/charts/CustomLineChart.dart';
 import 'package:nishauri/src/utils/constants.dart';
 

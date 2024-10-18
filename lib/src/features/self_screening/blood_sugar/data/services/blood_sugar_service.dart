@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
-import 'package:nishauri/src/features/blood_sugar/data/models/blood_sugar.dart';
+import 'package:nishauri/src/features/self_screening/blood_sugar/data/models/blood_sugar.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 import 'package:nishauri/src/utils/constants.dart';
 

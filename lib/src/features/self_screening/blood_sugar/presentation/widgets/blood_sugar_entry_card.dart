@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nishauri/src/features/blood_sugar/data/models/blood_sugar.dart';
+import 'package:nishauri/src/features/self_screening/blood_sugar/data/models/blood_sugar.dart';
 
 class BloodSugarEntryCard extends StatelessWidget {
   final BloodSugar entry;

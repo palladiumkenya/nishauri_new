@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nishauri/src/features/blood_sugar/presentation/widgets/blood_level_units_picker.dart';
+import 'package:nishauri/src/features/self_screening/blood_sugar/presentation/widgets/blood_level_units_picker.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class BloodLevelPicker extends StatelessWidget {
