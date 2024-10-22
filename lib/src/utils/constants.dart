@@ -48,4 +48,5 @@ class Constants {
   static const providerBgColor = Color.fromARGB(255, 37, 102, 92);
   static const selfScreeningBgColor = Color.fromARGB(255, 151, 57, 54);
   static const bgColor = Color.fromARGB(255, 245, 245, 245);
+  static const barColor = Color.fromARGB(255, 4, 191, 218);
 }

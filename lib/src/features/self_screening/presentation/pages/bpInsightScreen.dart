@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/self_screening/data/providers/insight_provider.dart';
 import 'package:nishauri/src/features/self_screening/presentation/common/insight_common.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class BpInsightScreen extends HookConsumerWidget {
   const BpInsightScreen({Key? key}) : super(key: key);
@@ -10,13 +11,14 @@ class BpInsightScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const title = "Blood Pressure Awareness 🌡";
-    const color = Constants.bmiCalculatorColor;
+    const color = Constants.selfScreeningBgColor;
     final insightAsync = ref.watch(insightProvider);
 
     return InsightCommon(
       appBarTitle: title,
       appBarColor: color,
       insightAsync: insightAsync,
+      pathName: RouteNames.BLOOD_PRESSURE_POSTS,
     );
   }
 }

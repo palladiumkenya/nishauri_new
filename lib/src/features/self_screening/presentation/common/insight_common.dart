@@ -12,6 +12,7 @@ import 'package:nishauri/src/utils/routes.dart';
 class InsightCommon extends HookConsumerWidget {
   final String appBarTitle;
   final Color appBarColor;
+  final String pathName;
   final AsyncValue<List<Announcement>> insightAsync;
 
   const InsightCommon({
@@ -19,6 +20,7 @@ class InsightCommon extends HookConsumerWidget {
     required this.appBarTitle,
     required this.appBarColor,
     required this.insightAsync,
+    required this.pathName
   }) : super(key: key);
 
   @override
@@ -53,7 +55,7 @@ class InsightCommon extends HookConsumerWidget {
                           InkWell(
                             onTap: () {
                               context.goNamed(
-                                RouteNames.BLOG_POST,
+                                pathName,
                                 extra: insight,
                               );
                             },

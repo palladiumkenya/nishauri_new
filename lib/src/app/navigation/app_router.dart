@@ -66,7 +66,10 @@ import 'package:nishauri/src/features/provider/dawa_drop_management/presentation
 import 'package:nishauri/src/features/provider/presentation/pages/provider_main_Screen.dart';
 import 'package:nishauri/src/features/provider/provider_registry/presentaion/pages/location_selection_screen.dart';
 import 'package:nishauri/src/features/provider/provider_registry/presentaion/pages/provider_details.dart';
+import 'package:nishauri/src/features/self_screening/presentation/pages/blood_pressure_posts.dart';
+import 'package:nishauri/src/features/self_screening/presentation/pages/blood_sugar_posts.dart';
 import 'package:nishauri/src/features/self_screening/presentation/pages/bpInsightScreen.dart';
+import 'package:nishauri/src/features/self_screening/presentation/pages/bsInsightScreen.dart';
 import 'package:nishauri/src/features/self_screening/presentation/pages/insight_screen.dart';
 import 'package:nishauri/src/features/self_screening/presentation/pages/self_screening_menu.dart';
 import 'package:nishauri/src/features/treatment_support/presentation/pages/TreatmentSupport.dart';
@@ -472,13 +475,51 @@ final List<RouteBase> selfScreeningRoutes = [
     builder: (BuildContext context, GoRouterState state) {
       return BPMonitorScreen();
     },
+    routes: [
+      GoRoute(
+          name: RouteNames.BLOOD_PRESSURE_INSIGHT,
+          path: 'blood-pressure-insight',
+          builder: (BuildContext context, GoRouterState state) {
+            return BsInsightScreen();
+          },
+          routes: [
+            GoRoute(
+              name: RouteNames.BLOOD_PRESSURE_POSTS,
+              path: 'blood-pressure-posts',
+              builder: (BuildContext context, GoRouterState state) {
+                dynamic ann = state.extra;
+                return BloodPressurePostScreen(announcement: ann,);
+              },
+            )
+          ]
+      ),
+    ]
   ),
   GoRoute(
-    name: MenuItemNames.BLOOD_SUGAR,
+    name: RouteNames.BLOOD_SUGAR,
     path: 'blood-sugar',
     builder: (BuildContext context, GoRouterState state) {
       return BloodSugarScreen();
     },
+    routes: [
+      GoRoute(
+        name: RouteNames.BLOOD_SUGAR_INSIGHT,
+        path: 'blood-sugar-insight',
+        builder: (BuildContext context, GoRouterState state) {
+          return BsInsightScreen();
+        },
+        routes: [
+          GoRoute(
+              name: RouteNames.BLOOD_SUGAR_POSTS,
+              path: 'blood-sugar-posts',
+              builder: (BuildContext context, GoRouterState state) {
+                dynamic ann = state.extra;
+                return BloodSugarPostScreen(announcement: ann,);
+              },
+          )
+        ]
+      ),
+    ]
   ),
   //Routes for the Period Planner
   GoRoute(

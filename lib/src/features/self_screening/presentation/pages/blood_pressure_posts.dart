@@ -5,10 +5,10 @@ import 'package:nishauri/src/shared/display/blog_post_widget.dart';
 import 'package:nishauri/src/shared/display/scafold_stack_body.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
-class BlogPostScreen extends StatelessWidget {
+class BloodPressurePostScreen extends StatelessWidget {
   final Announcement announcement;
 
-  const BlogPostScreen({super.key, required this.announcement});
+  const BloodPressurePostScreen({super.key, required this.announcement});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class BlogPostScreen extends StatelessWidget {
         children: [
           CustomAppBar(
             title: announcement.header ?? "Did you know 💡",
-            color: Constants.labResultsColor.withOpacity(0.5),
+            color: Constants.selfScreeningBgColor,
           ),
           Expanded(
             child: ScaffoldStackedBody(

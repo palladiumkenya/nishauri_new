@@ -1,13 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:nishauri/src/utils/sampleBmi.dart';
 
-class CustomLineChart extends StatelessWidget {
+class CustomFilterLineChart extends StatelessWidget {
   final List<FlSpot> dataPoints;
   final String? xAxisLabel;
   final String? yAxisLabel;
-  final List<String> dateTimes;
   final double? minX;
   final double? maxX;
   final double? minY;
@@ -17,10 +15,10 @@ class CustomLineChart extends StatelessWidget {
   final bool bottomTile;
   final List<Color> gradientColors;
   final double? interval;
-  final String dateFormat;
   final String? filter;
+  final List<String> dateTimes;
 
-  const CustomLineChart({
+  const CustomFilterLineChart({
     Key? key,
     required this.dataPoints,
     this.xAxisLabel,
@@ -29,14 +27,13 @@ class CustomLineChart extends StatelessWidget {
     this.maxX,
     this.minY,
     this.maxY,
-    required this.dateTimes,
     required this.leftTile,
     this.barColor,
     required this.gradientColors,
     required this.bottomTile,
     this.interval,
-    required this.dateFormat,
-    this.filter
+    this.filter,
+    required this.dateTimes,
   }) : super(key: key);
 
   @override
@@ -56,16 +53,9 @@ class CustomLineChart extends StatelessWidget {
                       spots: dataPoints,
                       isCurved: true,
                       color: barColor,
-                      barWidth: 6,
-                      belowBarData: BarAreaData(
-                        show: true,
-                        gradient: LinearGradient(
-                          colors: gradientColors
-                              .map((color) => color.withOpacity(0.3))
-                              .toList(),
-                        ),
-                      ),
-                      dotData: const FlDotData(show: true),
+                      barWidth: 2,
+                      belowBarData: BarAreaData(show: false),
+                      dotData: FlDotData(show: true),
                     ),
                   ],
                   titlesData: FlTitlesData(
@@ -74,19 +64,31 @@ class CustomLineChart extends StatelessWidget {
                         showTitles: bottomTile,
                         getTitlesWidget: (value, meta) {
                           int index = value.toInt();
-                          if (index >= 0 && index < dateTimes.length) {
-                            DateTime date = DateTime.parse(dateTimes[index]);
-                            return Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Transform.rotate(
-                                angle: -45 *
-                                    (3.14 /
-                                        180),
-                                child: Text(DateFormat(dateFormat).format(date)),
-                              ),
-                            );
+                          String label;
+
+                          // Determine the label based on the filter
+                          switch (filter) {
+                            case 'Daily':
+                              DateTime date = DateTime.parse(dateTimes[index]);
+                              label = DateFormat('E').format(date);
+                              break;
+                            case 'Weekly':
+                              label = 'Week ${index + 1}'; // Week number
+                              break;
+                            case 'Monthly':
+                              label = 'Month ${index + 1}'; // Month number
+                              break;
+                            case 'Yearly':
+                              label = 'Year ${index + 1}'; // Year number
+                              break;
+                            default:
+                              label = '';
                           }
-                          return const Text('');
+
+                          return Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Text(label),
+                          );
                         },
                         reservedSize: 30,
                         interval: 1,
@@ -103,8 +105,7 @@ class CustomLineChart extends StatelessWidget {
                           );
                         },
                         reservedSize: 30,
-                        interval:
-                        interval ?? 1, // Show labels at an interval of 1 unit
+                        interval: interval ?? 1,
                       ),
                       axisNameWidget: Text(yAxisLabel ?? ''),
                     ),
@@ -119,20 +120,13 @@ class CustomLineChart extends StatelessWidget {
                   maxX: maxX,
                   minY: minY,
                   maxY: maxY,
-                  borderData: FlBorderData(show: true),
+                  borderData: FlBorderData(show: false),
                   gridData: FlGridData(
                     show: true,
-                    drawVerticalLine: true,
+                    drawVerticalLine: false,
                     drawHorizontalLine: true,
                     getDrawingHorizontalLine: (value) {
                       return const FlLine(strokeWidth: 1, color: Colors.grey);
-                    },
-                    getDrawingVerticalLine: (value) {
-                      if (value.toInt() % 1 == 0) {
-                        return const FlLine(strokeWidth: 1, color: Colors.grey);
-                      }
-                      return const FlLine(
-                          strokeWidth: 0);
                     },
                   ),
                 ),

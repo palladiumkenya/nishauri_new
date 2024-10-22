@@ -78,6 +78,11 @@ class RouteNames {
   static const DAWA_DROP_MANAGER = "dawa-drop-manager";
   static const LOCATION_SELECTION = "location-selection";
   static const PROVIDER_DETAILS = "provider-details";
+  static const BLOOD_SUGAR = "blood-sugar";
+  static const BLOOD_SUGAR_INSIGHT = 'blood-sugar-insight';
+  static const BLOOD_SUGAR_POSTS = 'blood-sugar-posts';
+  static const BLOOD_PRESSURE_INSIGHT = 'blood-pressure-insight';
+  static const BLOOD_PRESSURE_POSTS = 'blood-pressure-posts';
 }
 
 class MenuItemNames {

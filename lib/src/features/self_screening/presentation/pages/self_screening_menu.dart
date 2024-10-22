@@ -67,6 +67,9 @@ class SelfScreening extends HookConsumerWidget {
                                   text1: "mmHG",
                                   value3: "73/Min",
                                   vName3: "Pulse Rate",
+                                  onPressed: (){
+                                    context.goNamed(RouteNames.BLOOD_SUGAR);
+                                  },
                                 ),
                               ],
                             ),

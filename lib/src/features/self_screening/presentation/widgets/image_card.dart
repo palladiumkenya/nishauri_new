@@ -9,8 +9,8 @@ class ImageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.45, // 45% of screen width
-      height: 200, // Set a fixed height
+      width: MediaQuery.of(context).size.width * 0.45,
+      height: 200,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: Colors.white,
@@ -27,7 +27,7 @@ class ImageCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         child: SvgPicture.asset(
           imagePath,
-          fit: BoxFit.cover, // Ensures the image covers the entire card
+          fit: BoxFit.cover,
         ),
       ),
     );
