@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nishauri/src/features/bmi/data/providers/bmi_log_provider.dart';
 import 'package:nishauri/src/features/bmi/presentation/widgets/BMILineGraph.dart';
-import 'package:nishauri/src/features/bp/data/providers/blood_pressure_provider.dart';
-import 'package:nishauri/src/features/bp/presentation/pages/trend_chart_screen.dart';
+import 'package:nishauri/src/features/self_screening/bp/data/providers/blood_pressure_provider.dart';
+import 'package:nishauri/src/features/self_screening/bp/presentation/pages/trend_chart_screen.dart';
 import 'package:nishauri/src/features/self_screening/blood_sugar/data/providers/blood_sugar_provider.dart';
 import 'package:nishauri/src/features/self_screening/blood_sugar/presentation/widgets/blood_suger_trend_chart.dart';
 

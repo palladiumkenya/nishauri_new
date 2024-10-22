@@ -1,10 +1,10 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nishauri/src/features/bp/data/models/blood_pressure.dart';
-import 'package:nishauri/src/features/bp/data/providers/blood_pressure_provider.dart';
-import 'package:nishauri/src/features/bp/presentation/pages/BPLinelistScreen.dart';
-import 'package:nishauri/src/features/bp/presentation/pages/trend_chart_screen.dart';
+import 'package:nishauri/src/features/self_screening/bp/data/models/blood_pressure.dart';
+import 'package:nishauri/src/features/self_screening/bp/data/providers/blood_pressure_provider.dart';
+import 'package:nishauri/src/features/self_screening/bp/presentation/pages/BPLinelistScreen.dart';
+import 'package:nishauri/src/features/self_screening/bp/presentation/pages/trend_chart_screen.dart';
 import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
 import 'package:nishauri/src/utils/constants.dart';

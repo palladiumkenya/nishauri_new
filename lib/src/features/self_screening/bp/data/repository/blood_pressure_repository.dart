@@ -1,5 +1,5 @@
-import 'package:nishauri/src/features/bp/data/models/blood_pressure.dart';
-import 'package:nishauri/src/features/bp/data/services/blood_pressure_service.dart';
+import 'package:nishauri/src/features/self_screening/bp/data/models/blood_pressure.dart';
+import 'package:nishauri/src/features/self_screening/bp/data/services/blood_pressure_service.dart';
 
 class BloodPressureRepository {
   final BloodPressureService _service;

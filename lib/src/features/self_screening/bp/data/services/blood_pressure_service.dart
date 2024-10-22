@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:nishauri/src/features/auth/data/respositories/auth_repository.dart';
 import 'package:nishauri/src/features/auth/data/services/AuthApiService.dart';
-import 'package:nishauri/src/features/bp/data/models/blood_pressure.dart';
+import 'package:nishauri/src/features/self_screening/bp/data/models/blood_pressure.dart';
 import 'package:nishauri/src/shared/interfaces/HTTPService.dart';
 import 'package:nishauri/src/utils/constants.dart';
 

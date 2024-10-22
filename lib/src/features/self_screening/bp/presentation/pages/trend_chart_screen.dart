@@ -1,6 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:nishauri/src/features/bp/data/models/blood_pressure.dart';
+import 'package:nishauri/src/features/self_screening/bp/data/models/blood_pressure.dart';
 import 'package:nishauri/src/shared/charts/CustomeMultLineChart.dart';
 import 'package:nishauri/src/utils/constants.dart';
 

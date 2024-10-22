@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:nishauri/src/features/bp/data/models/blood_pressure.dart';
+import 'package:nishauri/src/features/self_screening/bp/data/models/blood_pressure.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
 class BPLinelistScreen extends StatelessWidget {
