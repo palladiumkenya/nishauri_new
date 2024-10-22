@@ -3,134 +3,116 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nishauri/src/features/appointments/data/providers/appointment_provider.dart';
 import 'package:nishauri/src/utils/constants.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'EbookModel.dart';
+import 'EbookProvider.dart';
 
 class FreeEbooks extends HookConsumerWidget {
   const FreeEbooks({Key? key}) : super(key: key);
+
+  // Function to launch the URL and download
+  Future<void> _launchUrl(BuildContext context, String url) async {
+    final Uri uri = Uri.parse(url);
+
+    if (await canLaunchUrl(uri)) {
+      // Launch the URL in the browser
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      // Handle the error, for example, show a snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not launch $url')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final currentAppointmentSync = ref.watch(appointmentProvider(false));
-    return currentAppointmentSync.when(
-      data: (data) {
-        final activeProgramAppointments =
-        data.where((element) => element.program_status.toString() == "1");
-        if (activeProgramAppointments.isEmpty) {
-          return BackgroundImageWidget(
-              svgImage: "assets/images/appointments-empty.svg",
-              notFoundText: "No Free ebooks",
-              floatingButtonIcon1: Icons.refresh,
-              floatingButtonAction1: () {
-                ref.refresh(appointmentProvider(false));
-              }
-          );
-        }
-        return Scaffold(
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: activeProgramAppointments.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final currAppointment =
-                    activeProgramAppointments.elementAt(index);
-                    return Column(
-                      children: [
-                        const Divider(),
-                        ListTile(
-                          title: Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(Constants.SPACING),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    currAppointment.program_name ?? '',
+    final ebookAsyncValue = ref.watch(ebookProvider);
+    return Scaffold(
+      body: ebookAsyncValue.when(
+        data: (ebooks) {
+          return ListView.builder(
+            itemCount: ebooks.length,
+            itemBuilder: (context, index) {
+              final ebook = ebooks[index];
+              return Column(
+                children: [
+                  const Divider(),
+                  ListTile(
+                    title: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(Constants.SPACING),  // You can adjust the padding as needed
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Title Text (Styled like program_name)
+                            // Title and Download Icon Row
+                            Row(
+                              children: [
+                                // Title Text
+                                Expanded(
+                                  child: Text(
+                                    ebook.title,
                                     style: theme.textTheme.headline6,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                   ),
-                                  const SizedBox(height: Constants.SPACING),
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.app_registration_outlined,
-                                        color: Constants.appointmentsColor,
-                                      ),
-                                      const SizedBox(width: Constants.SPACING),
-                                      Text(
-                                        currAppointment.appointment_type ?? '',
-                                      ),
-                                    ],
+                                ),
+                                // Download Icon
+                                const Icon(
+                                  Icons.cloud_download_outlined,
+                                  color: Colors.green,
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: Constants.SPACING),
+
+                            // Invisible URL Row (Hidden from users)
+                            Visibility(
+                              visible: false,  // Hides the URL row but keeps it in the widget tree
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.link,
+                                    color: Colors.blue,
                                   ),
-                                  const SizedBox(height: Constants.SPACING),
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.calendar_month_outlined,
-                                        color: Constants.appointmentsColor,
-                                      ),
-                                      const SizedBox(width: Constants.SPACING),
-                                      Text(
-                                        currAppointment.appointment_date,
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: Constants.SPACING),
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.local_hospital_sharp,
-                                        color: Constants.appointmentsColor,
-                                      ),
-                                      const SizedBox(width: Constants.SPACING),
-                                      Text(
-                                        currAppointment.facility_name ?? '',
-                                      ),
-                                    ],
-                                  ),
+                                  const SizedBox(width: Constants.SPACING),
+                                  Text(ebook.url),
                                 ],
                               ),
                             ),
-                          ),
+                            // const SizedBox(height: Constants.SPACING),
+                            //
+                            // // Another Row (Styled like appointment_date)
+                            // Row(
+                            //   children: [
+                            //     const Icon(
+                            //       Icons.cloud_download_outlined,
+                            //       color: Colors.green,
+                            //     ),
+                            //     const SizedBox(width: Constants.SPACING),
+                            //     Text("Tap to open or download"),
+                            //   ],
+                            // ),
+                          ],
                         ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              ref.refresh(appointmentProvider(false));
+                      ),
+                    ),
+                    onTap: () {
+                      _launchUrl(context, ebook.url);  // Open URL on tap
+                    },
+                  ),
+                ],
+              );
             },
-            child: Icon(Icons.refresh),
-          ),
-        );
-      },
-      error: (error, _) => BackgroundImageWidget(
-          svgImage: 'assets/images/background.svg',
-          notFoundText: error.toString(),
-          floatingButtonIcon1: Icons.refresh,
-          floatingButtonAction1: () {
-            ref.refresh(appointmentProvider(false));
-          }
-      ),
-      loading: () => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "Loading Free Ebooks",
-              style: theme.textTheme.headline6,
-            ),
-            const SizedBox(height: Constants.SPACING * 2),
-            const CircularProgressIndicator(),
-          ],
-        ),
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) => Center(child: Text('Error: $error')),
       ),
     );
   }

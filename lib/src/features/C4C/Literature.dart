@@ -18,7 +18,7 @@ class Literature extends HookConsumerWidget {
         if (activeProgramAppointments.isEmpty) {
           return BackgroundImageWidget(
               svgImage: "assets/images/appointments-empty.svg",
-              notFoundText: "No literature materials found",
+              notFoundText: "No videos found",
               floatingButtonIcon1: Icons.refresh,
               floatingButtonAction1: () {
                 ref.refresh(appointmentProvider(false));

@@ -48,7 +48,7 @@ class ResourceScreen extends HookConsumerWidget {
                 icon: Icons.calendar_month,
               ),
               CustomTabBarItem(
-                title: "Literature",
+                title: "Videos",
                 icon: Icons.calendar_month,
               ),
               CustomTabBarItem(
