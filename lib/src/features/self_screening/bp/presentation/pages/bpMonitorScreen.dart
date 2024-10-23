@@ -257,7 +257,7 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
                                 title: Text("Show All Data", style: theme.textTheme.titleSmall!.copyWith(fontWeight: FontWeight.bold),),
                                 trailing: const Icon(Icons.arrow_forward_ios_outlined),
                                 onTap: (){
-                                  //   implementing on tap method
+                                  context.goNamed(RouteNames.BLOOD_PRESSURE_RECORDS, extra: data);
                                 },
                               ),
                             ),

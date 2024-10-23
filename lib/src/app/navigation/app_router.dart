@@ -23,6 +23,7 @@ import 'package:nishauri/src/features/self_screening/blood_sugar/presentation/pa
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorResultsScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMIHistoryScreen.dart';
+import 'package:nishauri/src/features/self_screening/bp/presentation/pages/BPLinelistScreen.dart';
 import 'package:nishauri/src/features/self_screening/bp/presentation/pages/bpMonitorScreen.dart';
 import 'package:nishauri/src/features/chatbot/presentations/ChatScreen.dart';
 import 'package:nishauri/src/features/clinic_card/presentation/pages/ClinicCardScreen.dart';
@@ -492,6 +493,14 @@ final List<RouteBase> selfScreeningRoutes = [
               },
             )
           ]
+      ),
+      GoRoute(
+        name: RouteNames.BLOOD_PRESSURE_RECORDS,
+        path: 'blood-pressure-records',
+        builder: (context, state) {
+          dynamic extras = state.extra;
+          return BloodPressureRecords(data: extras);
+        },
       ),
     ]
   ),

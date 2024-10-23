@@ -83,6 +83,7 @@ class RouteNames {
   static const BLOOD_SUGAR_POSTS = 'blood-sugar-posts';
   static const BLOOD_PRESSURE_INSIGHT = 'blood-pressure-insight';
   static const BLOOD_PRESSURE_POSTS = 'blood-pressure-posts';
+  static const BLOOD_PRESSURE_RECORDS = 'blood-pressure-records';
 }
 
 class MenuItemNames {
