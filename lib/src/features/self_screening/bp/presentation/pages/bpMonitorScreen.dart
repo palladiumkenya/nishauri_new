@@ -1,13 +1,18 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nishauri/src/features/self_screening/bp/data/models/blood_pressure.dart';
 import 'package:nishauri/src/features/self_screening/bp/data/providers/blood_pressure_provider.dart';
 import 'package:nishauri/src/features/self_screening/bp/presentation/pages/BPLinelistScreen.dart';
 import 'package:nishauri/src/features/self_screening/bp/presentation/pages/trend_chart_screen.dart';
 import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/shared/display/background_image_widget.dart';
+import 'package:nishauri/src/shared/display/custome_filter_chart.dart';
+import 'package:nishauri/src/shared/display/daily_card.dart';
+import 'package:nishauri/src/shared/input/Button.dart';
 import 'package:nishauri/src/utils/constants.dart';
+import 'package:nishauri/src/utils/routes.dart';
 
 class BPMonitorScreen extends ConsumerStatefulWidget {
   @override
@@ -200,25 +205,108 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
           body: Column(
             children: [
               const CustomAppBar(
-                title: "Blood Pressure Monitor 📈",
-                color: Constants.bmiCalculatorColor,
+                title: "Blood Pressure",
+                color: Constants.selfScreeningBgColor,
               ),
               Expanded(
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: TrendChartScreen(data: displayedData),
+                child: SingleChildScrollView(
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(Constants.SPACING),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Wrap(
+                              spacing: 16,
+                              runSpacing: 16,
+                              children: [
+                                FilterCard(
+                                  onPressed: (){
+
+                                  },
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: Constants.SPACING,),
+                            Text("18 Oct 2024", style: theme.textTheme.bodyLarge!.copyWith(color: Colors.grey, fontWeight: FontWeight.bold)),
+
+                            SizedBox(height: Constants.SPACING,),
+                            Row(
+                              children: [
+                                Text("4.1", style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold)),
+                                const SizedBox(width: 4),
+                                Text("mmol/L", style: theme.textTheme.bodyMedium),
+                              ],
+                            ),
+                            SizedBox(height: Constants.SPACING,),
+                            Wrap(
+                              spacing: 1,
+                              runSpacing: 16,
+                              children: [
+                                TrendChartScreen(data: displayedData,)
+                              ],
+                            ),
+                            SizedBox(height: Constants.SPACING,),
+                            Card(
+                              color: Constants.bgColor,
+                              child: ListTile(
+                                title: Text("Show All Data", style: theme.textTheme.titleSmall!.copyWith(fontWeight: FontWeight.bold),),
+                                trailing: const Icon(Icons.arrow_forward_ios_outlined),
+                                onTap: (){
+                                  //   implementing on tap method
+                                },
+                              ),
+                            ),
+                            SizedBox(height: Constants.SPACING,),
+                            Container(
+                              color: Constants.bgColor,
+                              height: 250,
+                              child: Padding(
+                                padding: const EdgeInsets.all(Constants.SPACING),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      ListTile(
+                                        title: Text(
+                                          'What is Blood Pressure',
+                                          style: theme.textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600),
+                                        ),
+                                        subtitle: Text(
+                                          "Blood Pressure, is the force of blood pushing against the walls of your blood vessels (arteries) as it is pumped by the heart1. It's measured in millimeters of mercury (mmHg) and recorded with two numbers: systolic (the pressure when your heart beats) and diastolic (the pressure when your heart rests between beats)",
+                                          style: theme.textTheme.bodyMedium,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: Constants.SPACING),
+                            Button(
+                              title: "More Insight",
+                              onPress: (){
+                                context.goNamed(RouteNames.BLOOD_PRESSURE_INSIGHT);
+                              },
+                              textColor: Constants.selfScreeningBgColor,
+                              // onPressed: () {
+                              //   // implement on Pressed
+                              // },
+                              // child: Text('More Insight', style: theme.textTheme.bodyLarge!.copyWith(color: Constants.selfScreeningBgColor)),
+                              // style: TextButton.styleFrom(
+                              //   backgroundColor: Constants.bgColor,
+                              //   padding: EdgeInsets.all(10),
+                              //   shape: RoundedRectangleBorder(
+                              //     borderRadius: BorderRadius.circular(8), // Rounded corners
+                              //   ),
+                              // ),
+                            ),
+
+                          ],
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: BPLinelistScreen(data: data),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

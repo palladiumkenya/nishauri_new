@@ -37,8 +37,10 @@ class TrendChartScreen extends StatelessWidget {
         print(data);
         print(date);
 
-        return Scaffold(
-          body: Padding(
+        return Container(
+          height: 350,
+          child:           Scaffold(
+            body: Padding(
               padding: const EdgeInsets.all(16.0),
               child: CustomMultiLineChart(
                 lineBarsData: [
@@ -46,9 +48,9 @@ class TrendChartScreen extends StatelessWidget {
                     spots: systolicSpots,
                     isCurved: true,
                     color: Colors.red,
-                    barWidth: 5,
+                    barWidth: 2,
                     belowBarData: BarAreaData(
-                      show: true,
+                      show: false,
                       gradient: LinearGradient(
                         colors: [Colors.red.withOpacity(0.3), Colors.red.withOpacity(0)],
                       ),
@@ -59,9 +61,9 @@ class TrendChartScreen extends StatelessWidget {
                     spots: diastolicSpots,
                     isCurved: true,
                     color: Colors.orange,
-                    barWidth: 5,
+                    barWidth: 2,
                     belowBarData: BarAreaData(
-                      show: true,
+                      show: false,
                       gradient: LinearGradient(
                         colors: [Colors.orange.withOpacity(0.3), Colors.orange.withOpacity(0)],
                       ),
@@ -72,9 +74,9 @@ class TrendChartScreen extends StatelessWidget {
                     spots: pulseRateSpots,
                     isCurved: true,
                     color: Constants.programsColor,
-                    barWidth: 5,
+                    barWidth: 2,
                     belowBarData: BarAreaData(
-                      show: true,
+                      show: false,
                       gradient: LinearGradient(
                         colors: [Constants.programsColor.withOpacity(0.3), Constants.programsColor.withOpacity(0)],
                       ),
@@ -87,8 +89,10 @@ class TrendChartScreen extends StatelessWidget {
                 minY: 29,
                 dateTimes: date,
                 showLeftTitles: false,
+                filter: "Daily",
               ),
             ),
+          ),
         );
   }
 }

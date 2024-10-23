@@ -12,6 +12,7 @@ class CustomMultiLineChart extends StatelessWidget {
   final double? minY;
   final double? maxY;
   final bool showLeftTitles;
+  final String? filter;
 
   const CustomMultiLineChart({
     Key? key,
@@ -24,6 +25,7 @@ class CustomMultiLineChart extends StatelessWidget {
     this.maxY,
     required this.dateTimes,
     required this.showLeftTitles,
+    this.filter
   }) : super(key: key);
 
   @override
@@ -43,13 +45,41 @@ class CustomMultiLineChart extends StatelessWidget {
                       showTitles: true,
                       getTitlesWidget: (value, meta) {
                         int index = value.toInt();
+
+                        // return Padding(
+                        //   padding: const EdgeInsets.all(4.0),
+                        //   child: Text(label),
+                        // );
                         if (index >= 0 && index < dateTimes.length) {
                           DateTime date = DateTime.parse(dateTimes[index]);
+                          print(date);
+
+                          String label;
+
+                          // Determine the label based on the filter
+                          switch (filter) {
+                            case 'Daily':
+                              // DateTime date = DateTime.parse(dateTimes[index]);
+                              label = DateFormat('E').format(date);
+                              break;
+                            case 'Weekly':
+                              label = 'Week ${index + 1}'; // Week number
+                              break;
+                            case 'Monthly':
+                              label = 'Month ${index + 1}'; // Month number
+                              break;
+                            case 'Yearly':
+                              label = 'Year ${index + 1}'; // Year number
+                              break;
+                            default:
+                              label = '';
+                          }
                           return Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: Transform.rotate(
-                              angle: -45 * (3.14 / 180), // Rotate the text by -45 degrees
-                              child: Text(DateFormat('HH:mm-dd/MM').format(date)),
+                              angle: -45 * (3.14 / 180),
+                              child: Text(label),
+                              // child: Text(DateFormat('HH:mm-dd/MM').format(date)),
                             ),
                           );
                         }
@@ -82,17 +112,17 @@ class CustomMultiLineChart extends StatelessWidget {
                 maxX: maxX,
                 minY: minY,
                 maxY: maxY,
-                borderData: FlBorderData(show: true),
+                borderData: FlBorderData(show: false),
                 gridData: FlGridData(
                   show: true,
-                  drawVerticalLine: true,
+                  drawVerticalLine: false,
                   drawHorizontalLine: true,
-                  getDrawingHorizontalLine: (value) {
-                    return FlLine(strokeWidth: 1, color: Colors.grey);
-                  },
-                  getDrawingVerticalLine: (value) {
-                    return FlLine(strokeWidth: 1, color: Colors.grey);
-                  },
+                  // getDrawingHorizontalLine: (value) {
+                  //   return FlLine(strokeWidth: 1, color: Colors.grey);
+                  // },
+                  // getDrawingVerticalLine: (value) {
+                  //   return FlLine(strokeWidth: 1, color: Colors.grey);
+                  // },
                 ),
               ),
             ),

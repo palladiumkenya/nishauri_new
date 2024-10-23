@@ -480,7 +480,7 @@ final List<RouteBase> selfScreeningRoutes = [
           name: RouteNames.BLOOD_PRESSURE_INSIGHT,
           path: 'blood-pressure-insight',
           builder: (BuildContext context, GoRouterState state) {
-            return BsInsightScreen();
+            return BpInsightScreen();
           },
           routes: [
             GoRoute(

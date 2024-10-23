@@ -125,9 +125,9 @@ class CustomFilterLineChart extends StatelessWidget {
                     show: true,
                     drawVerticalLine: false,
                     drawHorizontalLine: true,
-                    getDrawingHorizontalLine: (value) {
-                      return const FlLine(strokeWidth: 1, color: Colors.grey);
-                    },
+                    // getDrawingHorizontalLine: (value) {
+                    //   return const FlLine(strokeWidth: 1, color: Colors.grey);
+                    // },
                   ),
                 ),
               ),
