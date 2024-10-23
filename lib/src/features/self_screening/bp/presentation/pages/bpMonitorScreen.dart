@@ -205,8 +205,11 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
           body: Column(
             children: [
               const CustomAppBar(
-                title: "Blood Pressure",
+                // title: "Blood Pressure",
                 color: Constants.selfScreeningBgColor,
+                height: 120,
+                smallTitle: "Blood Pressure",
+                rightBtTitle: "Add Data",
               ),
               Expanded(
                 child: SingleChildScrollView(
@@ -274,7 +277,7 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
                                           style: theme.textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600),
                                         ),
                                         subtitle: Text(
-                                          "Blood Pressure, is the force of blood pushing against the walls of your blood vessels (arteries) as it is pumped by the heart1. It's measured in millimeters of mercury (mmHg) and recorded with two numbers: systolic (the pressure when your heart beats) and diastolic (the pressure when your heart rests between beats)",
+                                          "Blood pressure is the force of your blood pushing against the walls of your arteries as your heart pumps it around your body. It’s measured with two numbers: the first (systolic) is the pressure when your heart beats, and the second (diastolic) is the pressure when your heart rests between beats. For most people, a normal reading is around 120/80. Keeping your blood pressure in a healthy range is important because high or low blood pressure can lead to health problems. Regular checks can help you stay on top of it.",
                                           style: theme.textTheme.bodyMedium,
                                         ),
                                       ),

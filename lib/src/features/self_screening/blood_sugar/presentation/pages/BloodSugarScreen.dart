@@ -67,8 +67,10 @@ class _BloodSugarScreenState extends ConsumerState<BloodSugarScreen> {
       body: Column(
         children: [
           const CustomAppBar(
-            title: "Blood Sugar",
+            smallTitle: "Blood Sugar",
+            height: 120,
             color: Constants.selfScreeningBgColor,
+            rightBtTitle: "Add Data",
           ),
           Expanded(
             child: SingleChildScrollView(
