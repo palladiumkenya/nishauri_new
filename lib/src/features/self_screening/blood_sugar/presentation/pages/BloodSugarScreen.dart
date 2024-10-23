@@ -133,7 +133,7 @@ class _BloodSugarScreenState extends ConsumerState<BloodSugarScreen> {
                             title: Text("Show All Data", style: theme.textTheme.titleSmall!.copyWith(fontWeight: FontWeight.bold),),
                             trailing: const Icon(Icons.arrow_forward_ios_outlined),
                             onTap: (){
-                            //   implementing on tap method
+                              context.goNamed(RouteNames.BLOOD_SUGAR_RECORDS, extra: data);
                             },
                           ),
                         ),
