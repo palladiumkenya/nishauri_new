@@ -15,6 +15,7 @@ class CustomAppBar extends StatelessWidget {
   final double? height;
   final String? smallTitle;
   final String? rightBtTitle;
+  final String? path;
 
   const CustomAppBar({
     super.key,
@@ -26,6 +27,7 @@ class CustomAppBar extends StatelessWidget {
     this.height,
     this.smallTitle,
     this.rightBtTitle,
+    this.path
   });
 
   @override
@@ -76,7 +78,7 @@ class CustomAppBar extends StatelessWidget {
                 if (rightBtTitle != null)
                   TextButton(
                     onPressed: (){
-
+                      context.goNamed(path??'');
                        },
                       child: Text(rightBtTitle??'', style: theme.textTheme.titleSmall!.copyWith(color: Constants.bgColor),)
                   // Container(

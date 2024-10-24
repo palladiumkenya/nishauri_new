@@ -68,6 +68,7 @@ import 'package:nishauri/src/features/provider/dawa_drop_management/presentation
 import 'package:nishauri/src/features/provider/presentation/pages/provider_main_Screen.dart';
 import 'package:nishauri/src/features/provider/provider_registry/presentaion/pages/location_selection_screen.dart';
 import 'package:nishauri/src/features/provider/provider_registry/presentaion/pages/provider_details.dart';
+import 'package:nishauri/src/features/self_screening/bp/presentation/pages/bp_input_screen.dart';
 import 'package:nishauri/src/features/self_screening/presentation/pages/blood_pressure_posts.dart';
 import 'package:nishauri/src/features/self_screening/presentation/pages/blood_sugar_posts.dart';
 import 'package:nishauri/src/features/self_screening/presentation/pages/bpInsightScreen.dart';
@@ -501,6 +502,13 @@ final List<RouteBase> selfScreeningRoutes = [
         builder: (context, state) {
           dynamic extras = state.extra;
           return BloodPressureRecords(data: extras);
+        },
+      ),
+      GoRoute(
+        name: RouteNames.BLOOD_PRESSURE_INPUT,
+        path: 'blood-pressure-input',
+        builder: (context, state) {
+          return BloodPressureInputs();
         },
       ),
     ]

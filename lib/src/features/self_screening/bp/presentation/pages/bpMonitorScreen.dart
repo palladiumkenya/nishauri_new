@@ -210,6 +210,7 @@ class _BPMonitorScreenState extends ConsumerState<BPMonitorScreen> {
                 height: 120,
                 smallTitle: "Blood Pressure",
                 rightBtTitle: "Add Data",
+                path: RouteNames.BLOOD_PRESSURE_INPUT,
               ),
               Expanded(
                 child: SingleChildScrollView(

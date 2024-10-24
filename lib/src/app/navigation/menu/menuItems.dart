@@ -260,14 +260,14 @@ List<MenuItem> getPatientModules(BuildContext context) {
     MenuItem(
       shortcutBackgroundColor: Constants.bmiCalculatorShortcutBgColor,
       icon: SvgPicture.asset(
-        "assets/images/healthcare-medical.svg",
+        "assets/images/selfscreeningImage.svg",
         semanticsLabel: "Doctors",
         fit: BoxFit.contain,
         height: 80,
         width: 80,
       ),
       shortcutIcon: SvgPicture.asset(
-        "assets/images/healthcare-medical.svg",
+        "assets/images/selfscreeningImage.svg",
         semanticsLabel: "Doctors",
         fit: BoxFit.contain,
         width: Constants.shortcutIconSize,
