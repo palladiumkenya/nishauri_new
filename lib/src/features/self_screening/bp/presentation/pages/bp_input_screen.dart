@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:nishauri/src/features/self_screening/bp/data/models/blood_pressure.dart';
+import 'package:nishauri/src/features/self_screening/bp/data/providers/blood_pressure_provider.dart';
 import 'package:nishauri/src/shared/display/CustomAppBar.dart';
 import 'package:nishauri/src/utils/constants.dart';
 
-class BloodPressureInputs extends StatefulWidget {
+class BloodPressureInputs extends ConsumerStatefulWidget {
   @override
   _BloodPressureInputsState createState() => _BloodPressureInputsState();
 }
 
-class _BloodPressureInputsState extends State<BloodPressureInputs> {
+class _BloodPressureInputsState extends ConsumerState<BloodPressureInputs> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
+  final TextEditingController _notesController = TextEditingController();
   final TextEditingController _systolicController = TextEditingController(text: '120');
   final TextEditingController _diastolicController = TextEditingController(text: '80');
 
@@ -48,9 +52,40 @@ class _BloodPressureInputsState extends State<BloodPressureInputs> {
     }
   }
 
+  void _reloadData() {
+    ref.refresh(bloodPressureListProvider);
+  }
+
+  void _submitData(double systolic, double diastolic, double? pulseRate){
+    final String notes = _notesController.text;
+    final DateTime measurementTime = DateTime.now();
+    final bp = BloodPressure(
+      systolic: systolic,
+      diastolic: diastolic,
+      pulse_rate: pulseRate!,
+      created_at: measurementTime,
+      notes: notes,
+    );
+
+    ref.read(bloodPressureRepositoryProvider).saveBloodPressure(bp).then((value) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(value)),
+      );
+      _reloadData();
+      // _clearForm(systolic, diastolic, heartRate, notesController);
+      Navigator.of(context).pop();
+    }).catchError((error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error)),
+      );
+    });
+  }
+
   void _saveData() {
-    final systolic = int.tryParse(_systolicController.text);
-    final diastolic = int.tryParse(_diastolicController.text);
+    final systolic = double.parse(_systolicController.text);
+    final diastolic = double.parse(_diastolicController.text);
+    final pulseRate = double.parse(_diastolicController.text);
+    _submitData(systolic, diastolic, pulseRate);
     if (systolic != null && diastolic != null && systolic > 0 && diastolic > 0) {
       if (systolic > 140 || diastolic > 90) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -59,6 +94,14 @@ class _BloodPressureInputsState extends State<BloodPressureInputs> {
             backgroundColor: Colors.red,
           ),
         );
+      }
+      else if (systolic < 90 || diastolic < 60){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Warning: Low blood pressure detected!'),
+            backgroundColor: Colors.red,
+          ),
+      );
       }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -129,7 +172,7 @@ class _BloodPressureInputsState extends State<BloodPressureInputs> {
                     children: [
                       Text("Time:", style:  theme.textTheme.bodyLarge),
                       GestureDetector(
-                        onTap: () => _selectTime(context), // Updated to call _selectTime
+                        onTap: () => _selectTime(context),
                         child: AbsorbPointer(
                           child: Container(
                             padding: const EdgeInsets.all(Constants.SPACING),
@@ -188,10 +231,53 @@ class _BloodPressureInputsState extends State<BloodPressureInputs> {
                         width: 150,
                         height: 40,
                         child: TextField(
+
                           controller: _diastolicController,
                           keyboardType: TextInputType.number,
                           decoration: null,
                         ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: Constants.SPACING),
+                  const Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(Constants.SPACING),
+                        decoration: BoxDecoration(
+                          color: Constants.white,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Constants.bgColor),
+                        ),
+                        width: MediaQuery.of(context).size.width *0.9,
+                        child: TextFormField(
+                          style: theme.textTheme.bodyMedium!.copyWith(decoration: null),
+                          controller: _notesController,
+                          decoration: InputDecoration(
+                            labelText: "Notes",
+                            border: const OutlineInputBorder(
+                              gapPadding: 5,
+                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              borderSide: BorderSide(color: Constants.bgColor),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Constants.bgColor),
+                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Constants.bgColor),
+                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                            ),
+                            labelStyle: TextStyle(color: Constants.selfScreeningBgColor),
+                          ),
+                          keyboardType: TextInputType.text,
+                          maxLines: null,
+                        ),
+
                       ),
                     ],
                   ),
