@@ -23,6 +23,7 @@ import 'package:nishauri/src/features/self_screening/blood_sugar/presentation/pa
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorResultsScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMICalculatorScreen.dart';
 import 'package:nishauri/src/features/bmi/presentation/pages/BMIHistoryScreen.dart';
+import 'package:nishauri/src/features/self_screening/blood_sugar/presentation/pages/bs_input_screen.dart';
 import 'package:nishauri/src/features/self_screening/blood_sugar/presentation/pages/bs_line_list_Screen.dart';
 import 'package:nishauri/src/features/self_screening/bp/presentation/pages/BPLinelistScreen.dart';
 import 'package:nishauri/src/features/self_screening/bp/presentation/pages/bpMonitorScreen.dart';
@@ -543,6 +544,13 @@ final List<RouteBase> selfScreeningRoutes = [
         builder: (context, state) {
           dynamic extras = state.extra;
           return BloodSugarRecords(data: extras);
+        },
+      ),
+      GoRoute(
+        name: RouteNames.BLOOD_SUGAR_INPUT,
+        path: 'blood-sugar-input',
+        builder: (context, state) {
+          return BloodSugarInputs();
         },
       ),
     ]

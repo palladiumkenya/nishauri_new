@@ -71,6 +71,7 @@ class _BloodSugarScreenState extends ConsumerState<BloodSugarScreen> {
             height: 120,
             color: Constants.selfScreeningBgColor,
             rightBtTitle: "Add Data",
+            path: RouteNames.BLOOD_SUGAR_INPUT,
           ),
           Expanded(
             child: SingleChildScrollView(
@@ -90,10 +91,10 @@ class _BloodSugarScreenState extends ConsumerState<BloodSugarScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(height: Constants.SPACING,),
+                        const SizedBox(height: Constants.SPACING,),
                         Text("18 Oct 2024", style: theme.textTheme.bodyLarge!.copyWith(color: Colors.grey, fontWeight: FontWeight.bold)),
 
-                        SizedBox(height: Constants.SPACING,),
+                        const SizedBox(height: Constants.SPACING,),
                         Row(
                           children: [
                             Text("4.1", style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold)),
@@ -101,7 +102,7 @@ class _BloodSugarScreenState extends ConsumerState<BloodSugarScreen> {
                             Text("mmol/L", style: theme.textTheme.bodyMedium),
                           ],
                         ),
-                        SizedBox(height: Constants.SPACING,),
+                        const SizedBox(height: Constants.SPACING,),
                         Wrap(
                           spacing: 1,
                           runSpacing: 16,
@@ -126,7 +127,7 @@ class _BloodSugarScreenState extends ConsumerState<BloodSugarScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(height: Constants.SPACING,),
+                        const SizedBox(height: Constants.SPACING,),
                         Card(
                           color: Constants.bgColor,
                           child: ListTile(
@@ -137,7 +138,7 @@ class _BloodSugarScreenState extends ConsumerState<BloodSugarScreen> {
                             },
                           ),
                         ),
-                        SizedBox(height: Constants.SPACING,),
+                        const SizedBox(height: Constants.SPACING,),
                         Container(
                           color: Constants.bgColor,
                           height: 250,
@@ -162,7 +163,7 @@ class _BloodSugarScreenState extends ConsumerState<BloodSugarScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: Constants.SPACING),
+                        const SizedBox(height: Constants.SPACING),
                         Button(
                           title: "More Insight",
                           onPress: (){
